@@ -1,0 +1,6 @@
+{
+  "parent": "nova:item/gui/gui_item",
+  "textures": {
+    "1": "simple_upgrades:item/range"
+  }
+}

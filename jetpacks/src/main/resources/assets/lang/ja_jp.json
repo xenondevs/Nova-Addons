@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.basic_jetpack": "基本ジェットパック",
+  "item.jetpacks.elite_jetpack": "精鋭ジェットパック",
+  "item.jetpacks.ultimate_jetpack": "究極ジェットパック",
+  "item.jetpacks.armored_basic_jetpack": "装甲基本ジェットパック",
+  "item.jetpacks.armored_elite_jetpack": "装甲精鋭ジェットパック",
+  "item.jetpacks.armored_ultimate_jetpack": "装甲究極ジェットパック",
+  "menu.jetpacks.items.category.jetpacks": "ジェットパック",
+  "item.jetpacks.advanced_jetpack": "発展ジェットパック",
+  "item.jetpacks.armored_advanced_jetpack": "装甲発展ジェットパック"
+}

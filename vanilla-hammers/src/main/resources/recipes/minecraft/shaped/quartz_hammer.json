@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:quartz_hammer",
+  "shape": [
+    "QqQ",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "Q": "minecraft:quartz_block",
+    "q": "minecraft:quartz"
+  }
+}

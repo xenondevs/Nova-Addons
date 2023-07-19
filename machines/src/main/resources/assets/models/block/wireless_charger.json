@@ -1,0 +1,8 @@
+{
+	"parent": "nova:block/block_front_side_top",
+	"textures": {
+		"front": "machines:block/wireless_charger",
+		"side": "machines:block/wireless_charger",
+		"top": "machines:block/machine_top"
+	}
+}

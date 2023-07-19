@@ -1,0 +1,355 @@
+{
+  "providers": [
+    {
+      "file": "jetpacks:gui/jetpack/0.png",
+      "chars": [
+        "\uf000"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/1.png",
+      "chars": [
+        "\uf001"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/2.png",
+      "chars": [
+        "\uf002"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/3.png",
+      "chars": [
+        "\uf003"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/4.png",
+      "chars": [
+        "\uf004"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/5.png",
+      "chars": [
+        "\uf005"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/6.png",
+      "chars": [
+        "\uf006"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/7.png",
+      "chars": [
+        "\uf007"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/8.png",
+      "chars": [
+        "\uf008"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/9.png",
+      "chars": [
+        "\uf009"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/10.png",
+      "chars": [
+        "\uf00a"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/11.png",
+      "chars": [
+        "\uf00b"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/12.png",
+      "chars": [
+        "\uf00c"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/13.png",
+      "chars": [
+        "\uf00d"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/14.png",
+      "chars": [
+        "\uf00e"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/15.png",
+      "chars": [
+        "\uf00f"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/16.png",
+      "chars": [
+        "\uf010"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/17.png",
+      "chars": [
+        "\uf011"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/18.png",
+      "chars": [
+        "\uf012"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/19.png",
+      "chars": [
+        "\uf013"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/20.png",
+      "chars": [
+        "\uf014"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/21.png",
+      "chars": [
+        "\uf015"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/22.png",
+      "chars": [
+        "\uf016"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/23.png",
+      "chars": [
+        "\uf017"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/24.png",
+      "chars": [
+        "\uf018"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/25.png",
+      "chars": [
+        "\uf019"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/26.png",
+      "chars": [
+        "\uf01a"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/27.png",
+      "chars": [
+        "\uf01b"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/28.png",
+      "chars": [
+        "\uf01c"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/29.png",
+      "chars": [
+        "\uf01d"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/30.png",
+      "chars": [
+        "\uf01e"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/31.png",
+      "chars": [
+        "\uf01f"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/32.png",
+      "chars": [
+        "\uf020"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/33.png",
+      "chars": [
+        "\uf021"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/34.png",
+      "chars": [
+        "\uf022"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/35.png",
+      "chars": [
+        "\uf023"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/36.png",
+      "chars": [
+        "\uf024"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/37.png",
+      "chars": [
+        "\uf025"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    },
+    {
+      "file": "jetpacks:gui/jetpack/38.png",
+      "chars": [
+        "\uf026"
+      ],
+      "height": 44,
+      "ascent": -21,
+      "type": "bitmap"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+	"parent": "nova:block/block_all",
+	"textures": {
+		"north": "machines:block/freezer_front",
+		"east": "machines:block/freezer",
+		"south": "machines:block/freezer",
+		"west": "machines:block/freezer",
+		"up": "machines:block/machine_top",
+		"down": "machines:block/freezer_down"
+	}
+}

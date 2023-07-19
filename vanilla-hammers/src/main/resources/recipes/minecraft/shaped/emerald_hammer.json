@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:emerald_hammer",
+  "shape": [
+    "EeE",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "E": "minecraft:emerald_block",
+    "e": "minecraft:emerald"
+  }
+}

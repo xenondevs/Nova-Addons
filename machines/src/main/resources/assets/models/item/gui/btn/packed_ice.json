@@ -1,0 +1,6 @@
+{
+  "parent": "nova:item/gui/gui_item",
+  "textures": {
+    "1": "machines:item/gui/btn/packed_ice"
+  }
+}

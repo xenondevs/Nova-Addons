@@ -1,0 +1,16 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:elite_jetpack",
+  "shape": [
+    "n n",
+    "pfp",
+    "bjb"
+  ],
+  "ingredients": {
+    "f": "nova:elite_machine_frame; minecraft:gold_block",
+    "p": "nova:elite_power_cell; minecraft:iron_block",
+    "j": ["jetpacks:advanced_jetpack", "jetpacks:armored_advanced_jetpack"],
+    "b": "minecraft:amethyst_shard",
+    "n": "nova:diamond_plate; minecraft:diamond"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "configure_potion": "gui/configure_potion",
+  "electric_brewing_stand": "gui/electric_brewing_stand",
+  "recipe_pulverizer": "gui/recipe/pulverizer",
+  "recipe_press": "gui/recipe/press",
+  "recipe_fluid_infuser": "gui/recipe/fluid_infuser",
+  "recipe_freezer": "gui/recipe/freezer",
+  "recipe_star_collector": "gui/recipe/star_collector",
+  "recipe_cobblestone_generator": "gui/recipe/cobblestone_generator",
+  "recipe_electric_brewing_stand": "gui/recipe/electric_brewing_stand"
+}

@@ -1,0 +1,13 @@
+{
+  "result": "logistics:ultimate_fluid_tank",
+  "shape": [
+    "gdg",
+    "dtd",
+    "gdg"
+  ],
+  "ingredients": {
+    "t": "logistics:elite_fluid_tank",
+    "d": "nova:star_dust; minecraft:blaze_powder",
+    "g": "minecraft:diamond"
+  }
+}

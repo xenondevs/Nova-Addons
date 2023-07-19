@@ -1,0 +1,12 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Покращення: Швидкість %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Покращення: Ефективність %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Покращення: Енергоємність %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Покращення: Область дії %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Покращення: Об'єму %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Покращення Швидкості",
+  "item.simple_upgrades.energy_upgrade": "Покращення Енергоємності",
+  "item.simple_upgrades.range_upgrade": "Покращення Дальності Дії",
+  "item.simple_upgrades.fluid_upgrade": "Покращення Об'єму",
+  "item.simple_upgrades.efficiency_upgrade": "Покращення Ефективності"
+}

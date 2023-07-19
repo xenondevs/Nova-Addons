@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:fiery_hammer",
+  "shape": [
+    "MmM",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "M": "minecraft:magma_block",
+    "m": "minecraft:magma_cream"
+  }
+}

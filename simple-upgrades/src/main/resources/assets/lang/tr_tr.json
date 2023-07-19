@@ -1,0 +1,7 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Hız Geliştirmeleri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Verimlilik Geliştirmeleri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Enerji Geliştirmeleri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Alan Geliştirmeleri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Sıvı Geliştirmeleri: %s/%s"
+}

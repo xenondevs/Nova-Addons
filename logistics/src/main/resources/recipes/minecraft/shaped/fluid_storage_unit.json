@@ -1,0 +1,14 @@
+{
+  "result": "logistics:fluid_storage_unit",
+  "shape": [
+    "iei",
+    "tft",
+    "iti"
+  ],
+  "ingredients": {
+    "t": "logistics:ultimate_fluid_tank",
+    "e": "minecraft:end_crystal",
+    "i": "nova:iron_plate; minecraft:iron_ingot",
+    "f": "nova:ultimate_machine_frame; minecraft:diamond_block"
+  }
+}

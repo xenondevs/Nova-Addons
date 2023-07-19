@@ -1,0 +1,14 @@
+{
+  "result": "logistics:advanced_power_cell",
+  "shape": [
+    "pcp",
+    "cbc",
+    "pfp"
+  ],
+  "ingredients": {
+    "p": "nova:iron_plate; minecraft:iron_ingot",
+    "c": "logistics:advanced_cable",
+    "b": "logistics:basic_power_cell",
+    "f": "nova:advanced_machine_frame; logistics:advanced_cable"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Potenziamenti Velocità: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Potenziamenti Efficienza: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Potenziamenti Energia: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Potenziamenti Raggio: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Potenziamenti Fluidi: %s/%s"
+}

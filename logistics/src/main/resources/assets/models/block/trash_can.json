@@ -1,0 +1,45 @@
+{
+	"parent": "nova:block/base",
+	"textures": {
+		"2": "logistics:block/trash_can"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 10, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 3.75, 2.5, 6.25], "texture": "#2"},
+				"east": {"uv": [0, 3.75, 2.5, 6.25], "texture": "#2"},
+				"south": {"uv": [0, 3.75, 2.5, 6.25], "texture": "#2"},
+				"west": {"uv": [0, 3.75, 2.5, 6.25], "texture": "#2"},
+				"down": {"uv": [0, 6.25, 2.5, 8.75], "rotation": 270, "texture": "#2"}
+			}
+		},
+		{
+			"from": [1, 10, 1],
+			"to": [15, 14, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 3, 3, 3.75], "texture": "#2"},
+				"east": {"uv": [0, 3, 3, 3.75], "texture": "#2"},
+				"south": {"uv": [0, 3, 3, 3.75], "texture": "#2"},
+				"west": {"uv": [0, 3, 3, 3.75], "texture": "#2"},
+				"up": {"uv": [0, 0, 3, 3], "rotation": 180, "texture": "#2"},
+				"down": {"uv": [0, 0, 3, 3], "rotation": 270, "texture": "#2"}
+			}
+		},
+		{
+			"from": [5, 14, 6.75],
+			"to": [11, 15.5, 9.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [3, 0.5, 4.5, 0.75], "texture": "#2"},
+				"east": {"uv": [3, 0.75, 3.5, 1], "texture": "#2"},
+				"south": {"uv": [3, 0.5, 4.5, 0.75], "texture": "#2"},
+				"west": {"uv": [3, 0.75, 3.5, 1], "texture": "#2"},
+				"up": {"uv": [3, 0, 4.5, 0.5], "texture": "#2"}
+			}
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+	"parent": "nova:block/block_all",
+	"textures": {
+		"up": "machines:block/mob_duplicator_top",
+		"down": "machines:block/machine_top",
+		"north": "machines:block/mob_duplicator_side_0",
+		"east": "machines:block/mob_duplicator_side_1",
+		"south": "machines:block/mob_duplicator_side_2",
+		"west": "machines:block/mob_duplicator_side_3"
+	}
+}

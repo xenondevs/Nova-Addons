@@ -1,0 +1,13 @@
+{
+  "category": "equipment",
+  "result": "machines:star_hoe",
+  "shape": [
+    "cc",
+    ".s",
+    ".s"
+  ],
+  "ingredients": {
+    "c": "machines:star_crystal",
+    "s": "minecraft:stick"
+  }
+}

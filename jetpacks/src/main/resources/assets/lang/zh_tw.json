@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.basic_jetpack": "基礎噴射背包",
+  "item.jetpacks.advanced_jetpack": "進階噴射背包",
+  "item.jetpacks.elite_jetpack": "精良噴射背包",
+  "item.jetpacks.ultimate_jetpack": "終極噴射背包",
+  "item.jetpacks.armored_basic_jetpack": "基礎裝甲噴射背包",
+  "item.jetpacks.armored_advanced_jetpack": "進階裝甲噴射背包",
+  "item.jetpacks.armored_elite_jetpack": "精良裝甲噴射背包",
+  "item.jetpacks.armored_ultimate_jetpack": "終極裝甲噴射背包",
+  "menu.jetpacks.items.category.jetpacks": "噴射背包"
+}

@@ -1,0 +1,13 @@
+{
+  "result": "nova:advanced_machine_frame",
+  "shape": [
+    "gdg",
+    "dmd",
+    "gdg"
+  ],
+  "ingredients": {
+    "g": "minecraft:gold_ingot",
+    "d": "minecraft:glowstone_dust",
+    "m": "nova:basic_machine_frame"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Улучшение: Скорость: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Улучшение: Эффективность: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Улучшение: Энергоёмкость: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Улучшение: Область действия: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Улучшение Объём: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Улучшение Скорости",
+  "item.simple_upgrades.efficiency_upgrade": "Улучшение Эффективности",
+  "item.simple_upgrades.fluid_upgrade": "Улучшение Объема",
+  "item.simple_upgrades.range_upgrade": "Улучшение Области действия",
+  "item.simple_upgrades.energy_upgrade": "Улучшение Энергоёмкости"
+}

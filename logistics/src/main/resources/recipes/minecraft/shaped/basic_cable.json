@@ -1,0 +1,13 @@
+{
+  "result": "logistics:basic_cable",
+  "amount": 16,
+  "shape": [
+    "iii",
+    "rrr",
+    "iii"
+  ],
+  "ingredients": {
+    "i": "minecraft:iron_ingot",
+    "r": "minecraft:redstone"
+  }
+}

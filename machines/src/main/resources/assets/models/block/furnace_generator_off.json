@@ -1,0 +1,6 @@
+{
+	"parent": "machines:block/machine",
+	"textures": {
+		"front": "machines:block/furnace_generator_off"
+	}
+}

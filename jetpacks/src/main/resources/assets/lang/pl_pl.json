@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.advanced_jetpack": "Zaawansowany Jetpack",
+  "item.jetpacks.elite_jetpack": "Elitarny Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Najlepszy Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacki",
+  "item.jetpacks.basic_jetpack": "Zwykły Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Zwykły opancerzony jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Opancerzony Zaawansowany Jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Opancerzony Elitarny Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Najlepszy Opancerzony Jetpack"
+}

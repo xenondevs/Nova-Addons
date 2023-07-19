@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.basic_jetpack": "Základní Raketový Batoh",
+  "item.jetpacks.advanced_jetpack": "Vylepšený Raketový Batoh",
+  "item.jetpacks.elite_jetpack": "Elitní Raketový Batoh",
+  "item.jetpacks.ultimate_jetpack": "Ultimátní Raketový Batoh",
+  "item.jetpacks.armored_advanced_jetpack": "Vylepšený Obrněný Raketový Batoh",
+  "item.jetpacks.armored_elite_jetpack": "Elitní Obrněný Raketový Batoh",
+  "item.jetpacks.armored_ultimate_jetpack": "Ultimátní Obrněný Raketový Batoh",
+  "menu.jetpacks.items.category.jetpacks": "Raketové Batohy",
+  "item.jetpacks.armored_basic_jetpack": "Základní Obrněný Raketový Batoh"
+}

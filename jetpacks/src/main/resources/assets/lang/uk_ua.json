@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.basic_jetpack": "Базовий Реактивний Ранець",
+  "item.jetpacks.advanced_jetpack": "Удосконалений Реактивний Ранець",
+  "item.jetpacks.elite_jetpack": "Елітний Реактивний Ранець",
+  "item.jetpacks.ultimate_jetpack": "Досконалий Реактивний Ранець",
+  "item.jetpacks.armored_basic_jetpack": "Броньований Базовий Реактивний Ранець",
+  "item.jetpacks.armored_advanced_jetpack": "Броньований Вдосконалений Реактивний Ранець",
+  "item.jetpacks.armored_elite_jetpack": "Броньований Елітний Реактивний Ранець",
+  "item.jetpacks.armored_ultimate_jetpack": "Броньований Досконалий Реактивний Ранець",
+  "menu.jetpacks.items.category.jetpacks": "Реактивні Ранці"
+}

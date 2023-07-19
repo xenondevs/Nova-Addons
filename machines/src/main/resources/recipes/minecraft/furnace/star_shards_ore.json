@@ -1,0 +1,6 @@
+{
+  "result": "machines:star_shards",
+  "input": ["machines:star_shards_ore", "machines:deepslate_star_shards_ore"],
+  "experience": 1.0,
+  "time": 100
+}

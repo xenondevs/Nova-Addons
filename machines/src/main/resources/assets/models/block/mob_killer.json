@@ -1,0 +1,8 @@
+{
+	"parent": "nova:block/block_front_side_top",
+	"textures": {
+		"front": "machines:block/mob_killer_front",
+		"top": "machines:block/machine_top",
+		"side": "machines:block/mob_killer_skull"
+	}
+}

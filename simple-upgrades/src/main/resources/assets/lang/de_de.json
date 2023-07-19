@@ -1,0 +1,12 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Geschwindigkeits-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Effizienz-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energie-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Reichweite-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Flüssigkeits-Upgrades: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Geschwindigkeits-Upgrade",
+  "item.simple_upgrades.efficiency_upgrade": "Effizienz-Upgrade",
+  "item.simple_upgrades.energy_upgrade": "Energie-Upgrade",
+  "item.simple_upgrades.range_upgrade": "Reichweite-Upgrade",
+  "item.simple_upgrades.fluid_upgrade": "Flüssigkeits-Upgrade"
+}

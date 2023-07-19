@@ -1,0 +1,13 @@
+{
+  "result": "logistics:advanced_cable",
+  "amount": 3,
+  "shape": [
+    "ggg",
+    "ccc",
+    "ggg"
+  ],
+  "ingredients": {
+    "g": "minecraft:glowstone_dust",
+    "c": "logistics:basic_cable"
+  }
+}

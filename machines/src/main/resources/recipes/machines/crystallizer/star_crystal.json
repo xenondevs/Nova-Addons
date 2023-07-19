@@ -1,0 +1,6 @@
+{
+  "input": "machines:star_dust_block",
+  "result": "machines:star_crystal",
+  "amount": 1,
+  "time": 200
+}

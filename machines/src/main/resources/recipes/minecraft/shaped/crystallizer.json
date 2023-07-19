@@ -1,0 +1,14 @@
+{
+  "result": "machines:crystallizer",
+  "shape": [
+    "pgp",
+    "sfs",
+    "psp"
+  ],
+  "ingredients": {
+    "f": "nova:ultimate_machine_frame",
+    "p": "nova:iron_plate",
+    "s": "nova:star_shards",
+    "g": "minecraft:glass_pane"
+  }
+}

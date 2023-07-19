@@ -1,0 +1,12 @@
+{
+  "category": "equipment",
+  "result": "machines:star_leggings",
+  "shape": [
+    "ccc",
+    "c.c",
+    "c.c"
+  ],
+  "ingredients": {
+    "c": "machines:star_crystal"
+  }
+}

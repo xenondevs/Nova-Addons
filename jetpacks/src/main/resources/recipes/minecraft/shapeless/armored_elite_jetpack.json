@@ -1,0 +1,8 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:armored_elite_jetpack",
+  "ingredients": {
+    "jetpacks:elite_jetpack": 1,
+    "minecraft:diamond_chestplate": 1
+  }
+}

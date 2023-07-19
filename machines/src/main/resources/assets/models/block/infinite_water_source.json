@@ -1,0 +1,8 @@
+{
+	"parent": "nova:block/block_front_side_top",
+	"textures": {
+		"front": "machines:block/infinite_water_source",
+		"side": "machines:block/infinite_water_source",
+		"top": "minecraft:block/sandstone_top"
+	}
+}

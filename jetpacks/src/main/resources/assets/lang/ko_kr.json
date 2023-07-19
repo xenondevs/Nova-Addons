@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.advanced_jetpack": "고급 제트팩",
+  "item.jetpacks.elite_jetpack": "엘리트 제트팩",
+  "item.jetpacks.ultimate_jetpack": "얼티밋 제트팩",
+  "item.jetpacks.armored_basic_jetpack": "기본 무장 제트팩",
+  "item.jetpacks.armored_advanced_jetpack": "고급 무장 제트팩",
+  "item.jetpacks.basic_jetpack": "기본 제트팩",
+  "item.jetpacks.armored_elite_jetpack": "엘리트 무장 제트펙",
+  "item.jetpacks.armored_ultimate_jetpack": "얼티밋 무장 제트팩",
+  "menu.jetpacks.items.category.jetpacks": "제트팩"
+}

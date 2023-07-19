@@ -1,0 +1,28 @@
+{
+	"parent": "nova:block/base",
+	"textures": {
+		"1": "machines:block/quarry_scaffolding"
+	},
+	"elements": [
+		{
+			"from": [6, 12, 6],
+			"to": [10, 16, 10],
+			"faces": {
+				"north": {"uv": [12, 0, 16, 8], "rotation": 270, "texture": "#1"},
+				"east": {"uv": [12, 0, 16, 8], "rotation": 270, "texture": "#1"},
+				"south": {"uv": [12, 0, 16, 8], "rotation": 270, "texture": "#1"},
+				"west": {"uv": [12, 0, 16, 8], "rotation": 270, "texture": "#1"}
+			}
+		},
+		{
+			"from": [7.5, 12, 7.5],
+			"to": [8.5, 16, 8.5],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 1], "rotation": 270, "texture": "#1"},
+				"east": {"uv": [0, 0, 4, 1], "rotation": 270, "texture": "#1"},
+				"south": {"uv": [0, 0, 4, 1], "rotation": 270, "texture": "#1"},
+				"west": {"uv": [0, 0, 4, 1], "rotation": 270, "texture": "#1"}
+			}
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:armored_ultimate_jetpack",
+  "ingredients": {
+    "jetpacks:ultimate_jetpack": 1,
+    "minecraft:netherite_chestplate": 1
+  }
+}

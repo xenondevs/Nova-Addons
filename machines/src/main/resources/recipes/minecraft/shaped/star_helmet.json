@@ -1,0 +1,11 @@
+{
+  "category": "equipment",
+  "result": "machines:star_helmet",
+  "shape": [
+    "ccc",
+    "c.c"
+  ],
+  "ingredients": {
+    "c": "machines:star_crystal"
+  }
+}

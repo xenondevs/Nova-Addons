@@ -1,0 +1,22 @@
+# Tool Options
+tool_tier: vanilla_hammers:slime
+tool_category: minecraft:pickaxe
+break_speed: 1.7
+attack_damage: 7
+attack_speed: 1
+knockback_bonus: 3
+
+# Hammer Options
+range: 1
+depth: 1
+hardness_tolerance: 0
+
+# Damageable Options
+durability: 1500
+item_damage_on_attack_entity: 1
+item_damage_on_break_block: 1
+repair_ingredient: "minecraft:slime_ball"
+
+# Enchantable Options
+enchantment_value: 20
+enchantment_categories: ["digger", "breakable"]

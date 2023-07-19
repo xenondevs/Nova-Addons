@@ -1,0 +1,12 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "速度升級: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "效率升級: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "能量升級: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "範圍升級: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "流體升級: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "速率升級",
+  "item.simple_upgrades.efficiency_upgrade": "效率升級",
+  "item.simple_upgrades.energy_upgrade": "能量升級",
+  "item.simple_upgrades.range_upgrade": "範圍升級",
+  "item.simple_upgrades.fluid_upgrade": "流體升級"
+}

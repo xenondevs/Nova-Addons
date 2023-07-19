@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.basic_jetpack": "Базовый Джетпак",
+  "item.jetpacks.advanced_jetpack": "Продвинутый Джетпак",
+  "item.jetpacks.elite_jetpack": "Элитный Джетпак",
+  "item.jetpacks.ultimate_jetpack": "Совершенный Джетпак",
+  "item.jetpacks.armored_basic_jetpack": "Базовый Джетпак (Бронированный)",
+  "item.jetpacks.armored_advanced_jetpack": "Продвинутый Джетпак (Бронированный)",
+  "item.jetpacks.armored_elite_jetpack": "Элитный Джетпак (Бронированный)",
+  "item.jetpacks.armored_ultimate_jetpack": "Совершенный Джетпак (Бронированный)",
+  "menu.jetpacks.items.category.jetpacks": "Джетпаки"
+}

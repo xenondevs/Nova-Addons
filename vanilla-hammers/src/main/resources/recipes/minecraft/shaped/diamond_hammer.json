@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:diamond_hammer",
+  "shape": [
+    "DdD",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "D": "minecraft:diamond_block",
+    "d": "minecraft:diamond"
+  }
+}

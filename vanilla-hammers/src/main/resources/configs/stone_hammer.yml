@@ -1,0 +1,21 @@
+# Tool Options
+tool_tier: minecraft:stone
+tool_category: minecraft:pickaxe
+break_speed: 1.15
+attack_damage: 4
+attack_speed: 1.4
+
+# Hammer Options
+range: 1
+depth: 1
+hardness_tolerance: 0
+
+# Damageable Options
+durability: 130
+item_damage_on_attack_entity: 2
+item_damage_on_break_block: 1
+repair_ingredient: ["minecraft:stone", "minecraft:cobblestone"]
+
+# Enchantable Options
+enchantment_value: 5
+enchantment_categories: ["digger", "breakable"]

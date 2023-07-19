@@ -1,0 +1,6 @@
+{
+  "parent": "jetpacks:attachment/jetpack",
+  "textures": {
+    "1": "jetpacks:item/attachment/advanced_jetpack"
+  }
+}

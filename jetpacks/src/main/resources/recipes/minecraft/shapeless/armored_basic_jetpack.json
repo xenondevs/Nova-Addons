@@ -1,0 +1,8 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:armored_basic_jetpack",
+  "ingredients": {
+    "jetpacks:basic_jetpack": 1,
+    "minecraft:leather_chestplate": 1
+  }
+}

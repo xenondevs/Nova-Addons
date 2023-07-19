@@ -1,0 +1,8 @@
+{
+	"parent": "nova:block/block_front_side_top",
+	"textures": {
+		"front": "machines:block/breeder_front",
+		"side": "machines:block/breeder_side",
+		"top": "machines:block/machine_top"
+	}
+}

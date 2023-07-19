@@ -1,0 +1,15 @@
+{
+  "result": "nova:lava_generator",
+  "shape": [
+    "ptp",
+    "bfb",
+    "pgp"
+  ],
+  "ingredients": {
+    "f": "nova:advanced_machine_frame",
+    "t": "nova:basic_fluid_tank; minecraft:lava_bucket",
+    "g": "nova:copper_gear",
+    "b": "minecraft:lava_bucket",
+    "p": "nova:iron_plate"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "result": "logistics:basic_item_filter",
+  "ingredients": {
+    "minecraft:hopper": 1,
+    "minecraft:paper": 1
+  }
+}

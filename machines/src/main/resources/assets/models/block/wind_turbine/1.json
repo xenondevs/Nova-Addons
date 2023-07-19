@@ -1,0 +1,19 @@
+{
+	"parent": "nova:block/base",
+	"textures": {
+		"1": "machines:block/wind_turbine"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 16, 13],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 16, 8]},
+			"faces": {
+				"north": {"uv": [2.5, 0.25, 5, 4.25], "texture": "#1"},
+				"east": {"uv": [0, 0.25, 2.5, 4.25], "texture": "#1"},
+				"south": {"uv": [0, 0.25, 2.5, 4.25], "texture": "#1"},
+				"west": {"uv": [0, 0.25, 2.5, 4.25], "texture": "#1"}
+			}
+		}
+	]
+}

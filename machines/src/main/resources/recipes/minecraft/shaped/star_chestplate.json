@@ -1,0 +1,12 @@
+{
+  "category": "equipment",
+  "result": "machines:star_chestplate",
+  "shape": [
+    "c.c",
+    "ccc",
+    "ccc"
+  ],
+  "ingredients": {
+    "c": "machines:star_crystal"
+  }
+}

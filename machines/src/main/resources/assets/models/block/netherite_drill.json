@@ -1,0 +1,42 @@
+{
+	"parent": "nova:block/base",
+	"textures": {
+		"0": "block/netherite_block"
+	},
+	"elements": [
+		{
+			"from": [3, 5, 3],
+			"to": [13, 9, 13],
+			"faces": {
+				"north": {"uv": [3, 10, 13, 14], "texture": "#0"},
+				"east": {"uv": [3, 10, 13, 14], "texture": "#0"},
+				"south": {"uv": [3, 10, 13, 14], "texture": "#0"},
+				"west": {"uv": [3, 10, 13, 14], "texture": "#0"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [2, 9, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 7], "texture": "#0"},
+				"east": {"uv": [2, 0, 14, 7], "texture": "#0"},
+				"south": {"uv": [2, 0, 14, 7], "texture": "#0"},
+				"west": {"uv": [2, 0, 14, 7], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 0, 5],
+			"to": [11, 5, 11],
+			"faces": {
+				"north": {"uv": [5, 11, 11, 16], "texture": "#0"},
+				"east": {"uv": [5, 11, 11, 16], "texture": "#0"},
+				"south": {"uv": [5, 11, 11, 16], "texture": "#0"},
+				"west": {"uv": [5, 11, 11, 16], "texture": "#0"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#0"}
+			}
+		}
+	]
+}

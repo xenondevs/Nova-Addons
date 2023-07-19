@@ -1,0 +1,14 @@
+{
+  "result": "logistics:ultimate_cable",
+  "amount": 3,
+  "shape": [
+    "gdg",
+    "ccc",
+    "ggg"
+  ],
+  "ingredients": {
+    "g": "minecraft:gold_nugget",
+    "d": "nova:diamond_plate; minecraft:diamond",
+    "c": "logistics:elite_cable"
+  }
+}

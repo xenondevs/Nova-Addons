@@ -1,0 +1,12 @@
+{
+  "result": "logistics:trash_can",
+  "shape": [
+    "ipi",
+    "i i",
+    "iii"
+  ],
+  "ingredients": {
+    "i": "minecraft:iron_ingot",
+    "p": "nova:iron_plate; minecraft:iron_trapdoor"
+  }
+}

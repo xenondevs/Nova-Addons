@@ -1,0 +1,18 @@
+{
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "machines:ore_star_shards"
+    ],
+    [],
+    [],
+    [],
+    []
+  ]
+}

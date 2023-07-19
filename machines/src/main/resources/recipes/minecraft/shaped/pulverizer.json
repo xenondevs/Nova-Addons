@@ -1,0 +1,13 @@
+{
+  "result": "nova:pulverizer",
+  "shape": [
+    "igi",
+    "gmg",
+    "iii"
+  ],
+  "ingredients": {
+    "m": "nova:basic_machine_frame",
+    "i": "minecraft:iron_ingot",
+    "g": "nova:iron_gear"
+  }
+}

@@ -1,0 +1,12 @@
+tool_tier: minecraft:iron
+tool_category: minecraft:axe
+break_speed: 20
+attack_damage: 9
+attack_speed: 1.1
+can_sweep_attack: false
+can_break_blocks_in_creative: true
+max_durability: 250
+item_damage_on_attack_entity: 2
+item_damage_on_break_block: 1
+enchantment_value: 10
+enchantment_categories: ["digger", "breakable"]

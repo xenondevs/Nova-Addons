@@ -1,0 +1,7 @@
+{
+	"parent": "logistics:block/fluid_tank/fluid_tank",
+	"textures": {
+		"2": "logistics:block/fluid_tank/elite/side",
+		"3": "logistics:block/fluid_tank/elite/top"
+	}
+}

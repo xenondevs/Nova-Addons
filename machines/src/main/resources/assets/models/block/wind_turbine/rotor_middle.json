@@ -1,0 +1,29 @@
+{
+	"textures": {
+		"1": "machines:block/wind_turbine"
+	},
+	"elements": [
+		{
+			"from": [5, 5, 0],
+			"to": [11, 11, 3],
+			"faces": {
+				"north": {"uv": [13.5, 0, 15, 1.5], "rotation": 180, "texture": "#1"},
+				"east": {"uv": [13.5, 0, 15, 0.75], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [13.5, 0, 15, 0.75], "rotation": 270, "texture": "#1"},
+				"up": {"uv": [13.5, 0, 15, 0.75], "texture": "#1"},
+				"down": {"uv": [13.5, 0, 15, 0.75], "rotation": 180, "texture": "#1"}
+			}
+		},
+		{
+			"from": [6, 6, -2],
+			"to": [10, 10, 0],
+			"faces": {
+				"north": {"uv": [13.75, 0.25, 14.75, 1.25], "rotation": 180, "texture": "#1"},
+				"east": {"uv": [13.75, 0, 14.75, 0.5], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [13.75, 0, 14.75, 0.5], "rotation": 270, "texture": "#1"},
+				"up": {"uv": [13.75, 0, 14.75, 0.5], "texture": "#1"},
+				"down": {"uv": [13.75, 0, 14.75, 0.5], "rotation": 180, "texture": "#1"}
+			}
+		}
+	]
+}

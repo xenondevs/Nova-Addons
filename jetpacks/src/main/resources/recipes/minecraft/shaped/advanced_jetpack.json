@@ -1,0 +1,16 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:advanced_jetpack",
+  "shape": [
+    "d d",
+    "pfp",
+    "eje"
+  ],
+  "ingredients": {
+    "f": "nova:advanced_machine_frame; minecraft:iron_block",
+    "p": "nova:advanced_power_cell; minecraft:iron_block",
+    "j": ["jetpacks:basic_jetpack", "jetpacks:armored_basic_jetpack"],
+    "e": "minecraft:blaze_powder",
+    "d": "nova:iron_plate; minecraft:iron_ingot"
+  }
+}

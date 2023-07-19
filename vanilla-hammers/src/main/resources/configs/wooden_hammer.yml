@@ -1,0 +1,24 @@
+# Tool Options
+tool_tier: minecraft:wood
+tool_category: minecraft:pickaxe
+break_speed: 2
+attack_damage: 3
+attack_speed: 1.5
+
+# Hammer Options
+range: 1
+depth: 1
+hardness_tolerance: 0
+
+# Damageable Options
+durability: 60
+item_damage_on_attack_entity: 2
+item_damage_on_break_block: 1
+repair_ingredient: "#minecraft:planks"
+
+# Enchantable Options
+enchantment_value: 15
+enchantment_categories: ["digger", "breakable"]
+
+# Fuel Options
+burn_time: 400

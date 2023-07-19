@@ -1,0 +1,13 @@
+{
+  "result": "nova:mob_killer",
+  "shape": [
+    "isi",
+    "sfs",
+    "iii"
+  ],
+  "ingredients": {
+    "s": "minecraft:diamond_sword",
+    "i": "nova:iron_plate",
+    "f": "nova:elite_machine_frame"
+  }
+}

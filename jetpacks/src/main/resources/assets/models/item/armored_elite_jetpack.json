@@ -1,0 +1,7 @@
+{
+  "parent": "jetpacks:item/armored_jetpack",
+  "textures": {
+    "1": "jetpacks:item/attachment/elite_jetpack",
+    "2": "item/diamond_chestplate"
+  }
+}

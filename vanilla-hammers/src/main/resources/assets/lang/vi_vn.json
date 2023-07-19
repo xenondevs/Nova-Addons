@@ -1,0 +1,19 @@
+{
+  "menu.vanilla_hammers.items.category.equipment": "Thiết bị",
+  "item.vanilla_hammers.golden_hammer": "Búa vàng",
+  "item.vanilla_hammers.prismarine_hammer": "Búa Prismarine",
+  "item.vanilla_hammers.wooden_hammer": "Búa gỗ",
+  "item.vanilla_hammers.stone_hammer": "Búa đá",
+  "item.vanilla_hammers.iron_hammer": "Búa sắt",
+  "item.vanilla_hammers.diamond_hammer": "Búa kim cương",
+  "item.vanilla_hammers.netherite_hammer": "Búa Netherite",
+  "item.vanilla_hammers.emerald_hammer": "Búa ngọc lục bảo",
+  "item.vanilla_hammers.obsidian_hammer": "Búa Obsidian",
+  "item.vanilla_hammers.lapis_hammer": "Búa Lapis Lazuli",
+  "item.vanilla_hammers.quartz_hammer": "Búa thạch anh",
+  "item.vanilla_hammers.fiery_hammer": "Búa bốc lửa",
+  "item.vanilla_hammers.slime_hammer": "Búa chất nhờn",
+  "item.vanilla_hammers.ender_hammer": "Búa Ender",
+  "advancement.vanilla_hammers.root.title": "Búa vani",
+  "advancement.vanilla_hammers.stone_hammer.title": "Đá rắn búa"
+}

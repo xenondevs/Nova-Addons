@@ -1,0 +1,14 @@
+{
+  "result": "logistics:storage_unit",
+  "shape": [
+    "pep",
+    "cfc",
+    "pcp"
+  ],
+  "ingredients": {
+    "e": "minecraft:end_crystal",
+    "c": "minecraft:chest",
+    "p": "nova:iron_plate; minecraft:iron_ingot",
+    "f": "nova:ultimate_machine_frame; minecraft:diamond_block"
+  }
+}

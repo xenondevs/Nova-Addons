@@ -1,0 +1,13 @@
+{
+  "result": "logistics:vacuum_chest",
+  "shape": [
+    " c ",
+    "pfp",
+    " p "
+  ],
+  "ingredients": {
+    "c": "minecraft:chest",
+    "p": "minecraft:ender_pearl",
+    "f": "nova:elite_machine_frame; minecraft:end_crystal"
+  }
+}

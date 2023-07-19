@@ -1,0 +1,16 @@
+{
+  "wooden_hammer": "item/wooden_hammer",
+  "stone_hammer": "item/stone_hammer",
+  "iron_hammer": "item/iron_hammer",
+  "golden_hammer": "item/golden_hammer",
+  "diamond_hammer": "item/diamond_hammer",
+  "netherite_hammer": "item/netherite_hammer",
+  "emerald_hammer": "item/emerald_hammer",
+  "lapis_hammer": "item/lapis_hammer",
+  "quartz_hammer": "item/quartz_hammer",
+  "obsidian_hammer": "item/obsidian_hammer",
+  "prismarine_hammer": "item/prismarine_hammer",
+  "fiery_hammer": "item/fiery_hammer",
+  "slime_hammer": "item/slime_hammer",
+  "ender_hammer": "item/ender_hammer"
+}

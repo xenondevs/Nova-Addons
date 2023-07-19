@@ -1,0 +1,6 @@
+# The maximum amount of joules that can be transferred per tick.
+energy_transfer_rate: 500
+# The maximum amount of mB that can be transferred per tick.
+fluid_transfer_rate: 100
+# The maximum amount of items that can ben transferred per second.
+item_transfer_rate: 8

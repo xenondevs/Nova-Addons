@@ -1,0 +1,114 @@
+machines:
+  icon: machines:quarry
+  name: menu.machines.items.category.machines
+  priority: 0
+  items:
+    - machines:mechanical_press
+    - machines:pulverizer
+    - machines:electric_furnace
+    - machines:block_placer
+    - machines:block_breaker
+    - machines:quarry
+    - machines:charger
+    - machines:wireless_charger
+    - machines:auto_fisher
+    - machines:breeder
+    - machines:mob_killer
+    - machines:mob_duplicator
+    - machines:planter
+    - machines:fertilizer
+    - machines:harvester
+    - machines:chunk_loader
+    - machines:cobblestone_generator
+    - machines:fluid_infuser
+    - machines:freezer
+    - machines:electric_brewing_stand
+    - machines:sprinkler
+    - machines:pump
+    - machines:star_collector
+    - machines:crystallizer
+    - machines:tree_factory
+    - machines:infinite_water_source
+
+power:
+  icon: machines:wind_turbine
+  name: menu.machines.items.category.power
+  priority: 1
+  items:
+    - machines:solar_panel
+    - machines:furnace_generator
+    - machines:lava_generator
+    - machines:wind_turbine
+    - machines:lightning_exchanger
+
+resources:
+  icon: machines:star_shards_ore
+  name: menu.machines.items.category.resources
+  priority: 2
+  items:
+    - machines:star_shards_ore
+    - machines:deepslate_star_shards_ore
+
+crafting:
+  icon: machines:copper_gear
+  name: menu.machines.items.category.crafting
+  priority: 3
+  items:
+    - machines:star_dust_block
+    - machines:star_shards
+    - machines:star_dust
+    - machines:star_crystal
+    - machines:coal_dust
+    - machines:lapis_dust
+    - machines:iron_dust
+    - machines:copper_dust
+    - machines:gold_dust
+    - machines:diamond_dust
+    - machines:emerald_dust
+    - machines:netherite_dust
+    - machines:redstone_plate
+    - machines:lapis_plate
+    - machines:iron_plate
+    - machines:copper_plate
+    - machines:gold_plate
+    - machines:diamond_plate
+    - machines:emerald_plate
+    - machines:netherite_plate
+    - machines:redstone_gear
+    - machines:lapis_gear
+    - machines:iron_gear
+    - machines:copper_gear
+    - machines:gold_gear
+    - machines:diamond_gear
+    - machines:emerald_gear
+    - machines:netherite_gear
+    - machines:basic_machine_frame
+    - machines:advanced_machine_frame
+    - machines:elite_machine_frame
+    - machines:ultimate_machine_frame
+    - machines:creative_machine_frame
+    - machines:solar_cell
+    - machines:scaffolding
+    - machines:netherite_drill
+
+equipment:
+  icon: machines:star_axe
+  name: menu.machines.items.category.equipment
+  priority: 4
+  items:
+    - machines:star_sword
+    - machines:star_shovel
+    - machines:star_pickaxe
+    - machines:star_axe
+    - machines:star_hoe
+    - machines:star_helmet
+    - machines:star_chestplate
+    - machines:star_leggings
+    - machines:star_boots
+
+misc:
+  icon: nova:wrench
+  name: menu.nova.items.category.misc
+  priority: 6
+  items:
+    - machines:mob_catcher

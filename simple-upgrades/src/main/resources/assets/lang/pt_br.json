@@ -1,0 +1,7 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Melhorias de Velocidade: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Melhorias de Eficiência: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Melhorias de Energia: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Melhorias de Alcance: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Melhorias de Fluido: %s/%s"
+}

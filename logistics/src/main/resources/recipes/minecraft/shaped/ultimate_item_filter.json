@@ -1,0 +1,13 @@
+{
+  "result": "logistics:ultimate_item_filter",
+  "shape": [
+    "dpd",
+    "pfp",
+    "dpd"
+  ],
+  "ingredients": {
+    "f": "logistics:elite_item_filter",
+    "p": "nova:iron_plate; minecraft:iron_ingot",
+    "d": "nova:diamond_dust; minecraft:diamond"
+  }
+}

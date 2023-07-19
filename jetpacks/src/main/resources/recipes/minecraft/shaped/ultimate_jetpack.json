@@ -1,0 +1,17 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:ultimate_jetpack",
+  "shape": [
+    "gng",
+    "pfp",
+    "bjb"
+  ],
+  "ingredients": {
+    "f": "nova:ultimate_machine_frame; minecraft:diamond_block",
+    "p": "nova:ultimate_power_cell; minecraft:gold_block",
+    "j": ["jetpacks:elite_jetpack", "jetpacks:armored_elite_jetpack"],
+    "b": "minecraft:ender_pearl",
+    "n": "nova:netherite_plate; minecraft:netherite_ingot",
+    "g": "nova:gold_plate; minecraft:gold_ingot"
+  }
+}

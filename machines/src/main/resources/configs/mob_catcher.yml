@@ -1,0 +1,7 @@
+# A list of entities that cannot be caught with the Mob Catcher
+# Refer to this page for a list of possible entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+entity_blacklist:
+  - WITHER
+  - ENDER_DRAGON
+  - ELDER_GUARDIAN
+  - WARDEN

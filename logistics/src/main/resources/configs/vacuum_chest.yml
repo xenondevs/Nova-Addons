@@ -1,0 +1,6 @@
+range:
+  min: 1
+  max: 2
+  default: 2
+upgrade_values:
+  range: [ 0, 1, 2, 3, 4, 5, 6 ]

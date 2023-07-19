@@ -1,0 +1,7 @@
+{
+  "menu.simple_upgrades.upgrades.type.speed": "Greičio patobulinimai: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Efektyvumo patobulinimai: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energijos patobulinimai: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Pasiekimo patobulinimai: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Skysčių patobulinimai: %s/%s"
+}

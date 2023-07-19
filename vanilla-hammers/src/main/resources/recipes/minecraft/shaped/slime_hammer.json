@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:slime_hammer",
+  "shape": [
+    "SsS",
+    " t ",
+    " t "
+  ],
+  "ingredients": {
+    "t": "minecraft:stick",
+    "S": "minecraft:slime_block",
+    "s": "minecraft:slime_ball"
+  }
+}

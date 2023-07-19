@@ -1,0 +1,21 @@
+# Tool Options
+tool_tier: minecraft:gold
+tool_category: minecraft:pickaxe
+break_speed: 3.5
+attack_damage: 5
+attack_speed: 1.5
+
+# Hammer Options
+range: 1
+depth: 1
+hardness_tolerance: 0
+
+# Damageable Options
+durability: 1560
+item_damage_on_attack_entity: 2
+item_damage_on_break_block: 1
+repair_ingredient: "minecraft:gold_ingot"
+
+# Enchantable Options
+enchantment_value: 22
+enchantment_categories: ["digger", "breakable"]

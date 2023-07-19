@@ -1,0 +1,21 @@
+{
+  "block.logistics.basic_cable": "کابل ساده",
+  "block.logistics.advanced_cable": "کابل پیشرفته",
+  "block.logistics.elite_cable": "کابل متوسط",
+  "block.logistics.ultimate_cable": "کابل نهایی",
+  "block.logistics.creative_cable": "کابل ایجاد شده",
+  "block.logistics.basic_power_cell": "باطری ساده",
+  "block.logistics.advanced_power_cell": "باطری پیشرفته",
+  "block.logistics.elite_power_cell": "باطری متوسط",
+  "block.logistics.ultimate_power_cell": "باطری نهایی",
+  "block.logistics.creative_power_cell": "باطری ایجاد شده",
+  "block.logistics.basic_fluid_tank": "مخزن سیال ساده",
+  "block.logistics.advanced_fluid_tank": "مخزن سیال پیشرفته",
+  "block.logistics.elite_fluid_tank": "مخزن سیال متوسط",
+  "block.logistics.ultimate_fluid_tank": "مخزن سیال نهایی",
+  "block.logistics.creative_fluid_tank": "مخزن سیال ایجاد شده",
+  "block.logistics.storage_unit": "واحد ذخیره سازی",
+  "block.logistics.fluid_storage_unit": "واحد ذخیره سازی سیال",
+  "block.logistics.vacuum_chest": "صندوق مکش",
+  "block.logistics.trash_can": "سطل زباله"
+}

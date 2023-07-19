@@ -1,0 +1,6 @@
+{
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "vanilla_hammers:diamond_hammer",
+  "addition": "minecraft:netherite_ingot",
+  "result": "vanilla_hammers:netherite_hammer"
+}

@@ -1,0 +1,11 @@
+{
+	"parent": "nova:block/block_all",
+	"textures": {
+		"north": "machines:block/auto_fisher_side",
+		"east": "machines:block/auto_fisher_side",
+		"south": "machines:block/auto_fisher_side",
+		"west": "machines:block/auto_fisher_side",
+		"up": "machines:block/auto_fisher_top",
+		"down": "machines:block/auto_fisher_bottom"
+	}
+}

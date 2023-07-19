@@ -1,0 +1,21 @@
+# Tool Options
+tool_tier: vanilla_hammers:ender
+tool_category: minecraft:pickaxe
+break_speed: 2.85
+attack_damage: 10
+attack_speed: 0.7
+
+# Hammer Options
+range: 1
+depth: 1
+hardness_tolerance: 0
+
+# Damageable Options
+durability: 1560
+item_damage_on_attack_entity: 2
+item_damage_on_break_block: 1
+repair_ingredient: "minecraft:ender_pearl"
+
+# Enchantable Options
+enchantment_value: 10
+enchantment_categories: ["digger", "breakable"]

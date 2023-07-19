@@ -1,0 +1,6 @@
+{
+  "parent": "nova:block/block",
+  "textures": {
+    "0": "machines:block/deepslate_star_shards_ore"
+  }
+}

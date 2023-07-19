@@ -1,0 +1,37 @@
+{
+  "items": [
+    {
+      "item": "machines:star_shards",
+      "chance": 80,
+      "amount": {
+        "min": 2,
+        "max": 8
+      }
+    },
+    {
+      "item": "machines:star_dust",
+      "chance": 10,
+      "amount": {
+        "min": 1,
+        "max": 4
+      }
+    }
+  ],
+  "whitelist": [
+    "chests/abandoned_mineshaft",
+    "chests/buried_treasure",
+    "chests/desert_pyramid",
+    "chests/igloo_chest",
+    "chests/jungle_temple",
+    "chests/pillager_outpost",
+    "chests/shipwreck_supply",
+    "chests/shipwreck_treasure",
+    "chests/simple_dungeon",
+    "chests/stronghold_corridor",
+    "chests/stronghold_crossing",
+    "chests/stronghold_library",
+    "chests/underwater_ruin_big",
+    "chests/underwater_ruin_small",
+    "chests/woodland_mansion"
+  ]
+}

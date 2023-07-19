@@ -1,0 +1,15 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:basic_jetpack",
+  "shape": [
+    "c c",
+    "pcp",
+    "bfb"
+  ],
+  "ingredients": {
+    "f": "nova:basic_machine_frame; minecraft:redstone_block",
+    "p": "nova:basic_power_cell; minecraft:redstone_block",
+    "c": "nova:copper_gear; minecraft:copper_ingot",
+    "b": "minecraft:fire_charge"
+  }
+}

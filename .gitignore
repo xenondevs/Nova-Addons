@@ -1,0 +1,34 @@
+# Eclipse Metadata
+.metadata
+
+# Eclipse Build Directory
+bin/
+
+# Eclipse Recommenders
+.recommenders/
+
+# Temp files
+tmp/
+*.tmp
+*.swp
+
+# IDE Settings
+.settings/
+.loadpath
+*.iml
+
+# IntelliJ
+.idea/
+/out/
+.idea_modules/
+
+# Target directory
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Logs
+logs/
+*.log

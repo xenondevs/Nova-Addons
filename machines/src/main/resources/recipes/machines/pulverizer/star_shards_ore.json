@@ -1,0 +1,6 @@
+{
+  "input": ["machines:star_shards_ore", "machines:deepslate_star_shards_ore"],
+  "result": "nova:star_dust",
+  "amount": 3,
+  "time": 100
+}

@@ -1,0 +1,21 @@
+{
+  "block.logistics.basic_cable": "Cable básico",
+  "block.logistics.advanced_cable": "Cable avanzado",
+  "block.logistics.elite_cable": "Cable de élite",
+  "block.logistics.ultimate_cable": "Cable definitivo",
+  "block.logistics.creative_cable": "Cable creativo",
+  "block.logistics.basic_power_cell": "Celda de energía básica",
+  "block.logistics.advanced_power_cell": "Celda de energía avanzada",
+  "block.logistics.elite_power_cell": "Celda de energía de élite",
+  "block.logistics.ultimate_power_cell": "Celda de energía definitiva",
+  "block.logistics.creative_power_cell": "Celda de energía creativa",
+  "block.logistics.basic_fluid_tank": "Tanque de fluido básico",
+  "block.logistics.advanced_fluid_tank": "Tanque de fluido avanzado",
+  "block.logistics.elite_fluid_tank": "Tanque de fluido de élite",
+  "block.logistics.ultimate_fluid_tank": "Tanque de fluido definitivo",
+  "block.logistics.creative_fluid_tank": "Tanque de fluido creativo",
+  "block.logistics.storage_unit": "Unidad de almacenamiento",
+  "block.logistics.fluid_storage_unit": "Unidad de almacenamiento de fluido",
+  "block.logistics.vacuum_chest": "Cofre de vacío",
+  "block.logistics.trash_can": "Tacho de basura"
+}

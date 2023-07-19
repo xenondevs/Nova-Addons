@@ -1,0 +1,11 @@
+{
+  "item.jetpacks.basic_jetpack": "Jetpack di base",
+  "item.jetpacks.advanced_jetpack": "Jetpack Avanzato",
+  "item.jetpacks.armored_basic_jetpack": "Jetpack Basico con Armatura",
+  "item.jetpacks.elite_jetpack": "Jetpack Elite",
+  "item.jetpacks.ultimate_jetpack": "Jetpack Ultimo",
+  "item.jetpacks.armored_advanced_jetpack": "Jetpack Avanzato con Armatura",
+  "item.jetpacks.armored_elite_jetpack": "Jetpack Elite con Armatura",
+  "item.jetpacks.armored_ultimate_jetpack": "Jetpack Ultimo con Armatura",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}

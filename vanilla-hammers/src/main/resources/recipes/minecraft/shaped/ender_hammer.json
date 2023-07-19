@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:ender_hammer",
+  "shape": [
+    "EdE",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "E": "minecraft:end_stone_bricks",
+    "d": "minecraft:dragon_head"
+  }
+}

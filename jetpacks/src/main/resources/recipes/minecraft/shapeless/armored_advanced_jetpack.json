@@ -1,0 +1,8 @@
+{
+  "category": "equipment",
+  "result": "jetpacks:armored_advanced_jetpack",
+  "ingredients": {
+    "jetpacks:advanced_jetpack": 1,
+    "minecraft:iron_chestplate": 1
+  }
+}

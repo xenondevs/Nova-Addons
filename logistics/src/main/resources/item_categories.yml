@@ -1,0 +1,34 @@
+logistics:
+  icon: logistics:ultimate_power_cell
+  name: menu.logistics.items.category.logistics
+  priority: 2
+  items:
+    - logistics:basic_cable
+    - logistics:advanced_cable
+    - logistics:elite_cable
+    - logistics:ultimate_cable
+    - logistics:creative_cable
+    - logistics:storage_unit
+    - logistics:vacuum_chest
+    - logistics:trash_can
+    - logistics:basic_power_cell
+    - logistics:advanced_power_cell
+    - logistics:elite_power_cell
+    - logistics:ultimate_power_cell
+    - logistics:creative_power_cell
+    - logistics:basic_fluid_tank
+    - logistics:advanced_fluid_tank
+    - logistics:elite_fluid_tank
+    - logistics:ultimate_fluid_tank
+    - logistics:creative_fluid_tank
+    - logistics:fluid_storage_unit
+
+misc:
+  icon: nova:wrench
+  name: menu.nova.items.category.misc
+  priority: 5
+  items:
+    - logistics:basic_item_filter
+    - logistics:advanced_item_filter
+    - logistics:elite_item_filter
+    - logistics:ultimate_item_filter

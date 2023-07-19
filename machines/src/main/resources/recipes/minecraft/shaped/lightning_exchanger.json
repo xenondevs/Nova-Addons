@@ -1,0 +1,13 @@
+{
+  "result": "nova:lightning_exchanger",
+  "shape": [
+    "lgl",
+    "gpg",
+    "lgl"
+  ],
+  "ingredients": {
+    "l": "minecraft:lightning_rod",
+    "g": "nova:copper_gear",
+    "p": "nova:elite_power_cell; nova:elite_machine_frame"
+  }
+}

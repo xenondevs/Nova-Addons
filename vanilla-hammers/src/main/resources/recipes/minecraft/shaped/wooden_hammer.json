@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:wooden_hammer",
+  "shape": [
+    "lpl",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "l": "#minecraft:logs",
+    "p": "#minecraft:planks"
+  }
+}

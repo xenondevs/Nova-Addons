@@ -1,0 +1,12 @@
+{
+  "result": "vanilla_hammers:obsidian_hammer",
+  "shape": [
+    "OOO",
+    "OsO",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "O": "minecraft:obsidian"
+  }
+}

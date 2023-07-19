@@ -1,0 +1,21 @@
+# Tool Options
+tool_tier: minecraft:netherite
+tool_category: minecraft:pickaxe
+break_speed: 2.6
+attack_damage: 11
+attack_speed: 0.9
+
+# Hammer Options
+range: 1
+depth: 1
+hardness_tolerance: 0
+
+# Damageable Options
+durability: 2030
+item_damage_on_attack_entity: 2
+item_damage_on_break_block: 1
+repair_ingredient: "minecraft:netherite_ingot"
+
+# Enchantable Options
+enchantment_value: 15
+enchantment_categories: ["digger", "breakable"]

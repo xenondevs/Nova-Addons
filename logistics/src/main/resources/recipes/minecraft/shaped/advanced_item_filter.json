@@ -1,0 +1,13 @@
+{
+  "result": "logistics:advanced_item_filter",
+  "shape": [
+    "cpc",
+    "pfp",
+    "cpc"
+  ],
+  "ingredients": {
+    "c": "nova:copper_dust; minecraft:copper_ingot",
+    "f": "logistics:basic_item_filter",
+    "p": "nova:iron_plate; minecraft:iron_ingot"
+  }
+}

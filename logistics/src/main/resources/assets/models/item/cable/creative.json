@@ -1,0 +1,6 @@
+{
+	"parent": "logistics:item/cable",
+	"textures": {
+		"0": "logistics:block/cable/creative"
+	}
+}

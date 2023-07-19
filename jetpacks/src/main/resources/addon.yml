@@ -1,0 +1,7 @@
+id: jetpacks
+name: Jetpacks
+version: "${project.version}"
+main: xyz.xenondevs.nova.jetpacks.Jetpacks
+novaVersion: "${nova.version}"
+authors: [ "StudioCode" ]
+spigotResourceId: 102714

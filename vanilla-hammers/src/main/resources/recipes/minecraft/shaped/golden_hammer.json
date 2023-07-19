@@ -1,0 +1,13 @@
+{
+  "result": "vanilla_hammers:golden_hammer",
+  "shape": [
+    "GgG",
+    " s ",
+    " s "
+  ],
+  "ingredients": {
+    "s": "minecraft:stick",
+    "G": "minecraft:gold_block",
+    "g": "minecraft:gold_ingot"
+  }
+}

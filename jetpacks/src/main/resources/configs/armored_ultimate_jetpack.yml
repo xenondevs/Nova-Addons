@@ -1,0 +1,5 @@
+max_energy: 50000000
+energy_per_tick: 500
+fly_speed: 0.1
+armor: 8.0
+armor_toughness: 3.0
