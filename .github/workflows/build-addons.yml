@@ -1,0 +1,189 @@
+name: Build Addons
+
+on:
+  push:
+    branches:
+      - '**'
+  release:
+    types: [ created ]
+
+jobs:
+  build-jetpacks:
+    name: Build Jetpacks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-disabled: true
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            jetpacks:addonJar
+            -PoutDir=../artifacts/
+            -PxenondevsNms
+        env:
+          ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
+          ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
+
+      - name: Upload Artifacts
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: artifacts/
+  
+  build-logistics:
+    name: Build Logistics
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-disabled: true
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            logistics:addonJar
+            -PoutDir=../artifacts/
+            -PxenondevsNms
+        env:
+          ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
+          ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
+
+      - name: Upload Artifacts
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: artifacts/
+  
+  build-machines:
+    name: Build Machines
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-disabled: true
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            machines:addonJar
+            -PoutDir=../artifacts/
+            -PxenondevsNms
+        env:
+          ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
+          ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
+
+      - name: Upload Artifacts
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: artifacts/
+  
+  build-simple-upgrades:
+    name: Build Simple-Upgrades
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-disabled: true
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            simple-upgrades:addonJar
+            -PoutDir=../artifacts/
+            -PxenondevsNms
+        env:
+          ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
+          ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
+
+      - name: Upload Artifacts
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: artifacts/
+  
+  build-vanilla-hammers:
+    name: Build Vanilla-Hammers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-disabled: true
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            vanilla-hammers:addonJar
+            -PoutDir=../artifacts/
+            -PxenondevsNms
+        env:
+          ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
+          ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
+
+      - name: Upload Artifacts
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: artifacts/

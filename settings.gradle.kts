@@ -23,7 +23,9 @@ dependencyResolutionManagement {
 pluginManagement {
     repositories {
         mavenLocal { content { includeGroup("org.spigotmc") } }
+        gradlePluginPortal()
         mavenCentral()
         maven("https://repo.xenondevs.xyz/releases")
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // for nova-gradle-plugin
     }
 }

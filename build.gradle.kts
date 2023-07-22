@@ -12,11 +12,32 @@ plugins {
     alias(libs.plugins.stringremapper)
 }
 
+fun RepositoryHandler.configureRepositories() {
+    mavenLocal { content { includeGroup("org.spigotmc") } }
+    mavenCentral()
+    maven("https://repo.xenondevs.xyz/releases")
+    maven("https://libraries.minecraft.net")
+    
+    // include xenondevs-nms repository if requested
+    if (project.hasProperty("xenondevsNms")) {
+        maven("https://repo.papermc.io/repository/maven-public/") // authlib, brigadier, etc.
+        maven {
+            name = "xenondevsNms"
+            url = uri("https://repo.xenondevs.xyz/nms/")
+            credentials(PasswordCredentials::class)
+        }
+    }
+}
+
+repositories { configureRepositories() }
+
 subprojects {
     apply(plugin = rootProject.libs.plugins.kotlin.get().pluginId)
     apply(plugin = rootProject.libs.plugins.nova.get().pluginId)
     apply(plugin = rootProject.libs.plugins.specialsource.get().pluginId)
     apply(plugin = rootProject.libs.plugins.stringremapper.get().pluginId)
+
+    repositories { configureRepositories() }
     
     dependencies { 
         implementation(rootProject.libs.nova)
