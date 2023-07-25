@@ -6,42 +6,35 @@ group = "xyz.xenondevs.nova.addon"
 val mojangMapped = project.hasProperty("mojang-mapped")
 
 plugins {
+    alias(libs.plugins.paperweight)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.nova)
-    alias(libs.plugins.specialsource)
     alias(libs.plugins.stringremapper)
 }
 
+repositories { configureRepositories() }
+dependencies { configureDependencies() }
+
 fun RepositoryHandler.configureRepositories() {
-    mavenLocal { content { includeGroup("org.spigotmc") } }
+    mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }
     mavenCentral()
-    maven("https://repo.xenondevs.xyz/releases")
-    maven("https://libraries.minecraft.net")
-    
-    // include xenondevs-nms repository if requested
-    if (project.hasProperty("xenondevsNms")) {
-        maven("https://repo.papermc.io/repository/maven-public/") // authlib, brigadier, etc.
-        maven {
-            name = "xenondevsNms"
-            url = uri("https://repo.xenondevs.xyz/nms/")
-            credentials(PasswordCredentials::class)
-        }
-    }
+    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://repo.xenondevs.xyz/releases/")
 }
 
-repositories { configureRepositories() }
+fun DependencyHandlerScope.configureDependencies() {
+    paperweight.paperDevBundle(rootProject.libs.versions.paper)
+    implementation(rootProject.libs.nova)
+}
 
 subprojects {
     apply(plugin = rootProject.libs.plugins.kotlin.get().pluginId)
     apply(plugin = rootProject.libs.plugins.nova.get().pluginId)
-    apply(plugin = rootProject.libs.plugins.specialsource.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.paperweight.get().pluginId)
     apply(plugin = rootProject.libs.plugins.stringremapper.get().pluginId)
 
     repositories { configureRepositories() }
-    
-    dependencies { 
-        implementation(rootProject.libs.nova)
-    }
+    dependencies { configureDependencies() }
 
     addon {
         id.set(this@subprojects.name)
@@ -50,24 +43,25 @@ subprojects {
         novaVersion.set(rootProject.libs.versions.nova)
     }
 
-    spigotRemap {
-        spigotVersion.set(rootProject.libs.versions.spigot.map { it.substringBefore('-') })
-        sourceJarTask.set(tasks.jar)
-    }
-
     remapStrings {
         remapGoal.set(if (mojangMapped) "mojang" else "spigot")
-        spigotVersion.set(rootProject.libs.versions.spigot)
+        gameVersion.set(rootProject.libs.versions.paper.get().substringBefore("-"))
     }
 
     tasks {
         register<Copy>("addonJar") {
             group = "build"
-            dependsOn("addon", if (mojangMapped) "jar" else "remapObfToSpigot")
-
-            from(File(project.buildDir, "libs/${project.name}-${project.version}.jar"))
+            dependsOn("addon")
+            if (mojangMapped) {
+                dependsOn("jar")
+                from(File(project.buildDir, "libs/${project.name}-${project.version}-dev.jar"))
+            } else {
+                dependsOn("reobfJar")
+                from(File(project.buildDir, "libs/${project.name}-${project.version}.jar"))
+            }
+            
             into((project.findProperty("outDir") as? String)?.let(::File) ?: project.buildDir)
-            rename { it.replace(project.name, addon.get().addonName.get()) }
+            rename { "${addon.get().addonName.get()}-${project.version}.jar" }
         }
 
         withType<KotlinCompile> {

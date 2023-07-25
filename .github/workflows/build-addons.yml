@@ -32,7 +32,6 @@ jobs:
           arguments: |
             jetpacks:addonJar
             -PoutDir=../artifacts/
-            -PxenondevsNms
         env:
           ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
           ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
@@ -68,7 +67,6 @@ jobs:
           arguments: |
             logistics:addonJar
             -PoutDir=../artifacts/
-            -PxenondevsNms
         env:
           ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
           ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
@@ -104,7 +102,6 @@ jobs:
           arguments: |
             machines:addonJar
             -PoutDir=../artifacts/
-            -PxenondevsNms
         env:
           ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
           ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
@@ -140,7 +137,6 @@ jobs:
           arguments: |
             simple-upgrades:addonJar
             -PoutDir=../artifacts/
-            -PxenondevsNms
         env:
           ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
           ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
@@ -176,7 +172,6 @@ jobs:
           arguments: |
             vanilla-hammers:addonJar
             -PoutDir=../artifacts/
-            -PxenondevsNms
         env:
           ORG_GRADLE_PROJECT_xenondevsNmsUsername: ${{ secrets.XENONDEVS_NMS_USERNAME }}
           ORG_GRADLE_PROJECT_xenondevsNmsPassword: ${{ secrets.XENONDEVS_NMS_PASSWORD }}
