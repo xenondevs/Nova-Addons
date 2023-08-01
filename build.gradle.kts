@@ -39,7 +39,6 @@ subprojects {
     addon {
         id.set(this@subprojects.name)
         name.set(this@subprojects.name.capitalized())
-        version.set(this@subprojects.version.toString())
         novaVersion.set(rootProject.libs.versions.nova)
     }
 
