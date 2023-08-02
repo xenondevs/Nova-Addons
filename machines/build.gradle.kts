@@ -6,6 +6,7 @@ dependencies {
 
 addon {
     main.set("xyz.xenondevs.nova.addon.machines.Machines")
+    depend.add("simple_upgrades")
     version.set(project.version.toString())
     authors.addAll("StudioCode", "ByteZ", "Javahase")
 }
