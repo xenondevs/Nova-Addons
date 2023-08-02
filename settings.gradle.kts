@@ -8,8 +8,9 @@ include("vanilla-hammers")
 
 dependencyResolutionManagement {
     repositories {
+        mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }
         mavenCentral()
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://repo.xenondevs.xyz/releases")
     }
     versionCatalogs {
@@ -21,9 +22,9 @@ dependencyResolutionManagement {
 
 pluginManagement {
     repositories {
+        mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }
         gradlePluginPortal()
         mavenCentral()
-        maven("https://papermc.io/repo/repository/maven-public/")
         maven("https://repo.xenondevs.xyz/releases")
     }
 }
