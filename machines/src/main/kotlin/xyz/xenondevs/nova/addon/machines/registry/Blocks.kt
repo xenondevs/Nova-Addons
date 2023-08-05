@@ -18,6 +18,7 @@ import xyz.xenondevs.nova.addon.machines.tileentity.energy.WirelessCharger
 import xyz.xenondevs.nova.addon.machines.tileentity.mob.Breeder
 import xyz.xenondevs.nova.addon.machines.tileentity.mob.MobDuplicator
 import xyz.xenondevs.nova.addon.machines.tileentity.mob.MobKiller
+import xyz.xenondevs.nova.addon.machines.tileentity.processing.AutoCrafter
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.CobblestoneGenerator
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.Crystallizer
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.ElectricFurnace
@@ -86,6 +87,7 @@ object Blocks : BlockRegistry by Machines.registry {
     val LAVA_GENERATOR = tileEntity("lava_generator", ::LavaGenerator).blockOptions(STONE).properties(Directional.NORMAL).register()
     val INFINITE_WATER_SOURCE = tileEntity("infinite_water_source", ::InfiniteWaterSource).blockOptions(SANDSTONE).register()
     val CRYSTALLIZER = tileEntity("crystallizer", ::Crystallizer).blockOptions(STONE).register()
+    val AUTO_CRAFTER = tileEntity("auto_crafter", ::AutoCrafter).blockOptions(STONE).register()
     
     // Normal blocks
     val STAR_DUST_BLOCK = block("star_dust_block").blockOptions(SAND).register()

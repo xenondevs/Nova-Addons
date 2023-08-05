@@ -17,6 +17,7 @@
   "gui_hoe_btn_on": "item/gui/btn/hoe_on",
   "gui_fluid_left_right_btn": "item/gui/btn/fluid_left_right",
   "gui_fluid_right_left_btn": "item/gui/btn/fluid_right_left",
+  "gui_inventory_btn": "item/gui/btn/inventory",
   "gui_green_plus": "item/gui/green_plus",
   "gui_red_minus": "item/gui/red_minus",
   "gui_axe_placeholder": "item/gui/placeholder/axe",
@@ -187,6 +188,7 @@
   "sprinkler": "block/sprinkler",
   "solar_panel": "block/solar_panel",
   "lightning_exchanger": "block/lightning_exchanger",
+  "auto_crafter": "block/auto_crafter",
   "auto_fisher": {
     "item": "block/auto_fisher",
     "block": {

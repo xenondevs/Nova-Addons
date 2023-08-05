@@ -1,6 +1,8 @@
 {
   "configure_potion": "gui/configure_potion",
   "electric_brewing_stand": "gui/electric_brewing_stand",
+  "auto_crafter": "gui/auto_crafter",
+  "auto_crafter_internal_inventory": "gui/auto_crafter_io",
   "recipe_pulverizer": "gui/recipe/pulverizer",
   "recipe_press": "gui/recipe/press",
   "recipe_fluid_infuser": "gui/recipe/fluid_infuser",

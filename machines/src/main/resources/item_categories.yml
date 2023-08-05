@@ -27,6 +27,7 @@ machines:
     - machines:pump
     - machines:star_collector
     - machines:crystallizer
+    - machines:auto_crafter
     - machines:tree_factory
     - machines:infinite_water_source
 
