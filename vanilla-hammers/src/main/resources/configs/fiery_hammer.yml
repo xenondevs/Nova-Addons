@@ -18,4 +18,4 @@ repair_ingredient: "minecraft:magma_block"
 
 # Enchantable Options
 enchantment_value: 15
-enchantment_categories: ["digger", "breakable"]
+enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]

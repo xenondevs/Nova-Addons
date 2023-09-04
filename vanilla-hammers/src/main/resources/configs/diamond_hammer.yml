@@ -18,4 +18,4 @@ repair_ingredient: "minecraft:diamond"
 
 # Enchantable Options
 enchantment_value: 10
-enchantment_categories: ["digger", "breakable"]
+enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]
