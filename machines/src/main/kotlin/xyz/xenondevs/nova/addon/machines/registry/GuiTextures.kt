@@ -9,6 +9,8 @@ object GuiTextures {
     
     val CONFIGURE_POTION = GuiTexture.of(Machines, "configure_potion")
     val ELECTRIC_BREWING_STAND = GuiTexture.of(Machines, "electric_brewing_stand")
+    val AUTO_CRAFTER = GuiTexture.of(Machines, "auto_crafter")
+    val AUTO_CRAFTER_INTERNAL_INVENTORY = GuiTexture.of(Machines, "auto_crafter_internal_inventory")
     val RECIPE_PULVERIZER = GuiTexture.of(Machines, "recipe_pulverizer")
     val RECIPE_PRESS = GuiTexture.of(Machines, "recipe_press")
     val RECIPE_FLUID_INFUSER = GuiTexture.of(Machines, "recipe_fluid_infuser")

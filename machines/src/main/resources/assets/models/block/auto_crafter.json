@@ -1,0 +1,11 @@
+{
+  "parent": "nova:block/block_all",
+  "textures": {
+    "north": "machines:block/auto_crafter_side",
+    "east": "machines:block/auto_crafter_side",
+    "south": "machines:block/auto_crafter_side",
+    "west": "machines:block/auto_crafter_side",
+    "up": "machines:block/auto_crafter_top",
+    "down": "machines:block/machine_top"
+  }
+}

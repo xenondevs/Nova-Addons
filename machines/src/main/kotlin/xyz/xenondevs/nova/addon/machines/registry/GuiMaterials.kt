@@ -25,6 +25,7 @@ object GuiMaterials : ItemRegistry by Machines.registry {
     val HOE_BTN_OFF = registerItem("gui_hoe_btn_off", localizedName = "menu.machines.planter.autotill.off", isHidden = true)
     val FLUID_LEFT_RIGHT_BTN = registerItem("gui_fluid_left_right_btn", localizedName = "menu.machines.fluid_infuser.mode.insert", isHidden = true)
     val FLUID_RIGHT_LEFT_BTN = registerItem("gui_fluid_right_left_btn", localizedName = "menu.machines.fluid_infuser.mode.extract", isHidden = true)
+    val INVENTORY_BUTTON = registerItem("gui_inventory_btn", localizedName = "menu.machines.auto_crafter.inventory", isHidden = true)
     
     val TP_GREEN_PLUS = registerUnnamedHiddenItem("gui_green_plus")
     val TP_RED_MINUS = registerUnnamedHiddenItem("gui_red_minus")

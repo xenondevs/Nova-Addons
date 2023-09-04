@@ -112,5 +112,6 @@ object Items : ItemRegistry by Machines.registry {
     val CREATIVE_MACHINE_FRAME = registerItem(Blocks.CREATIVE_MACHINE_FRAME)
     val STAR_SHARDS_ORE = registerItem(Blocks.STAR_SHARDS_ORE)
     val DEEPSLATE_STAR_SHARDS_ORE = registerItem(Blocks.DEEPSLATE_STAR_SHARDS_ORE)
+    val AUTO_CRAFTER = registerItem(Blocks.AUTO_CRAFTER)
     
 }
