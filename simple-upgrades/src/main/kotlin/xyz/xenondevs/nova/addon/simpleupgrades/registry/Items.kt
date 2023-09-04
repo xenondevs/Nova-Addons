@@ -1,10 +1,11 @@
 package xyz.xenondevs.nova.addon.simpleupgrades.registry
 
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
-import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades
+import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by SimpleUpgrades.registry {
     
     val SPEED_UPGRADE = registerItem("speed_upgrade")

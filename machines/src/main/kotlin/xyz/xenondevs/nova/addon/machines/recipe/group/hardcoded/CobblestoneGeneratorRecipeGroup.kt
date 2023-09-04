@@ -1,7 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
@@ -19,7 +20,7 @@ object CobblestoneGeneratorRecipeGroup : RecipeGroup<CobblestoneGeneratorRecipe>
     override fun createGui(recipe: CobblestoneGeneratorRecipe): Gui {
         val progressItem = GuiMaterials.TP_FLUID_PROGRESS_LEFT_RIGHT
             .createClientsideItemBuilder()
-            .setDisplayName(TranslatableComponent("menu.machines.recipe.cobblestone_generator.${recipe.mode.name.lowercase()}"))
+            .setDisplayName(Component.translatable("menu.machines.recipe.cobblestone_generator.${recipe.mode.name.lowercase()}"))
         
         return Gui.normal()
             .setStructure(

@@ -9,12 +9,14 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.commons.collections.rotateRight
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PUMP
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -35,20 +37,17 @@ import xyz.xenondevs.nova.util.item.playPlaceSoundEffect
 import xyz.xenondevs.nova.util.sourceFluidType
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.util.*
 
-private val ENERGY_CAPACITY = configReloadable { NovaConfig[PUMP].getLong("energy_capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[PUMP].getLong("energy_per_tick") }
-private val FLUID_CAPACITY = configReloadable { NovaConfig[PUMP].getLong("fluid_capacity") }
-private val REPLACEMENT_BLOCK by configReloadable { Material.valueOf(NovaConfig[PUMP].getString("replacement_block")!!) }
-private val IDLE_TIME by configReloadable { NovaConfig[PUMP].getLong("idle_time") }
+private val ENERGY_CAPACITY = PUMP.config.entry<Long>("energy_capacity")
+private val ENERGY_PER_TICK = PUMP.config.entry<Long>("energy_per_tick")
+private val FLUID_CAPACITY = PUMP.config.entry<Long>("fluid_capacity")
+private val REPLACEMENT_BLOCK by PUMP.config.entry<Material>("replacement_block")
+private val IDLE_TIME by PUMP.config.entry<Long>("idle_time")
 
-private val MIN_RANGE = configReloadable { NovaConfig[PUMP].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[PUMP].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[PUMP].getInt("range.default") }
+private val MIN_RANGE = PUMP.config.entry<Int>("range", "min")
+private val MAX_RANGE = PUMP.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by PUMP.config.entry<Int>("range", "default")
 
 class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -156,7 +155,7 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
                 return@repeat
             }
             for (x in -r..r) {
-                for (y in -r - 1 until 0) {
+                for (y in -r - 1..<0) {
                     for (z in -r..r) {
                         if ((x != -r && x != r) && (y != -r - 1 && y != -1) && (z != -r && z != r))
                             continue

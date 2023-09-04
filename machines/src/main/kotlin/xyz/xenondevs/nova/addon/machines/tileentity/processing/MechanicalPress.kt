@@ -6,22 +6,24 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.commons.provider.mutable.map
+import xyz.xenondevs.commons.provider.mutable.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.gui.PressProgressItem
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.MECHANICAL_PRESS
+import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.recipe.ConversionNovaRecipe
 import xyz.xenondevs.nova.data.recipe.NovaRecipe
 import xyz.xenondevs.nova.data.recipe.RecipeManager
 import xyz.xenondevs.nova.data.recipe.RecipeType
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.addon.machines.gui.PressProgressItem
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.MECHANICAL_PRESS
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
-import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -32,13 +34,11 @@ import xyz.xenondevs.nova.ui.OpenUpgradesItem
 import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide.FRONT
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.max
 
-private val MAX_ENERGY = configReloadable { NovaConfig[MECHANICAL_PRESS].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[MECHANICAL_PRESS].getLong("energy_per_tick") }
-private val PRESS_SPEED by configReloadable { NovaConfig[MECHANICAL_PRESS].getInt("speed") }
+private val MAX_ENERGY = MECHANICAL_PRESS.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = MECHANICAL_PRESS.config.entry<Long>("energy_per_tick")
+private val PRESS_SPEED by MECHANICAL_PRESS.config.entry<Int>("speed")
 
 private enum class PressType(val recipeType: RecipeType<out ConversionNovaRecipe>) {
     PLATE(RecipeTypes.PLATE_PRESS),
@@ -62,7 +62,7 @@ class MechanicalPress(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
     private var timeLeft by storedValue("pressTime") { 0 }
     private var pressSpeed = 0
     
-    private var currentRecipe: ConversionNovaRecipe? by storedValue<ResourceLocation>("currentRecipe").map(
+    private var currentRecipe: ConversionNovaRecipe? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
         { RecipeManager.getRecipe(type.recipeType, it) },
         NovaRecipe::id
     )

@@ -1,21 +1,22 @@
 package xyz.xenondevs.nova.addon.logistics.advancement
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
-import xyz.xenondevs.nova.initialize.Init
-import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.registry.Items
+import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitFun
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.advancement
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
 
-@Init
+@Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object Advancements {
     
     private val ROOT = advancement(Logistics, "root") {
         display {
             icon(Items.ULTIMATE_CABLE.clientsideProvider.get())
-            title(TranslatableComponent("advancement.logistics.root.title"))
+            title(Component.translatable("advancement.logistics.root.title"))
             description("")
             background("textures/block/tuff.png")
             

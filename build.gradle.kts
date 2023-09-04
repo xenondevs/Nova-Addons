@@ -1,5 +1,6 @@
 import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import xyz.xenondevs.stringremapper.StringRemapExtension
 
 group = "xyz.xenondevs.nova.addon"
 
@@ -24,7 +25,15 @@ fun RepositoryHandler.configureRepositories() {
 
 fun DependencyHandlerScope.configureDependencies() {
     paperweight.paperDevBundle(rootProject.libs.versions.paper)
+    configurations.getByName("mojangMappedServer").apply {
+        exclude("org.spongepowered", "configurate-yaml")
+    }
     implementation(rootProject.libs.nova)
+}
+
+fun StringRemapExtension.configureRemapStrings() {
+    remapGoal.set(if (mojangMapped) "mojang" else "spigot")
+    gameVersion.set(libs.versions.paper.get().substringBefore("-"))
 }
 
 subprojects {
@@ -35,16 +44,12 @@ subprojects {
     
     repositories { configureRepositories() }
     dependencies { configureDependencies() }
+    remapStrings { configureRemapStrings() }
     
     addon {
         id.set(this@subprojects.name)
         name.set(this@subprojects.name.capitalized())
         novaVersion.set(rootProject.libs.versions.nova)
-    }
-    
-    remapStrings {
-        remapGoal.set(if (mojangMapped) "mojang" else "spigot")
-        gameVersion.set(rootProject.libs.versions.paper.get().substringBefore("-"))
     }
     
     tasks {

@@ -12,9 +12,10 @@ import xyz.xenondevs.nova.data.recipe.RecipeRegistry
 import xyz.xenondevs.nova.data.recipe.SingleResultRecipe
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.ResourceLocation
 
-@Init
+@Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object HardcodedRecipes {
     
     private val recipes: List<NovaRecipe> = listOf(

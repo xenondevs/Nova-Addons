@@ -5,14 +5,14 @@ import org.bukkit.entity.Player
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.addon.logistics.item.getItemFilterConfig
 import xyz.xenondevs.nova.addon.logistics.item.isItemFilter
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks.VACUUM_CHEST
 import xyz.xenondevs.nova.addon.logistics.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -24,11 +24,10 @@ import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.serverTick
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MIN_RANGE = configReloadable { NovaConfig[VACUUM_CHEST].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[VACUUM_CHEST].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[VACUUM_CHEST].getInt("range.default") }
+private val MIN_RANGE = VACUUM_CHEST.config.entry<Int>("range", "min")
+private val MAX_RANGE = VACUUM_CHEST.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by VACUUM_CHEST.config.entry<Int>("range", "default")
 
 class VacuumChest(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

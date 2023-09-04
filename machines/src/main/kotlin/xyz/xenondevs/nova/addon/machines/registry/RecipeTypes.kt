@@ -26,8 +26,9 @@ import xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded.StarCollectorRec
 import xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded.StarCollectorRecipeGroup
 import xyz.xenondevs.nova.addon.registry.RecipeTypeRegistry
 import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
 
-@Init
+@Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object RecipeTypes : RecipeTypeRegistry by Machines.registry {
     
     val PULVERIZER = registerRecipeType("pulverizer", PulverizerRecipe::class, PulverizingRecipeGroup, PulverizerRecipeDeserializer)

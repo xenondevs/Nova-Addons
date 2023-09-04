@@ -1,11 +1,12 @@
 package xyz.xenondevs.nova.addon.logistics.gui.cable
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.TabGui
 import xyz.xenondevs.invui.window.Window
+import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.network.NetworkEndPoint
 import xyz.xenondevs.nova.tileentity.network.NetworkManager
@@ -57,7 +58,7 @@ class CableConfigGui(
     fun openWindow(player: Player) {
         Window.single {
             it.setViewer(player)
-            it.setTitle(arrayOf(TranslatableComponent("menu.logistics.cable_config")))
+            it.setTitle(Component.translatable("menu.logistics.cable_config"))
             it.setGui(gui)
             it.addCloseHandler(::writeChanges)
         }.open()

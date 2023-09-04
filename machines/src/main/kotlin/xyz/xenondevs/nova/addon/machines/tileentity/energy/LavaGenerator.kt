@@ -3,10 +3,12 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 import net.minecraft.core.particles.ParticleTypes
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nmsutils.particle.particle
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.LAVA_GENERATOR
+import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -22,14 +24,11 @@ import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.intValue
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val ENERGY_CAPACITY = configReloadable { NovaConfig[LAVA_GENERATOR].getLong("energy_capacity") }
-private val FLUID_CAPACITY = configReloadable { NovaConfig[LAVA_GENERATOR].getLong("fluid_capacity") }
-private val ENERGY_PER_MB by configReloadable { NovaConfig[LAVA_GENERATOR].getDouble("energy_per_mb") }
-private val BURN_RATE by configReloadable { NovaConfig[LAVA_GENERATOR].getDouble("burn_rate") }
+private val ENERGY_CAPACITY = LAVA_GENERATOR.config.entry<Long>("energy_capacity")
+private val FLUID_CAPACITY = LAVA_GENERATOR.config.entry<Long>("fluid_capacity")
+private val ENERGY_PER_MB by LAVA_GENERATOR.config.entry<Double>("energy_per_mb")
+private val BURN_RATE by LAVA_GENERATOR.config.entry<Double>("burn_rate")
 
 class LavaGenerator(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

@@ -2,7 +2,6 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.md_5.bungee.api.chat.TranslatableComponent
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -18,15 +17,16 @@ import xyz.xenondevs.invui.item.ItemWrapper
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.PotionBuilder
 import xyz.xenondevs.invui.item.builder.addLoreLines
+import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.item.impl.CycleItem
 import xyz.xenondevs.invui.window.Window
 import xyz.xenondevs.invui.window.type.context.setTitle
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing.ElectricBrewingStand.Companion.ALLOW_DURATION_AMPLIFIER_MIXING
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing.ElectricBrewingStand.Companion.AVAILABLE_POTION_EFFECTS
+import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.ui.item.BackItem
 import xyz.xenondevs.nova.ui.item.clickableItem
 import xyz.xenondevs.nova.ui.menu.ColorPickerWindow
@@ -49,17 +49,17 @@ class PotionConfiguratorWindow(
     private val effects: MutableMap<PotionEffectBuilder, PotionTypeGui> = effects.associateWithTo(LinkedHashMap(), ::PotionTypeGui)
     
     private val potionTypeItem = CycleItem.withStateChangeHandler(
-        { p, i -> p.playItemPickupSound(); type = PotionBuilder.PotionType.values()[i] },
+        { p, i -> p.playItemPickupSound(); type = PotionBuilder.PotionType.entries[i] },
         type.ordinal,
-        PotionBuilder(PotionBuilder.PotionType.NORMAL).setDisplayName(TranslatableComponent("menu.machines.potion_configurator.potion_type.normal")),
-        PotionBuilder(PotionBuilder.PotionType.SPLASH).setDisplayName(TranslatableComponent("menu.machines.potion_configurator.potion_type.splash")),
-        PotionBuilder(PotionBuilder.PotionType.LINGERING).setDisplayName(TranslatableComponent("menu.machines.potion_configurator.potion_type.lingering"))
+        PotionBuilder(PotionBuilder.PotionType.NORMAL).setDisplayName(Component.translatable("menu.machines.potion_configurator.potion_type.normal")),
+        PotionBuilder(PotionBuilder.PotionType.SPLASH).setDisplayName(Component.translatable("menu.machines.potion_configurator.potion_type.splash")),
+        PotionBuilder(PotionBuilder.PotionType.LINGERING).setDisplayName(Component.translatable("menu.machines.potion_configurator.potion_type.lingering"))
     )
     
     private val colorPickerWindow = ColorPickerWindow(
         PotionColorPreviewItem(
             PotionBuilder(PotionBuilder.PotionType.NORMAL)
-                .setDisplayName(TranslatableComponent("menu.machines.color_picker.current_color"))
+                .setDisplayName(Component.translatable("menu.machines.color_picker.current_color"))
         ), color, ::openConfigurator)
     
     private val gui = ScrollGui.guis()
@@ -102,7 +102,7 @@ class PotionConfiguratorWindow(
             .setStructure("+ . . . . . . .")
             .addIngredient('+', clickableItem(
                 GuiMaterials.TP_GREEN_PLUS.createItemBuilder()
-                    .setDisplayName(TranslatableComponent("menu.machines.potion_configurator.add_effect"))
+                    .setDisplayName(Component.translatable("menu.machines.potion_configurator.add_effect"))
             ) { it.playClickSound(); addEffect() })
             .build()
     }
@@ -129,7 +129,7 @@ class PotionConfiguratorWindow(
             .addIngredient('a', amplifierModifierItem)
             .addIngredient('-', clickableItem(
                 GuiMaterials.TP_RED_MINUS.createItemBuilder()
-                    .setDisplayName(TranslatableComponent("menu.machines.potion_configurator.remove_effect"))
+                    .setDisplayName(Component.translatable("menu.machines.potion_configurator.remove_effect"))
             ) { it.playClickSound(); removeEffect(effect) })
             .build()
         
@@ -139,10 +139,10 @@ class PotionConfiguratorWindow(
                 return if (effect.type != null) {
                     PotionBuilder(PotionBuilder.PotionType.NORMAL)
                         .setBasePotionData(PotionData(PotionType.WATER, false, false))
-                        .setDisplayName(TranslatableComponent("menu.machines.potion_configurator.effect"))
+                        .setDisplayName(Component.translatable("menu.machines.potion_configurator.effect"))
                         .addEffect(effect.build())
                 } else ItemBuilder(Material.GLASS_BOTTLE)
-                    .setDisplayName(TranslatableComponent("menu.machines.potion_configurator.undefined_effect"))
+                    .setDisplayName(Component.translatable("menu.machines.potion_configurator.undefined_effect"))
             }
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
@@ -160,8 +160,10 @@ class PotionConfiguratorWindow(
                 val maxDurationLevel = effect.maxDurationLevel + 1
                 
                 return DefaultGuiItems.NUMBER.model.createItemBuilder(min(999, durationLevel))
-                    .setDisplayName(TranslatableComponent("menu.machines.potion_configurator.duration", durationLevel, maxDurationLevel))
-                    .addLoreLines(
+                    .setDisplayName(Component.translatable(
+                        "menu.machines.potion_configurator.duration",
+                        Component.text(durationLevel), Component.text(maxDurationLevel)
+                    )).addLoreLines(
                         Component.translatable("menu.machines.potion_configurator.left_inc", NamedTextColor.GRAY),
                         Component.translatable("menu.machines.potion_configurator.right_dec", NamedTextColor.GRAY)
                     )
@@ -202,8 +204,11 @@ class PotionConfiguratorWindow(
                 val maxAmplifierLevel = effect.maxAmplifierLevel + 1
                 
                 return DefaultGuiItems.NUMBER.model.createItemBuilder(min(999, amplifierLevel))
-                    .setDisplayName(TranslatableComponent("menu.machines.potion_configurator.amplifier", amplifierLevel, maxAmplifierLevel))
-                    .addLoreLines(
+                    .setDisplayName(Component.translatable(
+                        "menu.machines.potion_configurator.amplifier",
+                        Component.text(amplifierLevel),
+                        Component.text(maxAmplifierLevel)
+                    )).addLoreLines(
                         Component.translatable("menu.machines.potion_configurator.left_inc", NamedTextColor.GRAY),
                         Component.translatable("menu.machines.potion_configurator.right_dec", NamedTextColor.GRAY)
                     )

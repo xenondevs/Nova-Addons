@@ -2,11 +2,12 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.CHARGER
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.behavior.Chargeable
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.CHARGER
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -18,11 +19,9 @@ import xyz.xenondevs.nova.ui.OpenUpgradesItem
 import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.item.novaItem
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MAX_ENERGY = configReloadable { NovaConfig[CHARGER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[CHARGER].getLong("charge_speed") }
+private val MAX_ENERGY = CHARGER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = CHARGER.config.entry<Long>("charge_speed")
 
 class Charger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -35,23 +34,23 @@ class Charger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         if (event.isAdd || event.isSwap) {
             // cancel adding non-chargeable or fully charged items
             val newStack = event.newItem!!
-            val chargeable = newStack.novaItem?.getBehavior(Chargeable::class)
-            event.isCancelled = chargeable == null || chargeable.getEnergy(newStack) >= chargeable.options.maxEnergy
+            val chargeable = newStack.novaItem?.getBehaviorOrNull(Chargeable::class)
+            event.isCancelled = chargeable == null || chargeable.getEnergy(newStack) >= chargeable.maxEnergy
         } else if (event.updateReason == NetworkedVirtualInventory.UPDATE_REASON) {
             // prevent item networks from removing not fully charged items
             val previousStack = event.previousItem
-            val chargeable = previousStack?.novaItem?.getBehavior(Chargeable::class) ?: return
-            event.isCancelled = chargeable.getEnergy(previousStack) < chargeable.options.maxEnergy
+            val chargeable = previousStack?.novaItem?.getBehaviorOrNull(Chargeable::class) ?: return
+            event.isCancelled = chargeable.getEnergy(previousStack) < chargeable.maxEnergy
         }
     }
     
     override fun handleTick() {
         val currentItem = inventory.getUnsafeItem(0)
-        val chargeable = currentItem?.novaItem?.getBehavior(Chargeable::class)
+        val chargeable = currentItem?.novaItem?.getBehaviorOrNull(Chargeable::class)
         if (chargeable != null) {
             val itemCharge = chargeable.getEnergy(currentItem)
-            if (itemCharge < chargeable.options.maxEnergy) {
-                val chargeEnergy = minOf(energyHolder.energyConsumption, energyHolder.energy, chargeable.options.maxEnergy - itemCharge)
+            if (itemCharge < chargeable.maxEnergy) {
+                val chargeEnergy = minOf(energyHolder.energyConsumption, energyHolder.energy, chargeable.maxEnergy - itemCharge)
                 chargeable.addEnergy(currentItem, chargeEnergy)
                 energyHolder.energy -= chargeEnergy
                 

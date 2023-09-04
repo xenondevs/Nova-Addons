@@ -1,11 +1,12 @@
 package xyz.xenondevs.nova.addon.machines.advancement
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.advancement
 import xyz.xenondevs.nova.util.icon
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
@@ -14,7 +15,7 @@ import xyz.xenondevs.nova.util.obtainNovaItemsAdvancement
 private val ROOT = advancement(Machines, "root") {
     display {
         icon(Items.QUARRY)
-        title(TranslatableComponent("advancement.machines.root.title"))
+        title(Component.translatable("advancement.machines.root.title"))
         description("")
         background("minecraft:textures/block/tuff.png")
         
@@ -118,7 +119,7 @@ private val WIRELESS_CHARGER = obtainNovaItemAdvancement(Machines, CHARGER, Item
 private val AUTO_FISHER = obtainNovaItemAdvancement(Machines, ROOT, Items.AUTO_FISHER)
 //</editor-fold>
 
-@Init
+@Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object Advancements {
     
     @InitFun

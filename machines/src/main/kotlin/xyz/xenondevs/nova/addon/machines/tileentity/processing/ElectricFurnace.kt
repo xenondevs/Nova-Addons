@@ -6,15 +6,16 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SmeltingRecipe
 import org.bukkit.World
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.commons.provider.mutable.map
+import xyz.xenondevs.commons.provider.mutable.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.inventory.event.PlayerUpdateReason
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.ELECTRIC_FURNACE
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -32,17 +33,15 @@ import xyz.xenondevs.nova.util.intValue
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.util.spawnExpOrb
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
 private fun getRecipe(input: ItemStack, world: World): SmeltingRecipe? {
     return MINECRAFT_SERVER.recipeManager.getAllRecipesFor(RecipeType.SMELTING)
         .firstOrNull { it.matches(SimpleContainer(input.nmsCopy), world.serverLevel) }
 }
 
-private val MAX_ENERGY = configReloadable { NovaConfig[ELECTRIC_FURNACE].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[ELECTRIC_FURNACE].getLong("energy_per_tick") }
-private val COOK_SPEED by configReloadable { NovaConfig[ELECTRIC_FURNACE].getInt("cook_speed") }
+private val MAX_ENERGY = ELECTRIC_FURNACE.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = ELECTRIC_FURNACE.config.entry<Long>("energy_per_tick")
+private val COOK_SPEED by ELECTRIC_FURNACE.config.entry<Int>("cook_speed")
 
 class ElectricFurnace(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -57,7 +56,7 @@ class ElectricFurnace(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
         outputInventory to NetworkConnectionType.EXTRACT
     ) { createSideConfig(NetworkConnectionType.BUFFER, BlockSide.FRONT) }
     
-    private var currentRecipe: SmeltingRecipe? by storedValue<ResourceLocation>("currentRecipe").map(
+    private var currentRecipe: SmeltingRecipe? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
         { MINECRAFT_SERVER.recipeManager.byKey(it).orElse(null) as? SmeltingRecipe },
         SmeltingRecipe::getId
     )

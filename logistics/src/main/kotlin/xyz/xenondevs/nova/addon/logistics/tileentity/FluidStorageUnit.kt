@@ -10,12 +10,11 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.Reloadable
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks.FLUID_STORAGE_UNIT
 import xyz.xenondevs.nova.addon.logistics.registry.Items
+import xyz.xenondevs.nova.data.config.Reloadable
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -27,7 +26,7 @@ import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeItemDisplay
 
-private val MAX_CAPACITY = configReloadable { NovaConfig[FLUID_STORAGE_UNIT].getLong("max_capacity") }
+private val MAX_CAPACITY = FLUID_STORAGE_UNIT.config.entry<Long>("max_capacity")
 
 class FluidStorageUnit(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Reloadable {
     

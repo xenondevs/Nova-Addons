@@ -1,7 +1,6 @@
 package xyz.xenondevs.nova.addon.logistics.gui.itemfilter
 
 import net.kyori.adventure.text.Component
-import net.md_5.bungee.api.chat.TranslatableComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -15,9 +14,10 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.window.Window
-import xyz.xenondevs.nova.item.NovaItem
+import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.addon.logistics.item.isItemFilter
 import xyz.xenondevs.nova.addon.logistics.registry.GuiMaterials
+import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.tileentity.network.item.getOrCreateFilterConfig
 import xyz.xenondevs.nova.tileentity.network.item.saveFilterConfig
 import xyz.xenondevs.nova.util.item.novaItem
@@ -81,7 +81,7 @@ class ItemFilterWindow(player: Player, item: NovaItem, size: Int, private val it
         window = Window.single {
             it.setGui(gui)
             it.setViewer(player)
-            it.setTitle(arrayOf(TranslatableComponent(item.localizedName)))
+            it.setTitle(item.name)
             it.addCloseHandler(::saveFilterConfig)
         }.apply { open() }
     }

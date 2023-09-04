@@ -3,11 +3,10 @@ package xyz.xenondevs.nova.addon.logistics.tileentity
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.immutable.provider
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.Reloadable
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
+import xyz.xenondevs.nova.data.config.Reloadable
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType.BUFFER
@@ -46,36 +45,31 @@ class PowerCell(
     
 }
 
-private val BASIC_CAPACITY: Provider<Long> = configReloadable { NovaConfig[Blocks.BASIC_POWER_CELL].getLong("capacity") }
-private val ADVANCED_CAPACITY: Provider<Long> = configReloadable { NovaConfig[Blocks.ADVANCED_POWER_CELL].getLong("capacity") }
-private val ELITE_CAPACITY: Provider<Long> = configReloadable { NovaConfig[Blocks.ELITE_POWER_CELL].getLong("capacity") }
-private val ULTIMATE_CAPACITY: Provider<Long> = configReloadable { NovaConfig[Blocks.ULTIMATE_POWER_CELL].getLong("capacity") }
-
-fun createBasicPowerCell(blockState: NovaTileEntityState) = PowerCell(
+fun createBasicPowerCell(blockState: NovaTileEntityState): PowerCell = PowerCell(
     false,
-    BASIC_CAPACITY,
+    Blocks.BASIC_POWER_CELL.config.entry<Long>("capacity"),
     blockState
 )
 
-fun createAdvancedPowerCell(blockState: NovaTileEntityState) = PowerCell(
+fun createAdvancedPowerCell(blockState: NovaTileEntityState): PowerCell = PowerCell(
     false,
-    ADVANCED_CAPACITY,
+    Blocks.ADVANCED_POWER_CELL.config.entry<Long>("capacity"),
     blockState
 )
 
-fun createElitePowerCell(blockState: NovaTileEntityState) = PowerCell(
+fun createElitePowerCell(blockState: NovaTileEntityState): PowerCell = PowerCell(
     false,
-    ELITE_CAPACITY,
+    Blocks.ELITE_POWER_CELL.config.entry<Long>("capacity"),
     blockState
 )
 
-fun createUltimatePowerCell(blockState: NovaTileEntityState) = PowerCell(
+fun createUltimatePowerCell(blockState: NovaTileEntityState): PowerCell = PowerCell(
     false,
-    ULTIMATE_CAPACITY,
+    Blocks.ULTIMATE_POWER_CELL.config.entry<Long>("capacity"),
     blockState
 )
 
-fun createCreativePowerCell(blockState: NovaTileEntityState) = PowerCell(
+fun createCreativePowerCell(blockState: NovaTileEntityState): PowerCell = PowerCell(
     true,
     provider(Long.MAX_VALUE),
     blockState

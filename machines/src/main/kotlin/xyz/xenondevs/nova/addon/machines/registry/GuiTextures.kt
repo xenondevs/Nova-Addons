@@ -1,10 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
 import xyz.xenondevs.nova.addon.machines.Machines
-import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.ui.overlay.character.gui.GuiTexture
 
-@Init
 object GuiTextures {
     
     val CONFIGURE_POTION = GuiTexture.of(Machines, "configure_potion")

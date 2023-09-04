@@ -7,10 +7,11 @@ import org.bukkit.event.Listener
 import org.bukkit.event.weather.LightningStrikeEvent
 import org.bukkit.event.weather.LightningStrikeEvent.Cause
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.LIGHTNING_EXCHANGER
+import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.TileEntityManager
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
@@ -21,15 +22,13 @@ import xyz.xenondevs.nova.ui.OpenUpgradesItem
 import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.registerEvents
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.min
 import kotlin.random.Random
 
-private val MAX_ENERGY = configReloadable { NovaConfig[LIGHTNING_EXCHANGER].getLong("capacity") }
-private val CONVERSION_RATE by configReloadable { NovaConfig[LIGHTNING_EXCHANGER].getLong("conversion_rate") }
-private val MIN_BURST by configReloadable { NovaConfig[LIGHTNING_EXCHANGER].getLong("burst.min") }
-private val MAX_BURST by configReloadable { NovaConfig[LIGHTNING_EXCHANGER].getLong("burst.max") }
+private val MAX_ENERGY = LIGHTNING_EXCHANGER.config.entry<Long>("capacity")
+private val CONVERSION_RATE by LIGHTNING_EXCHANGER.config.entry<Long>("conversion_rate")
+private val MIN_BURST by LIGHTNING_EXCHANGER.config.entry<Long>("burst", "min")
+private val MAX_BURST by LIGHTNING_EXCHANGER.config.entry<Long>("burst", "max")
 
 class LightningExchanger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

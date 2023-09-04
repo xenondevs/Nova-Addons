@@ -1,10 +1,11 @@
 package xyz.xenondevs.nova.addon.logistics.registry
 
+import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
-import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.initialize.InitStage
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object GuiMaterials : ItemRegistry by Logistics.registry {
     
     val ITEM_FILTER_PLACEHOLDER = registerUnnamedHiddenItem("gui_item_filter_placeholder")

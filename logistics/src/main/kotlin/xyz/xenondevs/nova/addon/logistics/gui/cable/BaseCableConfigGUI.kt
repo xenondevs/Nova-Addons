@@ -1,7 +1,6 @@
 package xyz.xenondevs.nova.addon.logistics.gui.cable
 
 import net.kyori.adventure.text.Component
-import net.md_5.bungee.api.chat.TranslatableComponent
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
@@ -96,7 +95,7 @@ abstract class BaseCableConfigGui<H : ContainerEndPointDataHolder<*>>(
         
         override fun getItemProvider(): ItemProvider {
             return BUTTON_COLORS[channel].createClientsideItemBuilder()
-                .setDisplayName(TranslatableComponent("menu.logistics.cable_config.channel", channel + 1))
+                .setDisplayName(Component.translatable("menu.logistics.cable_config.channel", Component.text(channel + 1)))
         }
         
         override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {

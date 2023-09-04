@@ -11,14 +11,16 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.item.impl.CycleItem
 import xyz.xenondevs.invui.item.impl.SimpleItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.recipe.RecipeManager
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.recipe.FluidInfuserRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FLUID_INFUSER
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.recipe.RecipeManager
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -32,9 +34,6 @@ import xyz.xenondevs.nova.ui.OpenUpgradesItem
 import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.roundToInt
 
 fun getFluidInfuserInsertRecipeFor(fluidType: FluidType, input: ItemStack): FluidInfuserRecipe? {
@@ -56,9 +55,9 @@ fun getFluidInfuserExtractRecipeFor(input: ItemStack): FluidInfuserRecipe? {
         }
 }
 
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[FLUID_INFUSER].getLong("energy_per_tick") }
-private val ENERGY_CAPACITY = configReloadable { NovaConfig[FLUID_INFUSER].getLong("energy_capacity") }
-private val FLUID_CAPACITY = configReloadable { NovaConfig[FLUID_INFUSER].getLong("fluid_capacity") }
+private val ENERGY_PER_TICK = FLUID_INFUSER.config.entry<Long>("energy_per_tick")
+private val ENERGY_CAPACITY = FLUID_INFUSER.config.entry<Long>("energy_capacity")
+private val FLUID_CAPACITY = FLUID_INFUSER.config.entry<Long>("fluid_capacity")
 
 class FluidInfuser(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -178,7 +177,7 @@ class FluidInfuser(blockState: NovaTileEntityState) : NetworkedTileEntity(blockS
         }
         
         private fun changeMode(player: Player?, modeOrdinal: Int) {
-            mode = FluidInfuserRecipe.InfuserMode.values()[modeOrdinal]
+            mode = FluidInfuserRecipe.InfuserMode.entries[modeOrdinal]
             reset()
             player!!.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
         }

@@ -4,11 +4,13 @@ import net.minecraft.core.particles.ParticleTypes
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nmsutils.particle.particle
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.gui.EnergyProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FURNACE_GENERATOR
+import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.item.behavior.Fuel
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -23,17 +25,13 @@ import xyz.xenondevs.nova.util.BlockSide.FRONT
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.intValue
-import xyz.xenondevs.nova.util.item.burnTime
 import xyz.xenondevs.nova.util.item.craftingRemainingItem
-import xyz.xenondevs.nova.util.item.isFuel
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-private val MAX_ENERGY = configReloadable { NovaConfig[FURNACE_GENERATOR].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[FURNACE_GENERATOR].getLong("energy_per_tick") }
-private val BURN_TIME_MULTIPLIER by configReloadable { NovaConfig[FURNACE_GENERATOR].getDouble("burn_time_multiplier") }
+private val MAX_ENERGY = FURNACE_GENERATOR.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = FURNACE_GENERATOR.config.entry<Long>("energy_per_tick")
+private val BURN_TIME_MULTIPLIER by FURNACE_GENERATOR.config.entry<Double>("burn_time_multiplier")
 
 class FurnaceGenerator(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -102,7 +100,7 @@ class FurnaceGenerator(blockState: NovaTileEntityState) : NetworkedTileEntity(bl
     private fun burnItem() {
         val fuelStack = inventory.getItem(0)
         if (energyHolder.energy < energyHolder.maxEnergy && fuelStack != null) {
-            val itemBurnTime = fuelStack.burnTime
+            val itemBurnTime = Fuel.getBurnTime(fuelStack)
             if (itemBurnTime != null) {
                 burnTime += (itemBurnTime * burnTimeMultiplier).roundToInt()
                 totalBurnTime = burnTime
@@ -116,7 +114,8 @@ class FurnaceGenerator(blockState: NovaTileEntityState) : NetworkedTileEntity(bl
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
         if (event.updateReason != null) { // not done by the tileEntity itself
-            if (event.newItem?.isFuel == false) {
+            val newItem = event.newItem
+            if (newItem != null && !Fuel.isFuel(newItem)) {
                 // illegal item
                 event.isCancelled = true
             }

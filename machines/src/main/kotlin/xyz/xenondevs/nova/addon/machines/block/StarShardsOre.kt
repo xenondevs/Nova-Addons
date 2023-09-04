@@ -2,8 +2,8 @@ package xyz.xenondevs.nova.addon.machines.block
 
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.nova.data.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.addon.machines.registry.Items
+import xyz.xenondevs.nova.data.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.BlockBehavior
 import xyz.xenondevs.nova.world.block.context.BlockBreakContext
 import kotlin.random.Random

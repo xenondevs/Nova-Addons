@@ -14,10 +14,9 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks.STORAGE_UNIT
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -29,7 +28,7 @@ import xyz.xenondevs.nova.util.item.takeUnlessEmpty
 import xyz.xenondevs.nova.util.runTaskLater
 import kotlin.math.min
 
-private val MAX_ITEMS by configReloadable { NovaConfig[STORAGE_UNIT].getInt("max_items") }
+private val MAX_ITEMS by STORAGE_UNIT.config.entry<Int>("max_items")
 
 class StorageUnit(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState) {
     

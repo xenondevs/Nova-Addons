@@ -1,6 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.agriculture
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import net.minecraft.world.entity.projectile.FishingHook
 import net.minecraft.world.level.storage.loot.BuiltInLootTables
 import net.minecraft.world.level.storage.loot.LootParams
@@ -12,13 +12,16 @@ import org.bukkit.enchantments.Enchantment
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.builder.ItemBuilder
+import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.AUTO_FISHER
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.AUTO_FISHER
+import xyz.xenondevs.nova.item.behavior.Damageable
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -34,16 +37,13 @@ import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.bukkitMirror
-import xyz.xenondevs.nova.util.item.DamageableUtils
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.serverLevel
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import net.minecraft.world.item.ItemStack as MojangStack
 
-private val MAX_ENERGY = configReloadable { NovaConfig[AUTO_FISHER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[AUTO_FISHER].getLong("energy_per_tick") }
-private val IDLE_TIME by configReloadable { NovaConfig[AUTO_FISHER].getInt("idle_time") }
+private val MAX_ENERGY = AUTO_FISHER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = AUTO_FISHER.config.entry<Long>("energy_per_tick")
+private val IDLE_TIME by AUTO_FISHER.config.entry<Int>("idle_time")
 
 class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -124,8 +124,7 @@ class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
     }
     
     private fun useRod() {
-        val itemStack = fishingRodInventory.getItem(0)!!
-        fishingRodInventory.setItem(SELF_UPDATE_REASON, 0, DamageableUtils.damageItem(itemStack))
+        fishingRodInventory.modifyItem(SELF_UPDATE_REASON, 0) { Damageable.damageAndBreak(it!!, 1) }
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
@@ -151,7 +150,7 @@ class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
         val idleBar = object : VerticalBar(height = 3) {
             override val barItem = DefaultGuiItems.BAR_GREEN
             override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(TranslatableComponent("menu.machines.auto_fisher.idle", maxIdleTime - timePassed))
+                itemBuilder.setDisplayName(Component.translatable("menu.machines.auto_fisher.idle", Component.text(maxIdleTime - timePassed)))
         }
         
         override val gui = Gui.normal()

@@ -7,10 +7,10 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nmsutils.particle.ParticleBuilder
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.item.behavior.Chargeable
 import xyz.xenondevs.nova.addon.jetpacks.ui.JetpackOverlay
+import xyz.xenondevs.nova.data.config.Configs
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.item.behavior.Chargeable
 import xyz.xenondevs.nova.player.ability.Ability
 import xyz.xenondevs.nova.player.ability.AbilityManager
 import xyz.xenondevs.nova.ui.overlay.actionbar.ActionbarOverlayManager
@@ -19,10 +19,7 @@ import xyz.xenondevs.nova.util.broadcast
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.serverTick
 
-private val IGNORED_GAME_MODES by configReloadable {
-    val modesRaw = NovaConfig["jetpacks:config"].getStringList("ignored_game_modes")
-    GameMode.values().filter { gameMode -> modesRaw.any { it.equals(gameMode.name, ignoreCase = true) } }
-}
+private val IGNORED_GAME_MODES by Configs["jetpacks:config"].entry<Set<GameMode>>("ignored_game_modes")
 
 class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick: Provider<Long>) : Ability(player) {
     
@@ -34,7 +31,7 @@ class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick
     private val previousFlySpeed = player.flySpeed
     
     private val overlay = JetpackOverlay()
-    private val jetpackItem by lazy { player.equipment?.chestplate }
+    private val jetpackItem by lazy { player.equipment.chestplate }
     private val novaItem by lazy { jetpackItem?.novaItem }
     
     init {
@@ -70,9 +67,9 @@ class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick
             player.flySpeed = previousFlySpeed
         }
         
-        val chargeable = novaItem.getBehavior(Chargeable::class)!!
+        val chargeable = novaItem.getBehavior(Chargeable::class)
         val energyLeft = chargeable.getEnergy(jetpackItem)
-        overlay.percentage = energyLeft / chargeable.options.maxEnergy.toDouble()
+        overlay.percentage = energyLeft / chargeable.maxEnergy.toDouble()
         
         if (energyLeft > energyPerTick || !isValidGameMode()) {
             if (player.isFlying) {

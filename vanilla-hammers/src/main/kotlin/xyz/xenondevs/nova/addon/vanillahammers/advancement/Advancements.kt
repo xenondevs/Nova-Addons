@@ -1,11 +1,12 @@
 package xyz.xenondevs.nova.addon.vanillahammers.advancement
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Items
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.advancement
 import xyz.xenondevs.nova.util.icon
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
@@ -13,7 +14,7 @@ import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
 private val ROOT = advancement(VanillaHammers, "root") {
     display {
         icon(Items.WOODEN_HAMMER)
-        title(TranslatableComponent("advancement.vanilla_hammers.root.title"))
+        title(Component.translatable("advancement.vanilla_hammers.root.title"))
         description("")
         background("minecraft:textures/block/stone.png")
         
@@ -38,7 +39,7 @@ private val OBSIDIAN_HAMMER = obtainNovaItemAdvancement(VanillaHammers, DIAMOND_
 private val FIERY_HAMMER = obtainNovaItemAdvancement(VanillaHammers, QUARTZ_HAMMER, Items.FIERY_HAMMER)
 private val ENDER_HAMMER = obtainNovaItemAdvancement(VanillaHammers, EMERALD_HAMMER, Items.ENDER_HAMMER)
 
-@Init
+@Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object Advancements {
     
     @InitFun
