@@ -65,5 +65,16 @@
   "item.logistics.basic_item_filter": "Filtro de Ítems Básico",
   "item.logistics.advanced_item_filter": "Filtro de Ítems Avanzado",
   "item.logistics.elite_item_filter": "Filtro de Ítems Elite",
-  "item.logistics.item_filter.lore.nbt.off": "Ignorado"
+  "item.logistics.item_filter.lore.nbt.off": "Ignorado",
+  "item.logistics.ultimate_item_filter": "Filtro de artículos Ultimate",
+  "item.logistics.item_filter.lore.type": "Tipo: %s",
+  "item.logistics.item_filter.lore.type.whitelist": "Lista blanca",
+  "item.logistics.item_filter.lore.type.blacklist": "Lista negra",
+  "item.logistics.item_filter.lore.nbt": "Datos NBT: %s",
+  "item.logistics.item_filter.lore.nbt.on": "No se ignora",
+  "item.logistics.item_filter.lore.contents": "Contenido (%s):",
+  "menu.logistics.items.category.logistics": "Logística",
+  "menu.logistics.storage_unit.item_display_plural": "%s Artículos",
+  "menu.logistics.storage_unit.item_display_singular": "%s Artículo",
+  "advancement.logistics.root.title": "Logística"
 }
