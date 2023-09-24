@@ -38,5 +38,8 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "에메랄드 망치로 독특함을 선보입니다.",
   "advancement.vanilla_hammers.fiery_hammer.description": "불타는 망치로 내리기를 마무리합니다.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "흑요석 망치를 만들고 17시간 동안 쉬지 않고 채굴합니다.",
-  "advancement.vanilla_hammers.ender_hammer.description": "엔더 망치를 제작하여 채굴 문제를 해결하세요."
+  "advancement.vanilla_hammers.ender_hammer.description": "엔더 망치를 제작하여 채굴 문제를 해결하세요.",
+  "menu.vanilla_hammers.items.category.equipment": "장비",
+  "advancement.vanilla_hammers.netherite_hammer.title": "영원한 불타는 정복",
+  "advancement.vanilla_hammers.netherite_hammer.description": "알 수 없는 시대의 고대 보석으로 단조한 네더라이트 망치를 제작하세요."
 }
