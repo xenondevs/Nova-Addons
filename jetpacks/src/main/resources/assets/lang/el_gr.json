@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Βασικό Jetpack",
+  "item.jetpacks.advanced_jetpack": "Προηγμένο Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Θωρακισμένο βασικό Jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Θωρακισμένο προηγμένο Jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Θωρακισμένο Elite Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Θωρακισμένο Ultimate Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}
