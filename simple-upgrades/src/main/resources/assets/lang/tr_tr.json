@@ -3,5 +3,10 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Verimlilik Geliştirmeleri: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Enerji Geliştirmeleri: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Alan Geliştirmeleri: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Sıvı Geliştirmeleri: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Sıvı Geliştirmeleri: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Hız Yükseltme",
+  "item.simple_upgrades.efficiency_upgrade": "Verimlilik Yükseltmesi",
+  "item.simple_upgrades.energy_upgrade": "Enerji Yükseltme",
+  "item.simple_upgrades.range_upgrade": "Menzil Yükseltme",
+  "item.simple_upgrades.fluid_upgrade": "Sıvı Yükseltmesi"
 }
