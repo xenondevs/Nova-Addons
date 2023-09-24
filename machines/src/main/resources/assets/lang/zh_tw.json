@@ -223,5 +223,8 @@
   "item.machines.star_chestplate": "星之胸甲",
   "item.machines.star_leggings": "星之護腿",
   "item.machines.star_boots": "星之靴",
-  "menu.machines.items.category.equipment": "裝備"
+  "menu.machines.items.category.equipment": "裝備",
+  "block.machines.auto_crafter": "汽车工匠",
+  "block.machines.auto_crafter.inv_window.title": "内部库存",
+  "menu.machines.auto_crafter.inventory": "库存"
 }
