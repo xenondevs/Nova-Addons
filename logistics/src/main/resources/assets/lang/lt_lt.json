@@ -67,5 +67,14 @@
   "item.logistics.item_filter.lore.type.whitelist": "Baltasis sąrašas",
   "menu.logistics.cable_config.extract_priority": "Išeigos prioritetas: %s",
   "advancement.logistics.basic_cable.description": "Pagamink paprastą kabelį",
-  "advancement.logistics.basic_fluid_tank.title": "Paprastas skysčių talpinimas"
+  "advancement.logistics.basic_fluid_tank.title": "Paprastas skysčių talpinimas",
+  "advancement.logistics.basic_cable.title": "Pagrindinis tinklų kūrimas",
+  "advancement.logistics.elite_power_cell.title": "Tiek daug energijos",
+  "advancement.logistics.ultimate_power_cell.title": "Ar tai ateitis?",
+  "advancement.logistics.advanced_fluid_tank.title": "Daugiau skysčių",
+  "advancement.logistics.ultimate_fluid_tank.title": "Didžiausias skysčių bakas",
+  "advancement.logistics.fluid_storage_unit.title": "Begalė skysčių!",
+  "advancement.logistics.trash_can.title": "Man to nebereikia!",
+  "advancement.logistics.vacuum_chest.title": "Tai atrodo saugu",
+  "advancement.logistics.storage_unit.title": "Begalė daiktų"
 }
