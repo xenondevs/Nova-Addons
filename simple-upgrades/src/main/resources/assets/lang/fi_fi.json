@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Nopeuden päivitys",
+  "item.simple_upgrades.efficiency_upgrade": "Tehokkuuden parantaminen",
+  "item.simple_upgrades.energy_upgrade": "Energiaremontti",
+  "item.simple_upgrades.range_upgrade": "Valikoiman päivitys",
+  "item.simple_upgrades.fluid_upgrade": "Nesteen päivitys",
+  "menu.simple_upgrades.upgrades.type.speed": "Nopeusparannukset: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Tehokkuusparannukset: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energiauudistukset: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Valikoiman päivitykset: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Nesteen päivitykset: %s/%s"
+}
