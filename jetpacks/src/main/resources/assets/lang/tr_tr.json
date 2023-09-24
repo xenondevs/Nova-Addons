@@ -1,5 +1,11 @@
 {
   "item.jetpacks.basic_jetpack": "Basit Jetpack",
   "item.jetpacks.advanced_jetpack": "Gelişmiş Jetpack",
-  "item.jetpacks.elite_jetpack": "Elit Jetpack"
+  "item.jetpacks.elite_jetpack": "Elit Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Zırhlı Temel Jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Zırhlı Gelişmiş Jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Zırhlı Elit Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Zırhlı Ultimate Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpack'ler"
 }
