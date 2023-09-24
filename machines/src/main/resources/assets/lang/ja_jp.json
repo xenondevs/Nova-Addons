@@ -214,5 +214,17 @@
   "menu.machines.crystallizer.idle": "結晶化中...",
   "advancement.machines.crystallizer.description": "結晶化装置を作成する",
   "advancement.machines.all_star_tools.title": "星のツール",
-  "advancement.machines.all_star_tools.description": "5種の星のツールを全て作成する"
+  "advancement.machines.all_star_tools.description": "5種の星のツールを全て作成する",
+  "block.machines.star_shards_ore": "星の欠片鉱",
+  "block.machines.deepslate_star_shards_ore": "ディープスレート・スターシャード鉱石",
+  "block.machines.auto_crafter": "オートクラフター",
+  "block.machines.auto_crafter.inv_window.title": "社内在庫",
+  "item.machines.star_helmet": "スターヘルメット",
+  "item.machines.star_chestplate": "星の胸当て",
+  "item.machines.star_leggings": "スター・レギンス",
+  "item.machines.star_boots": "スターブーツ",
+  "menu.machines.items.category.resources": "リソース",
+  "menu.machines.items.category.equipment": "設備",
+  "menu.machines.auto_crafter.inventory": "インベントリー",
+  "subtitles.machines.item.armor.equip_star": "星の鎧が鳴る"
 }
