@@ -3,5 +3,10 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Potenziamenti Efficienza: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Potenziamenti Energia: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Potenziamenti Raggio: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Potenziamenti Fluidi: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Potenziamenti Fluidi: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Aggiornamento della velocità",
+  "item.simple_upgrades.efficiency_upgrade": "Aggiornamento dell'efficienza",
+  "item.simple_upgrades.energy_upgrade": "Aggiornamento energetico",
+  "item.simple_upgrades.range_upgrade": "Aggiornamento della gamma",
+  "item.simple_upgrades.fluid_upgrade": "Aggiornamento del fluido"
 }
