@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Hastighetsoppgradering",
+  "item.simple_upgrades.efficiency_upgrade": "Effektivitetsoppgradering",
+  "item.simple_upgrades.energy_upgrade": "Energioppgradering",
+  "item.simple_upgrades.range_upgrade": "Oppgradering av rekkevidde",
+  "item.simple_upgrades.fluid_upgrade": "Væskeoppgradering",
+  "menu.simple_upgrades.upgrades.type.speed": "Hastighetsoppgraderinger: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Effektivitetsoppgraderinger: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energioppgraderinger: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Områdeoppgraderinger: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Væskeoppgraderinger: %s/%s"
+}
