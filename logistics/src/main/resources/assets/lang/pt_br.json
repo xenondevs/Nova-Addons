@@ -62,5 +62,19 @@
   "advancement.logistics.vacuum_chest.title": "Isso parece seguro",
   "advancement.logistics.vacuum_chest.description": "Construa um baú aspirador",
   "advancement.logistics.storage_unit.title": "Armazenamento Ilimitado",
-  "advancement.logistics.storage_unit.description": "Construa uma unidade de armazenamento"
+  "advancement.logistics.storage_unit.description": "Construa uma unidade de armazenamento",
+  "item.logistics.basic_item_filter": "Filtro de item básico",
+  "item.logistics.advanced_item_filter": "Filtro de itens avançado",
+  "item.logistics.elite_item_filter": "Filtro de itens Elite",
+  "item.logistics.ultimate_item_filter": "Filtro de itens definitivo",
+  "item.logistics.item_filter.lore.type": "Tipo: %s",
+  "item.logistics.item_filter.lore.type.whitelist": "Lista branca",
+  "item.logistics.item_filter.lore.type.blacklist": "Lista negra",
+  "item.logistics.item_filter.lore.nbt": "Dados NBT: %s",
+  "item.logistics.item_filter.lore.nbt.on": "Não ignorado",
+  "item.logistics.item_filter.lore.nbt.off": "Ignorado",
+  "item.logistics.item_filter.lore.contents": "Conteúdo (%s):",
+  "menu.logistics.items.category.logistics": "Logística",
+  "menu.logistics.storage_unit.item_display_singular": "%s Item",
+  "advancement.logistics.root.title": "Logística"
 }
