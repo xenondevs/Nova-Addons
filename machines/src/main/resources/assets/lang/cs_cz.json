@@ -223,5 +223,8 @@
   "item.machines.star_chestplate": "Hvězdné Brnění",
   "item.machines.star_leggings": "Hvězdné Kalhoty",
   "menu.machines.items.category.equipment": "Vybavení",
-  "subtitles.machines.item.armor.equip_star": "Hvězdné brnění cinká"
+  "subtitles.machines.item.armor.equip_star": "Hvězdné brnění cinká",
+  "block.machines.auto_crafter": "Auto Crafter",
+  "block.machines.auto_crafter.inv_window.title": "Interní inventura",
+  "menu.machines.auto_crafter.inventory": "Inventura"
 }
