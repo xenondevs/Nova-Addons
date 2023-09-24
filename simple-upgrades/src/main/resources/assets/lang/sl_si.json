@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Nadgradnja hitrosti",
+  "item.simple_upgrades.efficiency_upgrade": "Posodobitev učinkovitosti",
+  "item.simple_upgrades.energy_upgrade": "Energetska posodobitev",
+  "item.simple_upgrades.range_upgrade": "Nadgradnja območja",
+  "item.simple_upgrades.fluid_upgrade": "Nadgradnja tekočine",
+  "menu.simple_upgrades.upgrades.type.speed": "Nadgradnje hitrosti: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Nadgradnje učinkovitosti: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energetske posodobitve: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Nadgradnje območja: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Nadgradnje tekočin: %s/%s"
+}
