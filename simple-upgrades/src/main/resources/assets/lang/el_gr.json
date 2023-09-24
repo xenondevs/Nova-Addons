@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Αναβάθμιση ταχύτητας",
+  "item.simple_upgrades.efficiency_upgrade": "Αναβάθμιση απόδοσης",
+  "item.simple_upgrades.energy_upgrade": "Ενεργειακή αναβάθμιση",
+  "item.simple_upgrades.range_upgrade": "Αναβάθμιση εύρους",
+  "item.simple_upgrades.fluid_upgrade": "Αναβάθμιση υγρών",
+  "menu.simple_upgrades.upgrades.type.speed": "Αναβαθμίσεις ταχύτητας: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Αναβαθμίσεις απόδοσης: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Ενεργειακές αναβαθμίσεις: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Αναβαθμίσεις εμβέλειας: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Αναβαθμίσεις υγρών: %s/%s"
+}
