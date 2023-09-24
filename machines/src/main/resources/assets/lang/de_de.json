@@ -223,5 +223,8 @@
   "item.machines.star_chestplate": "Sternenharnisch",
   "item.machines.star_leggings": "Sternenbeinschutz",
   "item.machines.star_boots": "Sternenstiefel",
-  "menu.machines.items.category.resources": "Ressourcen"
+  "menu.machines.items.category.resources": "Ressourcen",
+  "block.machines.auto_crafter": "Auto Crafter",
+  "block.machines.auto_crafter.inv_window.title": "Internes Inventar",
+  "menu.machines.auto_crafter.inventory": "Bestandsaufnahme"
 }
