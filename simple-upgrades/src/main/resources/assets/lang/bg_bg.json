@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Подобряване на скоростта",
+  "item.simple_upgrades.efficiency_upgrade": "Подобряване на ефективността",
+  "item.simple_upgrades.energy_upgrade": "Енергийно обновяване",
+  "item.simple_upgrades.range_upgrade": "Надграждане на обхвата",
+  "item.simple_upgrades.fluid_upgrade": "Обновяване на флуида",
+  "menu.simple_upgrades.upgrades.type.speed": "Подобрения на скоростта: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Подобрения на ефективността: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Енергийни подобрения: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Подобрения на обхвата: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Подобрения на флуидите: %s/%s"
+}
