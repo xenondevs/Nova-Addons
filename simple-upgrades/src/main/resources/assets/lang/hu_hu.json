@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Sebesség frissítés",
+  "item.simple_upgrades.efficiency_upgrade": "Hatékonysági frissítés",
+  "item.simple_upgrades.energy_upgrade": "Energia frissítés",
+  "item.simple_upgrades.range_upgrade": "Távolság frissítés",
+  "item.simple_upgrades.fluid_upgrade": "Folyadék frissítés",
+  "menu.simple_upgrades.upgrades.type.speed": "Sebességfejlesztés: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Hatékonysági fejlesztések: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energetikai korszerűsítések: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Tartományfejlesztés: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Folyadék frissítések: %s/%s"
+}
