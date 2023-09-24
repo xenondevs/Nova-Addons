@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Osnovni Jetpack",
+  "item.jetpacks.advanced_jetpack": "Napredni Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Oklepni osnovni reaktivni nahrbtnik",
+  "item.jetpacks.armored_advanced_jetpack": "Oklepni napredni reaktivni nahrbtnik",
+  "item.jetpacks.armored_elite_jetpack": "Oklepni nahrbtnik Elite Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Oklepni reaktivni nahrbtnik Ultimate Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}
