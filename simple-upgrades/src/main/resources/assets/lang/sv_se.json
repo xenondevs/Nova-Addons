@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Uppgradering av hastighet",
+  "item.simple_upgrades.efficiency_upgrade": "Uppgradering av effektiviteten",
+  "item.simple_upgrades.energy_upgrade": "Uppgradering av energianvändningen",
+  "item.simple_upgrades.range_upgrade": "Uppgradering av räckvidd",
+  "item.simple_upgrades.fluid_upgrade": "Uppgradering av vätska",
+  "menu.simple_upgrades.upgrades.type.speed": "Hastighetsuppgraderingar: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Effektivitetsförbättringar: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energiförbättringar: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Uppgraderingar av intervall: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Vätskeuppgraderingar: %s/%s"
+}
