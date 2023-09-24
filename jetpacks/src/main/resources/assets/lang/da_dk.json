@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Grundlæggende Jetpack",
+  "item.jetpacks.advanced_jetpack": "Avanceret Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Den ultimative jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Pansret basis-jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Pansret avanceret jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Pansret elite-jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Ultimativ jetpack med panser",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}
