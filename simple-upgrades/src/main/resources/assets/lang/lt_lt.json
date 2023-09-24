@@ -3,5 +3,10 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Efektyvumo patobulinimai: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energijos patobulinimai: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Pasiekimo patobulinimai: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Skysčių patobulinimai: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Skysčių patobulinimai: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Greičio atnaujinimas",
+  "item.simple_upgrades.efficiency_upgrade": "Efektyvumo atnaujinimas",
+  "item.simple_upgrades.energy_upgrade": "Energijos vartojimo atnaujinimas",
+  "item.simple_upgrades.range_upgrade": "Diapazono atnaujinimas",
+  "item.simple_upgrades.fluid_upgrade": "Skysčių atnaujinimas"
 }
