@@ -223,5 +223,8 @@
   "item.machines.star_chestplate": "Звёздный нагрудник",
   "item.machines.star_leggings": "Звёздные поножи",
   "item.machines.star_boots": "Звёздные ботинки",
-  "menu.machines.items.category.resources": "Ресурсы"
+  "menu.machines.items.category.resources": "Ресурсы",
+  "block.machines.auto_crafter": "Auto Crafter",
+  "block.machines.auto_crafter.inv_window.title": "Внутренняя инвентаризация",
+  "menu.machines.auto_crafter.inventory": "Инвентаризация"
 }
