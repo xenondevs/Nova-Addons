@@ -223,5 +223,8 @@
   "item.machines.star_leggings": "星辰护腿",
   "item.machines.star_boots": "星辰靴子",
   "menu.machines.items.category.resources": "资源",
-  "menu.machines.items.category.equipment": "装备"
+  "menu.machines.items.category.equipment": "装备",
+  "block.machines.auto_crafter": "汽车工匠",
+  "block.machines.auto_crafter.inv_window.title": "内部库存",
+  "menu.machines.auto_crafter.inventory": "库存"
 }
