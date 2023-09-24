@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Basic Jetpack",
+  "item.jetpacks.advanced_jetpack": "Täiustatud Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Soomustatud Basic Jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Soomustatud täiustatud jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks",
+  "item.jetpacks.armored_elite_jetpack": "Soomustatud Elite Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Soomustatud Ultimate Jetpack"
+}
