@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Basis Jetpack",
+  "item.jetpacks.advanced_jetpack": "Geavanceerd Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultieme jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Gepantserde Basis Jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Gepantserde geavanceerde jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Gepantserde Elite Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Gepantserde ultieme jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Straaljagers"
+}
