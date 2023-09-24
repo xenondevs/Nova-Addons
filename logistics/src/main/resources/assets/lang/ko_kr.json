@@ -69,5 +69,12 @@
   "advancement.logistics.trash_can.description": "쓰레기통 제작",
   "advancement.logistics.vacuum_chest.title": "안전해 보인다",
   "advancement.logistics.vacuum_chest.description": "진공 상자 제작",
-  "advancement.logistics.storage_unit.description": "저장고 유닛 제작"
+  "advancement.logistics.storage_unit.description": "저장고 유닛 제작",
+  "item.logistics.item_filter.lore.type": "유형: %s",
+  "item.logistics.item_filter.lore.type.whitelist": "화이트리스트",
+  "item.logistics.item_filter.lore.type.blacklist": "블랙리스트",
+  "item.logistics.item_filter.lore.nbt": "NBT 데이터: %s",
+  "item.logistics.item_filter.lore.nbt.on": "무시되지 않음",
+  "item.logistics.item_filter.lore.nbt.off": "무시됨",
+  "item.logistics.item_filter.lore.contents": "내용(%s):"
 }
