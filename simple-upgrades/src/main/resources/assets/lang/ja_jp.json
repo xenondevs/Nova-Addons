@@ -3,5 +3,10 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "効率アップグレード： %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "エネルギーアップグレード： %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "範囲アップグレード： %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "液体アップグレード： %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "液体アップグレード： %s/%s",
+  "item.simple_upgrades.speed_upgrade": "スピードアップ",
+  "item.simple_upgrades.efficiency_upgrade": "効率アップグレード",
+  "item.simple_upgrades.energy_upgrade": "エネルギーのアップグレード",
+  "item.simple_upgrades.range_upgrade": "レンジのアップグレード",
+  "item.simple_upgrades.fluid_upgrade": "フルード・アップグレード"
 }
