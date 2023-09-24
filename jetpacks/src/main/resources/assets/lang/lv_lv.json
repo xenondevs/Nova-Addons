@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Pamata Jetpack",
+  "item.jetpacks.advanced_jetpack": "Uzlabotā Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Bruņota pamata reaktīvā mugursoma",
+  "item.jetpacks.armored_advanced_jetpack": "Bruņota uzlabota reaktīvā mugursoma",
+  "item.jetpacks.armored_elite_jetpack": "Bruņota elites reaktīvā mugursoma",
+  "item.jetpacks.armored_ultimate_jetpack": "Bruņota Ultimate Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Reaktīvās mugursomas"
+}
