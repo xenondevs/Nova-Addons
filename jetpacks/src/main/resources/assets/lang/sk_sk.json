@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.advanced_jetpack": "Pokročilý Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.basic_jetpack": "Základný Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Základný obrnený batoh Jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Pokročilý obrnený batoh Jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Obrnený elitný batoh Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Obrnený batoh Ultimate Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacky"
+}
