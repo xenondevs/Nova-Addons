@@ -215,5 +215,16 @@
   "advancement.machines.crystallizer.description": "Створіть Кристалізатор",
   "advancement.machines.all_star_tools.title": "Зіркові Інструменти",
   "advancement.machines.all_star_tools.description": "Створіть усі п'ять Зіркових Шнструментів",
-  "subtitles.machines.item.armor.equip_star": "Дзвенить зоряна броня"
+  "subtitles.machines.item.armor.equip_star": "Дзвенить зоряна броня",
+  "block.machines.auto_crafter": "Auto Crafter",
+  "block.machines.auto_crafter.inv_window.title": "Внутрішня інвентаризація",
+  "item.machines.star_shards": "Зоряні осколки",
+  "menu.machines.fluid_infuser.mode.extract": "Видаляйте рідини з предметів",
+  "menu.machines.potion_configurator.left_inc": "Клацніть лівою кнопкою миші, щоб збільшити",
+  "menu.machines.potion_configurator.right_dec": "Клацніть правою кнопкою миші, щоб зменшити",
+  "menu.machines.potion_configurator.potion_type.splash": "Тип зілля: Сплеск",
+  "menu.machines.potion_configurator.potion_type.lingering": "Тип зілля: Затягуюче",
+  "menu.machines.auto_crafter.inventory": "Інвентаризація",
+  "advancement.machines.mob_catcher.description": "Ловіть мобів за допомогою Ловця мобів",
+  "advancement.machines.star_collector.description": "Створіть колекціонер зірок"
 }
