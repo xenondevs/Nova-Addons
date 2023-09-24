@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Mejora de la velocidad",
+  "item.simple_upgrades.efficiency_upgrade": "Mejora de la eficiencia",
+  "item.simple_upgrades.energy_upgrade": "Mejora energética",
+  "item.simple_upgrades.range_upgrade": "Mejora de la gama",
+  "item.simple_upgrades.fluid_upgrade": "Actualización de fluidos",
+  "menu.simple_upgrades.upgrades.type.speed": "Mejoras de velocidad: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Mejoras de eficiencia: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Mejoras energéticas: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Mejoras del alcance: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Actualizaciones de fluidos: %s/%s"
+}
