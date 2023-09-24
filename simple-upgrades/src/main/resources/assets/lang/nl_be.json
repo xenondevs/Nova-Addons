@@ -1,1 +1,12 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Snelheidsupgrade",
+  "item.simple_upgrades.efficiency_upgrade": "Efficiëntie Upgrade",
+  "item.simple_upgrades.energy_upgrade": "Energie Upgrade",
+  "item.simple_upgrades.range_upgrade": "Waaier Upgrade",
+  "item.simple_upgrades.fluid_upgrade": "Vloeistof Upgrade",
+  "menu.simple_upgrades.upgrades.type.speed": "Snelheidsupgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Efficiëntieverbeteringen: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energie-upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Bereik Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Vloeistofupgrades: %s/%s"
+}
