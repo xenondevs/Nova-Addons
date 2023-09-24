@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Основен Jetpack",
+  "item.jetpacks.advanced_jetpack": "Разширен Jetpack",
+  "item.jetpacks.elite_jetpack": "Елитна джетпак",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Основна бронирана раница",
+  "item.jetpacks.armored_advanced_jetpack": "Бронирана джетпак за напреднали",
+  "item.jetpacks.armored_elite_jetpack": "Бронирана раница Elite Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Бронирана джетпак Ultimate",
+  "menu.jetpacks.items.category.jetpacks": "Реактивни раници"
+}
