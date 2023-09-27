@@ -2,7 +2,7 @@
   "block.machines.mechanical_press": "Механический Пресс",
   "block.machines.pulverizer": "Дробитель",
   "block.machines.quarry": "Карьер",
-  "block.machines.electric_furnace": "Электрическая печь",
+  "block.machines.electric_furnace": "Электрическая Печь",
   "block.machines.chunk_loader": "Прогрузчик Чанков",
   "block.machines.block_breaker": "Разрушитель Блоков",
   "block.machines.block_placer": "Установщик Блоков",
@@ -14,7 +14,7 @@
   "block.machines.harvester": "Сборщик Урожая",
   "block.machines.fertilizer": "Удобритель",
   "block.machines.wireless_charger": "Беспроводная Станция Зарядки",
-  "block.machines.auto_fisher": "Рыболов",
+  "block.machines.auto_fisher": "Автоматический Рыболов",
   "block.machines.lightning_exchanger": "Молниевый Преобразователь",
   "block.machines.tree_factory": "Фабрика Древесины",
   "block.machines.star_collector": "Сборщик Звёздной Пыли",
@@ -224,7 +224,7 @@
   "item.machines.star_leggings": "Звёздные поножи",
   "item.machines.star_boots": "Звёздные ботинки",
   "menu.machines.items.category.resources": "Ресурсы",
-  "block.machines.auto_crafter": "Auto Crafter",
-  "block.machines.auto_crafter.inv_window.title": "Внутренняя инвентаризация",
-  "menu.machines.auto_crafter.inventory": "Инвентаризация"
+  "block.machines.auto_crafter": "Автоматический Верстак",
+  "block.machines.auto_crafter.inv_window.title": "Внутренний инвентарь",
+  "menu.machines.auto_crafter.inventory": "Инвентарь"
 }
