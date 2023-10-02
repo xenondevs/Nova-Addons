@@ -533,14 +533,14 @@ class Quarry(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState),
     
     private fun getCornerLocations(y: Double) =
         listOf(
-            Location(world, maxX.toDouble(), y, maxZ.toDouble(), 0f, 0f),
-            Location(world, minX.toDouble(), y, maxZ.toDouble(), 90f, 0f),
-            Location(world, minX.toDouble(), y, minZ.toDouble(), 180f, 0f),
-            Location(world, maxX.toDouble(), y, minZ.toDouble(), 270f, 0f)
+            Location(world, maxX.toDouble(), y, maxZ.toDouble(), 180f, 0f),
+            Location(world, minX.toDouble(), y, maxZ.toDouble(), 270f, 0f),
+            Location(world, maxX.toDouble(), y, minZ.toDouble(), 90f, 0f),
+            Location(world, minX.toDouble(), y, minZ.toDouble(), 0f, 0f),
         )
     
     private fun createSmallHorizontalScaffolding(model: MultiModel, location: Location, axis: Axis) {
-        location.yaw += if (axis == Axis.Z) 180f else -90f
+        location.yaw += if (axis == Axis.Z) 0f else 90f
         model.add(Model(SMALL_HORIZONTAL, location))
     }
     
