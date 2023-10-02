@@ -1,6 +1,10 @@
 package xyz.xenondevs.nova.addon.logistics.advancement
 
 import net.kyori.adventure.text.Component
+import net.minecraft.advancements.DisplayInfo
+import net.minecraft.advancements.FrameType
+import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.registry.Items
@@ -8,23 +12,24 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.advancement
+import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
+import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
 
 @Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object Advancements {
     
     private val ROOT = advancement(Logistics, "root") {
-        display {
-            icon(Items.ULTIMATE_CABLE.clientsideProvider.get())
-            title(Component.translatable("advancement.logistics.root.title"))
-            description("")
-            background("textures/block/tuff.png")
-            
-            showToast(false)
-            announceToChat(false)
-        }
+        display(DisplayInfo(
+            Items.ULTIMATE_CABLE.clientsideProvider.get().nmsCopy,
+            Component.translatable("advancement.logistics.root.title").toNMSComponent(),
+            Component.empty().toNMSComponent(),
+            ResourceLocation("minecraft", "textures/block/tuff.png"),
+            FrameType.TASK,
+            false, false, false
+        ))
         
-        criteria { tick("tick") {} }
+        addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
     }
     
     //<editor-fold desc="Cables" defaultstate="collapsed">

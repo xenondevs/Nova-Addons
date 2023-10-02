@@ -1,6 +1,10 @@
 package xyz.xenondevs.nova.addon.vanillahammers.advancement
 
 import net.kyori.adventure.text.Component
+import net.minecraft.advancements.DisplayInfo
+import net.minecraft.advancements.FrameType
+import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Items
@@ -8,21 +12,21 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.advancement
-import xyz.xenondevs.nova.util.icon
+import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
+import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
 
 private val ROOT = advancement(VanillaHammers, "root") {
-    display {
-        icon(Items.WOODEN_HAMMER)
-        title(Component.translatable("advancement.vanilla_hammers.root.title"))
-        description("")
-        background("minecraft:textures/block/stone.png")
-        
-        announceToChat(false)
-        showToast(false)
-    }
+    display(DisplayInfo(
+        Items.WOODEN_HAMMER.clientsideProvider.get().nmsCopy,
+        Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
+        Component.empty().toNMSComponent(),
+        ResourceLocation("minecraft", "textures/block/tuff.png"),
+        FrameType.TASK,
+        false, false, false
+    ))
     
-    criteria { tick("tick") {} }
+    addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
 }
 
 private val STONE_HAMMER = obtainNovaItemAdvancement(VanillaHammers, ROOT, Items.STONE_HAMMER)

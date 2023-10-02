@@ -1,6 +1,10 @@
 package xyz.xenondevs.nova.addon.machines.advancement
 
 import net.kyori.adventure.text.Component
+import net.minecraft.advancements.DisplayInfo
+import net.minecraft.advancements.FrameType
+import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
@@ -8,22 +12,22 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.advancement
-import xyz.xenondevs.nova.util.icon
+import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
+import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
 import xyz.xenondevs.nova.util.obtainNovaItemsAdvancement
 
 private val ROOT = advancement(Machines, "root") {
-    display {
-        icon(Items.QUARRY)
-        title(Component.translatable("advancement.machines.root.title"))
-        description("")
-        background("minecraft:textures/block/tuff.png")
-        
-        announceToChat(false)
-        showToast(false)
-    }
+    display(DisplayInfo(
+        Items.QUARRY.clientsideProvider.get().nmsCopy,
+        Component.translatable("advancement.machines.root.title").toNMSComponent(),
+        Component.empty().toNMSComponent(),
+        ResourceLocation("minecraft", "textures/block/tuff.png"),
+        FrameType.TASK,
+        false, false, false
+    ))
     
-    criteria { tick("tick") {} }
+    addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
 }
 
 //<editor-fold desc="Power Generation" defaultstate="collapsed">
