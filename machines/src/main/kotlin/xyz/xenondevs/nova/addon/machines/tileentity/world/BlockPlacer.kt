@@ -45,8 +45,8 @@ class BlockPlacer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
             val ctx = BlockPlaceContext(placePos, item, this, location, ownerUUID, placePos.copy(y = placePos.y - 1), BlockFace.UP)
             if (placePos.block.place(ctx)) {
                 inventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
+                return true
             } else continue
-            
         }
         
         return false
