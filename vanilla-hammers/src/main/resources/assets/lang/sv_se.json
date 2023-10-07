@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Visa att du är unik med en Emerald Hammer.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Avsluta din nedstigning med en brinnande hammare.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Skapa en obsidianhammare och gruva i 17 timmar utan att stanna.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Skapa Ender-hammaren för att få slut på dina gruvproblem."
+  "advancement.vanilla_hammers.ender_hammer.description": "Skapa Ender-hammaren för att få slut på dina gruvproblem.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Gigantismens förbannelse"
 }
