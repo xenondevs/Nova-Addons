@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Zaprezentuj swoją wyjątkowość dzięki Emerald Hammer.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Zakończ zejście Ognistym Młotem.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Stwórz Obsydianowy Młot i kontynuuj wydobycie przez 17 godzin bez przerwy.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Stwórz młot Endera, aby zakończyć swoje górnicze kłopoty."
+  "advancement.vanilla_hammers.ender_hammer.description": "Stwórz młot Endera, aby zakończyć swoje górnicze kłopoty.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Klątwa gigantyzmu"
 }
