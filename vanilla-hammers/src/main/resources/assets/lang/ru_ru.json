@@ -41,5 +41,6 @@
   "item.vanilla_hammers.netherite_hammer": "Незеритовый молот",
   "advancement.vanilla_hammers.netherite_hammer.title": "Молот Бездны Пламени",
   "advancement.vanilla_hammers.netherite_hammer.description": "Создайте Незеритовый молот, выкованный из древних драгоценных камней из неизвестной эпохи.",
-  "menu.vanilla_hammers.items.category.equipment": "Снаряжение"
+  "menu.vanilla_hammers.items.category.equipment": "Снаряжение",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Проклятие гигантизма"
 }
