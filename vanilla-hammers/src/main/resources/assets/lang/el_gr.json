@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Αναδείξτε τη μοναδικότητά σας με ένα Emerald Hammer.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Ολοκληρώστε την κάθοδό σας με ένα φλογερό σφυρί.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Κατασκευάστε ένα σφυρί οψιδιανού και εξορύξτε για 17 ώρες χωρίς διακοπή.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Κατασκευάστε το Ender Hammer για να τερματίσετε τα προβλήματα εξόρυξης."
+  "advancement.vanilla_hammers.ender_hammer.description": "Κατασκευάστε το Ender Hammer για να τερματίσετε τα προβλήματα εξόρυξης.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Κατάρα του γιγαντισμού"
 }
