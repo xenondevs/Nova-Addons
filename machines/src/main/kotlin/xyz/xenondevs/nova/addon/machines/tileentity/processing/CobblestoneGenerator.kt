@@ -14,14 +14,16 @@ import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nmsutils.particle.particle
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.COBBLESTONE_GENERATOR
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
 import xyz.xenondevs.nova.addon.machines.registry.Models
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -41,9 +43,6 @@ import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.sendTo
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeItemDisplay
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -51,11 +50,11 @@ import kotlin.random.Random
 
 private const val MAX_STATE = 99
 
-private val ENERGY_CAPACITY = configReloadable { NovaConfig[COBBLESTONE_GENERATOR].getLong("energy_capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[COBBLESTONE_GENERATOR].getLong("energy_per_tick") }
-private val WATER_CAPACITY = configReloadable { NovaConfig[COBBLESTONE_GENERATOR].getLong("water_capacity") }
-private val LAVA_CAPACITY = configReloadable { NovaConfig[COBBLESTONE_GENERATOR].getLong("lava_capacity") }
-private val MB_PER_TICK by configReloadable { NovaConfig[COBBLESTONE_GENERATOR].getLong("mb_per_tick") }
+private val ENERGY_CAPACITY = COBBLESTONE_GENERATOR.config.entry<Long>("energy_capacity")
+private val ENERGY_PER_TICK = COBBLESTONE_GENERATOR.config.entry<Long>("energy_per_tick")
+private val WATER_CAPACITY = COBBLESTONE_GENERATOR.config.entry<Long>("water_capacity")
+private val LAVA_CAPACITY = COBBLESTONE_GENERATOR.config.entry<Long>("lava_capacity")
+private val MB_PER_TICK by COBBLESTONE_GENERATOR.config.entry<Long>("mb_per_tick")
 
 class CobblestoneGenerator(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -197,7 +196,7 @@ class CobblestoneGenerator(blockState: NovaTileEntityState) : NetworkedTileEntit
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
                     val direction = if (clickType == ClickType.LEFT) 1 else -1
-                    mode = Mode.values()[(mode.ordinal + direction).mod(Mode.values().size)]
+                    mode = Mode.entries[(mode.ordinal + direction).mod(Mode.entries.size)]
                     player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
                     notifyWindows()
                 }

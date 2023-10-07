@@ -10,10 +10,11 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nmsutils.particle.particle
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SPRINKLER
+import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -30,16 +31,14 @@ import xyz.xenondevs.nova.util.registerEvents
 import xyz.xenondevs.nova.util.sendTo
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.min
 import kotlin.math.roundToLong
 
-private val WATER_CAPACITY = configReloadable { NovaConfig[SPRINKLER].getLong("water_capacity") }
-private val WATER_PER_MOISTURE_LEVEL by configReloadable { NovaConfig[SPRINKLER].getLong("water_per_moisture_level") }
-private val MIN_RANGE = configReloadable { NovaConfig[SPRINKLER].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[SPRINKLER].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[SPRINKLER].getInt("range.default") }
+private val WATER_CAPACITY = SPRINKLER.config.entry<Long>("water_capacity")
+private val WATER_PER_MOISTURE_LEVEL by SPRINKLER.config.entry<Long>("water_per_moisture_level")
+private val MIN_RANGE = SPRINKLER.config.entry<Int>("range", "min")
+private val MAX_RANGE = SPRINKLER.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by SPRINKLER.config.entry<Int>("range", "default")
 
 class Sprinkler(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -47,7 +46,6 @@ class Sprinkler(blockState: NovaTileEntityState) : NetworkedTileEntity(blockStat
     private val tank = getFluidContainer("tank", hashSetOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder = upgradeHolder)
     override val fluidHolder = NovaFluidHolder(this, tank to NetworkConnectionType.BUFFER) { createExclusiveSideConfig(NetworkConnectionType.INSERT, BlockSide.BOTTOM) }
     
-    private var maxRange = 0
     private var waterPerMoistureLevel = 0L
     
     private val region = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE) {

@@ -1,16 +1,17 @@
 package xyz.xenondevs.nova.addon.vanillahammers.registry
 
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
+import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
+import xyz.xenondevs.nova.addon.vanillahammers.item.Hammer
 import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.item.behavior.Damageable
 import xyz.xenondevs.nova.item.behavior.Enchantable
 import xyz.xenondevs.nova.item.behavior.FireResistant
 import xyz.xenondevs.nova.item.behavior.Fuel
 import xyz.xenondevs.nova.item.behavior.Tool
-import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
-import xyz.xenondevs.nova.addon.vanillahammers.item.Hammer
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by VanillaHammers.registry {
     
     val WOODEN_HAMMER = registerItem("wooden_hammer", Tool, Hammer, Damageable, Enchantable, Fuel)

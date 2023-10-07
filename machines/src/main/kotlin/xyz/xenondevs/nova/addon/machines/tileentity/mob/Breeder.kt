@@ -9,11 +9,12 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.BREEDER
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.BREEDER
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -30,18 +31,16 @@ import xyz.xenondevs.nova.util.item.FoodUtils
 import xyz.xenondevs.nova.util.item.canBredNow
 import xyz.xenondevs.nova.util.item.genericMaxHealth
 import xyz.xenondevs.nova.world.region.VisualRegion
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.min
 
-private val MAX_ENERGY = configReloadable { NovaConfig[BREEDER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[BREEDER].getLong("energy_per_tick") }
-private val ENERGY_PER_BREED = configReloadable { NovaConfig[BREEDER].getLong("energy_per_breed") }
-private val IDLE_TIME by configReloadable { NovaConfig[BREEDER].getInt("idle_time") }
-private val BREED_LIMIT by configReloadable { NovaConfig[BREEDER].getInt("breed_limit") }
-private val MIN_RANGE = configReloadable { NovaConfig[BREEDER].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[BREEDER].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[BREEDER].getInt("range.default") }
+private val MAX_ENERGY = BREEDER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = BREEDER.config.entry<Long>("energy_per_tick")
+private val ENERGY_PER_BREED = BREEDER.config.entry<Long>("energy_per_breed")
+private val IDLE_TIME by BREEDER.config.entry<Int>("idle_time")
+private val BREED_LIMIT by BREEDER.config.entry<Int>("breed_limit")
+private val MIN_RANGE = BREEDER.config.entry<Int>("range", "min")
+private val MAX_RANGE = BREEDER.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by BREEDER.config.entry<Int>("range", "default")
 
 class Breeder(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

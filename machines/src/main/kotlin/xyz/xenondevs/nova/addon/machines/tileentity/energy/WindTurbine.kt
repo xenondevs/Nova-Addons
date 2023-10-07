@@ -5,12 +5,13 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.joml.Quaternionf
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.WIND_TURBINE
+import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.resources.model.data.DisplayEntityBlockModelData
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.WIND_TURBINE
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -24,14 +25,12 @@ import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.model.Model
 import xyz.xenondevs.nova.world.model.MovableMultiModel
 import xyz.xenondevs.nova.world.pos
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.util.concurrent.CompletableFuture
 import kotlin.math.abs
 
-private val MAX_ENERGY = configReloadable { NovaConfig[WIND_TURBINE].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[WIND_TURBINE].getLong("energy_per_tick") }
-private val PLAY_ANIMATION by configReloadable { NovaConfig[WIND_TURBINE].getBoolean("animation") }
+private val MAX_ENERGY = WIND_TURBINE.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = WIND_TURBINE.config.entry<Long>("energy_per_tick")
+private val PLAY_ANIMATION by WIND_TURBINE.config.entry<Boolean>("animation")
 
 class WindTurbine(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

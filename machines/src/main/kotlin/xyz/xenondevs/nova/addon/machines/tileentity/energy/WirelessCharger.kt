@@ -3,11 +3,12 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.WIRELESS_CHARGER
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.behavior.Chargeable
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.WIRELESS_CHARGER
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -18,14 +19,12 @@ import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.world.region.VisualRegion
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MAX_ENERGY = configReloadable { NovaConfig[WIRELESS_CHARGER].getLong("capacity") }
-private val CHARGE_SPEED = configReloadable { NovaConfig[WIRELESS_CHARGER].getLong("charge_speed") }
-private val MIN_RANGE = configReloadable { NovaConfig[WIRELESS_CHARGER].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[WIRELESS_CHARGER].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[WIRELESS_CHARGER].getInt("range.default") }
+private val MAX_ENERGY = WIRELESS_CHARGER.config.entry<Long>("capacity")
+private val CHARGE_SPEED = WIRELESS_CHARGER.config.entry<Long>("charge_speed")
+private val MIN_RANGE = WIRELESS_CHARGER.config.entry<Int>("range", "min")
+private val MAX_RANGE = WIRELESS_CHARGER.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by WIRELESS_CHARGER.config.entry<Int>("range", "default")
 
 class WirelessCharger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -59,10 +58,10 @@ class WirelessCharger(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
     }
     
     private fun chargeItemStack(alreadyTransferred: Long, itemStack: ItemStack?): Long {
-        val chargeable = itemStack?.novaItem?.getBehavior(Chargeable::class)
+        val chargeable = itemStack?.novaItem?.getBehaviorOrNull<Chargeable>()
         
         if (chargeable != null) {
-            val maxEnergy = chargeable.options.maxEnergy
+            val maxEnergy = chargeable.maxEnergy
             val currentEnergy = chargeable.getEnergy(itemStack)
             
             val energyToTransfer = minOf(energyHolder.energyConsumption - alreadyTransferred, maxEnergy - currentEnergy, energyHolder.energy)

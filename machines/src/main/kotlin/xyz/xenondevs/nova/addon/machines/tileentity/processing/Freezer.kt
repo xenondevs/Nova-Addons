@@ -10,13 +10,15 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FREEZER
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -30,17 +32,14 @@ import xyz.xenondevs.nova.ui.OpenUpgradesItem
 import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.lang.Long.min
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-private val WATER_CAPACITY = configReloadable { NovaConfig[FREEZER].getLong("water_capacity") }
-private val ENERGY_CAPACITY = configReloadable { NovaConfig[FREEZER].getLong("energy_capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[FREEZER].getLong("energy_per_tick") }
-private val MB_PER_TICK by configReloadable { NovaConfig[FREEZER].getLong("mb_per_tick") }
+private val WATER_CAPACITY = FREEZER.config.entry<Long>("water_capacity")
+private val ENERGY_CAPACITY = FREEZER.config.entry<Long>("energy_capacity")
+private val ENERGY_PER_TICK = FREEZER.config.entry<Long>("energy_per_tick")
+private val MB_PER_TICK by FREEZER.config.entry<Long>("mb_per_tick")
 
 class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -142,7 +141,7 @@ class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
                     val direction = if (clickType == ClickType.LEFT) 1 else -1
-                    mode = Mode.values()[(mode.ordinal + direction).mod(Mode.values().size)]
+                    mode = Mode.entries[(mode.ordinal + direction).mod(Mode.entries.size)]
                     
                     player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
                     notifyWindows()

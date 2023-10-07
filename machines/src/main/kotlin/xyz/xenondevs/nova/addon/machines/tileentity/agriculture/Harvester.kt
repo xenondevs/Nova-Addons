@@ -7,16 +7,18 @@ import org.bukkit.entity.Player
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.nova.api.NovaEventFactory
-import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.item.tool.ToolCategory
-import xyz.xenondevs.nova.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.HARVESTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.api.NovaEventFactory
+import xyz.xenondevs.nova.data.config.GlobalValues
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.integration.protection.ProtectionManager
+import xyz.xenondevs.nova.item.behavior.Damageable
+import xyz.xenondevs.nova.item.tool.ToolCategory
+import xyz.xenondevs.nova.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -30,23 +32,20 @@ import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.addAll
 import xyz.xenondevs.nova.util.dropItemsNaturally
-import xyz.xenondevs.nova.util.item.DamageableUtils
 import xyz.xenondevs.nova.util.item.PlantUtils
 import xyz.xenondevs.nova.util.item.isLeaveLike
 import xyz.xenondevs.nova.world.block.context.BlockBreakContext
 import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.VisualRegion
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.util.*
 
-private val MAX_ENERGY = configReloadable { NovaConfig[HARVESTER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[HARVESTER].getLong("energy_per_tick") }
-private val ENERGY_PER_BREAK = configReloadable { NovaConfig[HARVESTER].getLong("energy_per_break") }
-private val IDLE_TIME by configReloadable { NovaConfig[HARVESTER].getInt("idle_time") }
-private val MIN_RANGE = configReloadable { NovaConfig[HARVESTER].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[HARVESTER].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[HARVESTER].getInt("range.default") }
+private val MAX_ENERGY = HARVESTER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = HARVESTER.config.entry<Long>("energy_per_tick")
+private val ENERGY_PER_BREAK = HARVESTER.config.entry<Long>("energy_per_break")
+private val IDLE_TIME by HARVESTER.config.entry<Int>("idle_time")
+private val MIN_RANGE = HARVESTER.config.entry<Int>("range", "min")
+private val MAX_RANGE = HARVESTER.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by HARVESTER.config.entry<Int>("range", "default")
 
 class Harvester(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -153,7 +152,8 @@ class Harvester(blockState: NovaTileEntityState) : NetworkedTileEntity(blockStat
                             continue
                         }
                         
-                        toolInventory.setItem(SELF_UPDATE_REASON, 0, DamageableUtils.damageItem(tool))
+                        Damageable.damageAndBreak(tool, 1)
+                        toolInventory.setItem(SELF_UPDATE_REASON, 0, tool)
                     }
                     
                     // harvest the plant

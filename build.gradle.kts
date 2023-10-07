@@ -1,74 +1,75 @@
 import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import xyz.xenondevs.stringremapper.StringRemapExtension
 
 group = "xyz.xenondevs.nova.addon"
 
 val mojangMapped = project.hasProperty("mojang-mapped")
 
 plugins {
+    alias(libs.plugins.paperweight)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.nova)
-    alias(libs.plugins.specialsource)
     alias(libs.plugins.stringremapper)
 }
 
+repositories { configureRepositories() }
+dependencies { configureDependencies() }
+
 fun RepositoryHandler.configureRepositories() {
-    mavenLocal { content { includeGroup("org.spigotmc") } }
+    mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }
     mavenCentral()
-    maven("https://repo.xenondevs.xyz/releases")
-    maven("https://libraries.minecraft.net")
-    
-    // include xenondevs-nms repository if requested
-    if (project.hasProperty("xenondevsNms")) {
-        maven("https://repo.papermc.io/repository/maven-public/") // authlib, brigadier, etc.
-        maven {
-            name = "xenondevsNms"
-            url = uri("https://repo.xenondevs.xyz/nms/")
-            credentials(PasswordCredentials::class)
-        }
-    }
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.xenondevs.xyz/releases/")
 }
 
-repositories { configureRepositories() }
+fun DependencyHandlerScope.configureDependencies() {
+    paperweight.paperDevBundle(rootProject.libs.versions.paper)
+    configurations.getByName("mojangMappedServer").apply {
+        exclude("org.spongepowered", "configurate-yaml")
+    }
+    implementation(rootProject.libs.nova)
+}
+
+fun StringRemapExtension.configureRemapStrings() {
+    remapGoal.set(if (mojangMapped) "mojang" else "spigot")
+    gameVersion.set(libs.versions.paper.get().substringBefore("-"))
+}
 
 subprojects {
     apply(plugin = rootProject.libs.plugins.kotlin.get().pluginId)
     apply(plugin = rootProject.libs.plugins.nova.get().pluginId)
-    apply(plugin = rootProject.libs.plugins.specialsource.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.paperweight.get().pluginId)
     apply(plugin = rootProject.libs.plugins.stringremapper.get().pluginId)
-
-    repositories { configureRepositories() }
     
-    dependencies { 
-        implementation(rootProject.libs.nova)
-    }
-
+    repositories { configureRepositories() }
+    dependencies { configureDependencies() }
+    remapStrings { configureRemapStrings() }
+    
     addon {
         id.set(this@subprojects.name)
         name.set(this@subprojects.name.capitalized())
         novaVersion.set(rootProject.libs.versions.nova)
     }
-
-    spigotRemap {
-        spigotVersion.set(rootProject.libs.versions.spigot.map { it.substringBefore('-') })
-        sourceJarTask.set(tasks.jar)
-    }
-
-    remapStrings {
-        remapGoal.set(if (mojangMapped) "mojang" else "spigot")
-        spigotVersion.set(rootProject.libs.versions.spigot)
-    }
-
+    
     tasks {
+        val buildDir = project.layout.buildDirectory.get().asFile
+        val outDir = (project.findProperty("outDir") as? String)?.let(::File) ?: buildDir
+        
         register<Copy>("addonJar") {
             group = "build"
-            dependsOn("addon", if (mojangMapped) "jar" else "remapObfToSpigot")
-
-            from(File(project.buildDir, "libs/${project.name}-${project.version}.jar"))
-            into((project.findProperty("outDir") as? String)?.let(::File) ?: project.buildDir)
-            rename { it.replace(project.name, addon.get().addonName.get()) }
+            if (mojangMapped) {
+                dependsOn("jar")
+                from(File(buildDir, "libs/${project.name}-${project.version}-dev.jar"))
+            } else {
+                dependsOn("reobfJar")
+                from(File(buildDir, "libs/${project.name}-${project.version}.jar"))
+            }
+            
+            into(outDir)
+            rename { "${addonMetadata.get().addonName.get()}-${project.version}.jar" }
         }
-
+        
         withType<KotlinCompile> {
             kotlinOptions {
                 jvmTarget = "17"

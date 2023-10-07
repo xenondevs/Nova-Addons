@@ -2,10 +2,12 @@
 
 package xyz.xenondevs.nova.addon.machines.registry
 
+import org.bukkit.inventory.EquipmentSlot
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.item.behavior.Damageable
 import xyz.xenondevs.nova.item.behavior.Enchantable
 import xyz.xenondevs.nova.item.behavior.Extinguishing
@@ -14,9 +16,8 @@ import xyz.xenondevs.nova.item.behavior.Stripping
 import xyz.xenondevs.nova.item.behavior.Tilling
 import xyz.xenondevs.nova.item.behavior.Tool
 import xyz.xenondevs.nova.item.behavior.Wearable
-import xyz.xenondevs.nova.player.equipment.ArmorType
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Machines.registry {
     
     val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior)
@@ -29,10 +30,10 @@ object Items : ItemRegistry by Machines.registry {
     val STAR_HOE = registerItem("star_hoe", Tool, Damageable, Enchantable, Tilling)
     
     // Armor
-    val STAR_HELMET = registerItem("star_helmet", Wearable(ArmorType.HELMET, Sounds.ARMOR_EQUIP_STAR), Damageable)
-    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(ArmorType.CHESTPLATE, Sounds.ARMOR_EQUIP_STAR), Damageable)
-    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(ArmorType.LEGGINGS, Sounds.ARMOR_EQUIP_STAR), Damageable)
-    val STAR_BOOTS = registerItem("star_boots", Wearable(ArmorType.BOOTS, Sounds.ARMOR_EQUIP_STAR), Damageable)
+    val STAR_HELMET = registerItem("star_helmet", Wearable(EquipmentSlot.HEAD, Sounds.ARMOR_EQUIP_STAR), Damageable)
+    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(EquipmentSlot.CHEST, Sounds.ARMOR_EQUIP_STAR), Damageable)
+    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(EquipmentSlot.LEGS, Sounds.ARMOR_EQUIP_STAR), Damageable)
+    val STAR_BOOTS = registerItem("star_boots", Wearable(EquipmentSlot.FEET, Sounds.ARMOR_EQUIP_STAR), Damageable)
     
     // Plates
     val IRON_PLATE = registerItem("iron_plate")

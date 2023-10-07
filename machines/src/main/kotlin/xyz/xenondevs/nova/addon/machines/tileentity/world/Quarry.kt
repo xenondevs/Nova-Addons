@@ -2,7 +2,6 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.md_5.bungee.api.chat.TranslatableComponent
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.Axis
 import org.bukkit.Location
@@ -18,18 +17,20 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.addLoreLines
+import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nmsutils.particle.block
 import xyz.xenondevs.nmsutils.particle.particle
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.QUARRY
+import xyz.xenondevs.nova.addon.machines.registry.Items
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.api.NovaEventFactory
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.QUARRY
-import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -65,8 +66,6 @@ import xyz.xenondevs.nova.world.model.Model
 import xyz.xenondevs.nova.world.model.MovableMultiModel
 import xyz.xenondevs.nova.world.model.MultiModel
 import xyz.xenondevs.nova.world.pos
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.util.concurrent.CompletableFuture
 import kotlin.math.max
 import kotlin.math.min
@@ -82,21 +81,21 @@ private val FULL_SLIM_VERTICAL = SCAFFOLDING_STACKS[4]
 private val SLIM_VERTICAL_DOWN = SCAFFOLDING_STACKS[5]
 private val DRILL = Items.NETHERITE_DRILL.clientsideProvider.get()
 
-private val MIN_SIZE by configReloadable { NovaConfig[QUARRY].getInt("min_size") }
-private val MAX_SIZE by configReloadable { NovaConfig[QUARRY].getInt("max_size") }
-private val MIN_DEPTH by configReloadable { NovaConfig[QUARRY].getInt("min_depth") }
-private val MAX_DEPTH by configReloadable { NovaConfig[QUARRY].getInt("max_depth") }
-private val DEFAULT_SIZE_X by configReloadable { NovaConfig[QUARRY].getInt("default_size_x") }
-private val DEFAULT_SIZE_Z by configReloadable { NovaConfig[QUARRY].getInt("default_size_z") }
-private val DEFAULT_SIZE_Y by configReloadable { NovaConfig[QUARRY].getInt("default_size_y") }
+private val MIN_SIZE by QUARRY.config.entry<Int>("min_size")
+private val MAX_SIZE by QUARRY.config.entry<Int>("max_size")
+private val MIN_DEPTH by QUARRY.config.entry<Int>("min_depth")
+private val MAX_DEPTH by QUARRY.config.entry<Int>("max_depth")
+private val DEFAULT_SIZE_X by QUARRY.config.entry<Int>("default_size_x")
+private val DEFAULT_SIZE_Z by QUARRY.config.entry<Int>("default_size_z")
+private val DEFAULT_SIZE_Y by QUARRY.config.entry<Int>("default_size_y")
 
-private val MOVE_SPEED by configReloadable { NovaConfig[QUARRY].getDouble("move_speed") }
-private val DRILL_SPEED_MULTIPLIER by configReloadable { NovaConfig[QUARRY].getDouble("drill_speed_multiplier") }
-private val DRILL_SPEED_CLAMP by configReloadable { NovaConfig[QUARRY].getDouble("drill_speed_clamp") }
+private val MOVE_SPEED by QUARRY.config.entry<Double>("move_speed")
+private val DRILL_SPEED_MULTIPLIER by QUARRY.config.entry<Double>("drill_speed_multiplier")
+private val DRILL_SPEED_CLAMP by QUARRY.config.entry<Double>("drill_speed_clamp")
 
-private val MAX_ENERGY = configReloadable { NovaConfig[QUARRY].getLong("capacity") }
-private val BASE_ENERGY_CONSUMPTION by configReloadable { NovaConfig[QUARRY].getInt("base_energy_consumption") }
-private val ENERGY_PER_SQUARE_BLOCK by configReloadable { NovaConfig[QUARRY].getInt("energy_consumption_per_square_block") }
+private val MAX_ENERGY = QUARRY.config.entry<Long>("capacity")
+private val BASE_ENERGY_CONSUMPTION by QUARRY.config.entry<Int>("base_energy_consumption")
+private val ENERGY_PER_SQUARE_BLOCK by QUARRY.config.entry<Int>("energy_consumption_per_square_block")
 
 class Quarry(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -534,14 +533,14 @@ class Quarry(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState),
     
     private fun getCornerLocations(y: Double) =
         listOf(
-            Location(world, maxX.toDouble(), y, maxZ.toDouble(), 0f, 0f),
-            Location(world, minX.toDouble(), y, maxZ.toDouble(), 90f, 0f),
-            Location(world, minX.toDouble(), y, minZ.toDouble(), 180f, 0f),
-            Location(world, maxX.toDouble(), y, minZ.toDouble(), 270f, 0f)
+            Location(world, maxX.toDouble(), y, maxZ.toDouble(), 180f, 0f),
+            Location(world, minX.toDouble(), y, maxZ.toDouble(), 270f, 0f),
+            Location(world, maxX.toDouble(), y, minZ.toDouble(), 90f, 0f),
+            Location(world, minX.toDouble(), y, minZ.toDouble(), 0f, 0f),
         )
     
     private fun createSmallHorizontalScaffolding(model: MultiModel, location: Location, axis: Axis) {
-        location.yaw += if (axis == Axis.Z) 180f else -90f
+        location.yaw += if (axis == Axis.Z) 0f else 90f
         model.add(Model(SMALL_HORIZONTAL, location))
     }
     
@@ -641,7 +640,7 @@ class Quarry(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState),
             override fun getItemProvider(): ItemProvider {
                 val number = getNumber()
                 return DefaultGuiItems.NUMBER.model.createItemBuilder(getNumber())
-                    .setDisplayName(TranslatableComponent("menu.machines.quarry.size", number, number))
+                    .setDisplayName(Component.translatable("menu.machines.quarry.size", Component.text(number), Component.text(number)))
                     .addLoreLines(Component.translatable("menu.machines.quarry.size_tip", NamedTextColor.GRAY))
             }
             
@@ -654,7 +653,7 @@ class Quarry(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState),
             override fun getItemProvider(): ItemProvider {
                 val number = getNumber()
                 return DefaultGuiItems.NUMBER.model.createItemBuilder(getNumber())
-                    .setDisplayName(TranslatableComponent("menu.machines.quarry.depth", number))
+                    .setDisplayName(Component.translatable("menu.machines.quarry.depth", Component.text(number)))
                     .addLoreLines(Component.translatable("menu.machines.quarry.depth_tip", NamedTextColor.GRAY))
             }
             

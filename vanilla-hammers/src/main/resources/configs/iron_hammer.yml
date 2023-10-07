@@ -18,4 +18,4 @@ repair_ingredient: "minecraft:iron_ingot"
 
 # Enchantable Options
 enchantment_value: 14
-enchantment_categories: ["digger", "breakable"]
+enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]

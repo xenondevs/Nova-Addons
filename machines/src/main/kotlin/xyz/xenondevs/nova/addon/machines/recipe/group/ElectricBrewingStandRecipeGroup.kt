@@ -7,9 +7,9 @@ import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.PotionBuilder
 import xyz.xenondevs.nova.addon.machines.recipe.ElectricBrewingStandRecipe
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
+import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.ui.item.ScrollLeftItem
 import xyz.xenondevs.nova.ui.item.ScrollRightItem
 import xyz.xenondevs.nova.ui.menu.item.recipes.createRecipeChoiceItem

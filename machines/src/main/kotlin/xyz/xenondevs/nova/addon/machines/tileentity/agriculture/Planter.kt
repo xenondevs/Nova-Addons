@@ -10,14 +10,16 @@ import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.item.tool.ToolCategory
-import xyz.xenondevs.nova.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.integration.protection.ProtectionManager
+import xyz.xenondevs.nova.item.behavior.Damageable
+import xyz.xenondevs.nova.item.tool.ToolCategory
+import xyz.xenondevs.nova.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -29,20 +31,17 @@ import xyz.xenondevs.nova.ui.addIngredient
 import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.item.DamageableUtils
 import xyz.xenondevs.nova.util.item.PlantUtils
 import xyz.xenondevs.nova.util.item.isTillable
 import xyz.xenondevs.nova.world.region.Region
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MAX_ENERGY = configReloadable { NovaConfig[PLANTER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[PLANTER].getLong("energy_per_tick") }
-private val ENERGY_PER_PLANT = configReloadable { NovaConfig[PLANTER].getLong("energy_per_plant") }
-private val IDLE_TIME by configReloadable { NovaConfig[PLANTER].getInt("idle_time") }
-private val MIN_RANGE = configReloadable { NovaConfig[PLANTER].getInt("range.min") }
-private val MAX_RANGE = configReloadable { NovaConfig[PLANTER].getInt("range.max") }
-private val DEFAULT_RANGE by configReloadable { NovaConfig[PLANTER].getInt("range.default") }
+private val MAX_ENERGY = PLANTER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = PLANTER.config.entry<Long>("energy_per_tick")
+private val ENERGY_PER_PLANT = PLANTER.config.entry<Long>("energy_per_plant")
+private val IDLE_TIME by PLANTER.config.entry<Int>("idle_time")
+private val MIN_RANGE = PLANTER.config.entry<Int>("range", "min")
+private val MAX_RANGE = PLANTER.config.entry<Int>("range", "max")
+private val DEFAULT_RANGE by PLANTER.config.entry<Int>("range", "default")
 
 class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -179,7 +178,7 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         if (hoesInventory.isEmpty)
             return
         
-        hoesInventory.setItem(null, 0, DamageableUtils.damageItem(hoesInventory.getItem(0)!!))
+        hoesInventory.modifyItem(null, 0) { Damageable.damageAndBreak(it!!, 0) }
     }
     
     override fun saveData() {

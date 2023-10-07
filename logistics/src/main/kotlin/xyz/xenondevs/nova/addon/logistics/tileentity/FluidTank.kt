@@ -5,11 +5,10 @@ import net.minecraft.world.item.ItemDisplayContext
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.immutable.provider
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
 import xyz.xenondevs.nova.addon.logistics.registry.Items
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -98,17 +97,8 @@ open class FluidTank(
     
 }
 
-private val BASIC_CAPACITY = configReloadable { NovaConfig[Blocks.BASIC_FLUID_TANK].getLong("capacity") }
-private val ADVANCED_CAPACITY = configReloadable { NovaConfig[Blocks.ADVANCED_FLUID_TANK].getLong("capacity") }
-private val ELITE_CAPACITY = configReloadable { NovaConfig[Blocks.ELITE_FLUID_TANK].getLong("capacity") }
-private val ULTIMATE_CAPACITY = configReloadable { NovaConfig[Blocks.ULTIMATE_FLUID_TANK].getLong("capacity") }
-
-class BasicFluidTank(blockState: NovaTileEntityState) : FluidTank(BASIC_CAPACITY, blockState)
-
-class AdvancedFluidTank(blockState: NovaTileEntityState) : FluidTank(ADVANCED_CAPACITY, blockState)
-
-class EliteFluidTank(blockState: NovaTileEntityState) : FluidTank(ELITE_CAPACITY, blockState)
-
-class UltimateFluidTank(blockState: NovaTileEntityState) : FluidTank(ULTIMATE_CAPACITY, blockState)
-
+class BasicFluidTank(blockState: NovaTileEntityState) : FluidTank(Blocks.BASIC_FLUID_TANK.config.entry<Long>("capacity"), blockState)
+class AdvancedFluidTank(blockState: NovaTileEntityState) : FluidTank(Blocks.ADVANCED_FLUID_TANK.config.entry<Long>("capacity"), blockState)
+class EliteFluidTank(blockState: NovaTileEntityState) : FluidTank(Blocks.ELITE_FLUID_TANK.config.entry<Long>("capacity"), blockState)
+class UltimateFluidTank(blockState: NovaTileEntityState) : FluidTank(Blocks.ULTIMATE_FLUID_TANK.config.entry<Long>("capacity"), blockState)
 class CreativeFluidTank(blockState: NovaTileEntityState) : FluidTank(provider(Long.MAX_VALUE), blockState)

@@ -3,13 +3,14 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import org.bukkit.Material
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_BREAKER
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.api.NovaEventFactory
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_BREAKER
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -30,15 +31,13 @@ import xyz.xenondevs.nova.util.remove
 import xyz.xenondevs.nova.util.setBreakStage
 import xyz.xenondevs.nova.world.block.context.BlockBreakContext
 import xyz.xenondevs.nova.world.pos
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-private val MAX_ENERGY = configReloadable { NovaConfig[BLOCK_BREAKER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[BLOCK_BREAKER].getLong("energy_per_tick") }
-private val BREAK_SPEED_MULTIPLIER by configReloadable { NovaConfig[BLOCK_BREAKER].getDouble("break_speed_multiplier") }
-private val BREAK_SPEED_CLAMP by configReloadable { NovaConfig[BLOCK_BREAKER].getDouble("break_speed_clamp") }
+private val MAX_ENERGY = BLOCK_BREAKER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = BLOCK_BREAKER.config.entry<Long>("energy_per_tick")
+private val BREAK_SPEED_MULTIPLIER by BLOCK_BREAKER.config.entry<Double>("break_speed_multiplier")
+private val BREAK_SPEED_CLAMP by BLOCK_BREAKER.config.entry<Double>("break_speed_clamp")
 
 class BlockBreaker(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

@@ -11,13 +11,14 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.nmsutils.particle.particle
 import xyz.xenondevs.nmsutils.particle.vibration
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.registry.Blocks
+import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.recipe.RecipeManager
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.addon.machines.registry.Blocks
-import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.TileEntityPacketTask
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
@@ -34,11 +35,9 @@ import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeItem
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MAX_ENERGY = configReloadable { NovaConfig[Blocks.CRYSTALLIZER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[Blocks.CRYSTALLIZER].getLong("energy_per_tick") }
+private val MAX_ENERGY = Blocks.CRYSTALLIZER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = Blocks.CRYSTALLIZER.config.entry<Long>("energy_per_tick")
 
 class Crystallizer(
     blockState: NovaTileEntityState

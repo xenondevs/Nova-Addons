@@ -8,29 +8,23 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterWindow
+import xyz.xenondevs.nova.addon.logistics.registry.Items
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.item.logic.PacketItemData
-import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterWindow
-import xyz.xenondevs.nova.addon.logistics.registry.Items
+import xyz.xenondevs.nova.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.tileentity.network.item.ItemFilter
 import xyz.xenondevs.nova.tileentity.network.item.getOrCreateFilterConfig
 import xyz.xenondevs.nova.tileentity.network.item.saveFilterConfig
-import xyz.xenondevs.nova.util.item.localizedName
+import xyz.xenondevs.nova.util.item.ItemUtils
 import xyz.xenondevs.nova.util.item.novaItem
 
-private val FILTER_MATERIALS = hashMapOf(
-    BasicItemFilterBehavior.size to Items.BASIC_ITEM_FILTER,
-    AdvancedItemFilterBehavior.size to Items.ADVANCED_ITEM_FILTER,
-    EliteItemFilterBehavior.size to Items.ELITE_ITEM_FILTER,
-    UltimateItemFilterBehavior.size to Items.ULTIMATE_ITEM_FILTER
-)
-
 fun ItemStack.getItemFilterConfig(): ItemFilter? {
-    return (this.novaItem?.getBehavior(ItemFilterBehavior::class))
+    return (this.novaItem?.getBehaviorOrNull(ItemFilterBehavior::class))
         ?.getFilterConfig(this)
 }
 
@@ -41,17 +35,29 @@ fun NovaItem?.isItemFilter(): Boolean {
         || this == Items.ULTIMATE_ITEM_FILTER
 }
 
+private val FILTER_MATERIALS: Map<Int, NovaItem> = setOf(
+    Items.BASIC_ITEM_FILTER,
+    Items.ADVANCED_ITEM_FILTER,
+    Items.ELITE_ITEM_FILTER,
+    Items.ULTIMATE_ITEM_FILTER
+).associateBy { it.getBehavior<ItemFilterBehavior>().size }
+
 fun findCorrectFilterItem(itemFilter: ItemFilter): NovaItem {
     return FILTER_MATERIALS[itemFilter.size] ?: Items.BASIC_ITEM_FILTER
 }
 
-abstract class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior() {
+class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior {
     
     val size by size
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, event: PlayerInteractEvent) {
+    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+        if (wrappedEvent.actionPerformed)
+            return
+        
+        val event = wrappedEvent.event
         if (action == Action.RIGHT_CLICK_AIR) {
             event.isCancelled = true
+            wrappedEvent.actionPerformed = true
             ItemFilterWindow(player, itemStack.novaItem!!, size, itemStack)
         }
     }
@@ -99,16 +105,14 @@ abstract class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior() {
         )
         
         filterConfig.items.filterNotNull().forEach {
-            lines += Component.text("- ", NamedTextColor.GRAY)
-                .append(Component.translatable(it.localizedName ?: "Unknown Name"))
+            lines += Component.text("- ", NamedTextColor.GRAY).append(ItemUtils.getName(it))
         }
         
         itemData.addLore(lines)
     }
     
+    companion object : ItemBehaviorFactory<ItemFilterBehavior> {
+        override fun create(item: NovaItem) = ItemFilterBehavior(item.config.entry("size"))
+    }
+    
 }
-
-object BasicItemFilterBehavior : ItemFilterBehavior(configReloadable { NovaConfig[Items.BASIC_ITEM_FILTER].getInt("size") })
-object AdvancedItemFilterBehavior : ItemFilterBehavior(configReloadable { NovaConfig[Items.ADVANCED_ITEM_FILTER].getInt("size") })
-object EliteItemFilterBehavior : ItemFilterBehavior(configReloadable { NovaConfig[Items.ELITE_ITEM_FILTER].getInt("size") })
-object UltimateItemFilterBehavior : ItemFilterBehavior(configReloadable { NovaConfig[Items.ULTIMATE_ITEM_FILTER].getInt("size") })

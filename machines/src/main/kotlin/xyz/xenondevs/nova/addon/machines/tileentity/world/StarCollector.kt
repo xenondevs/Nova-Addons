@@ -13,14 +13,15 @@ import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.nmsutils.particle.color
 import xyz.xenondevs.nmsutils.particle.dustTransition
 import xyz.xenondevs.nmsutils.particle.particle
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.STAR_COLLECTOR
+import xyz.xenondevs.nova.addon.machines.registry.Items
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.resources.model.data.DisplayEntityBlockModelData
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.STAR_COLLECTOR
-import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -38,15 +39,13 @@ import xyz.xenondevs.nova.util.center
 import xyz.xenondevs.nova.util.dropItem
 import xyz.xenondevs.nova.util.sendTo
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeArmorStand
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.awt.Color
 
-private val MAX_ENERGY = configReloadable { NovaConfig[STAR_COLLECTOR].getLong("capacity") }
-private val IDLE_ENERGY_PER_TICK = configReloadable { NovaConfig[STAR_COLLECTOR].getLong("energy_per_tick_idle") }
-private val COLLECTING_ENERGY_PER_TICK = configReloadable { NovaConfig[STAR_COLLECTOR].getLong("energy_per_tick_collecting") }
-private val IDLE_TIME by configReloadable { NovaConfig[STAR_COLLECTOR].getInt("idle_time") }
-private val COLLECTION_TIME by configReloadable { NovaConfig[STAR_COLLECTOR].getInt("collection_time") }
+private val MAX_ENERGY = STAR_COLLECTOR.config.entry<Long>("capacity")
+private val IDLE_ENERGY_PER_TICK = STAR_COLLECTOR.config.entry<Long>("energy_per_tick_idle")
+private val COLLECTING_ENERGY_PER_TICK = STAR_COLLECTOR.config.entry<Long>("energy_per_tick_collecting")
+private val IDLE_TIME by STAR_COLLECTOR.config.entry<Int>("idle_time")
+private val COLLECTION_TIME by STAR_COLLECTOR.config.entry<Int>("collection_time")
 
 private const val STAR_PARTICLE_DISTANCE_PER_TICK = 0.75
 
@@ -104,7 +103,7 @@ class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(block
             if (!GlobalValues.DROP_EXCESS_ON_GROUND && inventory.isFull) return
             if (energyHolder.energy >= energyHolder.specialEnergyConsumption) {
                 energyHolder.energy -= energyHolder.specialEnergyConsumption
-                handleCollectionTick() 
+                handleCollectionTick()
             }
         } else if (energyHolder.energy >= energyHolder.energyConsumption) {
             energyHolder.energy -= energyHolder.energyConsumption
@@ -194,7 +193,7 @@ class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(block
             override val barItem = DefaultGuiItems.BAR_GREEN
             override fun modifyItemBuilder(itemBuilder: ItemBuilder): ItemBuilder {
                 if (timeSpentCollecting != -1)
-                    itemBuilder.setDisplayName(Component.translatable( "menu.machines.star_collector.collection", NamedTextColor.GRAY))
+                    itemBuilder.setDisplayName(Component.translatable("menu.machines.star_collector.collection", NamedTextColor.GRAY))
                 return itemBuilder
             }
         }

@@ -2,16 +2,14 @@
 
 package xyz.xenondevs.nova.addon.logistics.registry
 
+import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
+import xyz.xenondevs.nova.addon.logistics.item.StorageUnitItemBehavior
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
-import xyz.xenondevs.nova.addon.logistics.Logistics
-import xyz.xenondevs.nova.addon.logistics.item.AdvancedItemFilterBehavior
-import xyz.xenondevs.nova.addon.logistics.item.BasicItemFilterBehavior
-import xyz.xenondevs.nova.addon.logistics.item.EliteItemFilterBehavior
-import xyz.xenondevs.nova.addon.logistics.item.StorageUnitItemBehavior
-import xyz.xenondevs.nova.addon.logistics.item.UltimateItemFilterBehavior
+import xyz.xenondevs.nova.initialize.InitStage
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Logistics.registry {
     
     val BASIC_CABLE = registerItem(Blocks.BASIC_CABLE)
@@ -37,10 +35,10 @@ object Items : ItemRegistry by Logistics.registry {
     val VACUUM_CHEST = registerItem(Blocks.VACUUM_CHEST)
     val TRASH_CAN = registerItem(Blocks.TRASH_CAN)
     
-    val BASIC_ITEM_FILTER = registerItem("basic_item_filter", BasicItemFilterBehavior)
-    val ADVANCED_ITEM_FILTER = registerItem("advanced_item_filter", AdvancedItemFilterBehavior)
-    val ELITE_ITEM_FILTER = registerItem("elite_item_filter", EliteItemFilterBehavior)
-    val ULTIMATE_ITEM_FILTER = registerItem("ultimate_item_filter", UltimateItemFilterBehavior)
+    val BASIC_ITEM_FILTER = registerItem("basic_item_filter", ItemFilterBehavior)
+    val ADVANCED_ITEM_FILTER = registerItem("advanced_item_filter", ItemFilterBehavior)
+    val ELITE_ITEM_FILTER = registerItem("elite_item_filter", ItemFilterBehavior)
+    val ULTIMATE_ITEM_FILTER = registerItem("ultimate_item_filter", ItemFilterBehavior)
     
     val TANK_WATER_LEVELS = registerUnnamedItem("tank_water_levels")
     val TANK_LAVA_LEVELS = registerUnnamedItem("tank_lava_levels")

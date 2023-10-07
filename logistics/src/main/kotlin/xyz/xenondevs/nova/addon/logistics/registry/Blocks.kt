@@ -3,12 +3,6 @@
 package xyz.xenondevs.nova.addon.logistics.registry
 
 import org.bukkit.Material.*
-import xyz.xenondevs.nova.addon.registry.BlockRegistry
-import xyz.xenondevs.nova.data.world.block.property.Directional
-import xyz.xenondevs.nova.initialize.Init
-import xyz.xenondevs.nova.item.options.BlockOptions
-import xyz.xenondevs.nova.item.tool.VanillaToolCategories
-import xyz.xenondevs.nova.item.tool.VanillaToolTiers
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedFluidTank
@@ -29,9 +23,16 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.createBasicPowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.createCreativePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.createElitePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.createUltimatePowerCell
+import xyz.xenondevs.nova.addon.registry.BlockRegistry
+import xyz.xenondevs.nova.data.world.block.property.Directional
+import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
+import xyz.xenondevs.nova.item.options.BlockOptions
+import xyz.xenondevs.nova.item.tool.VanillaToolCategories
+import xyz.xenondevs.nova.item.tool.VanillaToolTiers
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object Blocks : BlockRegistry by Logistics.registry {
     
     private val CABLE = BlockOptions(0.0, SoundGroup.STONE)

@@ -8,9 +8,9 @@ import xyz.xenondevs.nova.data.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.item.logic.PacketItemData
 import xyz.xenondevs.nova.tileentity.TileEntity
-import xyz.xenondevs.nova.util.item.localizedName
+import xyz.xenondevs.nova.util.item.ItemUtils
 
-object StorageUnitItemBehavior : ItemBehavior() {
+object StorageUnitItemBehavior : ItemBehavior {
     
     override fun updatePacketItemData(data: NamespacedCompound, itemData: PacketItemData) {
         val tileEntityData: Compound = data[TileEntity.TILE_ENTITY_DATA_KEY] ?: return
@@ -21,7 +21,7 @@ object StorageUnitItemBehavior : ItemBehavior() {
             Component.text()
                 .color(NamedTextColor.GRAY)
                 .append(Component.translatable("${amount}x "))
-                .append(Component.translatable(type.localizedName ?: type.type.name.lowercase()))
+                .append(ItemUtils.getName(type))
                 .build()
         )
     }

@@ -4,10 +4,10 @@ import net.minecraft.resources.ResourceLocation
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice
 import org.bukkit.potion.PotionEffectType
+import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.data.recipe.ConversionNovaRecipe
 import xyz.xenondevs.nova.data.recipe.MultiInputChoiceRecipe
 import xyz.xenondevs.nova.data.recipe.NovaRecipe
-import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
 
 class PulverizerRecipe(

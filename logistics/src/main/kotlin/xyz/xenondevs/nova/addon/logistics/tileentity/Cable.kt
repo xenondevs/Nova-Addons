@@ -10,13 +10,12 @@ import org.bukkit.event.block.BlockBreakEvent
 import xyz.xenondevs.commons.collections.enumMap
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.immutable.provider
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.logistics.gui.cable.CableConfigGui
+import xyz.xenondevs.nova.addon.logistics.registry.Blocks
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.resources.model.data.DisplayEntityBlockModelData
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultItems
-import xyz.xenondevs.nova.addon.logistics.gui.cable.CableConfigGui
-import xyz.xenondevs.nova.addon.logistics.registry.Blocks
 import xyz.xenondevs.nova.tileentity.TileEntity
 import xyz.xenondevs.nova.tileentity.network.DefaultNetworkTypes.ENERGY
 import xyz.xenondevs.nova.tileentity.network.DefaultNetworkTypes.FLUID
@@ -287,21 +286,21 @@ open class Cable(
     
 }
 
-private val BASIC_ENERGY_RATE = configReloadable { NovaConfig[Blocks.BASIC_CABLE].getLong("energy_transfer_rate") }
-private val BASIC_ITEM_RATE = configReloadable { NovaConfig[Blocks.BASIC_CABLE].getInt("item_transfer_rate") }
-private val BASIC_FLUID_RATE = configReloadable { NovaConfig[Blocks.BASIC_CABLE].getLong("fluid_transfer_rate") }
+private val BASIC_ENERGY_RATE = Blocks.BASIC_CABLE.config.entry<Long>("energy_transfer_rate")
+private val BASIC_ITEM_RATE = Blocks.BASIC_CABLE.config.entry<Int>("item_transfer_rate")
+private val BASIC_FLUID_RATE = Blocks.BASIC_CABLE.config.entry<Long>("fluid_transfer_rate")
 
-private val ADVANCED_ENERGY_RATE = configReloadable { NovaConfig[Blocks.ADVANCED_CABLE].getLong("energy_transfer_rate") }
-private val ADVANCED_ITEM_RATE = configReloadable { NovaConfig[Blocks.ADVANCED_CABLE].getInt("item_transfer_rate") }
-private val ADVANCED_FLUID_RATE = configReloadable { NovaConfig[Blocks.ADVANCED_CABLE].getLong("fluid_transfer_rate") }
+private val ADVANCED_ENERGY_RATE = Blocks.ADVANCED_CABLE.config.entry<Long>("energy_transfer_rate")
+private val ADVANCED_ITEM_RATE = Blocks.ADVANCED_CABLE.config.entry<Int>("item_transfer_rate")
+private val ADVANCED_FLUID_RATE = Blocks.ADVANCED_CABLE.config.entry<Long>("fluid_transfer_rate")
 
-private val ELITE_ENERGY_RATE = configReloadable { NovaConfig[Blocks.ELITE_CABLE].getLong("energy_transfer_rate") }
-private val ELITE_ITEM_RATE = configReloadable { NovaConfig[Blocks.ELITE_CABLE].getInt("item_transfer_rate") }
-private val ELITE_FLUID_RATE = configReloadable { NovaConfig[Blocks.ELITE_CABLE].getLong("fluid_transfer_rate") }
+private val ELITE_ENERGY_RATE = Blocks.ELITE_CABLE.config.entry<Long>("energy_transfer_rate")
+private val ELITE_ITEM_RATE = Blocks.ELITE_CABLE.config.entry<Int>("item_transfer_rate")
+private val ELITE_FLUID_RATE = Blocks.ELITE_CABLE.config.entry<Long>("fluid_transfer_rate")
 
-private val ULTIMATE_ENERGY_RATE = configReloadable { NovaConfig[Blocks.ULTIMATE_CABLE].getLong("energy_transfer_rate") }
-private val ULTIMATE_ITEM_RATE = configReloadable { NovaConfig[Blocks.ULTIMATE_CABLE].getInt("item_transfer_rate") }
-private val ULTIMATE_FLUID_RATE = configReloadable { NovaConfig[Blocks.ULTIMATE_CABLE].getLong("fluid_transfer_rate") }
+private val ULTIMATE_ENERGY_RATE = Blocks.ULTIMATE_CABLE.config.entry<Long>("energy_transfer_rate")
+private val ULTIMATE_ITEM_RATE = Blocks.ULTIMATE_CABLE.config.entry<Int>("item_transfer_rate")
+private val ULTIMATE_FLUID_RATE = Blocks.ULTIMATE_CABLE.config.entry<Long>("fluid_transfer_rate")
 
 class BasicCable(blockState: NovaTileEntityState) : Cable(
     BASIC_ENERGY_RATE,

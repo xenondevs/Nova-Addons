@@ -3,8 +3,9 @@ package xyz.xenondevs.nova.addon.machines.registry
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object GuiMaterials : ItemRegistry by Machines.registry {
     
     val GEAR_BTN_OFF = registerItem("gui_gear_btn_off", localizedName = "menu.machines.mechanical_press.press_gears", isHidden = true)

@@ -2,11 +2,12 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_PLACER
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_PLACER
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -23,11 +24,9 @@ import xyz.xenondevs.nova.util.place
 import xyz.xenondevs.nova.world.block.BlockManager
 import xyz.xenondevs.nova.world.block.context.BlockPlaceContext
 import xyz.xenondevs.nova.world.pos
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MAX_ENERGY = configReloadable { NovaConfig[BLOCK_PLACER].getLong("capacity") }
-private val ENERGY_PER_PLACE = configReloadable { NovaConfig[BLOCK_PLACER].getLong("energy_per_place") }
+private val MAX_ENERGY = BLOCK_PLACER.config.entry<Long>("capacity")
+private val ENERGY_PER_PLACE = BLOCK_PLACER.config.entry<Long>("energy_per_place")
 
 class BlockPlacer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -46,8 +45,8 @@ class BlockPlacer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
             val ctx = BlockPlaceContext(placePos, item, this, location, ownerUUID, placePos.copy(y = placePos.y - 1), BlockFace.UP)
             if (placePos.block.place(ctx)) {
                 inventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
+                return true
             } else continue
-            
         }
         
         return false

@@ -3,10 +3,11 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.notifyWindows
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.CHUNK_LOADER
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.ChunkLoadManager
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
@@ -21,12 +22,10 @@ import xyz.xenondevs.nova.ui.item.DisplayNumberItem
 import xyz.xenondevs.nova.ui.item.RemoveNumberItem
 import xyz.xenondevs.nova.util.getSurroundingChunks
 import xyz.xenondevs.nova.world.pos
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 
-private val MAX_ENERGY = configReloadable { NovaConfig[CHUNK_LOADER].getLong("capacity") }
-private val ENERGY_PER_CHUNK by configReloadable { NovaConfig[CHUNK_LOADER].getLong("energy_per_chunk") }
-private val MAX_RANGE by configReloadable { NovaConfig[CHUNK_LOADER].getInt("max_range") }
+private val MAX_ENERGY = CHUNK_LOADER.config.entry<Long>("capacity")
+private val ENERGY_PER_CHUNK by CHUNK_LOADER.config.entry<Long>("energy_per_chunk")
+private val MAX_RANGE by CHUNK_LOADER.config.entry<Int>("max_range")
 
 class ChunkLoader(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -104,7 +103,7 @@ class ChunkLoader(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('p', AddNumberItem({ 0..MAX_RANGE }, { range }, ::setRange, "menu.nova.region.increase").also(rangeItems::add))
             .addIngredient('m', RemoveNumberItem({ 0..MAX_RANGE }, { range }, ::setRange, "menu.nova.region.decrease").also(rangeItems::add))
-            .addIngredient('n', DisplayNumberItem ({ range + 1 }, "menu.nova.region.size").also(rangeItems::add))
+            .addIngredient('n', DisplayNumberItem({ range + 1 }, "menu.nova.region.size").also(rangeItems::add))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(3, energyHolder))
             .build()

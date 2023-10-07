@@ -9,14 +9,15 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nmsutils.particle.color
 import xyz.xenondevs.nmsutils.particle.particle
-import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.TREE_FACTORY
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
 import xyz.xenondevs.nova.addon.machines.registry.Models
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.GlobalValues
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -33,8 +34,6 @@ import xyz.xenondevs.nova.util.dropItem
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.sendTo
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeItemDisplay
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.awt.Color
 
 private class PlantConfiguration(val miniature: NovaItem, val loot: ItemStack, val color: Color)
@@ -53,10 +52,10 @@ private val PLANTS = mapOf(
     Material.BROWN_MUSHROOM to PlantConfiguration(Models.GIANT_BROWN_MUSHROOM_MINIATURE, ItemStack(Material.BROWN_MUSHROOM, 3), Color(149, 112, 80))
 )
 
-private val MAX_ENERGY = configReloadable { NovaConfig[TREE_FACTORY].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[TREE_FACTORY].getLong("energy_per_tick") }
-private val PROGRESS_PER_TICK by configReloadable { NovaConfig[TREE_FACTORY].getDouble("progress_per_tick") }
-private val IDLE_TIME by configReloadable { NovaConfig[TREE_FACTORY].getInt("idle_time") }
+private val MAX_ENERGY = TREE_FACTORY.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = TREE_FACTORY.config.entry<Long>("energy_per_tick")
+private val PROGRESS_PER_TICK by TREE_FACTORY.config.entry<Double>("progress_per_tick")
+private val IDLE_TIME by TREE_FACTORY.config.entry<Int>("idle_time")
 
 class TreeFactory(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

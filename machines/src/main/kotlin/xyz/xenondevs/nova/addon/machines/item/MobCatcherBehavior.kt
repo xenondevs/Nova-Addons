@@ -20,12 +20,12 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
+import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.item.logic.PacketItemData
+import xyz.xenondevs.nova.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.addPrioritized
 import xyz.xenondevs.nova.util.data.NamespacedKey
@@ -37,13 +37,9 @@ private val DATA_KEY = NamespacedKey(Machines, "entitydata")
 private val TYPE_KEY = NamespacedKey(Machines, "entitytype")
 private val TIME_KEY = NamespacedKey(Machines, "filltime")
 
-private val BLACKLISTED_ENTITY_TYPES by configReloadable {
-    NovaConfig[Items.MOB_CATCHER]
-        .getStringList("entity_blacklist")
-        .mapTo(HashSet(), EntityType::valueOf)
-}
+private val BLACKLISTED_ENTITY_TYPES by Items.MOB_CATCHER.config.entry<Set<EntityType>>("entity_blacklist")
 
-object MobCatcherBehavior : ItemBehavior() {
+object MobCatcherBehavior : ItemBehavior {
     
     override fun handleEntityInteract(player: Player, itemStack: ItemStack, clicked: Entity, event: PlayerInteractAtEntityEvent) {
         if (clicked is Mob
@@ -58,7 +54,7 @@ object MobCatcherBehavior : ItemBehavior() {
                 val newCatcher = Items.MOB_CATCHER.createItemStack()
                 absorbEntity(newCatcher, clicked)
                 
-                player.inventory.getItem(event.hand)!!.amount -= 1
+                player.inventory.getItem(event.hand).amount -= 1
                 player.inventory.addPrioritized(event.hand, newCatcher)
                 
                 if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
@@ -69,17 +65,21 @@ object MobCatcherBehavior : ItemBehavior() {
         }
     }
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, event: PlayerInteractEvent) {
+    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+        if (wrappedEvent.actionPerformed)
+            return
+        
+        val event = wrappedEvent.event
         if (action == Action.RIGHT_CLICK_BLOCK) {
             // Adds a small delay to prevent players from spamming the item
-            if (System.currentTimeMillis() - (itemStack.retrieveData<Long>(TIME_KEY) ?: -1 ) < 50) return
+            if (System.currentTimeMillis() - (itemStack.retrieveData<Long>(TIME_KEY) ?: -1) < 50) return
             
             val data = getEntityData(itemStack)
             if (data != null) {
                 val location = player.eyeLocation.getTargetLocation(0.25, 8.0)
                 
                 if (ProtectionManager.canUseItem(player, itemStack, location).get()) {
-                    player.inventory.getItem(event.hand!!)!!.amount -= 1
+                    player.inventory.getItem(event.hand!!).amount -= 1
                     player.inventory.addPrioritized(event.hand!!, Items.MOB_CATCHER.createItemStack())
                     
                     

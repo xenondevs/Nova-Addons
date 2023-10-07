@@ -18,4 +18,4 @@ repair_ingredient: "minecraft:prismarine_shard"
 
 # Enchantable Options
 enchantment_value: 25
-enchantment_categories: ["digger", "breakable"]
+enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]

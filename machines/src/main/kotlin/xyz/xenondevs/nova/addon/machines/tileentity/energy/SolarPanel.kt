@@ -2,10 +2,11 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import org.bukkit.Material
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SOLAR_PANEL
+import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -16,13 +17,11 @@ import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.item.isGlass
 import xyz.xenondevs.nova.util.runTaskTimer
 import xyz.xenondevs.nova.util.untilHeightLimit
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-private val MAX_ENERGY = configReloadable { NovaConfig[SOLAR_PANEL].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[SOLAR_PANEL].getLong("energy_per_tick") }
+private val MAX_ENERGY = SOLAR_PANEL.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = SOLAR_PANEL.config.entry<Long>("energy_per_tick")
 
 class SolarPanel(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     

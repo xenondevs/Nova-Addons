@@ -1,20 +1,21 @@
 package xyz.xenondevs.nova.addon.machines.recipe.group
 
-import net.md_5.bungee.api.chat.TranslatableComponent
+import net.kyori.adventure.text.Component
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.item.DefaultGuiItems
+import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.nova.addon.machines.recipe.FluidInfuserRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.ui.StaticFluidBar
 import xyz.xenondevs.nova.ui.menu.item.recipes.createRecipeChoiceItem
 import xyz.xenondevs.nova.ui.menu.item.recipes.group.RecipeGroup
 
-private val FLUID_CAPACITY = NovaConfig[Blocks.FLUID_INFUSER].getLong("fluid_capacity")
+private val FLUID_CAPACITY by Blocks.FLUID_INFUSER.config.entry<Long>("fluid_capacity")
 
 object FluidInfuserRecipeGroup : RecipeGroup<FluidInfuserRecipe>() {
     
@@ -33,10 +34,10 @@ object FluidInfuserRecipeGroup : RecipeGroup<FluidInfuserRecipe>() {
             translate = "menu.machines.recipe.extract_fluid"
         }
         
-        progressItem.setDisplayName(TranslatableComponent(
+        progressItem.setDisplayName(Component.translatable(
             translate,
-            recipe.fluidAmount,
-            TranslatableComponent(recipe.fluidType.localizedName)
+            Component.text(recipe.fluidAmount),
+            Component.translatable(recipe.fluidType.localizedName)
         ))
         
         return Gui.normal()
@@ -50,9 +51,8 @@ object FluidInfuserRecipeGroup : RecipeGroup<FluidInfuserRecipe>() {
             .addIngredient('f', StaticFluidBar(recipe.fluidType, recipe.fluidAmount, FLUID_CAPACITY, 3))
             .addIngredient('t', DefaultGuiItems.TP_STOPWATCH
                 .createClientsideItemBuilder()
-                .setDisplayName(TranslatableComponent("menu.nova.recipe.time", recipe.time / 20.0))
-            )
-            .build()
+                .setDisplayName(Component.translatable("menu.nova.recipe.time", Component.text(recipe.time / 20.0)))
+            ).build()
     }
     
 }

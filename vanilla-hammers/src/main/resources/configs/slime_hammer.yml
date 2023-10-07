@@ -19,4 +19,4 @@ repair_ingredient: "minecraft:slime_ball"
 
 # Enchantable Options
 enchantment_value: 20
-enchantment_categories: ["digger", "breakable"]
+enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]

@@ -1,10 +1,11 @@
 package xyz.xenondevs.nova.addon.vanillahammers.registry
 
 import xyz.xenondevs.nova.addon.registry.ToolTierRegistry
-import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
+import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitStage
 
-@Init
+@Init(stage = InitStage.PRE_PACK)
 object ToolTiers : ToolTierRegistry by VanillaHammers.registry {
     
     val EMERALD = registerToolTier("emerald")

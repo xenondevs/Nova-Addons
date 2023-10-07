@@ -22,13 +22,14 @@ import xyz.xenondevs.invui.item.builder.SkullBuilder
 import xyz.xenondevs.invui.item.builder.SkullBuilder.HeadTexture
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_DUPLICATOR
 import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -48,19 +49,17 @@ import xyz.xenondevs.nova.util.isBetweenXZ
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.nmsEntity
 import xyz.xenondevs.nova.util.runAsyncTask
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import java.net.URL
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-private val MAX_ENERGY = configReloadable { NovaConfig[MOB_DUPLICATOR].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[MOB_DUPLICATOR].getLong("energy_per_tick") }
-private val ENERGY_PER_TICK_NBT = configReloadable { NovaConfig[MOB_DUPLICATOR].getLong("energy_per_tick_nbt") }
-private val IDLE_TIME by configReloadable { NovaConfig[MOB_DUPLICATOR].getInt("idle_time") }
-private val IDLE_TIME_NBT by configReloadable { NovaConfig[MOB_DUPLICATOR].getInt("idle_time_nbt") }
-private val ENTITY_LIMIT by configReloadable { NovaConfig[MOB_DUPLICATOR].getInt("entity_limit") }
-private val NERF_MOBS by configReloadable { NovaConfig[MOB_DUPLICATOR].getBoolean("nerf_mobs") }
+private val MAX_ENERGY = MOB_DUPLICATOR.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = MOB_DUPLICATOR.config.entry<Long>("energy_per_tick")
+private val ENERGY_PER_TICK_NBT = MOB_DUPLICATOR.config.entry<Long>("energy_per_tick_nbt")
+private val IDLE_TIME by MOB_DUPLICATOR.config.entry<Int>("idle_time")
+private val IDLE_TIME_NBT by MOB_DUPLICATOR.config.entry<Int>("idle_time_nbt")
+private val ENTITY_LIMIT by MOB_DUPLICATOR.config.entry<Int>("entity_limit")
+private val NERF_MOBS by MOB_DUPLICATOR.config.entry<Boolean>("nerf_mobs")
 
 class MobDuplicator(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -120,7 +119,7 @@ class MobDuplicator(blockState: NovaTileEntityState) : NetworkedTileEntity(block
     }
     
     private fun updateEntityData(itemStack: ItemStack?): Boolean {
-        val catcher = itemStack?.novaItem?.getBehavior(MobCatcherBehavior::class)
+        val catcher = itemStack?.novaItem?.getBehaviorOrNull(MobCatcherBehavior::class)
         if (catcher != null) {
             setEntityData(catcher.getEntityType(itemStack), catcher.getEntityData(itemStack))
             return true

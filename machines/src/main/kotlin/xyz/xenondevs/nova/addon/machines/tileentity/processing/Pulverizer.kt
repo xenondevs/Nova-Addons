@@ -2,20 +2,21 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.resources.ResourceLocation
-import xyz.xenondevs.commons.provider.mutable.map
+import xyz.xenondevs.commons.provider.mutable.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nmsutils.particle.particle
-import xyz.xenondevs.nova.data.config.NovaConfig
-import xyz.xenondevs.nova.data.config.configReloadable
-import xyz.xenondevs.nova.data.recipe.NovaRecipe
-import xyz.xenondevs.nova.data.recipe.RecipeManager
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
 import xyz.xenondevs.nova.addon.machines.gui.PulverizerProgressItem
 import xyz.xenondevs.nova.addon.machines.recipe.PulverizerRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PULVERIZER
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.recipe.NovaRecipe
+import xyz.xenondevs.nova.data.recipe.RecipeManager
+import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
@@ -27,13 +28,11 @@ import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.advance
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.max
 
-private val MAX_ENERGY = configReloadable { NovaConfig[PULVERIZER].getLong("capacity") }
-private val ENERGY_PER_TICK = configReloadable { NovaConfig[PULVERIZER].getLong("energy_per_tick") }
-private val PULVERIZE_SPEED by configReloadable { NovaConfig[PULVERIZER].getInt("speed") }
+private val MAX_ENERGY = PULVERIZER.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = PULVERIZER.config.entry<Long>("energy_per_tick")
+private val PULVERIZE_SPEED by PULVERIZER.config.entry<Int>("speed")
 
 class Pulverizer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
@@ -51,7 +50,7 @@ class Pulverizer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
     private var timeLeft by storedValue("pulverizerTime") { 0 }
     private var pulverizeSpeed = 0
     
-    private var currentRecipe: PulverizerRecipe? by storedValue<ResourceLocation>("currentRecipe").map(
+    private var currentRecipe: PulverizerRecipe? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
         { RecipeManager.getRecipe(RecipeTypes.PULVERIZER, it) },
         NovaRecipe::id
     )
