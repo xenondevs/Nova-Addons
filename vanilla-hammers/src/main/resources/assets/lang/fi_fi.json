@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Esittele ainutlaatuisuuttasi Emerald Hammerin avulla.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Viimeistele laskeutuminen tulisella vasaralla.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Tee obsidiaanivasara ja jatka kaivostoimintaa 17 tuntia pysähtymättä.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Tee Ender Vasara, joka lopettaa kaivostoiminnan murheet."
+  "advancement.vanilla_hammers.ender_hammer.description": "Tee Ender Vasara, joka lopettaa kaivostoiminnan murheet.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Gigantismin kirous"
 }
