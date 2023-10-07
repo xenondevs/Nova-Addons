@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Покажете своята уникалност с чукче за изумруди.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Завършете спускането си с огнен чук.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Изработете обсидианов чук и копайте в продължение на 17 часа, без да спирате.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Изработете чука на Ендър, за да сложите край на миньорските си неволи."
+  "advancement.vanilla_hammers.ender_hammer.description": "Изработете чука на Ендър, за да сложите край на миньорските си неволи.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Проклятие на гигантизма"
 }
