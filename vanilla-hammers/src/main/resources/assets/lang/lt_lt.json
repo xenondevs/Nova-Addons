@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Pademonstruokite savo unikalumą naudodami Smaragdo plaktuką.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Nusileidimą užbaigkite ugniniu plaktuku.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Pasigaminkite Obsidiano plaktuką ir kaskite 17 valandų be sustojimo.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Pasigaminkite Enderio plaktuką, kad užbaigtumėte savo kasybos bėdas."
+  "advancement.vanilla_hammers.ender_hammer.description": "Pasigaminkite Enderio plaktuką, kad užbaigtumėte savo kasybos bėdas.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Gigantizmo prakeiksmas"
 }
