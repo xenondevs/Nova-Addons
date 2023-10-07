@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Muestra tu singularidad con un Martillo Esmeralda.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Finaliza tu descenso con un Martillo Ardiente.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Crea un martillo de obsidiana y explota durante 17 horas sin parar.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Crea el Martillo de Ender para acabar con tus problemas mineros."
+  "advancement.vanilla_hammers.ender_hammer.description": "Crea el Martillo de Ender para acabar con tus problemas mineros.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Maldición del gigantismo"
 }
