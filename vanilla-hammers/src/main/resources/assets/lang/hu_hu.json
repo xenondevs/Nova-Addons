@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Mutassa meg egyediségét egy smaragd kalapáccsal.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Tüzes kalapáccsal fejezd be az ereszkedést.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Készíts egy obszidián kalapácsot, és bányássz 17 órán át megállás nélkül.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Készítsd el az Ender Hammer-t, hogy véget vess a bányászattal kapcsolatos gondjaidnak."
+  "advancement.vanilla_hammers.ender_hammer.description": "Készítsd el az Ender Hammer-t, hogy véget vess a bányászattal kapcsolatos gondjaidnak.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "A gigantizmus átka"
 }
