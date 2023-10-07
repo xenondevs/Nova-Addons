@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Zümrüt Çekiç ile benzersizliğinizi sergileyin.",
   "advancement.vanilla_hammers.fiery_hammer.description": "İnişinizi Ateşli Çekiç ile tamamlayın.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Bir Obsidiyen Çekici üretin ve 17 saat boyunca hiç durmadan madencilik yapın.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Madencilik sıkıntılarınıza son vermek için Ender Çekici üretin."
+  "advancement.vanilla_hammers.ender_hammer.description": "Madencilik sıkıntılarınıza son vermek için Ender Çekici üretin.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Devliğin Laneti"
 }
