@@ -1,4 +1,4 @@
-version = "1.2"
+version = "1.3-RC.1"
 
 addon {
     main.set("xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers")
