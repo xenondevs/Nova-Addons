@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.fiery_hammer.description": "Finalize sua descida com um martelo de fogo.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Construa um martelo de obsidiana e va minerar por 17 horas sem parar.",
   "advancement.vanilla_hammers.ender_hammer.description": "Construa o martelo do ender para acabar com os seus problemas de mineração.",
-  "menu.vanilla_hammers.items.category.equipment": "Equipamento"
+  "menu.vanilla_hammers.items.category.equipment": "Equipamento",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Maldição do Gigantismo"
 }
