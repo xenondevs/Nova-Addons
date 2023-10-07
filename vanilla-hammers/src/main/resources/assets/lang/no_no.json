@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Vis frem din egenart med en Emerald Hammer.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Avslutt nedstigningen med en brennende hammer.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Lag en obsidianhammer og driv gruvedrift i 17 timer uten stans.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Lag Enderhammeren for å få slutt på gruveproblemene dine."
+  "advancement.vanilla_hammers.ender_hammer.description": "Lag Enderhammeren for å få slutt på gruveproblemene dine.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Gigantismens forbannelse"
 }
