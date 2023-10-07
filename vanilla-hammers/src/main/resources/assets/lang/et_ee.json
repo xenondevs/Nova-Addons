@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Näita oma ainulaadsust Smaragdvasaraga.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Lõpetage laskumine tulise vasaraga.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Valmistage obsidiaaniveski ja kaevandage 17 tundi ilma peatumata.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Valmistage Ender Hammer, et lõpetada oma kaevandamisprobleemid."
+  "advancement.vanilla_hammers.ender_hammer.description": "Valmistage Ender Hammer, et lõpetada oma kaevandamisprobleemid.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Gigantismi needus"
 }
