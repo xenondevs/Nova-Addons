@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.slime_hammer.description": "製作一把史萊姆鎚……用它敲打東西怎麼樣?",
   "advancement.vanilla_hammers.quartz_hammer.description": "用石英鎚展開火熱的征服",
   "advancement.vanilla_hammers.golden_hammer.description": "金鎚雖然不太好用，但看起來很酷!",
-  "advancement.vanilla_hammers.obsidian_hammer.description": "製作一把黑曜石鎚，然後連續挖礦17小時不休息"
+  "advancement.vanilla_hammers.obsidian_hammer.description": "製作一把黑曜石鎚，然後連續挖礦17小時不休息",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "巨人症的诅咒"
 }
