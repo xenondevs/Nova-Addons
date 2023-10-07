@@ -64,7 +64,7 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
     override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
     private val fluidTank = getFluidContainer("tank", setOf(FluidType.WATER), FLUID_CAPACITY, upgradeHolder = upgradeHolder)
     private val ingredientsInventory = getInventory("ingredients", 27, null, ::handleIngredientsInventoryAfterUpdate)
-    private val outputInventory = getInventory("output", 3, ::handleOutputPreUpdate, ::handleOutputInventoryAfterUpdate)
+    private val outputInventory = getInventory("output", 3, ::handleOutputPreUpdate) { checkBrewingPossibility() }
     
     override val energyHolder = ConsumerEnergyHolder(
         this, ENERGY_CAPACITY, ENERGY_PER_TICK, null, upgradeHolder
@@ -194,10 +194,6 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
             
             checkBrewingPossibility()
         }
-    }
-    
-    private fun handleOutputInventoryAfterUpdate(event: ItemPostUpdateEvent) {
-        checkBrewingPossibility()
     }
     
     private fun updateFalseRequiredStatus() {

@@ -49,7 +49,7 @@ class AutoCrafter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
     private var speed = 1
     private var remainingTime by storedValue<Int>("remaining_time") { 0 }
     
-    private val recipeInv = getInventory("recipe", 9, ::putItemRecipe, ::validateCraftingRecipe)
+    private val recipeInv = getInventory("recipe", 9, ::putItemRecipe) { validateCraftingRecipe() }
     private val resultInv = getInventory("result", 1, ::preventSteal)
     private val inputInv = getInventory("input", 9, ::putInputItem, ::validateCraftingIngredients)
     private val outputInv = getInventory("output", 9, ::preventOutputInput)
@@ -100,7 +100,7 @@ class AutoCrafter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
         recipeInv.setItem(SELF_UPDATE_REASON, event.slot, event.newItem)
     }
     
-    private fun validateCraftingRecipe(event: ItemPostUpdateEvent) {
+    private fun validateCraftingRecipe() {
         val matrix = recipeInv.items
         val recipe = getCraftingRecipe(matrix, world)
         if (recipe != null) {

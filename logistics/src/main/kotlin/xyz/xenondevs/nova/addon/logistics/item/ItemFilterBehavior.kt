@@ -16,6 +16,7 @@ import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.item.logic.PacketItemData
+import xyz.xenondevs.nova.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.tileentity.network.item.ItemFilter
 import xyz.xenondevs.nova.tileentity.network.item.getOrCreateFilterConfig
 import xyz.xenondevs.nova.tileentity.network.item.saveFilterConfig
@@ -49,9 +50,14 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior {
     
     val size by size
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, event: PlayerInteractEvent) {
+    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+        if (wrappedEvent.actionPerformed)
+            return
+        
+        val event = wrappedEvent.event
         if (action == Action.RIGHT_CLICK_AIR) {
             event.isCancelled = true
+            wrappedEvent.actionPerformed = true
             ItemFilterWindow(player, itemStack.novaItem!!, size, itemStack)
         }
     }

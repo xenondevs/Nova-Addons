@@ -25,6 +25,7 @@ import xyz.xenondevs.nova.data.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.item.logic.PacketItemData
+import xyz.xenondevs.nova.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.addPrioritized
 import xyz.xenondevs.nova.util.data.NamespacedKey
@@ -64,7 +65,11 @@ object MobCatcherBehavior : ItemBehavior {
         }
     }
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, event: PlayerInteractEvent) {
+    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+        if (wrappedEvent.actionPerformed)
+            return
+        
+        val event = wrappedEvent.event
         if (action == Action.RIGHT_CLICK_BLOCK) {
             // Adds a small delay to prevent players from spamming the item
             if (System.currentTimeMillis() - (itemStack.retrieveData<Long>(TIME_KEY) ?: -1) < 50) return
