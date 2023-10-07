@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "Mettete in mostra la vostra unicità con un martello di smeraldo.",
   "advancement.vanilla_hammers.fiery_hammer.description": "Completate la discesa con un Martello di fuoco.",
   "advancement.vanilla_hammers.obsidian_hammer.description": "Crea un martello di ossidiana e vai in miniera per 17 ore senza fermarti.",
-  "advancement.vanilla_hammers.ender_hammer.description": "Create il Martello di Ender per porre fine ai vostri problemi di estrazione mineraria."
+  "advancement.vanilla_hammers.ender_hammer.description": "Create il Martello di Ender per porre fine ai vostri problemi di estrazione mineraria.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Maledizione del gigantismo"
 }
