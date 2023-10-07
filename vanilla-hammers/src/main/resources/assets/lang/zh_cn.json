@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.fiery_hammer.description": "用熔岩锤完成你的下界。",
   "advancement.vanilla_hammers.obsidian_hammer.description": "制作黑曜石锤并不停歇地挖矿17个小时。",
   "advancement.vanilla_hammers.ender_hammer.description": "制作末影锤来结束你的挖矿困境。",
-  "menu.vanilla_hammers.items.category.equipment": "装备"
+  "menu.vanilla_hammers.items.category.equipment": "装备",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "巨人症的诅咒"
 }
