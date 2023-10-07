@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.slime_hammer.description": "Створіть Слизький молот... як щодо того, щоб вдарити ним по чомусь?",
   "advancement.vanilla_hammers.prismarine_hammer.description": "Змайструйте молоток з призмарину, використовуючи матеріал морів.",
   "advancement.vanilla_hammers.netherite_hammer.description": "Створіть Молот з Незериту, викуваний із стародавніх самоцвітів невідомого часу.",
-  "advancement.vanilla_hammers.obsidian_hammer.description": "Створіть обсидіановий молот і видобувайте корисні копалини протягом 17 годин без перерви."
+  "advancement.vanilla_hammers.obsidian_hammer.description": "Створіть обсидіановий молот і видобувайте корисні копалини протягом 17 годин без перерви.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Прокляття гігантизму"
 }
