@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.ender_hammer.description": "Vyrob Ender Kladivo a ukoj všechny své těžební choutky.",
   "advancement.vanilla_hammers.root.description": "Co například použít kladivo?",
   "advancement.vanilla_hammers.iron_hammer.description": "Vyrob Železné Kladivo.",
-  "advancement.vanilla_hammers.golden_hammer.description": "Tak tohle Zlaté Kladivo ti moc nepomůže, ale za to vypadá fakt cool!"
+  "advancement.vanilla_hammers.golden_hammer.description": "Tak tohle Zlaté Kladivo ti moc nepomůže, ale za to vypadá fakt cool!",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "Prokletí gigantismu"
 }
