@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.ender_hammer.description": "엔더 망치를 제작하여 채굴 문제를 해결하세요.",
   "menu.vanilla_hammers.items.category.equipment": "장비",
   "advancement.vanilla_hammers.netherite_hammer.title": "영원한 불타는 정복",
-  "advancement.vanilla_hammers.netherite_hammer.description": "알 수 없는 시대의 고대 보석으로 단조한 네더라이트 망치를 제작하세요."
+  "advancement.vanilla_hammers.netherite_hammer.description": "알 수 없는 시대의 고대 보석으로 단조한 네더라이트 망치를 제작하세요.",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "거대주의의 저주"
 }
