@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.netherite_hammer.description": "未知の時代の宝石で鍛えたネザライトのハンマーを作成する。",
   "advancement.vanilla_hammers.emerald_hammer.description": "エメラルドのハンマーで個性をアピールしよう。",
   "advancement.vanilla_hammers.fiery_hammer.description": "炎のハンマーで降臨を完了させよう。",
-  "advancement.vanilla_hammers.obsidian_hammer.description": "黒曜石のハンマーを作成し、17時間休むことなく採掘し続けよう。"
+  "advancement.vanilla_hammers.obsidian_hammer.description": "黒曜石のハンマーを作成し、17時間休むことなく採掘し続けよう。",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "巨人主義の呪い"
 }
