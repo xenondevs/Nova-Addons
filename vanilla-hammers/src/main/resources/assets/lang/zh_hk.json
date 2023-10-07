@@ -41,5 +41,6 @@
   "advancement.vanilla_hammers.emerald_hammer.description": "用绿宝石锤展示您的独特性。",
   "advancement.vanilla_hammers.fiery_hammer.description": "最后用火锤完成下坠。",
   "advancement.vanilla_hammers.obsidian_hammer.description": "制作一把黑曜石锤，然后连续 17 个小时不停地采矿。",
-  "advancement.vanilla_hammers.ender_hammer.description": "打造埃德锤，结束采矿之苦。"
+  "advancement.vanilla_hammers.ender_hammer.description": "打造埃德锤，结束采矿之苦。",
+  "enchantment.vanilla_hammers.curse_of_gigantism": "巨人症的诅咒"
 }
