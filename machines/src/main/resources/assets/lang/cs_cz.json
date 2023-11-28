@@ -225,6 +225,6 @@
   "menu.machines.items.category.equipment": "Vybavení",
   "subtitles.machines.item.armor.equip_star": "Hvězdné brnění cinká",
   "block.machines.auto_crafter": "Automatický Crafter",
-  "block.machines.auto_crafter.inv_window.title": "Interní inventura",
-  "menu.machines.auto_crafter.inventory": "Inventura"
+  "block.machines.auto_crafter.inv_window.title": "Interní Inventář",
+  "menu.machines.auto_crafter.inventory": "Inventář"
 }
