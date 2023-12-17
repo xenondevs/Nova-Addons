@@ -1,8 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.advancement
 
 import net.kyori.adventure.text.Component
+import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
-import net.minecraft.advancements.FrameType
 import net.minecraft.advancements.critereon.PlayerTrigger
 import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
@@ -16,14 +16,15 @@ import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
 import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
 import xyz.xenondevs.nova.util.obtainNovaItemsAdvancement
+import java.util.*
 
 private val ROOT = advancement(Machines, "root") {
     display(DisplayInfo(
         Items.QUARRY.clientsideProvider.get().nmsCopy,
         Component.translatable("advancement.machines.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
-        ResourceLocation("minecraft", "textures/block/tuff.png"),
-        FrameType.TASK,
+        Optional.of(ResourceLocation("minecraft", "textures/block/tuff.png")),
+        AdvancementType.TASK,
         false, false, false
     ))
     
