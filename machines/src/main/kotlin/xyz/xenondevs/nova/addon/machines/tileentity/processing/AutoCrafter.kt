@@ -23,6 +23,7 @@ import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
 import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
+import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
 import xyz.xenondevs.nova.ui.EnergyBar
 import xyz.xenondevs.nova.ui.OpenUpgradesItem
 import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
@@ -44,7 +45,7 @@ private fun getCraftingRecipe(matrix: Array<ItemStack?>, world: World): Recipe? 
     return Bukkit.getCraftingRecipe(matrix as Array<ItemStack>, world)
 }
 
-class AutoCrafter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState) {
+class AutoCrafter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
     
     private var speed = 1
     private var remainingTime by storedValue<Int>("remaining_time") { 0 }
@@ -54,7 +55,7 @@ class AutoCrafter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
     private val inputInv = getInventory("input", 9, ::putInputItem, ::validateCraftingIngredients)
     private val outputInv = getInventory("output", 9, ::preventOutputInput)
     
-    private val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.ENERGY, UpgradeTypes.EFFICIENCY)
+    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.ENERGY, UpgradeTypes.EFFICIENCY)
     override val itemHolder = NovaItemHolder(
         this,
         inputInv to NetworkConnectionType.INSERT,
