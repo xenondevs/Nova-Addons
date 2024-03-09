@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.jetpacks.registry
 
+import org.joml.Vector3f
 import xyz.xenondevs.nova.addon.jetpacks.Jetpacks
 import xyz.xenondevs.nova.addon.registry.AttachmentTypeRegistry
 import xyz.xenondevs.nova.initialize.Init
@@ -12,7 +13,13 @@ import xyz.xenondevs.nova.player.attachment.HideDownItemAttachment
 object Attachments : AttachmentTypeRegistry by Jetpacks.registry {
     
     private fun registerJetpackAttachment(name: String, material: NovaItem): AttachmentType<*> =
-        registerAttachmentType(name) { HideDownItemAttachment(40f, it, material.clientsideProvider.get()) }
+        registerAttachmentType(name) { player ->
+            HideDownItemAttachment(
+                40f, player,
+                material.clientsideProvider.get(),
+                Vector3f(0f, -0.5f, -0.15f)
+            )
+        }
     
     val BASIC_JETPACK = registerJetpackAttachment("basic_jetpack", Items.BASIC_JETPACK)
     val ADVANCED_JETPACK = registerJetpackAttachment("advanced_jetpack", Items.ADVANCED_JETPACK)
