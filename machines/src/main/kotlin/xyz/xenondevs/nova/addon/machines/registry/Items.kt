@@ -30,10 +30,10 @@ object Items : ItemRegistry by Machines.registry {
     val STAR_HOE = registerItem("star_hoe", Tool, Damageable, Enchantable, Tilling)
     
     // Armor
-    val STAR_HELMET = registerItem("star_helmet", Wearable(EquipmentSlot.HEAD, Sounds.ARMOR_EQUIP_STAR), Damageable)
-    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(EquipmentSlot.CHEST, Sounds.ARMOR_EQUIP_STAR), Damageable)
-    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(EquipmentSlot.LEGS, Sounds.ARMOR_EQUIP_STAR), Damageable)
-    val STAR_BOOTS = registerItem("star_boots", Wearable(EquipmentSlot.FEET, Sounds.ARMOR_EQUIP_STAR), Damageable)
+    val STAR_HELMET = registerItem("star_helmet", Wearable(EquipmentSlot.HEAD, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(EquipmentSlot.CHEST, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(EquipmentSlot.LEGS, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_BOOTS = registerItem("star_boots", Wearable(EquipmentSlot.FEET, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
     
     // Plates
     val IRON_PLATE = registerItem("iron_plate")

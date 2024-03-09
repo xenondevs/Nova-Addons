@@ -1,2 +1,5 @@
 armor: 7
 max_durability: 350
+
+enchantment_value: 10
+enchantment_categories: ["breakable", "armor", "armor_chest"]
