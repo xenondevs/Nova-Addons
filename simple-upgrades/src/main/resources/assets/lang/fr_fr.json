@@ -1,12 +1,12 @@
 {
-  "menu.simple_upgrades.upgrades.type.speed": "Améliorations de vitesse : %s/%s",
-  "menu.simple_upgrades.upgrades.type.efficiency": "Améliorations d'efficacité : %s/%s",
-  "menu.simple_upgrades.upgrades.type.energy": "Améliorations d'Énergie : %s/%s",
-  "menu.simple_upgrades.upgrades.type.range": "Améliorations de la portée : %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Améliorations du stockage de fluide: %s/%s",
-  "item.simple_upgrades.speed_upgrade": "Amélioration de la vitesse",
-  "item.simple_upgrades.efficiency_upgrade": "Amélioration de l'efficacité",
-  "item.simple_upgrades.energy_upgrade": "Amélioration de l'efficacité énergétique",
-  "item.simple_upgrades.range_upgrade": "Amélioration de la gamme",
-  "item.simple_upgrades.fluid_upgrade": "Amélioration du fluide"
+  "menu.simple_upgrades.upgrades.type.speed": "Améliorateurs de vitesse : %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Améliorateurs d'efficacité : %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Améliorateurs d'énergie : %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Améliorateurs de portée : %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Améliorateurs de capacité de fluide: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Améliorateur de vitesse",
+  "item.simple_upgrades.efficiency_upgrade": "Améliorateur d'efficacité",
+  "item.simple_upgrades.energy_upgrade": "Améliorateur d'énergie",
+  "item.simple_upgrades.range_upgrade": "Améliorateur de portée",
+  "item.simple_upgrades.fluid_upgrade": "Améliorateur de capacité de fluide"
 }
