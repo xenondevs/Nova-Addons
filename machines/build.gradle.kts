@@ -1,4 +1,4 @@
-version = "0.4.5-RC.3"
+version = "0.4.5-RC.4"
 
 dependencies {
     implementation(project(":simple-upgrades"))
