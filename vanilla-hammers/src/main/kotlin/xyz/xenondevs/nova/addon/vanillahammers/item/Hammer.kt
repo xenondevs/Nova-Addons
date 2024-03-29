@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Enchantments
 import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.item.behavior.Enchantable
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
@@ -47,7 +48,7 @@ class Hammer(
                     return
                 
                 val face = BlockFaceUtils.determineBlockFaceLookingAt(player.eyeLocation) ?: BlockFace.NORTH
-                startHammerWorkers(player, selectBlocks(event.block, face, Enchantments.CURSE_OF_GIGANTISM in Enchantable.getEnchantments(itemStack.nmsCopy)))
+                startHammerWorkers(player, selectBlocks(player, itemStack, event.block, face, Enchantments.CURSE_OF_GIGANTISM in Enchantable.getEnchantments(itemStack.nmsCopy)))
             }
             
             Action.FINISH -> finishHammerWorkers(player)
@@ -56,7 +57,10 @@ class Hammer(
     }
     
     // TODO: slow down breaking based on range
-    private fun selectBlocks(middle: Block, face: BlockFace, cursed: Boolean): List<Block> {
+    private fun selectBlocks(player: Player, itemStack: ItemStack, middle: Block, face: BlockFace, cursed: Boolean): List<Block> {
+        if (!ProtectionManager.canBreak(player, itemStack, middle.location).get())
+            return emptyList()
+        
         val blocks = ArrayList<Block>()
         
         val axisA = nextAxis(face.axis)
@@ -81,6 +85,8 @@ class Hammer(
                     // don't include blocks whose hardness difference is outside the specified tolerance
                     val hardnessDifference = abs(block.hardness - middle.hardness)
                     if (hardnessDifference > hardnessTolerance)
+                        continue
+                    if (!ProtectionManager.canBreak(player, itemStack, block.location).get())
                         continue
                     
                     blocks += block
