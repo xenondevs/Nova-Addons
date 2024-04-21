@@ -1,4 +1,4 @@
-version = "1.3-RC.2"
+version = "1.3"
 
 addon {
     main.set("xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades")
