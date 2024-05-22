@@ -1,6 +1,6 @@
+
 import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import xyz.xenondevs.stringremapper.StringRemapExtension
 
 group = "xyz.xenondevs.nova.addon"
 
@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.paperweight)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.nova)
-    alias(libs.plugins.stringremapper)
 }
 
 repositories { configureRepositories() }
@@ -31,20 +30,15 @@ fun DependencyHandlerScope.configureDependencies() {
     implementation(rootProject.libs.nova)
 }
 
-fun StringRemapExtension.configureRemapStrings() {
-    remapGoal.set(if (mojangMapped) "mojang" else "spigot")
-    gameVersion.set(libs.versions.paper.get().substringBefore("-"))
-}
-
 subprojects {
+    group = "xyz.xenondevs.nova.addon"
+    
     apply(plugin = rootProject.libs.plugins.kotlin.get().pluginId)
     apply(plugin = rootProject.libs.plugins.nova.get().pluginId)
     apply(plugin = rootProject.libs.plugins.paperweight.get().pluginId)
-    apply(plugin = rootProject.libs.plugins.stringremapper.get().pluginId)
     
     repositories { configureRepositories() }
     dependencies { configureDependencies() }
-    remapStrings { configureRemapStrings() }
     
     addon {
         id.set(this@subprojects.name)
@@ -53,9 +47,20 @@ subprojects {
     }
     
     tasks {
+        withType<KotlinCompile> {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+        
+        register<Jar>("sources") {
+            dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+            from("src/main/java", "src/main/kotlin")
+            archiveClassifier.set("sources")
+        }
+        
         val buildDir = project.layout.buildDirectory.get().asFile
         val outDir = (project.findProperty("outDir") as? String)?.let(::File) ?: buildDir
-        
         register<Copy>("addonJar") {
             group = "build"
             if (mojangMapped) {
@@ -68,12 +73,6 @@ subprojects {
             
             into(outDir)
             rename { "${addonMetadata.get().addonName.get()}-${project.version}.jar" }
-        }
-        
-        withType<KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
         }
     }
 }
