@@ -73,7 +73,7 @@
   "item.logistics.item_filter.lore.nbt.off": "Ignoré",
   "item.logistics.item_filter.lore.contents": "Contenu (%s) :",
   "menu.logistics.items.category.logistics": "Logistique",
-  "menu.logistics.items.category.crafting": "Composants d'artisanat",
+  "menu.logistics.items.category.crafting": "Composants de fabrication",
   "advancement.logistics.root.title": "Logistique",
   "advancement.logistics.fluid_storage_unit.title": "Des liquides à l'infini !",
   "advancement.logistics.fluid_storage_unit.description": "Fabriquer une unité de stockage des fluides"
