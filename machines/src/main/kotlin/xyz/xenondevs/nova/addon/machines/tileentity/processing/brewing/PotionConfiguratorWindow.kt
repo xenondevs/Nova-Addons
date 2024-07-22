@@ -20,19 +20,19 @@ import xyz.xenondevs.invui.item.builder.addLoreLines
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.item.impl.CycleItem
+import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.window.Window
 import xyz.xenondevs.invui.window.type.context.setTitle
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing.ElectricBrewingStand.Companion.ALLOW_DURATION_AMPLIFIER_MIXING
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing.ElectricBrewingStand.Companion.AVAILABLE_POTION_EFFECTS
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.ui.item.BackItem
-import xyz.xenondevs.nova.ui.item.clickableItem
 import xyz.xenondevs.nova.ui.menu.ColorPickerWindow
 import xyz.xenondevs.nova.ui.menu.ColorPreviewItem
 import xyz.xenondevs.nova.ui.menu.OpenColorPickerWindowItem
-import xyz.xenondevs.nova.ui.overlay.character.gui.DefaultGuiTextures
+import xyz.xenondevs.nova.ui.menu.item.BackItem
+import xyz.xenondevs.nova.ui.overlay.guitexture.DefaultGuiTextures
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.playItemPickupSound
 import java.awt.Color
@@ -70,7 +70,7 @@ class PotionConfiguratorWindow(
             "x x x x x x x x .",
             "x x x x x x x x .",
             "x x x x x x x x d")
-        .addIngredient('<', BackItem(openPrevious))
+        .addIngredient('<', BackItem(openPrevious = openPrevious))
         .addIngredient('c', OpenColorPickerWindowItem(colorPickerWindow))
         .addIngredient('t', potionTypeItem)
         .build()
@@ -100,10 +100,10 @@ class PotionConfiguratorWindow(
     private fun createAddEffectGui(): Gui {
         return Gui.normal()
             .setStructure("+ . . . . . . .")
-            .addIngredient('+', clickableItem(
-                GuiMaterials.TP_GREEN_PLUS.createItemBuilder()
+            .addIngredient('+', SimpleItem(
+                GuiItems.TP_GREEN_PLUS.createItemBuilder()
                     .setDisplayName(Component.translatable("menu.machines.potion_configurator.add_effect"))
-            ) { it.playClickSound(); addEffect() })
+            ) { it.player.playClickSound(); addEffect() })
             .build()
     }
     
@@ -127,10 +127,10 @@ class PotionConfiguratorWindow(
             .addIngredient('p', potionPickerItem)
             .addIngredient('d', durationModifierItem)
             .addIngredient('a', amplifierModifierItem)
-            .addIngredient('-', clickableItem(
-                GuiMaterials.TP_RED_MINUS.createItemBuilder()
+            .addIngredient('-', SimpleItem(
+                GuiItems.TP_RED_MINUS.createItemBuilder()
                     .setDisplayName(Component.translatable("menu.machines.potion_configurator.remove_effect"))
-            ) { it.playClickSound(); removeEffect(effect) })
+            ) { it.player.playClickSound(); removeEffect(effect) })
             .build()
         
         private inner class OpenPotionPickerItem : AbstractItem() {
@@ -159,7 +159,7 @@ class PotionConfiguratorWindow(
                 val durationLevel = effect.durationLevel + 1
                 val maxDurationLevel = effect.maxDurationLevel + 1
                 
-                return DefaultGuiItems.NUMBER.model.createItemBuilder(min(999, durationLevel))
+                return DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = min(999, durationLevel))
                     .setDisplayName(Component.translatable(
                         "menu.machines.potion_configurator.duration",
                         Component.text(durationLevel), Component.text(maxDurationLevel)
@@ -203,7 +203,7 @@ class PotionConfiguratorWindow(
                 val amplifierLevel = effect.amplifierLevel + 1
                 val maxAmplifierLevel = effect.maxAmplifierLevel + 1
                 
-                return DefaultGuiItems.NUMBER.model.createItemBuilder(min(999, amplifierLevel))
+                return DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = min(999, amplifierLevel))
                     .setDisplayName(Component.translatable(
                         "menu.machines.potion_configurator.amplifier",
                         Component.text(amplifierLevel),
@@ -215,7 +215,8 @@ class PotionConfiguratorWindow(
             }
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
-                if (effect.type == null) return
+                if (effect.type == null)
+                    return
                 
                 if (clickType.isLeftClick) {
                     if (effect.amplifierLevel < effect.maxAmplifierLevel) {

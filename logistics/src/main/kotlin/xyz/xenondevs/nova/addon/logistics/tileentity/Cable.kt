@@ -1,284 +1,320 @@
 package xyz.xenondevs.nova.addon.logistics.tileentity
 
-import org.bukkit.Axis
-import org.bukkit.Bukkit
-import org.bukkit.Material
+import com.google.common.collect.Table
+import net.minecraft.resources.ResourceLocation
+import org.bukkit.Location
 import org.bukkit.block.BlockFace
-import org.bukkit.block.data.Orientable
 import org.bukkit.entity.Player
-import org.bukkit.event.block.BlockBreakEvent
+import org.joml.Math
+import org.joml.Matrix4d
+import org.joml.Quaternionf
+import org.joml.Vector3d
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumMap
+import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
+import xyz.xenondevs.commons.collections.toEnumSet
 import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.commons.provider.immutable.combinedProvider
+import xyz.xenondevs.commons.provider.immutable.map
 import xyz.xenondevs.commons.provider.immutable.provider
-import xyz.xenondevs.nova.addon.logistics.gui.cable.CableConfigGui
+import xyz.xenondevs.nova.addon.logistics.gui.cable.CableConfigMenu
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.resources.model.data.DisplayEntityBlockModelData
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.DefaultItems
+import xyz.xenondevs.nova.addon.logistics.registry.Items
+import xyz.xenondevs.nova.addon.logistics.registry.Models
+import xyz.xenondevs.nova.addon.logistics.util.MathUtils
+import xyz.xenondevs.nova.data.context.Context
+import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
+import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockPlace
 import xyz.xenondevs.nova.tileentity.TileEntity
-import xyz.xenondevs.nova.tileentity.network.DefaultNetworkTypes.ENERGY
-import xyz.xenondevs.nova.tileentity.network.DefaultNetworkTypes.FLUID
-import xyz.xenondevs.nova.tileentity.network.DefaultNetworkTypes.ITEMS
-import xyz.xenondevs.nova.tileentity.network.Network
-import xyz.xenondevs.nova.tileentity.network.NetworkEndPoint
 import xyz.xenondevs.nova.tileentity.network.NetworkManager
-import xyz.xenondevs.nova.tileentity.network.NetworkNode
-import xyz.xenondevs.nova.tileentity.network.NetworkType
-import xyz.xenondevs.nova.tileentity.network.energy.EnergyBridge
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidBridge
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.FluidHolder
-import xyz.xenondevs.nova.tileentity.network.item.ItemBridge
-import xyz.xenondevs.nova.tileentity.network.item.holder.ItemHolder
+import xyz.xenondevs.nova.tileentity.network.node.NetworkEndPoint
+import xyz.xenondevs.nova.tileentity.network.node.NetworkNode
+import xyz.xenondevs.nova.tileentity.network.type.DefaultNetworkTypes.ENERGY
+import xyz.xenondevs.nova.tileentity.network.type.DefaultNetworkTypes.FLUID
+import xyz.xenondevs.nova.tileentity.network.type.DefaultNetworkTypes.ITEM
+import xyz.xenondevs.nova.tileentity.network.type.NetworkType
+import xyz.xenondevs.nova.tileentity.network.type.energy.EnergyBridge
+import xyz.xenondevs.nova.tileentity.network.type.energy.EnergyNetwork
+import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidBridge
+import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidNetwork
+import xyz.xenondevs.nova.tileentity.network.type.fluid.holder.FluidHolder
+import xyz.xenondevs.nova.tileentity.network.type.item.ItemBridge
+import xyz.xenondevs.nova.tileentity.network.type.item.ItemNetwork
+import xyz.xenondevs.nova.tileentity.network.type.item.holder.ItemHolder
 import xyz.xenondevs.nova.util.CUBE_FACES
-import xyz.xenondevs.nova.util.MathUtils
-import xyz.xenondevs.nova.util.advance
+import xyz.xenondevs.nova.util.LocationUtils
+import xyz.xenondevs.nova.util.add
 import xyz.xenondevs.nova.util.item.novaItem
-import xyz.xenondevs.nova.util.rotationNorth
-import xyz.xenondevs.nova.util.rotationValues
+import xyz.xenondevs.nova.util.pitch
 import xyz.xenondevs.nova.util.runTask
-import xyz.xenondevs.nova.util.toIntArray
+import xyz.xenondevs.nova.util.yaw
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.NovaBlock
 import xyz.xenondevs.nova.world.block.hitbox.Hitbox
-import xyz.xenondevs.nova.world.block.hitbox.PhysicalHitbox
 import xyz.xenondevs.nova.world.block.hitbox.VirtualHitbox
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.format.NetworkState
 import xyz.xenondevs.nova.world.model.FixedMultiModel
 import xyz.xenondevs.nova.world.model.Model
-import xyz.xenondevs.nova.world.point.Point3D
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
-private val SUPPORTED_NETWORK_TYPES = hashSetOf(ENERGY, ITEMS, FLUID)
-private val ATTACHMENTS: IntArray = (64..79).toIntArray()
+private val SUPPORTED_NETWORK_TYPES = hashSetOf(ENERGY, ITEM, FLUID)
 
 private val NetworkNode.itemHolder: ItemHolder?
-    get() = if (this is NetworkEndPoint) (holders[ITEMS] as ItemHolder?) else null
+    get() = (this as? NetworkEndPoint)?.holders?.firstInstanceOfOrNull<ItemHolder>()
 
 private val NetworkNode.fluidHolder: FluidHolder?
-    get() = if (this is NetworkEndPoint) holders[FLUID] as FluidHolder? else null
+    get() = (this as? NetworkEndPoint)?.holders?.firstInstanceOfOrNull<FluidHolder>()
 
 open class Cable(
     energyTransferRateDelegate: Provider<Long>,
     itemTransferRateDelegate: Provider<Int>,
     fluidTransferRateDelegate: Provider<Long>,
-    blockState: NovaTileEntityState
-) : TileEntity(blockState), EnergyBridge, ItemBridge, FluidBridge {
+    pos: BlockPos,
+    state: NovaBlockState,
+    data: Compound
+) : TileEntity(pos, state, data), EnergyBridge, ItemBridge, FluidBridge {
     
     override val energyTransferRate by energyTransferRateDelegate
     override val itemTransferRate by itemTransferRateDelegate
     override val fluidTransferRate by fluidTransferRateDelegate
+    override val linkedNodes: Set<NetworkNode> = emptySet()
+    override val typeId: ResourceLocation get() = block.id
     
-    override var isNetworkInitialized = false
-    override val supportedNetworkTypes = SUPPORTED_NETWORK_TYPES
-    override val networks = HashMap<NetworkType, Network>()
-    override val bridgeFaces by storedValue("bridgeFaces") { CUBE_FACES.toHashSet() }
-    override val connectedNodes = HashMap<NetworkType, MutableMap<BlockFace, NetworkNode>>()
-    override val typeId: String
-        get() = block.id.toString()
+    private val configMenus = ConcurrentHashMap<BlockFace, CableConfigMenu>()
     
-    private val configGuis = enumMap<BlockFace, CableConfigGui>()
-    
-    private val hitboxes = ArrayList<Hitbox<*, *>>()
+    private var hitboxes: Set<Hitbox<*, *>> = emptySet()
     private val multiModel = FixedMultiModel()
-    private var modelId by storedValue("modelId") { 0 }
-    private var attachments: ArrayList<Pair<BlockFace, Int>> by storedValue("attachments-0.2.4", ::ArrayList)
     
-    init {
-        if (attachments.isNotEmpty()) {
-            updateAttachmentModels()
-            createAttachmentHitboxes()
-        }
-        createCableHitboxes()
+    override fun handleEnable() {
+        super.handleEnable()
         
-        if (modelId != 0)
-            blockState.modelProvider.update(modelId)
-    }
-    
-    override fun saveData() {
-        super.saveData()
-        serializeNetworks()
-        serializeConnectedNodes()
-    }
-    
-    override fun handleNetworkUpdate() {
-        // assume that we have NetworkManager.LOCK
-        if (isValid) {
-            calculateCableModelId()
-            calculateAttachmentModelIds()
-            blockState.modelProvider.update(modelId)
-            updateAttachmentModels()
+        // legacy conversion
+        if (hasData("connectedNodes") || hasData("networks") || hasData("bridgeFaces")) {
+            val bridgeFaces = retrieveDataOrNull("bridgeFaces") ?: CUBE_FACES
+            NetworkManager.queueAddBridge(this, SUPPORTED_NETWORK_TYPES, bridgeFaces)
             
-            configGuis.forEach { (face, gui) ->
-                val neighbor = connectedNodes[ITEMS]?.get(face)
-                
-                fun closeAndRemove() {
-                    runTask { gui.closeForAllViewers() }
-                    configGuis.remove(face)
-                }
-                
-                if (neighbor is NetworkEndPoint) {
-                    val itemHolder = neighbor.holders[ITEMS] as ItemHolder
-                    if (itemHolder == gui.itemHolder) {
-                        gui.updateValues(true)
-                    } else closeAndRemove()
-                } else closeAndRemove()
-            }
-            
-            // !! Needs to be run on the server thread (updating blocks)
-            // !! Also needs to be synchronized with NetworkManager as connectedNodes are retrieved
-            NetworkManager.queueSync { updateHitbox() }
+            removeData("connectedNodes")
+            removeData("networks")
+            removeData("bridgeFaces")
         }
     }
     
-    override fun handleInitialized(first: Boolean) {
-        if (first) NetworkManager.queueAsync { it.addBridge(this) }
-    }
-    
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
+    override fun handleDisable() {
+        super.handleDisable()
         multiModel.close()
         hitboxes.forEach { it.remove() }
-        if (!unload) {
-            NetworkManager.queueAsync { it.removeBridge(this) }
-            configGuis.values.forEach(CableConfigGui::closeForAllViewers)
+    }
+    
+    override fun handlePlace(ctx: Context<BlockPlace>) {
+        super.handlePlace(ctx)
+        NetworkManager.queueAddBridge(this, SUPPORTED_NETWORK_TYPES, CUBE_FACES)
+    }
+    
+    override fun handleBreak(ctx: Context<BlockBreak>) {
+        super.handleBreak(ctx)
+        NetworkManager.queueRemoveBridge(this)
+    }
+    
+    override suspend fun handleNetworkLoaded(state: NetworkState) {
+        val connectedNodes = state.getConnectedNodes(this)
+        val attachments = calculateAttachmentModelIds(connectedNodes)
+        val hitboxes = createHitboxes(state.getBridgeFaces(this), connectedNodes)
+        
+        runTask {
+            if (isEnabled) {
+                updateAttachmentModels(attachments)
+                updateHitboxes(hitboxes)
+            }
         }
     }
     
-    private fun calculateCableModelId() {
-        val connectedFaces = connectedNodes.values.flatMapTo(HashSet()) { it.keys }
-        val booleans = CUBE_FACES.map { connectedFaces.contains(it) }.reversed().toBooleanArray()
-        modelId = MathUtils.convertBooleanArrayToInt(booleans)
+    override suspend fun handleNetworkUpdate(state: NetworkState) {
+        val connectedNodes = state.getConnectedNodes(this)
+        
+        // update block state, attachment model, and hitboxes
+        val newBlockState = calculateCableBlockState(connectedNodes)
+        val attachments = calculateAttachmentModelIds(connectedNodes)
+        val hitboxes = createHitboxes(state.getBridgeFaces(this), connectedNodes)
+        runTask {
+            if (isEnabled) {
+                updateBlockState(newBlockState)
+                updateAttachmentModels(attachments)
+                updateHitboxes(hitboxes)
+            }
+        }
+        
+        // update config menus or close them if necessary
+        for ((face, gui) in configMenus) {
+            fun closeAndRemove() {
+                runTask { gui.closeForAllViewers() }
+                configMenus.remove(face)
+            }
+            
+            val neighbor = connectedNodes[ITEM, face]
+            if (neighbor is NetworkEndPoint) {
+                val itemHolder = neighbor.holders.firstInstanceOfOrNull<ItemHolder>()
+                val fluidHolder = neighbor.holders.firstInstanceOfOrNull<FluidHolder>()
+                
+                if (gui.itemHolder == itemHolder && gui.fluidHolder == fluidHolder) {
+                    gui.updateValues()
+                    runTask { gui.updateGui() }
+                } else closeAndRemove()
+            } else closeAndRemove()
+        }
     }
     
-    private fun calculateAttachmentModelIds() {
-        require(networks.isNotEmpty()) { "No network is initialized" }
-        attachments.clear()
+    private fun calculateCableBlockState(connectedNodes: Table<NetworkType<*>, BlockFace, NetworkNode>): NovaBlockState {
+        return block.defaultBlockState.with(mapOf(
+            BlockStateProperties.NORTH to (BlockFace.NORTH in connectedNodes.columnKeySet()),
+            BlockStateProperties.EAST to (BlockFace.EAST in connectedNodes.columnKeySet()),
+            BlockStateProperties.SOUTH to (BlockFace.SOUTH in connectedNodes.columnKeySet()),
+            BlockStateProperties.WEST to (BlockFace.WEST in connectedNodes.columnKeySet()),
+            BlockStateProperties.UP to (BlockFace.UP in connectedNodes.columnKeySet()),
+            BlockStateProperties.DOWN to (BlockFace.DOWN in connectedNodes.columnKeySet())
+        ))
+    }
+    
+    private fun calculateAttachmentModelIds(connectedNodes: Table<NetworkType<*>, BlockFace, NetworkNode>): Map<BlockFace, Int> {
+        val attachments = enumMap<BlockFace, Int>()
         
-        CUBE_FACES.forEach { face ->
+        for (face in CUBE_FACES) {
+            val itemHolder = connectedNodes[ITEM, face]?.itemHolder
+            val fluidHolder = connectedNodes[FLUID, face]?.fluidHolder
+            
+            if (itemHolder == null && fluidHolder == null)
+                continue
+            
             val oppositeFace = face.oppositeFace
-            val itemHolder = connectedNodes[ITEMS]?.get(face)?.itemHolder
-            val fluidHolder = connectedNodes[FLUID]?.get(face)?.fluidHolder
-            
-            if (itemHolder == null && fluidHolder == null) return@forEach
-            
             val array = booleanArrayOf(
-                itemHolder?.isExtract(oppositeFace) ?: false,
-                itemHolder?.isInsert(oppositeFace) ?: false,
-                fluidHolder?.isExtract(oppositeFace) ?: false,
-                fluidHolder?.isInsert(oppositeFace) ?: false
+                fluidHolder?.connectionConfig?.get(oppositeFace)?.insert ?: false,
+                fluidHolder?.connectionConfig?.get(oppositeFace)?.extract ?: false,
+                itemHolder?.connectionConfig?.get(oppositeFace)?.insert ?: false,
+                itemHolder?.connectionConfig?.get(oppositeFace)?.extract ?: false,
             )
             
-            attachments += face to MathUtils.convertBooleanArrayToInt(array)
+            attachments += face to MathUtils.encodeToInt(array)
+        }
+        
+        return attachments
+    }
+    
+    private fun createHitboxes(
+        bridgeFaces: Set<BlockFace>,
+        connectedNodes: Table<NetworkType<*>, BlockFace, NetworkNode>
+    ): Set<Hitbox<*, *>> {
+        val hitboxes = HashSet<Hitbox<*, *>>()
+        for (face in CUBE_FACES) {
+            if (face in connectedNodes.columnKeySet()) {
+                hitboxes += createCableHitbox(face, false)
+            } else if (face !in bridgeFaces) {
+                hitboxes += createCableHitbox(face, true)
+            }
+            
+            if (connectedNodes[ITEM, face] is NetworkEndPoint || connectedNodes[FLUID, face] is NetworkEndPoint)
+                hitboxes += createAttachmentHitbox(face)
+        }
+        return hitboxes
+    }
+    
+    private fun createCableHitbox(face: BlockFace, long: Boolean): VirtualHitbox {
+        val pointA = Vector3d(0.4, 0.4, 0.5)
+        val pointB = Vector3d(0.6, 0.6, if (long) 1.5 else 1.0)
+        val (from, to) = createHitboxPoints(pointA, pointB, face)
+        
+        return VirtualHitbox(from, to).apply {
+            setQualifier { it.item?.novaItem == Items.WRENCH }
+            addRightClickHandler { _, _, _ -> cycleBridgeFaces(face) }
         }
     }
     
-    private fun updateAttachmentModels() {
+    private fun createAttachmentHitbox(face: BlockFace): VirtualHitbox {
+        val pointA = Vector3d(0.125, 0.125, 0.875)
+        val pointB = Vector3d(0.875, 0.875, 1.0)
+        val (from, to) = createHitboxPoints(pointA, pointB, face)
+        
+        return VirtualHitbox(from, to).apply {
+            addRightClickHandler { player, _, _ -> openAttachmentWindow(player, face) }
+        }
+    }
+    
+    private fun createHitboxPoints(a: Vector3d, b: Vector3d, face: BlockFace): Pair<Location, Location> {
+        val origin = Vector3d(0.5, 0.5, 0.5)
+        
+        val transform = Matrix4d()
+            .translate(origin)
+            .rotateX(Math.toRadians(face.pitch.toDouble()))
+            .rotateY(-Math.toRadians(face.yaw.toDouble()))
+            .translate(origin.negate())
+        
+        return LocationUtils.sort(
+            pos.location.add(a.mulPosition(transform)),
+            pos.location.add(b.mulPosition(transform))
+        )
+    }
+    
+    private fun updateAttachmentModels(attachments: Map<BlockFace, Int>) {
         val models = HashSet<Model>()
         attachments.forEach { (face, id) ->
             models += Model(
-                (block.model as DisplayEntityBlockModelData)[ATTACHMENTS[id]].get(),
+                Models.CABLE_ATTACHMENT.model.unnamedClientsideProviders[id].get(),
                 pos.location.add(.5, .5, .5),
-                leftRotation = face.rotationNorth // attachment models face south, display entities make north side of models face south, therefore attachments face north by default TODO: make attachment models face north
+                // attachment models face south, display entities make north side of models face south,
+                // therefore attachments face north by default TODO: make attachment models face north
+                leftRotation = Quaternionf()
+                    .rotateY(Math.toRadians(180 - face.yaw))
+                    .rotateX(Math.toRadians(-face.pitch))
             )
         }
         multiModel.replaceModels(models)
     }
     
-    private fun updateHitbox() {
-        if (!isValid) return
-        
-        updateVirtualHitboxes()
-        updateBlockHitbox()
+    private fun updateHitboxes(hitboxes: Set<Hitbox<*, *>>) {
+        this.hitboxes.forEach { it.remove() }
+        this.hitboxes = hitboxes
+        this.hitboxes.forEach { it.register() }
     }
     
-    private fun updateVirtualHitboxes() {
-        hitboxes.forEach { it.remove() }
-        hitboxes.clear()
-        
-        createCableHitboxes()
-        createAttachmentHitboxes()
-    }
-    
-    private fun createCableHitboxes() {
-        CUBE_FACES.forEach { blockFace ->
-            val pointA = Point3D(0.3, 0.3, 0.0)
-            val pointB = Point3D(0.7, 0.7, 0.5)
-            
-            val origin = Point3D(0.5, 0.5, 0.5)
-            
-            val rotationValues = blockFace.rotationValues
-            pointA.rotateAroundXAxis(rotationValues.first, origin)
-            pointA.rotateAroundYAxis(rotationValues.second, origin)
-            pointB.rotateAroundXAxis(rotationValues.first, origin)
-            pointB.rotateAroundYAxis(rotationValues.second, origin)
-            
-            val sortedPoints = Point3D.sort(pointA, pointB)
-            val from = location.clone().add(sortedPoints.first.x, sortedPoints.first.y, sortedPoints.first.z)
-            val to = location.clone().add(sortedPoints.second.x, sortedPoints.second.y, sortedPoints.second.z)
-            
-            hitboxes += VirtualHitbox(from, to).apply {
-                setQualifier { it.item?.novaItem == DefaultItems.WRENCH }
-                addRightClickHandler { player, _, _ -> handleCableWrenchHit(player, blockFace) }
-                register()
-            }
-        }
-    }
-    
-    private fun createAttachmentHitboxes() {
-        attachments.forEach { (face, _) ->
-            val hitboxCenter = location
-                .advance(face, .75)
-                .add(.5, .125, .5)
-            
-            hitboxes += PhysicalHitbox(hitboxCenter, .75, .75).apply {
-                addRightClickHandler { player, _, _ -> handleAttachmentHit(player, face) }
-                register()
-            }
-        }
-    }
-    
-    private fun updateBlockHitbox() {
-        val block = location.block
-        
-        val neighborFaces = connectedNodes.flatMapTo(HashSet()) { it.value.keys }
-        val axis = when {
-            neighborFaces.contains(BlockFace.EAST) && neighborFaces.contains(BlockFace.WEST) -> Axis.X
-            neighborFaces.contains(BlockFace.NORTH) && neighborFaces.contains(BlockFace.SOUTH) -> Axis.Z
-            neighborFaces.contains(BlockFace.UP) && neighborFaces.contains(BlockFace.DOWN) -> Axis.Y
-            else -> null
-        }
-        
-        if (axis != null) {
-            block.setType(Material.CHAIN, false)
-            val blockData = block.blockData as Orientable
-            blockData.axis = axis
-            block.setBlockData(blockData, false)
+    private fun openAttachmentWindow(player: Player, face: BlockFace) {
+        if (configMenus.containsKey(face)) {
+            configMenus[face]?.openWindow(player)
         } else {
-            block.setType(Material.STRUCTURE_VOID, false)
-        }
-    }
-    
-    private fun handleAttachmentHit(player: Player, face: BlockFace) {
-        NetworkManager.queueSync {
-            val endPoint = getConnectedNode(face) as? NetworkEndPoint
-                ?: return@queueSync
-            
-            configGuis.getOrPut(face) { CableConfigGui(endPoint, endPoint.itemHolder, endPoint.fluidHolder, face.oppositeFace) }.openWindow(player)
-        }
-    }
-    
-    private fun handleCableWrenchHit(player: Player, face: BlockFace) {
-        if (player.isSneaking) {
-            Bukkit.getPluginManager().callEvent(BlockBreakEvent(location.block, player))
-        } else {
-            NetworkManager.queueAsync {
-                if (connectedNodes.values.any { node -> node.containsKey(face) }) {
-                    it.removeBridge(this, false)
-                    bridgeFaces.remove(face)
-                    it.addBridge(this)
-                } else if (!bridgeFaces.contains(face)) {
-                    it.removeBridge(this, false)
-                    bridgeFaces.add(face)
-                    it.addBridge(this)
+            NetworkManager.queueRead(pos.world) { state ->
+                val endPoint = state.getConnectedNode(this, face) as? NetworkEndPoint
+                    ?: return@queueRead
+                
+                val gui = configMenus.computeIfAbsent(face) {
+                    CableConfigMenu(
+                        this@Cable,
+                        endPoint,
+                        endPoint.itemHolder,
+                        endPoint.fluidHolder,
+                        face.oppositeFace
+                    )
                 }
+                runTask { gui.openWindow(player) }
             }
+        }
+    }
+    
+    private fun cycleBridgeFaces(face: BlockFace) {
+        NetworkManager.queueRead(pos.world) { state ->
+            val bridgeFaces = state.getBridgeFaces(this).toEnumSet()
+            if (face in bridgeFaces) {
+                bridgeFaces -= face
+            } else {
+                bridgeFaces += face
+            }
+            
+            // this approach is not ideal, but alternatively we'd have to
+            // do network splitting & recalculation here
+            NetworkManager.queueRemoveBridge(this)
+            NetworkManager.queueAddBridge(this, SUPPORTED_NETWORK_TYPES, bridgeFaces)
         }
     }
     
@@ -286,53 +322,55 @@ open class Cable(
     
 }
 
-private val BASIC_ENERGY_RATE = Blocks.BASIC_CABLE.config.entry<Long>("energy_transfer_rate")
-private val BASIC_ITEM_RATE = Blocks.BASIC_CABLE.config.entry<Int>("item_transfer_rate")
-private val BASIC_FLUID_RATE = Blocks.BASIC_CABLE.config.entry<Long>("fluid_transfer_rate")
-
-private val ADVANCED_ENERGY_RATE = Blocks.ADVANCED_CABLE.config.entry<Long>("energy_transfer_rate")
-private val ADVANCED_ITEM_RATE = Blocks.ADVANCED_CABLE.config.entry<Int>("item_transfer_rate")
-private val ADVANCED_FLUID_RATE = Blocks.ADVANCED_CABLE.config.entry<Long>("fluid_transfer_rate")
-
-private val ELITE_ENERGY_RATE = Blocks.ELITE_CABLE.config.entry<Long>("energy_transfer_rate")
-private val ELITE_ITEM_RATE = Blocks.ELITE_CABLE.config.entry<Int>("item_transfer_rate")
-private val ELITE_FLUID_RATE = Blocks.ELITE_CABLE.config.entry<Long>("fluid_transfer_rate")
-
-private val ULTIMATE_ENERGY_RATE = Blocks.ULTIMATE_CABLE.config.entry<Long>("energy_transfer_rate")
-private val ULTIMATE_ITEM_RATE = Blocks.ULTIMATE_CABLE.config.entry<Int>("item_transfer_rate")
-private val ULTIMATE_FLUID_RATE = Blocks.ULTIMATE_CABLE.config.entry<Long>("fluid_transfer_rate")
-
-class BasicCable(blockState: NovaTileEntityState) : Cable(
-    BASIC_ENERGY_RATE,
-    BASIC_ITEM_RATE,
-    BASIC_FLUID_RATE,
-    blockState
+class BasicCable(pos: BlockPos, state: NovaBlockState, data: Compound) : Cable(
+    energyTransferRate(Blocks.BASIC_CABLE),
+    itemTransferRate(Blocks.BASIC_CABLE),
+    fluidTransferRate(Blocks.BASIC_CABLE),
+    pos, state, data
 )
 
-class AdvancedCable(blockState: NovaTileEntityState) : Cable(
-    ADVANCED_ENERGY_RATE,
-    ADVANCED_ITEM_RATE,
-    ADVANCED_FLUID_RATE,
-    blockState
+class AdvancedCable(pos: BlockPos, state: NovaBlockState, data: Compound) : Cable(
+    energyTransferRate(Blocks.ADVANCED_CABLE),
+    itemTransferRate(Blocks.ADVANCED_CABLE),
+    fluidTransferRate(Blocks.ADVANCED_CABLE),
+    pos, state, data
 )
 
-class EliteCable(blockState: NovaTileEntityState) : Cable(
-    ELITE_ENERGY_RATE,
-    ELITE_ITEM_RATE,
-    ELITE_FLUID_RATE,
-    blockState
+class EliteCable(pos: BlockPos, state: NovaBlockState, data: Compound) : Cable(
+    energyTransferRate(Blocks.ELITE_CABLE),
+    itemTransferRate(Blocks.ELITE_CABLE),
+    fluidTransferRate(Blocks.ELITE_CABLE),
+    pos, state, data
 )
 
-class UltimateCable(blockState: NovaTileEntityState) : Cable(
-    ULTIMATE_ENERGY_RATE,
-    ULTIMATE_ITEM_RATE,
-    ULTIMATE_FLUID_RATE,
-    blockState
+class UltimateCable(pos: BlockPos, state: NovaBlockState, data: Compound) : Cable(
+    energyTransferRate(Blocks.ULTIMATE_CABLE),
+    itemTransferRate(Blocks.ULTIMATE_CABLE),
+    fluidTransferRate(Blocks.ULTIMATE_CABLE),
+    pos, state, data
 )
 
-class CreativeCable(blockState: NovaTileEntityState) : Cable(
+class CreativeCable(pos: BlockPos, state: NovaBlockState, data: Compound) : Cable(
     provider(Long.MAX_VALUE),
     provider(Int.MAX_VALUE),
     provider(Long.MAX_VALUE),
-    blockState
+    pos, state, data
 )
+
+private fun energyTransferRate(block: NovaBlock): Provider<Long> =
+    combinedProvider(
+        block.config.entry<Double>("energy_transfer_rate"),
+        EnergyNetwork.TICK_DELAY_PROVIDER
+    ).map { (transferRate, tickDelay) -> (transferRate * tickDelay).roundToLong() }
+
+private fun itemTransferRate(block: NovaBlock): Provider<Int> =
+    combinedProvider(
+        block.config.entry<Double>("item_transfer_rate"),
+        ItemNetwork.TICK_DELAY_PROVIDER
+    ).map { (transferRate, tickDelay) -> (transferRate * tickDelay).roundToInt() }
+
+private fun fluidTransferRate(block: NovaBlock): Provider<Long> =
+    combinedProvider(
+        block.config.entry<Double>("fluid_transfer_rate"),
+        FluidNetwork.TICK_DELAY_PROVIDER
+    ).map { (transferRate, tickDelay) -> (transferRate * tickDelay).roundToLong() }

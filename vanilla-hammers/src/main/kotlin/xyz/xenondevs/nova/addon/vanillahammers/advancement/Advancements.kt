@@ -5,24 +5,24 @@ import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.advancements.critereon.PlayerTrigger
 import net.minecraft.resources.ResourceLocation
-import xyz.xenondevs.nmsutils.advancement.AdvancementLoader
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Items
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.util.advancement
+import xyz.xenondevs.nova.util.advancement.AdvancementLoader
+import xyz.xenondevs.nova.util.advancement.advancement
+import xyz.xenondevs.nova.util.advancement.obtainNovaItemAdvancement
 import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
-import xyz.xenondevs.nova.util.nmsCopy
-import xyz.xenondevs.nova.util.obtainNovaItemAdvancement
+import xyz.xenondevs.nova.util.unwrap
 import java.util.*
 
 private val ROOT = advancement(VanillaHammers, "root") {
     display(DisplayInfo(
-        Items.WOODEN_HAMMER.clientsideProvider.get().nmsCopy,
+        Items.WOODEN_HAMMER.model.clientsideProvider.get().unwrap().copy(),
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
-        Optional.of(ResourceLocation("minecraft", "textures/block/tuff.png")),
+        Optional.of(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/tuff.png")),
         AdvancementType.TASK,
         false, false, false
     ))

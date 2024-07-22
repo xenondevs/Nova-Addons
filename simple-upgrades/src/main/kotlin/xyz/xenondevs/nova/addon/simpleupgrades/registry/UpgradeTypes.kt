@@ -1,13 +1,11 @@
 package xyz.xenondevs.nova.addon.simpleupgrades.registry
 
-import xyz.xenondevs.nova.addon.registry.UpgradeTypeRegistry
-import xyz.xenondevs.nova.addon.registry.registerUpgradeType
-import xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades
+import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypeRegistry.registerUpgradeType
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 
 @Init(stage = InitStage.POST_PACK_PRE_WORLD)
-object UpgradeTypes : UpgradeTypeRegistry by SimpleUpgrades.registry {
+object UpgradeTypes {
     
     val SPEED = registerUpgradeType<Double>("speed", Items.SPEED_UPGRADE, GuiItems.SPEED_UPGRADE)
     val EFFICIENCY = registerUpgradeType<Double>("efficiency", Items.EFFICIENCY_UPGRADE, GuiItems.EFFICIENCY_UPGRADE)

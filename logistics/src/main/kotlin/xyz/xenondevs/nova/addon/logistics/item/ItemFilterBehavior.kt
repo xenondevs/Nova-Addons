@@ -4,53 +4,47 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
-import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.commons.collections.mapToArray
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterWindow
-import xyz.xenondevs.nova.addon.logistics.registry.Items
-import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterMenu
+import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
+import xyz.xenondevs.nova.addon.logistics.item.itemfilter.NbtItemFilter
 import xyz.xenondevs.nova.data.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.item.behavior.ItemBehaviorFactory
-import xyz.xenondevs.nova.item.logic.PacketItemData
+import xyz.xenondevs.nova.item.behavior.ItemFilterContainer
 import xyz.xenondevs.nova.player.WrappedPlayerInteractEvent
-import xyz.xenondevs.nova.tileentity.network.item.ItemFilter
-import xyz.xenondevs.nova.tileentity.network.item.getOrCreateFilterConfig
-import xyz.xenondevs.nova.tileentity.network.item.saveFilterConfig
+import xyz.xenondevs.nova.util.ResourceLocation
+import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
 import xyz.xenondevs.nova.util.item.ItemUtils
 import xyz.xenondevs.nova.util.item.novaItem
+import xyz.xenondevs.nova.util.item.retrieveData
+import xyz.xenondevs.nova.util.item.storeData
+import xyz.xenondevs.nova.util.item.takeUnlessEmpty
+import org.bukkit.inventory.ItemStack as BukkitStack
 
-fun ItemStack.getItemFilterConfig(): ItemFilter? {
-    return (this.novaItem?.getBehaviorOrNull(ItemFilterBehavior::class))
-        ?.getFilterConfig(this)
-}
+private val ITEM_FILTER_KEY = ResourceLocation(Logistics, "item_filter")
 
-fun NovaItem?.isItemFilter(): Boolean {
-    return this == Items.BASIC_ITEM_FILTER
-        || this == Items.ADVANCED_ITEM_FILTER
-        || this == Items.ELITE_ITEM_FILTER
-        || this == Items.ULTIMATE_ITEM_FILTER
-}
-
-private val FILTER_MATERIALS: Map<Int, NovaItem> = setOf(
-    Items.BASIC_ITEM_FILTER,
-    Items.ADVANCED_ITEM_FILTER,
-    Items.ELITE_ITEM_FILTER,
-    Items.ULTIMATE_ITEM_FILTER
-).associateBy { it.getBehavior<ItemFilterBehavior>().size }
-
-fun findCorrectFilterItem(itemFilter: ItemFilter): NovaItem {
-    return FILTER_MATERIALS[itemFilter.size] ?: Items.BASIC_ITEM_FILTER
-}
-
-class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior {
+class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContainer<LogisticsItemFilter> {
     
     val size by size
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+    override fun getFilter(itemStack: ItemStack): LogisticsItemFilter? {
+        return itemStack.retrieveData(ITEM_FILTER_KEY)
+    }
+    
+    override fun setFilter(itemStack: ItemStack, filter: LogisticsItemFilter?) {
+        if (filter != null) {
+            itemStack.storeData(ITEM_FILTER_KEY, filter)
+        } else {
+            itemStack.storeData(ITEM_FILTER_KEY, null)
+        }
+    }
+    
+    override fun handleInteract(player: Player, itemStack: BukkitStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
         if (wrappedEvent.actionPerformed)
             return
         
@@ -58,26 +52,22 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior {
         if (action == Action.RIGHT_CLICK_AIR) {
             event.isCancelled = true
             wrappedEvent.actionPerformed = true
-            ItemFilterWindow(player, itemStack.novaItem!!, size, itemStack)
+            
+            val filter = getFilter(itemStack)
+            val filterItems = filter?.items?.mapToArray { it.takeUnlessEmpty() } ?: arrayOfNulls(size)
+            val whitelist = filter?.whitelist ?: true
+            val nbt = filter is NbtItemFilter
+            ItemFilterMenu(player, itemStack.novaItem!!.name!!, itemStack, filterItems, whitelist, nbt).open()
         }
     }
     
-    override fun modifyItemBuilder(itemBuilder: ItemBuilder): ItemBuilder {
-        return itemBuilder.addModifier {
-            it.saveFilterConfig(ItemFilter(size))
-            return@addModifier it
-        }
-    }
-    
-    fun getFilterConfig(itemStack: ItemStack): ItemFilter =
-        itemStack.getOrCreateFilterConfig(size)
-    
-    override fun updatePacketItemData(data: NamespacedCompound, itemData: PacketItemData) {
-        val filterConfig = data.get<ItemFilter>(ItemFilter.ITEM_FILTER_KEY) ?: return
-        val lines = ArrayList<Component>()
+    override fun modifyClientSideStack(player: Player?, itemStack: ItemStack, data: NamespacedCompound): ItemStack {
+        val itemFilter = data.get<LogisticsItemFilter>(ITEM_FILTER_KEY) ?: return itemStack
+        val whitelist = itemFilter.whitelist
         
-        val whitelist = filterConfig.whitelist
-        lines += Component.translatable(
+        val lore = ArrayList<Component>()
+        
+        lore += Component.translatable(
             "item.logistics.item_filter.lore.type",
             NamedTextColor.GRAY,
             Component.translatable(
@@ -86,8 +76,8 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior {
             )
         )
         
-        val nbt = filterConfig.nbt
-        lines += Component.translatable(
+        val nbt = itemFilter is NbtItemFilter
+        lore += Component.translatable(
             "item.logistics.item_filter.lore.nbt",
             NamedTextColor.GRAY,
             Component.translatable(
@@ -96,19 +86,21 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior {
             )
         )
         
-        lines += Component.empty()
+        lore += Component.empty()
         
-        lines += Component.translatable(
+        lore += Component.translatable(
             "item.logistics.item_filter.lore.contents",
             NamedTextColor.GRAY,
-            Component.text(filterConfig.items.count { it != null })
+            Component.text(itemFilter.items.count { !it.isEmpty })
         )
         
-        filterConfig.items.filterNotNull().forEach {
-            lines += Component.text("- ", NamedTextColor.GRAY).append(ItemUtils.getName(it))
-        }
+        itemFilter.items
+            .filter { !it.isEmpty }
+            .forEach { lore += Component.text("- ", NamedTextColor.GRAY).append(ItemUtils.getName(it)) }
         
-        itemData.addLore(lines)
+        itemStack.lore((itemStack.lore() ?: emptyList()) + lore.map(Component::withoutPreFormatting))
+        
+        return itemStack
     }
     
     companion object : ItemBehaviorFactory<ItemFilterBehavior> {

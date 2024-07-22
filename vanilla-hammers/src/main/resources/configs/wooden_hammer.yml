@@ -18,7 +18,13 @@ repair_ingredient: "#minecraft:planks"
 
 # Enchantable Options
 enchantment_value: 15
-enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]
+supported_enchantments:
+  - "vanilla_hammers:curse_of_gigantism"
+  - "minecraft:efficiency"
+  - "minecraft:silk_touch"
+  - "minecraft:fortune"
+  - "minecraft:unbreaking"
+  - "minecraft:mending"
 
 # Fuel Options
 burn_time: 400

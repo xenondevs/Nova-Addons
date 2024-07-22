@@ -1,7 +1,0 @@
-id: machines
-name: Machines
-version: "${project.version}"
-main: xyz.xenondevs.nova.machines.Machines
-novaVersion: "${nova.version}"
-authors: [ "StudioCode", "ByteZ1337", "Javahase" ]
-spigotResourceId: 102712

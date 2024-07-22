@@ -15,19 +15,17 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
-import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.data.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.item.logic.PacketItemData
 import xyz.xenondevs.nova.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.addPrioritized
+import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
 import xyz.xenondevs.nova.util.data.NamespacedKey
 import xyz.xenondevs.nova.util.getTargetLocation
 import xyz.xenondevs.nova.util.item.retrieveData
@@ -44,7 +42,7 @@ object MobCatcherBehavior : ItemBehavior {
     override fun handleEntityInteract(player: Player, itemStack: ItemStack, clicked: Entity, event: PlayerInteractAtEntityEvent) {
         if (clicked is Mob
             && clicked.type !in BLACKLISTED_ENTITY_TYPES
-            && ProtectionManager.canInteractWithEntity(player, clicked, itemStack).get()
+            && ProtectionManager.canInteractWithEntity(player, clicked, itemStack)
             && getEntityData(itemStack) == null
         ) {
             val fakeDamageEvent = EntityDamageByEntityEvent(player, clicked, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Double.MAX_VALUE)
@@ -78,7 +76,7 @@ object MobCatcherBehavior : ItemBehavior {
             if (data != null) {
                 val location = player.eyeLocation.getTargetLocation(0.25, 8.0)
                 
-                if (ProtectionManager.canUseItem(player, itemStack, location).get()) {
+                if (ProtectionManager.canUseItem(player, itemStack, location)) {
                     player.inventory.getItem(event.hand!!).amount -= 1
                     player.inventory.addPrioritized(event.hand!!, Items.MOB_CATCHER.createItemStack())
                     
@@ -111,15 +109,19 @@ object MobCatcherBehavior : ItemBehavior {
         setEntityData(itemStack, entity.type, data)
     }
     
-    override fun updatePacketItemData(data: NamespacedCompound, itemData: PacketItemData) {
-        val type = getEntityType(data) ?: return
-        val nmsType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation("minecraft", type.key.key))
+    override fun modifyClientSideStack(player: Player?, itemStack: ItemStack, data: NamespacedCompound): ItemStack {
+        val type = getEntityType(data) ?: return itemStack
+        val nmsType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.fromNamespaceAndPath("minecraft", type.key.key))
         
-        itemData.addLore(Component.translatable(
+        val lore = itemStack.lore() ?: mutableListOf()
+        lore += Component.translatable(
             "item.machines.mob_catcher.type",
             NamedTextColor.DARK_GRAY,
             Component.translatable(nmsType.descriptionId, NamedTextColor.YELLOW)
-        ))
+        ).withoutPreFormatting()
+        itemStack.lore(lore)
+        
+        return itemStack
     }
     
 }

@@ -10,30 +10,59 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.item.behavior.Damageable
 import xyz.xenondevs.nova.item.behavior.Enchantable
-import xyz.xenondevs.nova.item.behavior.Extinguishing
-import xyz.xenondevs.nova.item.behavior.Flattening
-import xyz.xenondevs.nova.item.behavior.Stripping
-import xyz.xenondevs.nova.item.behavior.Tilling
 import xyz.xenondevs.nova.item.behavior.Tool
 import xyz.xenondevs.nova.item.behavior.Wearable
 
 @Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Machines.registry {
     
-    val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior)
+    val WIND_TURBINE = item(Blocks.WIND_TURBINE) { models { selectModel { getModel("item/wind_turbine") } } }
+    val SOLAR_PANEL = registerItem(Blocks.SOLAR_PANEL)
+    val LIGHTNING_EXCHANGER = registerItem(Blocks.LIGHTNING_EXCHANGER)
+    val FURNACE_GENERATOR = registerItem(Blocks.FURNACE_GENERATOR)
+    val LAVA_GENERATOR = registerItem(Blocks.LAVA_GENERATOR)
+    val MECHANICAL_PRESS = registerItem(Blocks.MECHANICAL_PRESS)
+    val PULVERIZER = registerItem(Blocks.PULVERIZER)
+    val ELECTRIC_FURNACE = registerItem(Blocks.ELECTRIC_FURNACE)
+    val BLOCK_PLACER = registerItem(Blocks.BLOCK_PLACER)
+    val BLOCK_BREAKER = registerItem(Blocks.BLOCK_BREAKER)
+    val QUARRY = registerItem(Blocks.QUARRY)
+    val CHARGER = registerItem(Blocks.CHARGER)
+    val WIRELESS_CHARGER = registerItem(Blocks.WIRELESS_CHARGER)
+    val AUTO_FISHER = registerItem(Blocks.AUTO_FISHER)
+    val BREEDER = registerItem(Blocks.BREEDER)
+    val MOB_KILLER = registerItem(Blocks.MOB_KILLER)
+    val MOB_DUPLICATOR = registerItem(Blocks.MOB_DUPLICATOR)
+    val PLANTER = registerItem(Blocks.PLANTER)
+    val FERTILIZER = registerItem(Blocks.FERTILIZER)
+    val HARVESTER = registerItem(Blocks.HARVESTER)
+    val CHUNK_LOADER = registerItem(Blocks.CHUNK_LOADER)
+    val COBBLESTONE_GENERATOR = registerItem(Blocks.COBBLESTONE_GENERATOR)
+    val FLUID_INFUSER = registerItem(Blocks.FLUID_INFUSER)
+    val FREEZER = registerItem(Blocks.FREEZER)
+    val ELECTRIC_BREWING_STAND = registerItem(Blocks.ELECTRIC_BREWING_STAND)
+    val SPRINKLER = registerItem(Blocks.SPRINKLER)
+    val PUMP = registerItem(Blocks.PUMP)
+    val STAR_COLLECTOR = registerItem(Blocks.STAR_COLLECTOR)
+    val CRYSTALLIZER = registerItem(Blocks.CRYSTALLIZER)
+    val AUTO_CRAFTER = registerItem(Blocks.AUTO_CRAFTER)
+    val TREE_FACTORY = registerItem(Blocks.TREE_FACTORY)
+    val INFINITE_WATER_SOURCE = registerItem(Blocks.INFINITE_WATER_SOURCE)
+    val BASIC_MACHINE_FRAME = registerItem(Blocks.BASIC_MACHINE_FRAME)
+    val ADVANCED_MACHINE_FRAME = registerItem(Blocks.ADVANCED_MACHINE_FRAME)
+    val ELITE_MACHINE_FRAME = registerItem(Blocks.ELITE_MACHINE_FRAME)
+    val ULTIMATE_MACHINE_FRAME = registerItem(Blocks.ULTIMATE_MACHINE_FRAME)
+    val CREATIVE_MACHINE_FRAME = registerItem(Blocks.CREATIVE_MACHINE_FRAME)
+    val STAR_DUST_BLOCK = registerItem(Blocks.STAR_DUST_BLOCK)
+    val STAR_SHARDS_ORE = registerItem(Blocks.STAR_SHARDS_ORE)
+    val DEEPSLATE_STAR_SHARDS_ORE = registerItem(Blocks.DEEPSLATE_STAR_SHARDS_ORE)
     
-    // Tools
-    val STAR_SWORD = registerItem("star_sword", Tool, Damageable, Enchantable)
-    val STAR_SHOVEL = registerItem("star_shovel", Tool, Damageable, Enchantable, Flattening, Extinguishing)
-    val STAR_PICKAXE = registerItem("star_pickaxe", Tool, Damageable, Enchantable)
-    val STAR_AXE = registerItem("star_axe", Tool, Damageable, Enchantable, Stripping)
-    val STAR_HOE = registerItem("star_hoe", Tool, Damageable, Enchantable, Tilling)
-    
-    // Armor
-    val STAR_HELMET = registerItem("star_helmet", Wearable(EquipmentSlot.HEAD, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
-    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(EquipmentSlot.CHEST, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
-    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(EquipmentSlot.LEGS, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
-    val STAR_BOOTS = registerItem("star_boots", Wearable(EquipmentSlot.FEET, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    // Crafting components
+    val STAR_SHARDS = registerItem("star_shards")
+    val STAR_CRYSTAL = registerItem("star_crystal")
+    val NETHERITE_DRILL = item("netherite_drill") { models { selectModel { getModel("block/netherite_drill") } } }
+    val SCAFFOLDING = registerItem("scaffolding")
+    val SOLAR_CELL = registerItem("solar_cell")
     
     // Plates
     val IRON_PLATE = registerItem("iron_plate")
@@ -66,53 +95,34 @@ object Items : ItemRegistry by Machines.registry {
     val COPPER_DUST = registerItem("copper_dust")
     val STAR_DUST = registerItem("star_dust")
     
-    // Crafting components
-    val STAR_SHARDS = registerItem("star_shards")
-    val STAR_CRYSTAL = registerItem("star_crystal")
-    val NETHERITE_DRILL = registerItem("netherite_drill")
-    val SCAFFOLDING = registerItem("scaffolding")
-    val SOLAR_CELL = registerItem("solar_cell")
+    // Tools
+    val STAR_SWORD = item("star_sword") {
+        behaviors(Tool, Damageable, Enchantable)
+        maxStackSize(1)
+    }
+    val STAR_SHOVEL = item("star_shovel") {
+        behaviors(Tool, Damageable, Enchantable)
+        maxStackSize(1)
+    }
+    val STAR_PICKAXE = item("star_pickaxe") {
+        behaviors(Tool, Damageable, Enchantable)
+        maxStackSize(1)
+    }
+    val STAR_AXE = item("star_axe") {
+        behaviors(Tool, Damageable, Enchantable)
+        maxStackSize(1)
+    }
+    val STAR_HOE = item("star_hoe") {
+        behaviors(Tool, Damageable, Enchantable)
+        maxStackSize(1)
+    }
     
-    // Blocks
-    val AUTO_FISHER = registerItem(Blocks.AUTO_FISHER)
-    val FERTILIZER = registerItem(Blocks.FERTILIZER)
-    val HARVESTER = registerItem(Blocks.HARVESTER)
-    val PLANTER = registerItem(Blocks.PLANTER)
-    val TREE_FACTORY = registerItem(Blocks.TREE_FACTORY)
-    val CHARGER = registerItem(Blocks.CHARGER)
-    val WIRELESS_CHARGER = registerItem(Blocks.WIRELESS_CHARGER)
-    val BREEDER = registerItem(Blocks.BREEDER)
-    val MOB_DUPLICATOR = registerItem(Blocks.MOB_DUPLICATOR)
-    val MOB_KILLER = registerItem(Blocks.MOB_KILLER)
-    val COBBLESTONE_GENERATOR = registerItem(Blocks.COBBLESTONE_GENERATOR)
-    val ELECTRIC_FURNACE = registerItem(Blocks.ELECTRIC_FURNACE)
-    val MECHANICAL_PRESS = registerItem(Blocks.MECHANICAL_PRESS)
-    val PULVERIZER = registerItem(Blocks.PULVERIZER)
-    val BLOCK_BREAKER = registerItem(Blocks.BLOCK_BREAKER)
-    val BLOCK_PLACER = registerItem(Blocks.BLOCK_PLACER)
-    val STAR_COLLECTOR = registerItem(Blocks.STAR_COLLECTOR)
-    val CHUNK_LOADER = registerItem(Blocks.CHUNK_LOADER)
-    val QUARRY = registerItem(Blocks.QUARRY)
-    val ELECTRIC_BREWING_STAND = registerItem(Blocks.ELECTRIC_BREWING_STAND)
-    val PUMP = registerItem(Blocks.PUMP)
-    val FREEZER = registerItem(Blocks.FREEZER)
-    val FLUID_INFUSER = registerItem(Blocks.FLUID_INFUSER)
-    val SPRINKLER = registerItem(Blocks.SPRINKLER)
-    val SOLAR_PANEL = registerItem(Blocks.SOLAR_PANEL)
-    val LIGHTNING_EXCHANGER = registerItem(Blocks.LIGHTNING_EXCHANGER)
-    val WIND_TURBINE = registerItem(Blocks.WIND_TURBINE)
-    val FURNACE_GENERATOR = registerItem(Blocks.FURNACE_GENERATOR)
-    val LAVA_GENERATOR = registerItem(Blocks.LAVA_GENERATOR)
-    val INFINITE_WATER_SOURCE = registerItem(Blocks.INFINITE_WATER_SOURCE)
-    val CRYSTALLIZER = registerItem(Blocks.CRYSTALLIZER)
-    val STAR_DUST_BLOCK = registerItem(Blocks.STAR_DUST_BLOCK)
-    val BASIC_MACHINE_FRAME = registerItem(Blocks.BASIC_MACHINE_FRAME)
-    val ADVANCED_MACHINE_FRAME = registerItem(Blocks.ADVANCED_MACHINE_FRAME)
-    val ELITE_MACHINE_FRAME = registerItem(Blocks.ELITE_MACHINE_FRAME)
-    val ULTIMATE_MACHINE_FRAME = registerItem(Blocks.ULTIMATE_MACHINE_FRAME)
-    val CREATIVE_MACHINE_FRAME = registerItem(Blocks.CREATIVE_MACHINE_FRAME)
-    val STAR_SHARDS_ORE = registerItem(Blocks.STAR_SHARDS_ORE)
-    val DEEPSLATE_STAR_SHARDS_ORE = registerItem(Blocks.DEEPSLATE_STAR_SHARDS_ORE)
-    val AUTO_CRAFTER = registerItem(Blocks.AUTO_CRAFTER)
+    // Armor
+    val STAR_HELMET = registerItem("star_helmet", Wearable(Armor.STAR, EquipmentSlot.HEAD, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(Armor.STAR, EquipmentSlot.CHEST, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(Armor.STAR, EquipmentSlot.LEGS, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_BOOTS = registerItem("star_boots", Wearable(Armor.STAR, EquipmentSlot.FEET, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    
+    val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior)
     
 }

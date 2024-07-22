@@ -1,47 +1,36 @@
 package xyz.xenondevs.nova.addon.logistics.tileentity
 
-import xyz.xenondevs.commons.collections.enumMap
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.addon.logistics.registry.GuiMaterials
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.logistics.registry.GuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.fluid.container.FluidContainer
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.NovaFluidHolder
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.ui.addIngredient
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.CUBE_FACES
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType
+import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.tileentity.network.type.fluid.container.NetworkedFluidContainer
+import xyz.xenondevs.nova.ui.menu.addIngredient
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.VoidingVirtualInventory
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import java.util.*
 
-private val ALL_INSERT_CONFIG = { CUBE_FACES.associateWithTo(enumMap()) { NetworkConnectionType.INSERT } }
-
-class TrashCan(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState) {
+class TrashCan(pos: BlockPos, state: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, state, data) {
     
     private val inventory = VoidingVirtualInventory(1)
-    override val itemHolder = NovaItemHolder(
-        this,
-        inventory to NetworkConnectionType.INSERT,
-        defaultConnectionConfig = ALL_INSERT_CONFIG
-    )
-    override val fluidHolder = NovaFluidHolder(this,
-        VoidingFluidContainer to NetworkConnectionType.INSERT,
-        defaultConnectionConfig = ALL_INSERT_CONFIG
-    )
+    private val itemHolder = storedItemHolder(inventory to NetworkConnectionType.INSERT)
+    private val fluidHolder = storedFluidHolder(VoidingFluidContainer to NetworkConnectionType.INSERT)
     
     override fun handleTick() = Unit
     
     @TileEntityMenuClass
     private inner class TrashCanMenu : GlobalTileEntityMenu() {
         
-        private val SideConfigMenu = SideConfigMenu(
+        private val sideConfigMenu = SideConfigMenu(
             this@TrashCan,
-            listOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
-            listOf(VoidingFluidContainer to "container.nova.fluid_tank"),
+            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
+            mapOf(VoidingFluidContainer to "container.nova.fluid_tank"),
             ::openWindow
         )
         
@@ -50,22 +39,28 @@ class TrashCan(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState
                 "1 - - - - - - - 2",
                 "| s # # i # # # |",
                 "3 - - - - - - - 4")
-            .addIngredient('i', inventory, GuiMaterials.TRASH_CAN_PLACEHOLDER)
-            .addIngredient('s', OpenSideConfigItem(SideConfigMenu))
+            .addIngredient('i', inventory, GuiItems.TRASH_CAN_PLACEHOLDER)
+            .addIngredient('s', OpenSideConfigItem(sideConfigMenu))
             .build()
         
     }
     
 }
 
-object VoidingFluidContainer : FluidContainer(UUID(0, 1L), hashSetOf(FluidType.WATER, FluidType.LAVA), FluidType.NONE, 0, Long.MAX_VALUE) {
-    override fun addFluid(type: FluidType, amount: Long) = Unit
-    override fun tryAddFluid(type: FluidType, amount: Long) = amount
-    override fun takeFluid(amount: Long) = Unit
-    override fun tryTakeFluid(amount: Long) = 0L
-    override fun accepts(type: FluidType, amount: Long) = true
-    override fun clear() = Unit
-    override fun isFull() = false
-    override fun hasFluid() = false
-    override fun isEmpty() = true
+object VoidingFluidContainer : NetworkedFluidContainer {
+    
+    override val allowedTypes = FluidType.entries.toSet()
+    override val amount = 0L
+    override val capacity = Long.MAX_VALUE
+    override val type = null
+    override val uuid = UUID(0L, 1L)
+    
+    override fun addFluid(type: FluidType, amount: Long): Long {
+        return amount
+    }
+    
+    override fun takeFluid(amount: Long): Long {
+        return 0
+    }
+    
 }

@@ -1,62 +1,65 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import org.bukkit.Material
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_BREAKER
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.api.NovaEventFactory
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.data.context.Context
+import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
+import xyz.xenondevs.nova.data.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.advance
-import xyz.xenondevs.nova.util.center
-import xyz.xenondevs.nova.util.getAllDrops
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.hardness
 import xyz.xenondevs.nova.util.item.ToolUtils
 import xyz.xenondevs.nova.util.item.isTraversable
-import xyz.xenondevs.nova.util.remove
 import xyz.xenondevs.nova.util.setBreakStage
-import xyz.xenondevs.nova.world.block.context.BlockBreakContext
-import xyz.xenondevs.nova.world.pos
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import kotlin.math.min
 import kotlin.math.roundToInt
 
 private val MAX_ENERGY = BLOCK_BREAKER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = BLOCK_BREAKER.config.entry<Long>("energy_per_tick")
-private val BREAK_SPEED_MULTIPLIER by BLOCK_BREAKER.config.entry<Double>("break_speed_multiplier")
-private val BREAK_SPEED_CLAMP by BLOCK_BREAKER.config.entry<Double>("break_speed_clamp")
+private val BREAK_SPEED_MULTIPLIER = BLOCK_BREAKER.config.entry<Double>("break_speed_multiplier")
+private val BLOCK_DAMAGE_CLAMP by BLOCK_BREAKER.config.entry<Double>("break_speed_clamp")
 
-class BlockBreaker(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class BlockBreaker(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inventory = getInventory("inventory", 9, ::handleInventoryUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, null, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
-    override val itemHolder = NovaItemHolder(
-        this,
-        inventory to NetworkConnectionType.EXTRACT
-    ) { createSideConfig(NetworkConnectionType.EXTRACT, BlockSide.FRONT) }
+    private val inventory = storedInventory("inventory", 9, ::handleInventoryUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT)
+    
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val breakSpeed by speedMultipliedValue(BREAK_SPEED_MULTIPLIER, upgradeHolder)
     
     private val entityId = uuid.hashCode()
-    private val targetBlock = location.clone().advance(getFace(BlockSide.FRONT)).block
+    private val targetPos = pos.advance(blockState.getOrThrow(DefaultBlockStateProperties.FACING))
     private var lastType: Material? = null
-    private var breakProgress = retrieveData("breakProgress") { 0.0 }
+    private var breakProgress by storedValue("breakProgress") { 0.0 }
     
-    override fun saveData() {
-        super.saveData()
-        storeData("breakProgress", breakProgress)
+    private var hasBreakPermission = false
+    
+    override fun handleDisable() {
+        super.handleDisable()
+        targetPos.block.setBreakStage(entityId, -1)
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
@@ -64,68 +67,65 @@ class BlockBreaker(blockState: NovaTileEntityState) : NetworkedTileEntity(blockS
             event.isCancelled = true
     }
     
+    override suspend fun handleAsyncTick() {
+        hasBreakPermission = ProtectionManager.canBreak(this, null, targetPos)
+    }
+    
     override fun handleTick() {
-        val type = targetBlock.type
-        if (energyHolder.energy >= energyHolder.energyConsumption
+        val type = targetPos.block.type
+        if (energyHolder.energy >= energyPerTick
             && !type.isTraversable()
-            && targetBlock.hardness >= 0
-            && ProtectionManager.canBreak(this, null, targetBlock.location).get()
+            && targetPos.block.hardness >= 0
+            && hasBreakPermission
         ) {
             // consume energy
-            energyHolder.energy -= energyHolder.energyConsumption
+            energyHolder.energy -= energyPerTick
             
             // reset progress when block changed
-            if (lastType != null && type != lastType) breakProgress = 0.0
+            if (lastType != null && type != lastType)
+                breakProgress = 0.0
             
             // set last known type
             lastType = type
             
             // add progress
             val damage = ToolUtils.calculateDamage(
-                targetBlock.hardness,
-                correctCategory = true,
+                targetPos.block.hardness,
                 correctForDrops = true,
-                toolMultiplier = BREAK_SPEED_MULTIPLIER * upgradeHolder.getValue(UpgradeTypes.SPEED),
-                efficiency = 0,
-                onGround = true,
-                underWater = false,
-                hasteLevel = 0,
-                fatigueLevel = 0
-            ).coerceAtMost(BREAK_SPEED_CLAMP)
+                speed = breakSpeed
+            ).coerceAtMost(BLOCK_DAMAGE_CLAMP)
             breakProgress = min(1.0, breakProgress + damage)
             
             if (breakProgress >= 1.0) {
-                val ctx = BlockBreakContext(targetBlock.pos, this, location)
-                val drops = targetBlock.getAllDrops(ctx).toMutableList()
-                NovaEventFactory.callTileEntityBlockBreakEvent(this, targetBlock, drops)
+                val ctx = Context.intention(BlockBreak)
+                    .param(DefaultContextParamTypes.BLOCK_POS, targetPos)
+                    .param(DefaultContextParamTypes.BLOCK_DROPS, true)
+                    .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
+                    .build()
+                val drops = BlockUtils.getDrops(ctx).toMutableList()
+                NovaEventFactory.callTileEntityBlockBreakEvent(this, targetPos.block, drops)
                 
                 if (!GlobalValues.DROP_EXCESS_ON_GROUND && !inventory.canHold(drops))
                     return
                 
                 // reset break progress
                 breakProgress = 0.0
-                targetBlock.setBreakStage(entityId, -1)
+                targetPos.block.setBreakStage(entityId, -1)
                 
                 // break block, add items to inventory / drop them if full
-                targetBlock.remove(ctx)
+                BlockUtils.breakBlock(ctx)
                 drops.forEach { drop ->
                     val amountLeft = inventory.addItem(SELF_UPDATE_REASON, drop)
                     if (GlobalValues.DROP_EXCESS_ON_GROUND && amountLeft != 0) {
                         drop.amount = amountLeft
-                        world.dropItemNaturally(targetBlock.location.center(), drop)
+                        pos.world.dropItemNaturally(targetPos.location.add(0.5, 0.0, 0.5), drop)
                     }
                 }
             } else {
                 // send break state
-                targetBlock.setBreakStage(entityId, (breakProgress * 9).roundToInt())
+                targetPos.block.setBreakStage(entityId, (breakProgress * 9).roundToInt())
             }
         }
-    }
-    
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
-        if (!unload)
-            targetBlock.setBreakStage(entityId, -1)
     }
     
     @TileEntityMenuClass
@@ -133,7 +133,7 @@ class BlockBreaker(blockState: NovaTileEntityState) : NetworkedTileEntity(blockS
         
         private val sideConfigGui = SideConfigMenu(
             this@BlockBreaker,
-            listOf(Pair(itemHolder.getNetworkedInventory(inventory), "inventory.nova.default")),
+            mapOf(Pair(itemHolder.getNetworkedInventory(inventory), "inventory.nova.default")),
             ::openWindow
         )
         

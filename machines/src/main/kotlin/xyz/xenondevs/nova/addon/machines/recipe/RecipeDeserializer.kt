@@ -16,7 +16,7 @@ import xyz.xenondevs.nova.data.serialization.json.serializer.ConversionRecipeDes
 import xyz.xenondevs.nova.data.serialization.json.serializer.RecipeDeserializer
 import xyz.xenondevs.nova.data.serialization.json.serializer.RecipeDeserializer.Companion.getRecipeId
 import xyz.xenondevs.nova.data.serialization.json.serializer.RecipeDeserializer.Companion.parseRecipeChoice
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
+import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.util.data.getInputStacks
 import xyz.xenondevs.nova.util.item.ItemUtils
 import java.io.File

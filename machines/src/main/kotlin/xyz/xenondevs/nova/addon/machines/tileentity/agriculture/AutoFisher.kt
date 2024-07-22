@@ -6,81 +6,67 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables
 import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams
-import net.minecraft.world.phys.Vec3
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.AUTO_FISHER
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.item.behavior.Damageable
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.VerticalBar
-import xyz.xenondevs.nova.ui.addIngredient
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.VerticalBar
+import xyz.xenondevs.nova.ui.menu.addIngredient
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.bukkitMirror
-import xyz.xenondevs.nova.util.nmsCopy
+import xyz.xenondevs.nova.util.item.damage
 import xyz.xenondevs.nova.util.serverLevel
+import xyz.xenondevs.nova.util.toVec3
+import xyz.xenondevs.nova.util.unwrap
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import net.minecraft.world.item.ItemStack as MojangStack
 
 private val MAX_ENERGY = AUTO_FISHER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = AUTO_FISHER.config.entry<Long>("energy_per_tick")
-private val IDLE_TIME by AUTO_FISHER.config.entry<Int>("idle_time")
+private val IDLE_TIME = AUTO_FISHER.config.entry<Int>("idle_time")
 
-class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inventory = getInventory("inventory", 12, ::handleInventoryUpdate)
-    private val fishingRodInventory = getInventory("fishingRod", 1, ::handleFishingRodInventoryUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, null, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.BOTTOM) }
-    override val itemHolder = NovaItemHolder(
-        this,
-        inventory to NetworkConnectionType.EXTRACT,
-        fishingRodInventory to NetworkConnectionType.INSERT
-    ) { createSideConfig(NetworkConnectionType.BUFFER, BlockSide.BOTTOM) }
+    private val inventory = storedInventory("inventory", 12, ::handleInventoryUpdate)
+    private val fishingRodInventory = storedInventory("fishingRod", 1, ::handleFishingRodInventoryUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT, fishingRodInventory to INSERT)
+    private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
+    
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     
     private var timePassed = 0
-    private var maxIdleTime = 0
-    
-    private val waterBlock = location.clone().subtract(0.0, 1.0, 0.0).block
-    private val level = world.serverLevel
-    private val position = Vec3(centerLocation.x, location.y - 0.5, centerLocation.z)
-    private val itemDropLocation = location.clone().add(0.0, 1.0, 0.0)
-    private val fakePlayer = EntityUtils.createFakePlayer(location)
-    
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        maxIdleTime = (IDLE_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
-        if (timePassed > maxIdleTime) timePassed = maxIdleTime
-    }
     
     override fun handleTick() {
-        if (energyHolder.energy >= energyHolder.energyConsumption && !fishingRodInventory.isEmpty && waterBlock.type == Material.WATER) {
-            if (!GlobalValues.DROP_EXCESS_ON_GROUND && !inventory.hasEmptySlot()) return
+        if (energyHolder.energy >= energyPerTick && !fishingRodInventory.isEmpty && pos.below.block.type == Material.WATER) {
+            if (!GlobalValues.DROP_EXCESS_ON_GROUND && !inventory.hasEmptySlot())
+                return
             
-            energyHolder.energy -= energyHolder.energyConsumption
+            energyHolder.energy -= energyPerTick
             
             timePassed++
             if (timePassed >= maxIdleTime) {
@@ -96,26 +82,26 @@ class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
         // Bukkit's LootTable API isn't applicable in this use case
         
         val rodItem = fishingRodInventory.getItem(0)!!
-        val luck = rodItem.enchantments[Enchantment.LUCK] ?: 0
+        val luck = rodItem.enchantments[Enchantment.LUCK_OF_THE_SEA] ?: 0
         
         // the fake fishing hook is required for the "in_open_water" check as the
         // fishing location affects the loot table
-        val fakeFishingHook = FishingHook(fakePlayer, level, luck, 0)
+        val fakeFishingHook = FishingHook(fakePlayer, pos.world.serverLevel, luck, 0)
         
-        val params = LootParams.Builder(level)
-            .withParameter(LootContextParams.ORIGIN, position)
-            .withParameter(LootContextParams.TOOL, rodItem.nmsCopy)
+        val params = LootParams.Builder(pos.world.serverLevel)
+            .withParameter(LootContextParams.ORIGIN, pos.location.toVec3())
+            .withParameter(LootContextParams.TOOL, rodItem.unwrap().copy())
             .withParameter(LootContextParams.THIS_ENTITY, fakeFishingHook)
             .withLuck(luck.toFloat())
             .create(LootContextParamSets.FISHING)
         
-        MINECRAFT_SERVER.lootData.getLootTable(BuiltInLootTables.FISHING).getRandomItems(params).asSequence()
+        MINECRAFT_SERVER.reloadableRegistries().getLootTable(BuiltInLootTables.FISHING).getRandomItems(params).asSequence()
             .map(MojangStack::bukkitMirror)
             .forEach {
                 val leftover = inventory.addItem(SELF_UPDATE_REASON, it)
                 if (GlobalValues.DROP_EXCESS_ON_GROUND && leftover != 0) {
                     it.amount = leftover
-                    world.dropItemNaturally(itemDropLocation, it)
+                    pos.world.dropItemNaturally(pos.add(0, 1, 0).location, it)
                 }
             }
         
@@ -124,7 +110,7 @@ class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
     }
     
     private fun useRod() {
-        fishingRodInventory.modifyItem(SELF_UPDATE_REASON, 0) { Damageable.damageAndBreak(it!!, 1) }
+        fishingRodInventory.modifyItem(SELF_UPDATE_REASON, 0) { it?.damage(1, pos.world) }
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
@@ -140,7 +126,7 @@ class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
         
         private val sideConfigGui = SideConfigMenu(
             this@AutoFisher,
-            listOf(
+            mapOf(
                 itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default",
                 itemHolder.getNetworkedInventory(fishingRodInventory) to "inventory.machines.fishing_rod"
             ),
@@ -162,7 +148,7 @@ class AutoFisher(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
                 "3 - - - - - - - 4")
             .addIngredient('i', inventory)
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('f', fishingRodInventory, GuiMaterials.FISHING_ROD_PLACEHOLDER)
+            .addIngredient('f', fishingRodInventory, GuiItems.FISHING_ROD_PLACEHOLDER)
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(3, energyHolder))
             .addIngredient('p', idleBar)

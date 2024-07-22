@@ -4,62 +4,60 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.data.Ageable
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FERTILIZER
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.PlantUtils
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.isFullyAged
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.item.PlantUtils
-import xyz.xenondevs.nova.util.item.isFullyAged
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.EntityUtils
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 
 private val MAX_ENERGY = FERTILIZER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = FERTILIZER.config.entry<Long>("energy_per_tick")
 private val ENERGY_PER_FERTILIZE = FERTILIZER.config.entry<Long>("energy_per_fertilize")
-private val IDLE_TIME by FERTILIZER.config.entry<Int>("idle_time")
+private val IDLE_TIME = FERTILIZER.config.entry<Int>("idle_time")
 private val MIN_RANGE = FERTILIZER.config.entry<Int>("range", "min")
 private val MAX_RANGE = FERTILIZER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by FERTILIZER.config.entry<Int>("range", "default")
 
-class Fertilizer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class Fertilizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val fertilizerInventory = getInventory("fertilizer", 12, ::handleFertilizerUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, ENERGY_PER_FERTILIZE, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
-    override val itemHolder = NovaItemHolder(this, fertilizerInventory to NetworkConnectionType.INSERT) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
+    private val fertilizerInventory = storedInventory("fertilizer", 12, this::handleInventoryUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(fertilizerInventory to INSERT)
     
-    private var maxIdleTime = 0
+    private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) { size ->
+        Region.inFrontOf(this, size * 2, size * 2, 1, 0)
+    }
+    
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerFertilize by efficiencyDividedValue(ENERGY_PER_FERTILIZE, upgradeHolder)
+    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     private var timePassed = 0
-    private val region = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE) { getBlockFrontRegion(it, it, 1, 0) }
-    
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        maxIdleTime = (IDLE_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
-        if (timePassed > maxIdleTime) timePassed = maxIdleTime
-    }
     
     override fun handleTick() {
-        if (energyHolder.energy >= energyHolder.energyConsumption) {
-            energyHolder.energy -= energyHolder.energyConsumption
-            if (energyHolder.energy >= energyHolder.specialEnergyConsumption) {
+        if (energyHolder.energy >= energyPerTick) {
+            energyHolder.energy -= energyPerTick
+            if (energyHolder.energy >= energyPerFertilize) {
                 if (timePassed++ >= maxIdleTime) {
                     timePassed = 0
                     if (!fertilizerInventory.isEmpty)
@@ -73,28 +71,35 @@ class Fertilizer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
         for ((index, item) in fertilizerInventory.items.withIndex()) {
             if (item == null) continue
             val plant = getNextPlant() ?: return
-            PlantUtils.fertilize(plant)
+            PlantUtils.fertilize(plant, fakePlayer)
             
-            energyHolder.energy -= energyHolder.specialEnergyConsumption
+            energyHolder.energy -= energyPerFertilize
             fertilizerInventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
             break
         }
     }
     
-    private fun getNextPlant(): Block? =
-        region.blocks
-            .firstOrNull {
-                (it.blockData is Ageable && !it.isFullyAged())
-                    && ProtectionManager.canUseBlock(this, ItemStack(Material.BONE_MEAL), it.location).get()
+    private fun getNextPlant(): Block? {
+        for (x in region.min.blockX..region.max.blockX) {
+            for (y in region.min.blockY..region.max.blockY) {
+                for (z in region.min.blockZ..region.max.blockZ) {
+                    val block = pos.world.getBlockAt(x, y, z)
+                    if (block.blockData is Ageable && !block.isFullyAged())
+                        return block
+                }
             }
+        }
+        
+        return null
+    }
     
-    private fun handleFertilizerUpdate(event: ItemPreUpdateEvent) {
+    private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
         if ((event.isAdd || event.isSwap) && event.newItem?.type != Material.BONE_MEAL)
             event.isCancelled = true
     }
     
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
+    override fun handleDisable() {
+        super.handleDisable()
         VisualRegion.removeRegion(uuid)
     }
     
@@ -103,7 +108,7 @@ class Fertilizer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSta
         
         private val sideConfigGui = SideConfigMenu(
             this@Fertilizer,
-            listOf(itemHolder.getNetworkedInventory(fertilizerInventory) to "inventory.machines.fertilizer"),
+            mapOf(itemHolder.getNetworkedInventory(fertilizerInventory) to "inventory.machines.fertilizer"),
             ::openWindow
         )
         

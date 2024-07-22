@@ -8,68 +8,61 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nmsutils.particle.particle
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SPRINKLER
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.NovaFluidHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.FluidBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.center
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.BUFFER
+import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.ui.menu.FluidBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.util.registerEvents
 import xyz.xenondevs.nova.util.sendTo
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 import kotlin.math.min
-import kotlin.math.roundToLong
 
 private val WATER_CAPACITY = SPRINKLER.config.entry<Long>("water_capacity")
-private val WATER_PER_MOISTURE_LEVEL by SPRINKLER.config.entry<Long>("water_per_moisture_level")
+private val WATER_PER_MOISTURE_LEVEL = SPRINKLER.config.entry<Long>("water_per_moisture_level")
 private val MIN_RANGE = SPRINKLER.config.entry<Int>("range", "min")
 private val MAX_RANGE = SPRINKLER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by SPRINKLER.config.entry<Int>("range", "default")
 
-class Sprinkler(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class Sprinkler(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.FLUID, UpgradeTypes.RANGE)
-    private val tank = getFluidContainer("tank", hashSetOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder = upgradeHolder)
-    override val fluidHolder = NovaFluidHolder(this, tank to NetworkConnectionType.BUFFER) { createExclusiveSideConfig(NetworkConnectionType.INSERT, BlockSide.BOTTOM) }
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.FLUID, UpgradeTypes.RANGE)
+    private val tank = storedFluidContainer("tank", setOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder)
+    private val fluidHolder = storedFluidHolder(tank to BUFFER)
     
-    private var waterPerMoistureLevel = 0L
-    
-    private val region = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE) {
+    private val waterPerMoistureLevel by efficiencyDividedValue(WATER_PER_MOISTURE_LEVEL, upgradeHolder)
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
         val d = it + 0.5
         Region(
-            location.center().add(-d, -1.0, -d),
-            location.center().add(d, 0.0, d)
+            pos.location.add(-d + 0.5, -0.5, -d + 0.5),
+            pos.location.add(d + 0.5, 0.5, d + 0.5)
         )
     }
     
-    init {
-        reload()
+    override fun handleEnable() {
+        super.handleEnable()
         sprinklers += this
     }
     
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
+    override fun handleDisable() {
+        super.handleDisable()
         sprinklers -= this
         VisualRegion.removeRegion(uuid)
-    }
-    
-    override fun reload() {
-        super.reload()
-        waterPerMoistureLevel = (WATER_PER_MOISTURE_LEVEL / upgradeHolder.getValue(UpgradeTypes.EFFICIENCY)).roundToLong()
     }
     
     @TileEntityMenuClass
@@ -77,8 +70,8 @@ class Sprinkler(blockState: NovaTileEntityState) : NetworkedTileEntity(blockStat
         
         private val sideConfigGui = SideConfigMenu(
             this@Sprinkler,
-            fluidContainerNames = listOf(tank to "container.nova.fluid_tank"),
-            openPrevious = ::openWindow
+            mapOf(tank to "container.nova.fluid_tank"),
+            ::openWindow
         )
         
         override val gui = Gui.normal()

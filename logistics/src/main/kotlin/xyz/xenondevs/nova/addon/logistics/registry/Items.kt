@@ -5,18 +5,20 @@ package xyz.xenondevs.nova.addon.logistics.registry
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
 import xyz.xenondevs.nova.addon.logistics.item.StorageUnitItemBehavior
+import xyz.xenondevs.nova.addon.logistics.item.WrenchBehavior
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
+import xyz.xenondevs.nova.world.block.NovaBlock
 
 @Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Logistics.registry {
     
-    val BASIC_CABLE = registerItem(Blocks.BASIC_CABLE)
-    val ADVANCED_CABLE = registerItem(Blocks.ADVANCED_CABLE)
-    val ELITE_CABLE = registerItem(Blocks.ELITE_CABLE)
-    val ULTIMATE_CABLE = registerItem(Blocks.ULTIMATE_CABLE)
-    val CREATIVE_CABLE = registerItem(Blocks.CREATIVE_CABLE)
+    val BASIC_CABLE = cable(Blocks.BASIC_CABLE, "basic")
+    val ADVANCED_CABLE = cable(Blocks.ADVANCED_CABLE, "advanced")
+    val ELITE_CABLE = cable(Blocks.ELITE_CABLE, "elite")
+    val ULTIMATE_CABLE = cable(Blocks.ULTIMATE_CABLE, "ultimate")
+    val CREATIVE_CABLE = cable(Blocks.CREATIVE_CABLE, "creative")
     
     val BASIC_POWER_CELL = registerItem(Blocks.BASIC_POWER_CELL)
     val ADVANCED_POWER_CELL = registerItem(Blocks.ADVANCED_POWER_CELL)
@@ -40,7 +42,14 @@ object Items : ItemRegistry by Logistics.registry {
     val ELITE_ITEM_FILTER = registerItem("elite_item_filter", ItemFilterBehavior)
     val ULTIMATE_ITEM_FILTER = registerItem("ultimate_item_filter", ItemFilterBehavior)
     
-    val TANK_WATER_LEVELS = registerUnnamedItem("tank_water_levels")
-    val TANK_LAVA_LEVELS = registerUnnamedItem("tank_lava_levels")
+    val WRENCH = registerItem("wrench", WrenchBehavior)
+    
+    private fun cable(block: NovaBlock, tier: String) = item(block) {
+        models {
+            selectModel {
+                getModel("item/cable/$tier")
+            }
+        }
+    }
     
 }

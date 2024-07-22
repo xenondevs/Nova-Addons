@@ -12,11 +12,11 @@ import xyz.xenondevs.nova.player.attachment.HideDownItemAttachment
 @Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object Attachments : AttachmentTypeRegistry by Jetpacks.registry {
     
-    private fun registerJetpackAttachment(name: String, material: NovaItem): AttachmentType<*> =
+    private fun registerJetpackAttachment(name: String, item: NovaItem): AttachmentType<*> =
         registerAttachmentType(name) { player ->
             HideDownItemAttachment(
                 40f, player,
-                material.clientsideProvider.get(),
+                item.model.clientsideProvider.get(),
                 Vector3f(0f, -0.5f, -0.15f)
             )
         }

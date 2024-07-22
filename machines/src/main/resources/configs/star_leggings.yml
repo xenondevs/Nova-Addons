@@ -1,5 +1,17 @@
+# Wearable Options
 armor: 6
-max_durability: 350
 
+# Damageable Options
+max_durability: 350
+repair_ingredient: machines:star_crystal
+
+# Enchantable Options
 enchantment_value: 10
-enchantment_categories: ["breakable", "armor", "armor_legs"]
+supported_enchantments:
+  - minecraft:protection
+  - minecraft:fire_protection
+  - minecraft:blast_protection
+  - minecraft:projectile_protection
+  - minecraft:swift_sneak
+  - minecraft:unbreaking
+  - minecraft:mending

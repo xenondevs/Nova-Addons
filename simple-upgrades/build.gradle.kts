@@ -1,4 +1,4 @@
-version = "1.3"
+version = "1.4-SNAPSHOT"
 
 plugins {
     `maven-publish`
@@ -25,7 +25,7 @@ publishing {
     
     publications {
         create<MavenPublication>("maven") {
-            artifact(tasks.getByName("jar")).classifier = ""
+            from(components.getByName("kotlin"))
             artifact(tasks.getByName("sources"))
         }
     }

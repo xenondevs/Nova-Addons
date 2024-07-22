@@ -6,10 +6,8 @@ import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.nmsutils.particle.ParticleBuilder
 import xyz.xenondevs.nova.addon.jetpacks.ui.JetpackOverlay
 import xyz.xenondevs.nova.data.config.Configs
-import xyz.xenondevs.nova.data.config.entry
 import xyz.xenondevs.nova.item.behavior.Chargeable
 import xyz.xenondevs.nova.player.ability.Ability
 import xyz.xenondevs.nova.player.ability.AbilityManager
@@ -17,6 +15,7 @@ import xyz.xenondevs.nova.ui.overlay.actionbar.ActionbarOverlayManager
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.broadcast
 import xyz.xenondevs.nova.util.item.novaItem
+import xyz.xenondevs.nova.util.particle.ParticleBuilder
 import xyz.xenondevs.nova.util.serverTick
 
 private val IGNORED_GAME_MODES by Configs["jetpacks:config"].entry<Set<GameMode>>("ignored_game_modes")
@@ -88,12 +87,6 @@ class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick
         } else if (player.isFlying && isValidGameMode()) {
             player.isFlying = false
             player.allowFlight = false
-        }
-    }
-    
-    override fun reload() {
-        if (isValidGameMode()) {
-            player.flySpeed = flySpeed
         }
     }
     

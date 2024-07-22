@@ -1,55 +1,51 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.provider.immutable.combinedProvider
+import xyz.xenondevs.commons.provider.immutable.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.notifyWindows
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.CHUNK_LOADER
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.tileentity.ChunkLoadManager
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.ui.item.AddNumberItem
-import xyz.xenondevs.nova.ui.item.DisplayNumberItem
-import xyz.xenondevs.nova.ui.item.RemoveNumberItem
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
+import xyz.xenondevs.nova.ui.menu.item.DisplayNumberItem
+import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.getSurroundingChunks
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.pos
+import kotlin.math.roundToLong
 
 private val MAX_ENERGY = CHUNK_LOADER.config.entry<Long>("capacity")
-private val ENERGY_PER_CHUNK by CHUNK_LOADER.config.entry<Long>("energy_per_chunk")
+private val ENERGY_PER_CHUNK = CHUNK_LOADER.config.entry<Long>("energy_per_chunk")
 private val MAX_RANGE by CHUNK_LOADER.config.entry<Int>("max_range")
 
-class ChunkLoader(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class ChunkLoader(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.ENERGY, UpgradeTypes.EFFICIENCY)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, upgradeHolder = upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT) }
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.ENERGY, UpgradeTypes.EFFICIENCY)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     
-    private var range = retrieveData("range") { 0 }
-    private var chunks = chunk.getSurroundingChunks(range, true)
+    private var range = storedValue("range") { 0 }
+    private val chunks by range.map { pos.chunkPos.chunk!!.getSurroundingChunks(it, true) }
     private var active = false
     
-    private var energyPerTick = 0
+    private val energyPerTick by combinedProvider(ENERGY_PER_CHUNK, range, upgradeHolder.getValueProvider(UpgradeTypes.EFFICIENCY))
+        .map { (energyPerChunk, range, efficiency) -> (energyPerChunk * range * range / efficiency).roundToLong() }
     
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        energyPerTick = (ENERGY_PER_CHUNK * chunks.size / upgradeHolder.getValue(UpgradeTypes.EFFICIENCY)).toInt()
-    }
-    
-    override fun saveData() {
-        super.saveData()
-        storeData("range", range)
+    override fun handleDisable() {
+        super.handleDisable()
+        setChunksForceLoaded(false)
     }
     
     override fun handleTick() {
@@ -73,16 +69,9 @@ class ChunkLoader(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
     }
     
     private fun setRange(range: Int) {
-        this.range = range
-        setChunksForceLoaded(false)
-        chunks = chunk.getSurroundingChunks(range, true)
-        active = false
-        reload()
-    }
-    
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
-        if (!unload) setChunksForceLoaded(false)
+        if (active) setChunksForceLoaded(false)
+        this.range.set(range)
+        if (active) setChunksForceLoaded(true)
     }
     
     @TileEntityMenuClass
@@ -101,9 +90,9 @@ class ChunkLoader(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
                 "| u # m n p # | e",
                 "3 - - - - - - 4 e")
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('p', AddNumberItem({ 0..MAX_RANGE }, { range }, ::setRange, "menu.nova.region.increase").also(rangeItems::add))
-            .addIngredient('m', RemoveNumberItem({ 0..MAX_RANGE }, { range }, ::setRange, "menu.nova.region.decrease").also(rangeItems::add))
-            .addIngredient('n', DisplayNumberItem({ range + 1 }, "menu.nova.region.size").also(rangeItems::add))
+            .addIngredient('p', AddNumberItem({ 0..MAX_RANGE }, range::get, ::setRange, "menu.nova.region.increase").also(rangeItems::add))
+            .addIngredient('m', RemoveNumberItem({ 0..MAX_RANGE }, range::get, ::setRange, "menu.nova.region.decrease").also(rangeItems::add))
+            .addIngredient('n', DisplayNumberItem({ range.get() + 1 }, "menu.nova.region.size").also(rangeItems::add))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(3, energyHolder))
             .build()

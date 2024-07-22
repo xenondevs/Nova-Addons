@@ -6,66 +6,54 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FREEZER
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.item.NovaItem
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.NovaFluidHolder
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.FluidBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.FluidBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import java.lang.Long.min
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 private val WATER_CAPACITY = FREEZER.config.entry<Long>("water_capacity")
 private val ENERGY_CAPACITY = FREEZER.config.entry<Long>("energy_capacity")
 private val ENERGY_PER_TICK = FREEZER.config.entry<Long>("energy_per_tick")
-private val MB_PER_TICK by FREEZER.config.entry<Long>("mb_per_tick")
+private val MB_PER_TICK = FREEZER.config.entry<Long>("mb_per_tick")
 
-class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
-    private val inventory = getInventory("inventory", 6, ::handleInventoryUpdate)
-    private val waterTank = getFluidContainer("water", setOf(FluidType.WATER), WATER_CAPACITY, 0, upgradeHolder = upgradeHolder)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
+    private val inventory = storedInventory("inventory", 6, ::handleInventoryUpdate)
+    private val waterTank = storedFluidContainer("water", setOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT)
+    private val fluidHolder = storedFluidHolder(waterTank to INSERT)
     
-    override val fluidHolder = NovaFluidHolder(this, waterTank to NetworkConnectionType.BUFFER) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
-    override val itemHolder = NovaItemHolder(this, inventory to NetworkConnectionType.EXTRACT) { createSideConfig(NetworkConnectionType.EXTRACT, BlockSide.FRONT) }
-    override val energyHolder = ConsumerEnergyHolder(this, ENERGY_CAPACITY, ENERGY_PER_TICK, null, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
-    
-    private val snowSpawnBlock = location.clone().apply { y += 1 }.block
-    
-    private var mbPerTick = 0L
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)
     private var mbUsed = 0L
-    
     private var mode = retrieveData("mode") { Mode.ICE }
-    
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        mbPerTick = (MB_PER_TICK * upgradeHolder.getValue(UpgradeTypes.SPEED)).roundToLong()
-    }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
         event.isCancelled = !event.isRemove && event.updateReason != SELF_UPDATE_REASON
@@ -83,10 +71,12 @@ class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
             }
         }
         val mbToTake = min(mbPerTick, mbMaxPerOperation - mbUsed)
-        if (waterTank.amount >= mbToTake && energyHolder.energy >= energyHolder.energyConsumption && inventory.canHold(mode.product)) {
-            if (snowSpawnBlock.type.isAir) snowSpawnBlock.type = Material.SNOW
+        if (waterTank.amount >= mbToTake && energyHolder.energy >= energyPerTick && inventory.canHold(mode.product)) {
+            val snowSpawnBlock = pos.add(0, 1, 0).block
+            if (snowSpawnBlock.type.isAir)
+                snowSpawnBlock.type = Material.SNOW
             
-            energyHolder.energy -= energyHolder.energyConsumption
+            energyHolder.energy -= energyPerTick
             mbUsed += mbToTake
             waterTank.takeFluid(mbToTake)
             if (mbUsed >= mbMaxPerOperation) {
@@ -108,8 +98,8 @@ class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         
         private val progressItem = LeftRightFluidProgressItem()
         private val sideConfigGui = SideConfigMenu(this@Freezer,
-            listOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.output"),
-            listOf(waterTank to "container.nova.water_tank"),
+            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.output"),
+            mapOf(waterTank to "container.nova.water_tank"),
             ::openWindow
         )
         
@@ -136,7 +126,7 @@ class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         private inner class ChangeModeItem : AbstractItem() {
             
             override fun getItemProvider(): ItemProvider =
-                mode.uiItem.clientsideProvider
+                mode.uiItem.model.clientsideProvider
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
@@ -151,9 +141,9 @@ class Freezer(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
     }
     
     enum class Mode(val product: ItemStack, val uiItem: NovaItem, val maxCostMultiplier: Int) {
-        ICE(ItemStack(Material.ICE), GuiMaterials.ICE_MODE_BTN, 1),
-        PACKED_ICE(ItemStack(Material.PACKED_ICE), GuiMaterials.PACKED_ICE_MODE_BTN, 9),
-        BLUE_ICE(ItemStack(Material.BLUE_ICE), GuiMaterials.BLUE_ICE_MODE_BTN, 81)
+        ICE(ItemStack(Material.ICE), GuiItems.ICE_MODE_BTN, 1),
+        PACKED_ICE(ItemStack(Material.PACKED_ICE), GuiItems.PACKED_ICE_MODE_BTN, 9),
+        BLUE_ICE(ItemStack(Material.BLUE_ICE), GuiItems.BLUE_ICE_MODE_BTN, 81)
     }
     
 }

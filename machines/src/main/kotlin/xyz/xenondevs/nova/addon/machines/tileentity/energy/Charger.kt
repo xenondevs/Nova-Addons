@@ -1,34 +1,38 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.CHARGER
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.item.behavior.Chargeable
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.network.item.inventory.NetworkedVirtualInventory
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.BUFFER
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.tileentity.network.type.item.inventory.NetworkedVirtualInventory
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.item.novaItem
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 
 private val MAX_ENERGY = CHARGER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = CHARGER.config.entry<Long>("charge_speed")
 
-class Charger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class Charger(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inventory = getInventory("inventory", 1, ::handleInventoryUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.ENERGY, UpgradeTypes.SPEED)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, null, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT) }
-    override val itemHolder = NovaItemHolder(this, inventory to NetworkConnectionType.BUFFER) { createSideConfig(NetworkConnectionType.BUFFER) }
+    private val inventory = storedInventory("inventory", 1, ::handleInventoryUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.ENERGY, UpgradeTypes.SPEED)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(inventory to BUFFER)
+    
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
         if (event.isAdd || event.isSwap) {
@@ -50,7 +54,7 @@ class Charger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         if (chargeable != null) {
             val itemCharge = chargeable.getEnergy(currentItem)
             if (itemCharge < chargeable.maxEnergy) {
-                val chargeEnergy = minOf(energyHolder.energyConsumption, energyHolder.energy, chargeable.maxEnergy - itemCharge)
+                val chargeEnergy = minOf(energyPerTick, energyHolder.energy, chargeable.maxEnergy - itemCharge)
                 chargeable.addEnergy(currentItem, chargeEnergy)
                 energyHolder.energy -= chargeEnergy
                 
@@ -64,7 +68,7 @@ class Charger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         
         private val sideConfigGui = SideConfigMenu(
             this@Charger,
-            listOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
+            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
             ::openWindow
         )
         

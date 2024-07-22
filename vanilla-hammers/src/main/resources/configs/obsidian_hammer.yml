@@ -18,4 +18,10 @@ repair_ingredient: "minecraft:obsidian"
 
 # Enchantable Options
 enchantment_value: 5
-enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]
+supported_enchantments:
+  - "vanilla_hammers:curse_of_gigantism"
+  - "minecraft:efficiency"
+  - "minecraft:silk_touch"
+  - "minecraft:fortune"
+  - "minecraft:unbreaking"
+  - "minecraft:mending"

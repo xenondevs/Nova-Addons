@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.agriculture
 
+import kotlinx.coroutines.runBlocking
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Block
@@ -7,80 +8,72 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.util.PlantUtils
+import xyz.xenondevs.nova.addon.machines.util.blocks
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.isTillable
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.item.behavior.Damageable
 import xyz.xenondevs.nova.item.tool.ToolCategory
 import xyz.xenondevs.nova.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.addIngredient
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.item.PlantUtils
-import xyz.xenondevs.nova.util.item.isTillable
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.addIngredient
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.below
+import xyz.xenondevs.nova.util.item.damage
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.Region
 
 private val MAX_ENERGY = PLANTER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = PLANTER.config.entry<Long>("energy_per_tick")
 private val ENERGY_PER_PLANT = PLANTER.config.entry<Long>("energy_per_plant")
-private val IDLE_TIME by PLANTER.config.entry<Int>("idle_time")
+private val IDLE_TIME = PLANTER.config.entry<Int>("idle_time")
 private val MIN_RANGE = PLANTER.config.entry<Int>("range", "min")
 private val MAX_RANGE = PLANTER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by PLANTER.config.entry<Int>("range", "default")
 
-class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inputInventory = getInventory("input", 6, ::handleSeedUpdate)
-    private val hoesInventory = getInventory("hoes", 1, ::handleHoeUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, ENERGY_PER_PLANT, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
-    override val itemHolder = NovaItemHolder(
-        this,
-        inputInventory to NetworkConnectionType.INSERT,
-        hoesInventory to NetworkConnectionType.INSERT
-    ) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
+    private val inputInventory = storedInventory("input", 6, ::handleSeedUpdate)
+    private val hoesInventory = storedInventory("hoes", 1, ::handleHoeUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(inputInventory to INSERT, hoesInventory to INSERT)
     
-    private var autoTill = retrieveData("autoTill") { true }
-    private var maxIdleTime = 0
-    private var timePassed = 0
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerPlant by efficiencyDividedValue(ENERGY_PER_PLANT, upgradeHolder)
+    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     
     private lateinit var soilRegion: Region
-    private val plantRegion = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE) {
-        soilRegion = getBlockFrontRegion(it, it, 1, -1)
-        getBlockFrontRegion(it, it, 1, 0)
+    private val plantRegion = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
+        soilRegion = Region.inFrontOf(this, it, it, 1, -1)
+        Region.inFrontOf(this, it, it, 1, 0)
     }
     
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        
-        maxIdleTime = (IDLE_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
-        if (timePassed > maxIdleTime) timePassed = maxIdleTime
-    }
+    private var autoTill = retrieveData("autoTill") { true }
+    private var timePassed = 0
     
     override fun handleTick() {
-        if (energyHolder.energy >= energyHolder.energyConsumption) {
-            energyHolder.energy -= energyHolder.energyConsumption // idle energy consumption
-            
-            if (energyHolder.energy >= energyHolder.specialEnergyConsumption && timePassed++ >= maxIdleTime) {
+        if (energyHolder.energy >= energyPerTick) {
+            energyHolder.energy -= energyPerTick
+            if (energyHolder.energy >= energyPerPlant && timePassed++ >= maxIdleTime) {
                 timePassed = 0
                 placeNextSeed()
             }
@@ -94,8 +87,9 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
                 if (item == null) continue
                 
                 // find a location to place this seed or skip to the next one if there isn't one
-                val (plant, soil) = getNextPlantBlock(item) ?: continue
-                energyHolder.energy -= energyHolder.specialEnergyConsumption
+                val plant = getNextPlantBlock(item) ?: continue
+                val soil = plant.below
+                energyHolder.energy -= energyPerPlant
                 
                 // till dirt if possible
                 if (soil.type.isTillable() && autoTill && !hoesInventory.isEmpty) tillDirt(soil)
@@ -112,60 +106,63 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         } else if (autoTill && !hoesInventory.isEmpty) {
             val block = getNextTillableBlock()
             if (block != null) {
-                energyHolder.energy -= energyHolder.specialEnergyConsumption
+                energyHolder.energy -= energyPerPlant
                 tillDirt(block)
             }
         }
     }
     
-    private fun getNextPlantBlock(seedStack: ItemStack): Pair<Block, Block>? {
+    private fun getNextPlantBlock(seedStack: ItemStack): Block? {
         val emptyHoes = hoesInventory.isEmpty
-        val index = plantRegion.withIndex().indexOfFirst { (index, block) ->
-            val soilBlock = soilRegion[index]
+        for (block in plantRegion.blocks) {
+            val soilBlock = block.below
             val soilType = soilBlock.type
             
-            // if the plant block is already occupied return false
+            // if the plant block is already occupied continue
             if (!block.type.isAir)
-                return@indexOfFirst false
+                continue
             
             val soilTypeApplicable = PlantUtils.canBePlaced(seedStack, soilBlock)
             if (soilTypeApplicable) {
                 // if the seed can be placed on the soil block, only the permission needs to be checked
-                return@indexOfFirst ProtectionManager.canPlace(this, seedStack, block.location).get()
+                val hasPermissions = runBlocking { ProtectionManager.canPlace(this@Planter, seedStack, block.pos) } // TODO: non-blocking
+                if (hasPermissions)
+                    return block
             } else {
                 // if the seed can not be placed on the soil block, check if this seed requires farmland and if it does
                 // check if the soil block can be tilled
                 val requiresFarmland = PlantUtils.requiresFarmland(seedStack)
                 val isOrCanBeFarmland = soilType == Material.FARMLAND || (soilType.isTillable() && autoTill && !emptyHoes)
                 if (requiresFarmland && !isOrCanBeFarmland)
-                    return@indexOfFirst false
+                    continue
                 
                 // the block can be tilled, now check for both planting and tilling permissions
-                return@indexOfFirst ProtectionManager.canPlace(this, seedStack, block.location).get() &&
-                    ProtectionManager.canUseBlock(this, hoesInventory.getItem(0), soilBlock.location).get()
+                val hasPermissions = runBlocking {
+                    ProtectionManager.canPlace(this@Planter, seedStack, block.pos) &&
+                        ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), soilBlock.pos)
+                } // TODO: non-blocking
+                if (hasPermissions)
+                    return block
             }
         }
-        
-        if (index == -1)
-            return null
-        return plantRegion[index] to soilRegion[index]
+        return null
     }
     
     private fun getNextTillableBlock(): Block? {
-        return plantRegion.firstOrNull {
+        return plantRegion.blocks.firstOrNull {
             it.type.isTillable()
-                && ProtectionManager.canUseBlock(this, hoesInventory.getItem(0), it.location).get()
+                && runBlocking { ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), it.pos) } // TODO: non-blocking
         }
     }
     
     private fun tillDirt(block: Block) {
         block.type = Material.FARMLAND
-        world.playSound(block.location, Sound.ITEM_HOE_TILL, 1f, 1f)
+        pos.world.playSound(block.location, Sound.ITEM_HOE_TILL, 1f, 1f)
         useHoe()
     }
     
     private fun handleHoeUpdate(event: ItemPreUpdateEvent) {
-        if ((event.isAdd || event.isSwap) && ToolCategory.ofItem(event.newItem) != VanillaToolCategories.HOE)
+        if ((event.isAdd || event.isSwap) && VanillaToolCategories.HOE !in ToolCategory.ofItem(event.newItem))
             event.isCancelled = true
     }
     
@@ -178,7 +175,7 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         if (hoesInventory.isEmpty)
             return
         
-        hoesInventory.modifyItem(null, 0) { Damageable.damageAndBreak(it!!, 0) }
+        hoesInventory.modifyItem(null, 0) { it?.damage(1, pos.world) }
     }
     
     override fun saveData() {
@@ -191,7 +188,7 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         
         private val sideConfigGui = SideConfigMenu(
             this@Planter,
-            listOf(
+            mapOf(
                 itemHolder.getNetworkedInventory(inputInventory) to "inventory.nova.input",
                 itemHolder.getNetworkedInventory(hoesInventory) to "inventory.machines.hoes",
             ),
@@ -206,7 +203,7 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
                 "| i i i # f m e |",
                 "3 - - - - - - - 4")
             .addIngredient('i', inputInventory)
-            .addIngredient('h', hoesInventory, GuiMaterials.HOE_PLACEHOLDER)
+            .addIngredient('h', hoesInventory, GuiItems.HOE_PLACEHOLDER)
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('f', AutoTillingItem())
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
@@ -220,7 +217,7 @@ class Planter(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         private inner class AutoTillingItem : AbstractItem() {
             
             override fun getItemProvider() =
-                (if (autoTill) GuiMaterials.HOE_BTN_ON else GuiMaterials.HOE_BTN_OFF).clientsideProvider
+                (if (autoTill) GuiItems.HOE_BTN_ON else GuiItems.HOE_BTN_OFF).model.clientsideProvider
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 autoTill = !autoTill

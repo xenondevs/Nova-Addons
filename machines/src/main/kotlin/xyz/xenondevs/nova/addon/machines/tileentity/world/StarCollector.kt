@@ -6,107 +6,115 @@ import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.world.entity.EquipmentSlot
 import org.bukkit.Bukkit
 import org.bukkit.util.Vector
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.nmsutils.particle.color
-import xyz.xenondevs.nmsutils.particle.dustTransition
-import xyz.xenondevs.nmsutils.particle.particle
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.STAR_COLLECTOR
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.registry.Models
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.resources.model.data.DisplayEntityBlockModelData
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
 import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.VerticalBar
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.VerticalBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.PacketTask
 import xyz.xenondevs.nova.util.Vector
 import xyz.xenondevs.nova.util.calculateYaw
-import xyz.xenondevs.nova.util.center
 import xyz.xenondevs.nova.util.dropItem
+import xyz.xenondevs.nova.util.particle.color
+import xyz.xenondevs.nova.util.particle.dustTransition
+import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.util.sendTo
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeArmorStand
 import java.awt.Color
 
 private val MAX_ENERGY = STAR_COLLECTOR.config.entry<Long>("capacity")
 private val IDLE_ENERGY_PER_TICK = STAR_COLLECTOR.config.entry<Long>("energy_per_tick_idle")
 private val COLLECTING_ENERGY_PER_TICK = STAR_COLLECTOR.config.entry<Long>("energy_per_tick_collecting")
-private val IDLE_TIME by STAR_COLLECTOR.config.entry<Int>("idle_time")
-private val COLLECTION_TIME by STAR_COLLECTOR.config.entry<Int>("collection_time")
+private val IDLE_TIME = STAR_COLLECTOR.config.entry<Int>("idle_time")
+private val COLLECTION_TIME = STAR_COLLECTOR.config.entry<Int>("collection_time")
 
 private const val STAR_PARTICLE_DISTANCE_PER_TICK = 0.75
 
-class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inventory = getInventory("inventory", 1, ::handleInventoryUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    override val itemHolder = NovaItemHolder(this, inventory to NetworkConnectionType.EXTRACT) {
-        createExclusiveSideConfig(NetworkConnectionType.EXTRACT, BlockSide.BOTTOM)
-    }
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, IDLE_ENERGY_PER_TICK, COLLECTING_ENERGY_PER_TICK, upgradeHolder) {
-        createExclusiveSideConfig(NetworkConnectionType.INSERT, BlockSide.BOTTOM)
-    }
+    private val inventory = storedInventory("inventory", 1, ::handleInventoryUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     
-    private var maxIdleTime = 0
-    private var maxCollectionTime = 0
+    private val idleEnergyPerTick by efficiencyDividedValue(IDLE_ENERGY_PER_TICK, upgradeHolder)
+    private val collectingEnergyPerTick by efficiencyDividedValue(COLLECTING_ENERGY_PER_TICK, upgradeHolder)
+    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val maxCollectionTime by maxIdleTime(COLLECTION_TIME, upgradeHolder)
     private var timeSpentIdle = 0
     private var timeSpentCollecting = -1
     private lateinit var particleVector: Vector
     
-    private val rodLocation = location.clone().center().apply { y += 0.7 }
-    private val rod = FakeArmorStand(location.clone().center().apply { y -= 1 }, true) { ast, data ->
+    private val rodLocation = pos.location.add(0.5, 0.7, 0.5)
+    private val rod = FakeArmorStand(pos.location.add(0.5, -1.0, 0.5), false) { ast, data ->
         data.isMarker = true
         data.isInvisible = true
-        ast.setEquipment(EquipmentSlot.HEAD, (block.model as DisplayEntityBlockModelData)[1].get(), false)
+        ast.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_OFF.model.clientsideProvider.get(), false)
     }
     
-    private val particleTask = createPacketTask(listOf(
-        particle(ParticleTypes.DUST_COLOR_TRANSITION) {
-            location(location.clone().center().apply { y += 0.2 })
-            dustTransition(Color(132, 0, 245), Color(196, 128, 217), 1f)
-            offset(0.25, 0.1, 0.25)
-            amount(3)
-        }
-    ), 1)
+    private val particleTask = PacketTask(
+        listOf(
+            particle(ParticleTypes.DUST_COLOR_TRANSITION) {
+                location(pos.location.add(0.5, 0.2, 0.5))
+                dustTransition(Color(132, 0, 245), Color(196, 128, 217), 1f)
+                offset(0.25, 0.1, 0.25)
+                amount(3)
+            }
+        ),
+        1,
+        ::getViewers
+    )
     
-    init {
-        reload()
+    override fun handleEnable() {
+        super.handleEnable()
+        rod.register()
+        particleTask.start()
     }
     
-    override fun reload() {
-        super.reload()
-        
-        maxIdleTime = (IDLE_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
-        maxCollectionTime = (COLLECTION_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
+    override fun handleDisable() {
+        super.handleDisable()
+        rod.remove()
+        particleTask.stop()
     }
     
     override fun handleTick() {
-        if (world.time in 13_000..23_000 || timeSpentCollecting != -1) handleNightTick()
-        else handleDayTick()
+        if (pos.world.time in 13_000..23_000 || timeSpentCollecting != -1) {
+            handleNightTick()
+        } else handleDayTick()
     }
     
     private fun handleNightTick() {
         if (timeSpentCollecting != -1) {
-            if (!GlobalValues.DROP_EXCESS_ON_GROUND && inventory.isFull) return
-            if (energyHolder.energy >= energyHolder.specialEnergyConsumption) {
-                energyHolder.energy -= energyHolder.specialEnergyConsumption
+            if (!GlobalValues.DROP_EXCESS_ON_GROUND && inventory.isFull)
+                return
+            
+            if (energyHolder.energy >= collectingEnergyPerTick) {
+                energyHolder.energy -= collectingEnergyPerTick
                 handleCollectionTick()
             }
-        } else if (energyHolder.energy >= energyHolder.energyConsumption) {
-            energyHolder.energy -= energyHolder.energyConsumption
+        } else if (energyHolder.energy >= idleEnergyPerTick) {
+            energyHolder.energy -= idleEnergyPerTick
             handleIdleTick()
         }
     }
@@ -119,10 +127,11 @@ class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(block
             
             val item = Items.STAR_DUST.createItemStack()
             val leftOver = inventory.addItem(SELF_UPDATE_REASON, item)
-            if (GlobalValues.DROP_EXCESS_ON_GROUND && leftOver != 0) location.dropItem(item)
+            if (GlobalValues.DROP_EXCESS_ON_GROUND && leftOver != 0)
+                pos.location.dropItem(item)
             
             particleTask.stop()
-            rod.setEquipment(EquipmentSlot.HEAD, (block.model as DisplayEntityBlockModelData)[1].get(), true)
+            rod.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_OFF.model.clientsideProvider.get(), true)
         } else {
             val percentageCollected = (maxCollectionTime - timeSpentCollecting) / maxCollectionTime.toDouble()
             val particleDistance = percentageCollected * (STAR_PARTICLE_DISTANCE_PER_TICK * maxCollectionTime)
@@ -144,7 +153,7 @@ class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(block
             
             particleTask.start()
             
-            rod.setEquipment(EquipmentSlot.HEAD, (block.model as DisplayEntityBlockModelData)[2].get(), true)
+            rod.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_ON.model.clientsideProvider.get(), true)
             
             rodLocation.yaw = rod.location.yaw
             particleVector = Vector(rod.location.yaw, -65F)
@@ -156,7 +165,7 @@ class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(block
     private fun handleDayTick() {
         val player = Bukkit.getOnlinePlayers()
             .asSequence()
-            .filter { it.location.world == world }
+            .filter { it.location.world == pos.world }
             .minByOrNull { it.location.distanceSquared(rodLocation) }
         
         if (player != null) {
@@ -175,17 +184,12 @@ class StarCollector(blockState: NovaTileEntityState) : NetworkedTileEntity(block
         event.isCancelled = event.updateReason != SELF_UPDATE_REASON && !event.isRemove
     }
     
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
-        rod.remove()
-    }
-    
     @TileEntityMenuClass
     inner class StarCollectorMenu : GlobalTileEntityMenu() {
         
         private val sideConfigGui = SideConfigMenu(
             this@StarCollector,
-            listOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.output"),
+            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.output"),
             ::openWindow
         )
         

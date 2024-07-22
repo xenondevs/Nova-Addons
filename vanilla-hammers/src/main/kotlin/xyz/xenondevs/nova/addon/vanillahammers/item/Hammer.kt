@@ -7,22 +7,21 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Enchantments
-import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.data.context.Context
+import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions
+import xyz.xenondevs.nova.data.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.item.NovaItem
-import xyz.xenondevs.nova.item.behavior.Enchantable
 import xyz.xenondevs.nova.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.util.BlockFaceUtils
+import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
-import xyz.xenondevs.nova.util.breakNaturally
 import xyz.xenondevs.nova.util.destroyProgress
 import xyz.xenondevs.nova.util.hardness
-import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.runTaskTimer
 import xyz.xenondevs.nova.util.setBreakStage
-import xyz.xenondevs.nova.world.block.context.BlockBreakContext
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent.Action
 import xyz.xenondevs.nova.world.pos
@@ -48,7 +47,7 @@ class Hammer(
                     return
                 
                 val face = BlockFaceUtils.determineBlockFaceLookingAt(player.eyeLocation) ?: BlockFace.NORTH
-                startHammerWorkers(player, selectBlocks(player, itemStack, event.block, face, Enchantments.CURSE_OF_GIGANTISM in Enchantable.getEnchantments(itemStack.nmsCopy)))
+                startHammerWorkers(player, selectBlocks(player, itemStack, event.block, face, itemStack.containsEnchantment(Enchantments.CURSE_OF_GIGANTISM)))
             }
             
             Action.FINISH -> finishHammerWorkers(player)
@@ -58,7 +57,7 @@ class Hammer(
     
     // TODO: slow down breaking based on range
     private fun selectBlocks(player: Player, itemStack: ItemStack, middle: Block, face: BlockFace, cursed: Boolean): List<Block> {
-        if (!ProtectionManager.canBreak(player, itemStack, middle.location).get())
+        if (!ProtectionManager.canBreak(player, itemStack, middle.pos))
             return emptyList()
         
         val blocks = ArrayList<Block>()
@@ -86,7 +85,7 @@ class Hammer(
                     val hardnessDifference = abs(block.hardness - middle.hardness)
                     if (hardnessDifference > hardnessTolerance)
                         continue
-                    if (!ProtectionManager.canBreak(player, itemStack, block.location).get())
+                    if (!ProtectionManager.canBreak(player, itemStack, block.pos))
                         continue
                     
                     blocks += block
@@ -137,8 +136,13 @@ class Hammer(
             hammerWorkers.remove(player)?.forEach { (block, breakerId) ->
                 block.setBreakStage(breakerId, -1)
                 
-                val ctx = BlockBreakContext(block.pos, player, player.location, null, player.inventory.itemInMainHand)
-                block.breakNaturally(ctx)
+                BlockUtils.breakBlockNaturally(
+                    Context.intention(DefaultContextIntentions.BlockBreak)
+                        .param(DefaultContextParamTypes.BLOCK_POS, block.pos)
+                        .param(DefaultContextParamTypes.SOURCE_PLAYER, player)
+                        .param(DefaultContextParamTypes.TOOL_ITEM_STACK, player.inventory.itemInMainHand)
+                        .build()
+                )
             }
         }
         

@@ -1,3 +1,3 @@
-speed: 1
 max_energy: 10000
 energy_per_tick: 100
+crafting_time: 100

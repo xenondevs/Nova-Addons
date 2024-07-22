@@ -4,6 +4,7 @@
   "item.simple_upgrades.energy_upgrade": "Energy Upgrade",
   "item.simple_upgrades.range_upgrade": "Range Upgrade",
   "item.simple_upgrades.fluid_upgrade": "Fluid Upgrade",
+  "menu.simple_upgrades.upgrades": "Upgrades",
   "menu.simple_upgrades.upgrades.type.speed": "Speed Upgrades: %s/%s",
   "menu.simple_upgrades.upgrades.type.efficiency": "Efficiency Upgrades: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energy Upgrades: %s/%s",

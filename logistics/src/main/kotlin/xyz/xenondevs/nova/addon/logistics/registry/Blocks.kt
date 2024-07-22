@@ -2,65 +2,173 @@
 
 package xyz.xenondevs.nova.addon.logistics.registry
 
-import org.bukkit.Material.*
+import net.minecraft.core.Direction.Axis
+import net.minecraft.world.level.block.Blocks
+import org.bukkit.Material
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedFluidTank
+import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedPowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.BasicCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.BasicFluidTank
+import xyz.xenondevs.nova.addon.logistics.tileentity.BasicPowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.CreativeCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.CreativeFluidTank
+import xyz.xenondevs.nova.addon.logistics.tileentity.CreativePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.EliteCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.EliteFluidTank
+import xyz.xenondevs.nova.addon.logistics.tileentity.ElitePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.FluidStorageUnit
 import xyz.xenondevs.nova.addon.logistics.tileentity.StorageUnit
 import xyz.xenondevs.nova.addon.logistics.tileentity.TrashCan
 import xyz.xenondevs.nova.addon.logistics.tileentity.UltimateCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.UltimateFluidTank
+import xyz.xenondevs.nova.addon.logistics.tileentity.UltimatePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.VacuumChest
-import xyz.xenondevs.nova.addon.logistics.tileentity.createAdvancedPowerCell
-import xyz.xenondevs.nova.addon.logistics.tileentity.createBasicPowerCell
-import xyz.xenondevs.nova.addon.logistics.tileentity.createCreativePowerCell
-import xyz.xenondevs.nova.addon.logistics.tileentity.createElitePowerCell
-import xyz.xenondevs.nova.addon.logistics.tileentity.createUltimatePowerCell
+import xyz.xenondevs.nova.addon.logistics.util.MathUtils
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
-import xyz.xenondevs.nova.data.world.block.property.Directional
+import xyz.xenondevs.nova.data.resources.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.item.options.BlockOptions
 import xyz.xenondevs.nova.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.item.tool.VanillaToolTiers
+import xyz.xenondevs.nova.util.bukkitBlockData
+import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
+import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
+import xyz.xenondevs.nova.world.block.TileEntityConstructor
+import xyz.xenondevs.nova.world.block.behavior.BlockSounds
+import xyz.xenondevs.nova.world.block.behavior.Breakable
+import xyz.xenondevs.nova.world.block.behavior.FluidFillable
+import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
+import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
+import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
+import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.AXIS_HORIZONTAL
+import net.minecraft.world.level.block.state.properties.BlockStateProperties as MojangBlockStateProperties
 
 @Init(stage = InitStage.PRE_PACK)
 object Blocks : BlockRegistry by Logistics.registry {
     
-    private val CABLE = BlockOptions(0.0, SoundGroup.STONE)
-    private val POWER_CELL = BlockOptions(4.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, SoundGroup.METAL, IRON_BLOCK)
-    private val TANK = BlockOptions(2.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, SoundGroup.GLASS, GLASS)
-    private val OTHER = BlockOptions(4.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, SoundGroup.STONE, COBBLESTONE)
+    private val CABLE = Breakable(0.0)
+    private val POWER_CELL = Breakable(4.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.IRON_BLOCK)
+    private val TANK = Breakable(2.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.GLASS)
+    private val OTHER = Breakable(4.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.COBBLESTONE)
     
-    val BASIC_CABLE = tileEntity( "basic_cable", ::BasicCable).blockOptions(CABLE).interactive(false).register()
-    val ADVANCED_CABLE = tileEntity( "advanced_cable", ::AdvancedCable).blockOptions(CABLE).interactive(false).register()
-    val ELITE_CABLE = tileEntity( "elite_cable", ::EliteCable).blockOptions(CABLE).interactive(false).register()
-    val ULTIMATE_CABLE = tileEntity( "ultimate_cable", ::UltimateCable).blockOptions(CABLE).interactive(false).register()
-    val CREATIVE_CABLE = tileEntity("creative_cable", ::CreativeCable).blockOptions(CABLE).interactive(false).register()
+    val BASIC_CABLE = cable("basic", ::BasicCable)
+    val ADVANCED_CABLE = cable("advanced", ::AdvancedCable)
+    val ELITE_CABLE = cable("elite", ::EliteCable)
+    val ULTIMATE_CABLE = cable("ultimate", ::UltimateCable)
+    val CREATIVE_CABLE = cable("creative", ::CreativeCable)
     
-    val BASIC_POWER_CELL = tileEntity( "basic_power_cell", ::createBasicPowerCell).blockOptions(POWER_CELL).register()
-    val ADVANCED_POWER_CELL = tileEntity( "advanced_power_cell", ::createAdvancedPowerCell).blockOptions(POWER_CELL).register()
-    val ELITE_POWER_CELL = tileEntity( "elite_power_cell", ::createElitePowerCell).blockOptions(POWER_CELL).register()
-    val ULTIMATE_POWER_CELL = tileEntity("ultimate_power_cell", ::createUltimatePowerCell).blockOptions(POWER_CELL).register()
-    val CREATIVE_POWER_CELL = tileEntity("creative_power_cell", ::createCreativePowerCell).blockOptions(POWER_CELL).register()
+    val BASIC_POWER_CELL = powerCell("basic", ::BasicPowerCell)
+    val ADVANCED_POWER_CELL = powerCell("advanced", ::AdvancedPowerCell)
+    val ELITE_POWER_CELL = powerCell("elite", ::ElitePowerCell)
+    val ULTIMATE_POWER_CELL = powerCell("ultimate", ::UltimatePowerCell)
+    val CREATIVE_POWER_CELL = powerCell("creative", ::CreativePowerCell)
     
-    val BASIC_FLUID_TANK = tileEntity("basic_fluid_tank", ::BasicFluidTank).blockOptions(TANK).register()
-    val ADVANCED_FLUID_TANK = tileEntity("advanced_fluid_tank", ::AdvancedFluidTank).blockOptions(TANK).register()
-    val ELITE_FLUID_TANK = tileEntity("elite_fluid_tank", ::EliteFluidTank).blockOptions(TANK).register()
-    val ULTIMATE_FLUID_TANK = tileEntity("ultimate_fluid_tank", ::UltimateFluidTank).blockOptions(TANK).register()
-    val CREATIVE_FLUID_TANK = tileEntity("creative_fluid_tank", ::CreativeFluidTank).blockOptions(TANK).register()
+    val BASIC_FLUID_TANK = tank("basic", ::BasicFluidTank)
+    val ADVANCED_FLUID_TANK = tank("advanced", ::AdvancedFluidTank)
+    val ELITE_FLUID_TANK = tank("elite", ::EliteFluidTank)
+    val ULTIMATE_FLUID_TANK = tank("ultimate", ::UltimateFluidTank)
+    val CREATIVE_FLUID_TANK = tank("creative", ::CreativeFluidTank)
     
-    val STORAGE_UNIT = tileEntity("storage_unit", ::StorageUnit).blockOptions(OTHER).register()
-    val FLUID_STORAGE_UNIT = tileEntity("fluid_storage_unit", ::FluidStorageUnit).blockOptions(OTHER).register()
-    val VACUUM_CHEST = tileEntity("vacuum_chest", ::VacuumChest).blockOptions(OTHER).register()
-    val TRASH_CAN = tileEntity("trash_can", ::TrashCan).blockOptions(OTHER).properties(Directional.NORMAL).register()
+    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) {
+        behaviors(CABLE, BlockSounds(SoundGroup.STONE))
+    }
+    val FLUID_STORAGE_UNIT = interactiveTileEntity("fluid_storage_unit", ::FluidStorageUnit) {
+        behaviors(FluidFillable, OTHER, BlockSounds(SoundGroup.STONE))
+    }
+    val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) {
+        behaviors(OTHER, BlockSounds(SoundGroup.STONE))
+    }
+    val TRASH_CAN = interactiveTileEntity("trash_can", ::TrashCan) {
+        behaviors(OTHER, BlockSounds(SoundGroup.STONE))
+        stateProperties(AXIS_HORIZONTAL)
+        models { selectModel { defaultModel.rotated() } }
+    }
+    
+    private fun cable(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
+        tileEntity("${tier}_cable", constructor) {
+            syncTickrate(0)
+            behaviors(TileEntityLimited, TileEntityDrops, CABLE, BlockSounds(SoundGroup.METAL))
+            stateProperties(
+                ScopedBlockStateProperties.NORTH,
+                ScopedBlockStateProperties.EAST,
+                ScopedBlockStateProperties.SOUTH,
+                ScopedBlockStateProperties.WEST,
+                ScopedBlockStateProperties.UP,
+                ScopedBlockStateProperties.DOWN
+            )
+            
+            models {
+                entityBacked {
+                    val north = getPropertyValueOrThrow(BlockStateProperties.NORTH)
+                    val east = getPropertyValueOrThrow(BlockStateProperties.EAST)
+                    val south = getPropertyValueOrThrow(BlockStateProperties.SOUTH)
+                    val west = getPropertyValueOrThrow(BlockStateProperties.WEST)
+                    val up = getPropertyValueOrThrow(BlockStateProperties.UP)
+                    val down = getPropertyValueOrThrow(BlockStateProperties.DOWN)
+                    
+                    when {
+                        east && west -> Blocks.CHAIN.defaultBlockState()
+                            .setValue(MojangBlockStateProperties.AXIS, Axis.X)
+                            .bukkitBlockData
+                        
+                        north && south -> Blocks.CHAIN.defaultBlockState()
+                            .setValue(MojangBlockStateProperties.AXIS, Axis.Z)
+                            .bukkitBlockData
+                        
+                        up && down -> Blocks.CHAIN.defaultBlockState()
+                            .setValue(MojangBlockStateProperties.AXIS, Axis.Y)
+                            .bukkitBlockData
+                        
+                        else -> Material.STRUCTURE_VOID.createBlockData()
+                    }
+                }
+                
+                selectModel {
+                    val id = MathUtils.encodeToInt(
+                        getPropertyValueOrThrow(BlockStateProperties.NORTH),
+                        getPropertyValueOrThrow(BlockStateProperties.EAST),
+                        getPropertyValueOrThrow(BlockStateProperties.SOUTH),
+                        getPropertyValueOrThrow(BlockStateProperties.WEST),
+                        getPropertyValueOrThrow(BlockStateProperties.UP),
+                        getPropertyValueOrThrow(BlockStateProperties.DOWN)
+                    )
+                    
+                    getModel("block/cable/$tier/$id")
+                }
+            }
+        }
+    
+    private fun interactiveTileEntity(
+        name: String,
+        constructor: TileEntityConstructor,
+        init: NovaTileEntityBlockBuilder.() -> Unit
+    ): NovaTileEntityBlock = tileEntity(name, constructor) {
+        behaviors(TileEntityLimited, TileEntityDrops, TileEntityInteractive)
+        init()
+    }
+    
+    private fun powerCell(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
+        interactiveTileEntity("${tier}_power_cell", constructor) {
+            behaviors(POWER_CELL, BlockSounds(SoundGroup.METAL))
+            models {
+                stateBacked(BackingStateCategory.NOTE_BLOCK, BackingStateCategory.MUSHROOM_BLOCK)
+                selectModel {
+                    getModel("block/power_cell/$tier")
+                }
+            }
+        }
+    
+    private fun tank(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
+        interactiveTileEntity("${tier}_fluid_tank", constructor) {
+            behaviors(FluidFillable, TANK, BlockSounds(SoundGroup.GLASS))
+            models {
+                selectModel {
+                    getModel("block/fluid_tank/$tier")
+                }
+            }
+        }
     
 }
