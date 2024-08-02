@@ -185,8 +185,7 @@ object Blocks : BlockRegistry by Machines.registry {
         block("${tier}_machine_frame") {
             behaviors(MACHINE_FRAME, BlockSounds(SoundGroup.METAL))
             models {
-                // TODO: this needs a transparent backing state category (leaves?), which does not exist yet
-                stateBacked(BackingStateCategory.MUSHROOM_BLOCK, BackingStateCategory.NOTE_BLOCK)
+                stateBacked(BackingStateCategory.LEAVES)
                 selectModel { getModel("block/machine_frame/$tier") }
             }
         }
