@@ -1,15 +1,12 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.gui.ProgressBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -18,14 +15,12 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.data.recipe.RecipeManager
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.BUFFER
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.tileentity.network.type.item.inventory.NetworkedVirtualInventory
 import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.PacketTask
@@ -49,7 +44,8 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     
     private val progressPerTick by upgradeHolder.getValueProvider(UpgradeTypes.SPEED)
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
-    private var progress by storedValue("progress") { 0.0 }
+    private val progressProvider = storedValue("progress") { 0.0 }
+    private var progress by progressProvider
     private var recipe = inventory.getItem(0)?.let { RecipeManager.getConversionRecipeFor(RecipeTypes.CRYSTALLIZER, it) }
     
     private val particleTask: PacketTask
@@ -137,8 +133,6 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
                 inventory.setItem(SELF_UPDATE_REASON, 0, recipe.result)
             }
             
-            menuContainer.forEachMenu<CrystallizerMenu> { it.progressBar.percentage = progress / recipe.time }
-            
             if (!particleTask.isRunning()) {
                 particleTask.start()
             }
@@ -154,15 +148,6 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             ::openWindow
         )
         
-        val progressBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable(
-                    "menu.machines.crystallizer.idle",
-                    NamedTextColor.GRAY
-                ))
-        }
-        
         override val gui = Gui.normal()
             .setStructure(
                 "1 - - - - - - - 2",
@@ -173,7 +158,7 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('i', inventory)
-            .addIngredient('p', progressBar)
+            .addIngredient('p', ProgressBar(3, "menu.machines.crystallizer.idle", progressProvider))
             .addIngredient('e', EnergyBar(3, energyHolder))
             .build()
         

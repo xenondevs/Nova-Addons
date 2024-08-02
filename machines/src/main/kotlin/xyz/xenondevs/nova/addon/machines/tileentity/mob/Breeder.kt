@@ -1,16 +1,14 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.world.InteractionHand
 import org.bukkit.Tag
 import org.bukkit.entity.Animals
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BREEDER
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
@@ -19,12 +17,10 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.EntityUtils
@@ -68,9 +64,11 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     
     private val energyPerTick by speedMultipliedValue(ENERGY_PER_TICK, upgradeHolder)
     private val energyPerBreed by speedMultipliedValue(ENERGY_PER_BREED, upgradeHolder)
-    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val mxIdleTime by maxIdleTimeProvider
     
-    private var idleTime = 0
+    private val idleTimeProvider = mutableProvider(0)
+    private var idleTime by idleTimeProvider
     
     override fun handleDisable() {
         super.handleDisable()
@@ -81,7 +79,7 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         if (energyHolder.energy >= energyPerTick) {
             energyHolder.energy -= energyPerTick
             
-            if (idleTime++ >= maxIdleTime) {
+            if (idleTime++ >= mxIdleTime) {
                 idleTime = 0
                 
                 val breedableEntities = pos.location.chunk
@@ -102,8 +100,6 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
                 }
             }
         }
-        
-        menuContainer.forEachMenu<BreederMenu> { it.idleBar.percentage = idleTime / maxIdleTime.toDouble() }
     }
     
     private fun interact(animal: Animals): Boolean {
@@ -135,16 +131,6 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             ::openWindow
         )
         
-        val idleBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable(
-                    "menu.machines.breeder.idle",
-                    NamedTextColor.GRAY,
-                    Component.text(maxIdleTime - idleTime)
-                ))
-        }
-        
         override val gui = Gui.normal()
             .setStructure(
                 "1 - - - - - - - 2",
@@ -160,7 +146,7 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)
             .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('b', idleBar)
+            .addIngredient('b', IdleBar(3, "menu.machines.breeder.idle", idleTimeProvider, maxIdleTimeProvider))
             .build()
         
     }

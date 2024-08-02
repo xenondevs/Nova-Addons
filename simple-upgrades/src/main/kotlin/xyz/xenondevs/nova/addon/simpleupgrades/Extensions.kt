@@ -12,7 +12,7 @@ import xyz.xenondevs.nova.tileentity.TileEntity
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType
 import xyz.xenondevs.nova.tileentity.network.type.energy.holder.DefaultEnergyHolder
 import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.type.fluid.container.DynamicFluidContainer
+import xyz.xenondevs.nova.tileentity.network.type.fluid.container.FluidContainer
 import xyz.xenondevs.nova.util.CUBE_FACES
 import xyz.xenondevs.nova.world.region.DynamicRegion
 import xyz.xenondevs.nova.world.region.Region
@@ -65,7 +65,7 @@ fun NetworkedTileEntity.storedEnergyHolder(
 
 
 /**
- * Creates a [DynamicFluidContainer] whose [capacity] will be automatically affected by
+ * Creates a [FluidContainer] whose [capacity] will be automatically affected by
  * the [UpgradeTypes.FLUID] value of [upgradeHolder].
  *
  * @see TileEntity.storedFluidContainer
@@ -77,7 +77,7 @@ fun TileEntity.storedFluidContainer(
     upgradeHolder: UpgradeHolder,
     persistent: Boolean = false,
     updateHandler: (() -> Unit)? = null,
-): DynamicFluidContainer =
+): FluidContainer =
     storedFluidContainer(
         name,
         allowedTypes,

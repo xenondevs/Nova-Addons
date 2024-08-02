@@ -3,8 +3,6 @@ package xyz.xenondevs.nova.addon.machines.tileentity.mob
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.world.entity.Mob
 import org.bukkit.Sound
 import org.bukkit.entity.EntityType
@@ -16,15 +14,14 @@ import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.gson.isString
 import xyz.xenondevs.commons.provider.immutable.combinedProvider
-import xyz.xenondevs.commons.provider.immutable.map
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.builder.SkullBuilder
 import xyz.xenondevs.invui.item.builder.SkullBuilder.HeadTexture
-import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
+import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_DUPLICATOR
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
@@ -33,13 +30,11 @@ import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.BUFFER
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
@@ -71,22 +66,30 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     private val itemHolder = storedItemHolder(inventory to BUFFER)
     
-    private val maxIdleTimeNbt by combinedProvider(IDLE_TIME_NBT, upgradeHolder.getValueProvider(UpgradeTypes.SPEED))
-        .map { (idleTimeNBT, speed) -> (idleTimeNBT / speed).roundToInt() }
-    private val maxIdleTimeBasic by combinedProvider(IDLE_TIME, upgradeHolder.getValueProvider(UpgradeTypes.SPEED))
-        .map { (idleTime, speed) -> (idleTime / speed).roundToInt() }
+    private val keepNbtProvider = storedValue("keepNbt") { false }
+    private var keepNbt by keepNbtProvider
+    private val maxIdleTimeNbt = combinedProvider(
+        IDLE_TIME_NBT, upgradeHolder.getValueProvider(UpgradeTypes.SPEED)
+    ) { idleTimeNBT, speed -> (idleTimeNBT / speed).roundToInt() }
+    private val maxIdleTimeBasic = combinedProvider(
+        IDLE_TIME, upgradeHolder.getValueProvider(UpgradeTypes.SPEED)
+    ) { idleTime, speed -> (idleTime / speed).roundToInt() }
+    private val maxIdleTimeProvider = combinedProvider(
+        keepNbtProvider, maxIdleTimeNbt, maxIdleTimeBasic
+    ) { keepNbtProvider, maxIdleTimeNbt, maxIdleTimeBasic ->
+        if (keepNbtProvider) maxIdleTimeNbt else maxIdleTimeBasic
+    }
+    private val maxIdleTime by maxIdleTimeProvider
+    
     private val energyPerTickNbt by efficiencyDividedValue(ENERGY_PER_TICK_NBT, upgradeHolder)
     private val energyPerTickBasic by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
-    
     private val energyPerTick: Long
         get() = if (keepNbt) energyPerTickNbt else energyPerTickBasic
-    private val maxIdleTime: Int
-        get() = if (keepNbt) maxIdleTimeNbt else maxIdleTimeBasic
     
-    private var timePassed = 0
+    private val timePassedProvider = mutableProvider(0)
+    private var timePassed by timePassedProvider
     private var entityType: EntityType? = null
     private var entityData: ByteArray? = null
-    private var keepNbt by storedValue("keepNbt") { false }
     
     init {
         updateEntityData(inventory.getItem(0))
@@ -101,8 +104,6 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
                 
                 spawnEntity()
             }
-            
-            menuContainer.forEachMenu(MobDuplicatorMenu::updateIdleBar)
         }
     }
     
@@ -125,7 +126,6 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         entityData = data
         entityType = type
         timePassed = 0
-        menuContainer.forEachMenu(MobDuplicatorMenu::updateIdleBar)
     }
     
     private fun spawnEntity() {
@@ -164,16 +164,6 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             ::openWindow
         )
         
-        private val idleBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable(
-                    "menu.machines.mob_duplicator.idle",
-                    NamedTextColor.GRAY,
-                    Component.text(maxIdleTime - timePassed)
-                ))
-        }
-        
         override val gui = Gui.normal()
             .setStructure(
                 "1 - - - - - - - 2",
@@ -186,12 +176,8 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             .addIngredient('n', ToggleNBTModeItem())
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('p', idleBar)
+            .addIngredient('p', IdleBar(3, "menu.machines.mob_duplicator.idle", timePassedProvider, maxIdleTimeProvider))
             .build()
-        
-        fun updateIdleBar() {
-            idleBar.percentage = timePassed.toDouble() / maxIdleTime.toDouble()
-        }
         
         private inner class ToggleNBTModeItem : AbstractItem() {
             
@@ -204,7 +190,6 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
                 notifyWindows()
                 
                 timePassed = 0
-                updateIdleBar()
                 
                 player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
             }

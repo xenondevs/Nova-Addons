@@ -5,6 +5,7 @@ import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.cbf.provider.entry
 import xyz.xenondevs.commons.collections.enumMap
 import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.commons.provider.immutable.provider
 import xyz.xenondevs.commons.provider.mutable.orElseLazily
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
@@ -64,7 +65,7 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
 class CreativePowerCell(pos: BlockPos, state: NovaBlockState, data: Compound) : AbstractPowerCell(pos, state, data) {
     
     override val energyHolder: EnergyHolder
-    override val energyBar = EnergyBar(3, { Long.MAX_VALUE }, { Long.MAX_VALUE }, { 0 }, { 0 })
+    override val energyBar = EnergyBar(3, provider(Long.MAX_VALUE), provider(Long.MAX_VALUE), provider(0L), provider(0L))
     
     init {
         val energyHolder = InfiniteEnergyHolder(storedValue("energyHolder", ::Compound))

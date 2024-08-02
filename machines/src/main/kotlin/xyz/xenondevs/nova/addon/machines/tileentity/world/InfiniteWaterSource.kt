@@ -7,7 +7,7 @@ import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType
 import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.tileentity.network.type.fluid.container.NetworkedFluidContainer
-import xyz.xenondevs.nova.ui.menu.FluidBar
+import xyz.xenondevs.nova.ui.menu.StaticFluidBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.world.BlockPos
@@ -17,7 +17,10 @@ import java.util.*
 class InfiniteWaterSource(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val fluidContainer = InfiniteFluidContainer
-    private val fluidHolder = storedFluidHolder(fluidContainer to NetworkConnectionType.EXTRACT)
+    
+    init {
+        storedFluidHolder(fluidContainer to NetworkConnectionType.EXTRACT)
+    }
     
     @TileEntityMenuClass
     inner class InfiniteWaterSourceMenu : GlobalTileEntityMenu() {
@@ -36,7 +39,7 @@ class InfiniteWaterSource(pos: BlockPos, blockState: NovaBlockState, data: Compo
                 "| # # # f # # # |",
                 "3 - - - - - - - 4")
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('f', FluidBar(3, fluidHolder, fluidContainer))
+            .addIngredient('f', StaticFluidBar(3, Long.MAX_VALUE, FluidType.WATER, Long.MAX_VALUE))
             .build()
         
     }

@@ -1,14 +1,12 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
 import kotlinx.coroutines.runBlocking
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_KILLER
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
@@ -18,12 +16,10 @@ import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.EntityUtils
@@ -54,15 +50,17 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val energyPerDamage by efficiencyDividedValue(ENERGY_PER_DAMAGE, upgradeHolder)
-    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val mxIdleTime by maxIdleTimeProvider
     
-    private var timePassed = 0
+    private val timePassedProvider = mutableProvider(0)
+    private var timePassed by timePassedProvider
     
     override fun handleTick() {
         if (energyHolder.energy >= energyPerTick) {
             energyHolder.energy -= energyPerTick
             
-            if (timePassed++ >= maxIdleTime) {
+            if (timePassed++ >= mxIdleTime) {
                 timePassed = 0
                 
                 val killLimit = min((energyHolder.energy / energyPerDamage).toInt(), KILL_LIMIT)
@@ -78,8 +76,6 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                     }
             }
         }
-        
-        menuContainer.forEachMenu<MobKillerMenu> { it.idleBar.percentage = timePassed / maxIdleTime.toDouble() }
     }
     
     @TileEntityMenuClass
@@ -89,16 +85,6 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
             this@MobKiller,
             ::openWindow
         )
-        
-        val idleBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable(
-                    "menu.machines.mob_killer.idle",
-                    NamedTextColor.GRAY,
-                    Component.text(maxIdleTime - timePassed)
-                ))
-        }
         
         override val gui = Gui.normal()
             .setStructure(
@@ -114,7 +100,7 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)
             .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('i', idleBar)
+            .addIngredient('i', IdleBar(3, "menu.machines.mob_killer.idle", timePassedProvider, maxIdleTimeProvider))
             .build()
         
     }

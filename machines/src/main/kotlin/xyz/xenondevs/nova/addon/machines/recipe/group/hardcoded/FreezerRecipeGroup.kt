@@ -21,7 +21,7 @@ object FreezerRecipeGroup : RecipeGroup<FreezerRecipe>() {
                 ". w . . . . r . .",
                 ". w . . . . . . .")
             .addIngredient('r', createRecipeChoiceItem(listOf(recipe.result)))
-            .addIngredient('w', StaticFluidBar(FluidType.WATER, 1000L * recipe.mode.maxCostMultiplier, 100_000, 3))
+            .addIngredient('w', StaticFluidBar(3, 100_000, FluidType.WATER, 1000L * recipe.mode.maxCostMultiplier))
             .build()
     }
     

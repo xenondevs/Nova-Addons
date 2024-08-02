@@ -1,6 +1,5 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.agriculture
 
-import net.kyori.adventure.text.Component
 import net.minecraft.world.entity.projectile.FishingHook
 import net.minecraft.world.level.storage.loot.BuiltInLootTables
 import net.minecraft.world.level.storage.loot.LootParams
@@ -9,10 +8,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.AUTO_FISHER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -22,19 +21,16 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
-import xyz.xenondevs.nova.util.bukkitMirror
 import xyz.xenondevs.nova.util.item.damage
 import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.util.toVec3
@@ -57,9 +53,11 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
-    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val mxIdleTime by maxIdleTimeProvider
     
-    private var timePassed = 0
+    private val timePassedProvider = mutableProvider(0)
+    private var timePassed by timePassedProvider
     
     override fun handleTick() {
         if (energyHolder.energy >= energyPerTick && !fishingRodInventory.isEmpty && pos.below.block.type == Material.WATER) {
@@ -69,12 +67,10 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             energyHolder.energy -= energyPerTick
             
             timePassed++
-            if (timePassed >= maxIdleTime) {
+            if (timePassed >= mxIdleTime) {
                 timePassed = 0
                 fish()
             }
-            
-            menuContainer.forEachMenu<AutoFisherMenu> { it.idleBar.percentage = timePassed.toDouble() / maxIdleTime.toDouble() }
         }
     }
     
@@ -96,7 +92,7 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             .create(LootContextParamSets.FISHING)
         
         MINECRAFT_SERVER.reloadableRegistries().getLootTable(BuiltInLootTables.FISHING).getRandomItems(params).asSequence()
-            .map(MojangStack::bukkitMirror)
+            .map(MojangStack::asBukkitMirror)
             .forEach {
                 val leftover = inventory.addItem(SELF_UPDATE_REASON, it)
                 if (GlobalValues.DROP_EXCESS_ON_GROUND && leftover != 0) {
@@ -133,12 +129,6 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             ::openWindow
         )
         
-        val idleBar = object : VerticalBar(height = 3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable("menu.machines.auto_fisher.idle", Component.text(maxIdleTime - timePassed)))
-        }
-        
         override val gui = Gui.normal()
             .setStructure(
                 "1 - - - - - - - 2",
@@ -151,7 +141,7 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             .addIngredient('f', fishingRodInventory, GuiItems.FISHING_ROD_PLACEHOLDER)
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('p', idleBar)
+            .addIngredient('p', IdleBar(3, "menu.machines.auto_fisher.idle", timePassedProvider, maxIdleTimeProvider))
             .build()
         
     }

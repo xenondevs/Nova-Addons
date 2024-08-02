@@ -1,16 +1,14 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.world.entity.EquipmentSlot
 import org.bukkit.Bukkit
 import org.bukkit.util.Vector
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.STAR_COLLECTOR
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.addon.machines.registry.Models
@@ -21,13 +19,11 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.data.config.GlobalValues
-import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.PacketTask
@@ -60,10 +56,14 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     
     private val idleEnergyPerTick by efficiencyDividedValue(IDLE_ENERGY_PER_TICK, upgradeHolder)
     private val collectingEnergyPerTick by efficiencyDividedValue(COLLECTING_ENERGY_PER_TICK, upgradeHolder)
-    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
-    private val maxCollectionTime by maxIdleTime(COLLECTION_TIME, upgradeHolder)
-    private var timeSpentIdle = 0
-    private var timeSpentCollecting = -1
+    private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val mxIdleTime by maxIdleTimeProvider
+    private val maxCollectionTimeProvider = maxIdleTime(COLLECTION_TIME, upgradeHolder)
+    private val maxCollectionTime by maxCollectionTimeProvider
+    private val timeSpentIdleProvider = mutableProvider(0)
+    private var timeSpentIdle by timeSpentIdleProvider
+    private val timeSpentCollectingProvider = mutableProvider(-1)
+    private var timeSpentCollecting by timeSpentCollectingProvider
     private lateinit var particleVector: Vector
     
     private val rodLocation = pos.location.add(0.5, 0.7, 0.5)
@@ -142,13 +142,11 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
                 color(Color(255, 255, 255))
             }.sendTo(getViewers())
         }
-        
-        menuContainer.forEachMenu<StarCollectorMenu> { it.collectionBar.percentage = timeSpentCollecting / maxCollectionTime.toDouble() }
     }
     
     private fun handleIdleTick() {
         timeSpentIdle++
-        if (timeSpentIdle >= maxIdleTime) {
+        if (timeSpentIdle >= mxIdleTime) {
             timeSpentCollecting = 0
             
             particleTask.start()
@@ -158,8 +156,6 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             rodLocation.yaw = rod.location.yaw
             particleVector = Vector(rod.location.yaw, -65F)
         } else rod.teleport { this.yaw += 2F }
-        
-        menuContainer.forEachMenu<StarCollectorMenu> { it.idleBar.percentage = timeSpentIdle / maxIdleTime.toDouble() }
     }
     
     private fun handleDayTick() {
@@ -193,21 +189,6 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             ::openWindow
         )
         
-        val collectionBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder): ItemBuilder {
-                if (timeSpentCollecting != -1)
-                    itemBuilder.setDisplayName(Component.translatable("menu.machines.star_collector.collection", NamedTextColor.GRAY))
-                return itemBuilder
-            }
-        }
-        
-        val idleBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable("menu.machines.star_collector.idle", NamedTextColor.GRAY))
-        }
-        
         override val gui = Gui.normal()
             .setStructure(
                 "1 - - - - - - - 2",
@@ -218,8 +199,8 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('i', inventory)
-            .addIngredient('c', collectionBar)
-            .addIngredient('p', idleBar)
+            .addIngredient('c', IdleBar(3, "menu.machines.star_collector.collection", timeSpentCollectingProvider, maxCollectionTimeProvider))
+            .addIngredient('p', IdleBar(3, "menu.machines.star_collector.idle", timeSpentIdleProvider, maxIdleTimeProvider))
             .addIngredient('e', EnergyBar(3, energyHolder))
             .build()
         

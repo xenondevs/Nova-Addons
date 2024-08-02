@@ -31,8 +31,8 @@ object CobblestoneGeneratorRecipeGroup : RecipeGroup<CobblestoneGeneratorRecipe>
             .addIngredient('r', createRecipeChoiceItem(listOf(recipe.result)))
             .addIngredient('m', recipe.mode.uiItem)
             .addIngredient('>', progressItem)
-            .addIngredient('w', StaticFluidBar(FluidType.WATER, 1000, 1000, 3))
-            .addIngredient('l', StaticFluidBar(FluidType.LAVA, 1000, 1000, 3))
+            .addIngredient('w', StaticFluidBar(3, 1000, FluidType.WATER, 1000))
+            .addIngredient('l', StaticFluidBar(3, 1000, FluidType.LAVA, 1000))
             .build()
         
     }
