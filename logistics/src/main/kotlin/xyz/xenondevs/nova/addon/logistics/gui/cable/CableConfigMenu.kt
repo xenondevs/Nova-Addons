@@ -95,7 +95,7 @@ class CableConfigMenu(
     }
     
     private fun queueWriteChanges() {
-        NetworkManager.queue(endPoint.pos.world) { state ->
+        NetworkManager.queue(endPoint.pos.chunkPos) { state ->
             val clustersToInit = HashSet<ProtoNetwork<*>>()
             val clustersToEnlarge = HashSet<ProtoNetwork<*>>()
             

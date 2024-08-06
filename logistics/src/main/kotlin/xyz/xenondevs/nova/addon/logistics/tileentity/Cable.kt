@@ -80,6 +80,9 @@ open class Cable(
     data: Compound
 ) : TileEntity(pos, state, data), EnergyBridge, ItemBridge, FluidBridge {
     
+    @Volatile
+    override var isValid = false
+    
     override val energyTransferRate by energyTransferRateDelegate
     override val itemTransferRate by itemTransferRateDelegate
     override val fluidTransferRate by fluidTransferRateDelegate
@@ -103,22 +106,27 @@ open class Cable(
             removeData("networks")
             removeData("bridgeFaces")
         }
+        
+        isValid = true
     }
     
     override fun handleDisable() {
         super.handleDisable()
         multiModel.close()
         hitboxes.forEach { it.remove() }
+        isValid = false
     }
     
     override fun handlePlace(ctx: Context<BlockPlace>) {
         super.handlePlace(ctx)
         NetworkManager.queueAddBridge(this, SUPPORTED_NETWORK_TYPES, CUBE_FACES)
+        isValid = true
     }
     
     override fun handleBreak(ctx: Context<BlockBreak>) {
         super.handleBreak(ctx)
         NetworkManager.queueRemoveBridge(this)
+        isValid = false
     }
     
     override suspend fun handleNetworkLoaded(state: NetworkState) {
@@ -284,7 +292,7 @@ open class Cable(
         if (configMenus.containsKey(face)) {
             configMenus[face]?.openWindow(player)
         } else {
-            NetworkManager.queueRead(pos.world) { state ->
+            NetworkManager.queueRead(pos.chunkPos) { state ->
                 val endPoint = state.getConnectedNode(this, face) as? NetworkEndPoint
                     ?: return@queueRead
                 
@@ -303,7 +311,7 @@ open class Cable(
     }
     
     private fun cycleBridgeFaces(face: BlockFace) {
-        NetworkManager.queueRead(pos.world) { state ->
+        NetworkManager.queueRead(pos.chunkPos) { state ->
             val bridgeFaces = state.getBridgeFaces(this).toEnumSet()
             if (face in bridgeFaces) {
                 bridgeFaces -= face

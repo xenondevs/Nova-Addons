@@ -98,7 +98,7 @@ internal object WrenchBehavior : ItemBehavior {
     }
     
     private fun cycleEndPointConfig(player: Player, endPoint: NetworkEndPoint, netType: NetworkType<*>, face: BlockFace) {
-        NetworkManager.queue(endPoint.pos.world) { state ->
+        NetworkManager.queue(endPoint.pos.chunkPos) { state ->
             val conType = when (netType) {
                 DefaultNetworkTypes.ENERGY -> {
                     val energyHolder = endPoint.holders.firstInstanceOfOrNull<EnergyHolder>()
