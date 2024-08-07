@@ -1,6 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
 import net.minecraft.core.particles.ParticleTypes
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Display.Brightness
@@ -40,6 +41,7 @@ import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.sendTo
+import xyz.xenondevs.nova.util.yaw
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
@@ -74,17 +76,26 @@ class CobblestoneGenerator(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private var currentMode = mode
     private var mbUsed = 0L
     
-    private val waterLevel = FakeItemDisplay(pos.location.add(.5, .5, .5), false)
-    private val lavaLevel = FakeItemDisplay(pos.location.add(.5, .5, .5), false) { _, data ->
-        data.brightness = Brightness(15, 15)
-    }
+    private val waterLevel: FakeItemDisplay
+    private val lavaLevel: FakeItemDisplay
+    private val particleEffect: ClientboundLevelParticlesPacket
     
-    private val particleEffect = particle(ParticleTypes.LARGE_SMOKE) {
+    init {
         val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
-        location(pos.location.add(0.5, 0.0, 0.5).advance(facing, 0.6).apply { y += 0.6 })
-        offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
-        amount(5)
-        speed(0.03f)
+        
+        val displayEntityLocation = pos.location.add(0.5, 0.5, 0.5)
+        displayEntityLocation.yaw = facing.yaw
+        waterLevel = FakeItemDisplay(displayEntityLocation, false)
+        lavaLevel = FakeItemDisplay(displayEntityLocation, false) { _, meta ->
+            meta.brightness = Brightness(15, 15)
+        }
+        
+        particleEffect = particle(ParticleTypes.LARGE_SMOKE) {
+            location(pos.location.add(0.5, 0.0, 0.5).advance(facing, 0.6).apply { y += 0.6 })
+            offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
+            amount(5)
+            speed(0.03f)
+        }
     }
     
     override fun handleEnable() {

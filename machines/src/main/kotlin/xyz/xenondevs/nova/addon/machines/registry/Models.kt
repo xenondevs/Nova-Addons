@@ -24,8 +24,8 @@ object Models : ItemRegistry by Machines.registry {
     val GIANT_BROWN_MUSHROOM_MINIATURE = modelItem("tree_miniature/brown_mushroom")
     
     // Water levels
-    val COBBLESTONE_GENERATOR_WATER_LEVELS = fluidLevels("cobblestone_generator/lava")
-    val COBBLESTONE_GENERATOR_LAVA_LEVELS = fluidLevels("cobblestone_generator/water")
+    val COBBLESTONE_GENERATOR_WATER_LEVELS = fluidLevels("cobblestone_generator/water")
+    val COBBLESTONE_GENERATOR_LAVA_LEVELS = fluidLevels("cobblestone_generator/lava")
     
     // Star Collector
     val STAR_COLLECTOR_ROD_ON = modelItem("star_collector/rod_on")
@@ -55,7 +55,7 @@ object Models : ItemRegistry by Machines.registry {
             selectModels(0..100) {
                 getModel("block/$name").scale(
                     Vector3d(0.0, 0.0, 0.0),
-                    Vector3d(1.0, it / 100.0, 0.0),
+                    Vector3d(1.0, it / 100.0, 1.0),
                     true
                 )
             }
