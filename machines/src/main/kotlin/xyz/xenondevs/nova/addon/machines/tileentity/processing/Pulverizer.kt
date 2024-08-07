@@ -72,11 +72,6 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             timeLeft = 0
     }
     
-    override fun handleEnable() {
-        super.handleEnable()
-        particleTask.start()
-    }
-    
     override fun handleDisable() {
         super.handleDisable()
         particleTask.stop()
