@@ -11,7 +11,7 @@ import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.HARVESTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
-import xyz.xenondevs.nova.addon.machines.util.blocks
+import xyz.xenondevs.nova.addon.machines.util.blockSequence
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
 import xyz.xenondevs.nova.addon.machines.util.isLeaveLike
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
@@ -102,7 +102,7 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
             loadCooldown = 100
             
             queuedBlocks += region
-                .blocks
+                .blockSequence
                 .filter(PlantUtils::isHarvestable)
                 .sortedWith(HarvestPriorityComparator)
                 .map { it to it.type }

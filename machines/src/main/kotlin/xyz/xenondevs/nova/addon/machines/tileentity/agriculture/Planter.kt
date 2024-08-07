@@ -15,9 +15,10 @@ import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
-import xyz.xenondevs.nova.addon.machines.util.blocks
+import xyz.xenondevs.nova.addon.machines.util.blockSequence
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
 import xyz.xenondevs.nova.addon.machines.util.isTillable
+import xyz.xenondevs.nova.addon.machines.util.iterator
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -115,7 +116,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     
     private fun getNextPlantBlock(seedStack: ItemStack): Block? {
         val emptyHoes = hoesInventory.isEmpty
-        for (block in plantRegion.blocks) {
+        for (block in plantRegion) {
             val soilBlock = block.below
             val soilType = soilBlock.type
             
@@ -150,7 +151,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     }
     
     private fun getNextTillableBlock(): Block? {
-        return plantRegion.blocks.firstOrNull {
+        return plantRegion.blockSequence.firstOrNull {
             it.type.isTillable()
                 && runBlocking { ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), it.pos) } // TODO: non-blocking
         }

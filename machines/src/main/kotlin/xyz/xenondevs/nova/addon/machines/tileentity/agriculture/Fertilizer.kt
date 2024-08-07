@@ -1,16 +1,21 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.agriculture
 
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.item.BoneMealItem
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
+import net.minecraft.world.item.context.UseOnContext
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.Vec3
 import org.bukkit.Material
-import org.bukkit.block.Block
-import org.bukkit.block.data.Ageable
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FERTILIZER
-import xyz.xenondevs.nova.addon.machines.util.PlantUtils
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
-import xyz.xenondevs.nova.addon.machines.util.isFullyAged
+import xyz.xenondevs.nova.addon.machines.util.iterator
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -24,8 +29,10 @@ import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.EntityUtils
+import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 
@@ -69,28 +76,26 @@ class Fertilizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     
     private fun fertilizeNextPlant() {
         for ((index, item) in fertilizerInventory.items.withIndex()) {
-            if (item == null) continue
-            val plant = getNextPlant() ?: return
-            PlantUtils.fertilize(plant, fakePlayer)
+            if (item == null)
+                continue
             
-            energyHolder.energy -= energyPerFertilize
-            fertilizerInventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
-            break
-        }
-    }
-    
-    private fun getNextPlant(): Block? {
-        for (x in region.min.blockX..region.max.blockX) {
-            for (y in region.min.blockY..region.max.blockY) {
-                for (z in region.min.blockZ..region.max.blockZ) {
-                    val block = pos.world.getBlockAt(x, y, z)
-                    if (block.blockData is Ageable && !block.isFullyAged())
-                        return block
+            for (block in region) {
+                val consumed = BoneMealItem.applyBonemeal(
+                    UseOnContext(
+                        pos.world.serverLevel,
+                        fakePlayer,
+                        InteractionHand.MAIN_HAND,
+                        ItemStack(Items.BONE_MEAL),
+                        BlockHitResult(Vec3.ZERO, Direction.DOWN, block.pos.nmsPos, false)
+                    )
+                ).consumesAction()
+                if (consumed) {
+                    energyHolder.energy -= energyPerFertilize
+                    fertilizerInventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
+                    return
                 }
             }
         }
-        
-        return null
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {

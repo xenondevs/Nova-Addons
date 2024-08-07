@@ -1,13 +1,5 @@
 package xyz.xenondevs.nova.addon.machines.util
 
-import net.minecraft.core.Direction
-import net.minecraft.server.level.ServerPlayer
-import net.minecraft.world.InteractionHand
-import net.minecraft.world.item.BoneMealItem
-import net.minecraft.world.item.Items
-import net.minecraft.world.item.context.UseOnContext
-import net.minecraft.world.phys.BlockHitResult
-import net.minecraft.world.phys.Vec3
 import org.bukkit.Material
 import org.bukkit.Tag
 import org.bukkit.block.Block
@@ -23,11 +15,8 @@ import xyz.xenondevs.nova.integration.customitems.CustomItemServiceManager
 import xyz.xenondevs.nova.integration.customitems.CustomItemType
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.below
-import xyz.xenondevs.nova.util.blockPos
 import xyz.xenondevs.nova.util.item.soundGroup
-import xyz.xenondevs.nova.util.serverLevel
 import kotlin.random.Random
-import net.minecraft.world.item.ItemStack as MojangStack
 
 fun Material.isTillable(): Boolean {
     return this == Material.GRASS_BLOCK
@@ -170,22 +159,6 @@ object PlantUtils {
             1f,
             Random.nextDouble(0.8, 0.95).toFloat()
         )
-    }
-    
-    fun canFertilize(block: Block): Boolean {
-        return block.blockData is Ageable && !block.isFullyAged()
-    }
-    
-    fun fertilize(plant: Block, player: ServerPlayer): Boolean {
-        return BoneMealItem.applyBonemeal(
-            UseOnContext(
-                plant.world.serverLevel,
-                player,
-                InteractionHand.MAIN_HAND,
-                MojangStack(Items.BONE_MEAL),
-                BlockHitResult(Vec3.ZERO, Direction.DOWN, plant.location.blockPos, false)
-            )
-        ).consumesAction()
     }
     
     fun isHarvestable(block: Block): Boolean {
