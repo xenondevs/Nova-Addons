@@ -292,7 +292,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         if (drillProgress >= 1) { // is done drilling
             val ctx = Context.intention(DefaultContextIntentions.BlockBreak)
-                .param(DefaultContextParamTypes.BLOCK_POS, pos)
+                .param(DefaultContextParamTypes.BLOCK_POS, block.pos)
                 .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
                 .build()
             val drops = BlockUtils.getDrops(ctx).toMutableList()

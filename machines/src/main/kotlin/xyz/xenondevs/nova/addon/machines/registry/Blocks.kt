@@ -103,6 +103,7 @@ object Blocks : BlockRegistry by Machines.registry {
     val QUARRY = interactiveTileEntity("quarry", ::Quarry) {
         behaviors(Quarry, STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
+        asyncTickrate(20.0)
     }
     
     val WIND_TURBINE = interactiveTileEntity("wind_turbine", ::WindTurbine) {
