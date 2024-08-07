@@ -118,7 +118,7 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
-        if (event.updateReason != SELF_UPDATE_REASON && !event.isRemove && event.newItem!!.type in FOOD_MATERIALS)
+        if (event.updateReason != SELF_UPDATE_REASON && !event.isRemove && event.newItem!!.type !in FOOD_MATERIALS)
             event.isCancelled = true
     }
     
