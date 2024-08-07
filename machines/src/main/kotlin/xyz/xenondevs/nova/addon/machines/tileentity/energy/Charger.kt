@@ -4,7 +4,7 @@ import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.CHARGER
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -32,7 +32,7 @@ class Charger(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     private val itemHolder = storedItemHolder(inventory to BUFFER)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by speedMultipliedValue(ENERGY_PER_TICK, upgradeHolder)
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
         if (event.isAdd || event.isSwap) {
