@@ -66,7 +66,7 @@ class LavaGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         listOf(
             particle(ParticleTypes.SMOKE) {
                 val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
-                location(pos.location.advance(facing, 0.6).apply { y += 0.6 })
+                location(pos.location.add(0.5, 0.6, 0.5).advance(facing, 0.6))
                 offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
                 offsetY(0.1f)
                 speed(0f)
@@ -89,6 +89,12 @@ class LavaGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         200,
         ::getViewers
     )
+    
+    override fun handleDisable() {
+        super.handleDisable()
+        smokeParticleTask.stop()
+        lavaParticleTask.stop()
+    }
     
     override fun handleTick() {
         if (energyHolder.energy == energyHolder.maxEnergy || fluidContainer.isEmpty()) {
