@@ -1,7 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
 import net.minecraft.resources.ResourceLocation
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -33,6 +32,7 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import kotlin.math.max
@@ -173,7 +173,7 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 if (this@MechanicalPress.type != type) {
-                    player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+                    player.playClickSound()
                     this@MechanicalPress.type = type
                     pressTypeItems.forEach(Item::notifyWindows)
                 }
