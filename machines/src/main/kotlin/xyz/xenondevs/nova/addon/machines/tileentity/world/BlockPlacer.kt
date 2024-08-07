@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_PLACER
@@ -40,14 +41,13 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val placePos = pos.advance(blockState.getOrThrow(DefaultBlockStateProperties.FACING))
     private val placeBlock = placePos.block
     
-    private var hasPlacePermission = false
+    private var permittedTypes: Set<ItemStack> = emptySet()
     
     override fun handleTick() {
         if (energyHolder.energy >= energyPerPlace
             && !inventory.isEmpty
             && placeBlock.type.isReplaceable()
             && WorldDataManager.getBlockState(placePos) == null
-            && hasPlacePermission
         ) {
             if (placeBlock())
                 energyHolder.energy -= energyPerPlace
@@ -55,13 +55,18 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     }
     
     override suspend fun handleAsyncTick() {
-        // fixme: block item stack might've changed in handeTick
-        hasPlacePermission = ProtectionManager.canPlace(this, inventory.items.firstNotNullOf { it }, placePos)
+        permittedTypes = inventory.items.asSequence()
+            .filterNotNull()
+            .onEach { it.amount = 1 }
+            .filterTo(HashSet()) { ProtectionManager.canPlace(this, it, placePos) }
     }
     
     private fun placeBlock(): Boolean {
         for ((index, item) in inventory.items.withIndex()) {
-            if (item == null) continue
+            if (item == null)
+                continue
+            if (item.clone().apply { amount = 1 } !in permittedTypes)
+                continue
             
             val ctx = Context.intention(DefaultContextIntentions.BlockPlace)
                 .param(DefaultContextParamTypes.BLOCK_POS, placePos)

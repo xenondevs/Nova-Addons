@@ -84,7 +84,7 @@ object Blocks : BlockRegistry by Machines.registry {
     val MECHANICAL_PRESS = stateBackedMachine("mechanical_press", ::MechanicalPress)
     val PULVERIZER = stateBackedMachine("pulverizer", ::Pulverizer)
     val BLOCK_BREAKER = stateBackedMachine("block_breaker", ::BlockBreaker)
-    val BLOCK_PLACER = stateBackedMachine("block_placer", ::BlockPlacer)
+    val BLOCK_PLACER = stateBackedMachine("block_placer", ::BlockPlacer) { asyncTickrate(20.0) }
     val STAR_COLLECTOR = entityBackedMachine("star_collector", ::StarCollector)
     val CHUNK_LOADER = stateBackedMachine("chunk_loader", ::ChunkLoader)
     val ELECTRIC_BREWING_STAND = entityBackedMachine("electric_brewing_stand", ::ElectricBrewingStand)
