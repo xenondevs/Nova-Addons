@@ -101,8 +101,9 @@ class PotionConfiguratorWindow(
         return Gui.normal()
             .setStructure("+ . . . . . . .")
             .addIngredient('+', SimpleItem(
-                GuiItems.TP_GREEN_PLUS.createItemBuilder()
-                    .setDisplayName(Component.translatable("menu.machines.potion_configurator.add_effect"))
+                GuiItems.TP_GREEN_PLUS.model.createClientsideItemBuilder(
+                    Component.translatable("menu.machines.potion_configurator.add_effect")
+                )
             ) { it.player.playClickSound(); addEffect() })
             .build()
     }
@@ -128,8 +129,9 @@ class PotionConfiguratorWindow(
             .addIngredient('d', durationModifierItem)
             .addIngredient('a', amplifierModifierItem)
             .addIngredient('-', SimpleItem(
-                GuiItems.TP_RED_MINUS.createItemBuilder()
-                    .setDisplayName(Component.translatable("menu.machines.potion_configurator.remove_effect"))
+                GuiItems.TP_RED_MINUS.model.createClientsideItemBuilder(
+                    Component.translatable("menu.machines.potion_configurator.remove_effect")
+                )
             ) { it.player.playClickSound(); removeEffect(effect) })
             .build()
         

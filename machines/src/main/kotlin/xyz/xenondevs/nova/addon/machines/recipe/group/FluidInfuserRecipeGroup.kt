@@ -26,10 +26,10 @@ object FluidInfuserRecipeGroup : RecipeGroup<FluidInfuserRecipe>() {
         val progressItem: ItemBuilder
         val translate: String
         if (recipe.mode == FluidInfuserRecipe.InfuserMode.INSERT) {
-            progressItem = GuiItems.TP_FLUID_PROGRESS_LEFT_RIGHT.createItemBuilder()
+            progressItem = GuiItems.TP_FLUID_PROGRESS_LEFT_RIGHT.model.createClientsideItemBuilder()
             translate = "menu.machines.recipe.insert_fluid"
         } else {
-            progressItem = GuiItems.TP_FLUID_PROGRESS_RIGHT_LEFT.createItemBuilder()
+            progressItem = GuiItems.TP_FLUID_PROGRESS_RIGHT_LEFT.model.createClientsideItemBuilder()
             translate = "menu.machines.recipe.extract_fluid"
         }
         
