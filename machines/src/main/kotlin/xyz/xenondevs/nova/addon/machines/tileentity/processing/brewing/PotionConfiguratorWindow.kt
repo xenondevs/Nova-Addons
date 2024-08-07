@@ -32,6 +32,8 @@ import xyz.xenondevs.nova.ui.menu.ColorPickerWindow
 import xyz.xenondevs.nova.ui.menu.ColorPreviewItem
 import xyz.xenondevs.nova.ui.menu.OpenColorPickerWindowItem
 import xyz.xenondevs.nova.ui.menu.item.BackItem
+import xyz.xenondevs.nova.ui.menu.item.ScrollDownItem
+import xyz.xenondevs.nova.ui.menu.item.ScrollUpItem
 import xyz.xenondevs.nova.ui.overlay.guitexture.DefaultGuiTextures
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.playItemPickupSound
@@ -70,7 +72,9 @@ class PotionConfiguratorWindow(
             "x x x x x x x x .",
             "x x x x x x x x .",
             "x x x x x x x x d")
-        .addIngredient('<', BackItem(openPrevious = openPrevious))
+        .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.model.clientsideProvider))
+        .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.model.clientsideProvider))
+        .addIngredient('<', BackItem(DefaultGuiItems.TP_ARROW_LEFT_ON.model.clientsideProvider, openPrevious))
         .addIngredient('c', OpenColorPickerWindowItem(colorPickerWindow))
         .addIngredient('t', potionTypeItem)
         .build()

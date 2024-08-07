@@ -38,6 +38,7 @@ import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.data.recipe.RecipeManager
+import xyz.xenondevs.nova.item.DefaultGuiItems
 import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
@@ -279,6 +280,8 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
                 ". o . o . . . f e",
                 ". . o . . . . f e")
             .addContent(ingredientsInventory)
+            .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.model.clientsideProvider))
+            .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.model.clientsideProvider))
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('U', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(4, energyHolder))
