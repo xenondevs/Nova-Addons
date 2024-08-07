@@ -4,7 +4,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import net.minecraft.world.entity.Mob
-import org.bukkit.Sound
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -43,6 +42,7 @@ import xyz.xenondevs.nova.util.data.NBTUtils
 import xyz.xenondevs.nova.util.isBetweenXZ
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.nmsEntity
+import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.runAsyncTask
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -191,7 +191,7 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
                 
                 timePassed = 0
                 
-                player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+                player.playClickSound()
             }
             
         }

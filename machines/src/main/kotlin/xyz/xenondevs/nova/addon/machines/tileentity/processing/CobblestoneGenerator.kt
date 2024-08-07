@@ -38,6 +38,7 @@ import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.particle.particle
+import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.sendTo
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -191,7 +192,7 @@ class CobblestoneGenerator(pos: BlockPos, blockState: NovaBlockState, data: Comp
                 if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
                     val direction = if (clickType == ClickType.LEFT) 1 else -1
                     mode = Mode.entries[(mode.ordinal + direction).mod(Mode.entries.size)]
-                    player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+                    player.playClickSound()
                     notifyWindows()
                 }
             }

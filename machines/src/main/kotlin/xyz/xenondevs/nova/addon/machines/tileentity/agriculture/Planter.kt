@@ -36,6 +36,7 @@ import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.below
 import xyz.xenondevs.nova.util.item.damage
+import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.pos
@@ -223,7 +224,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
                 autoTill = !autoTill
                 notifyWindows()
                 
-                player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+                player.playClickSound()
             }
             
         }

@@ -1,7 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -31,6 +30,7 @@ import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.FluidBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import java.lang.Long.min
@@ -133,7 +133,7 @@ class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
                     val direction = if (clickType == ClickType.LEFT) 1 else -1
                     mode = Mode.entries[(mode.ordinal + direction).mod(Mode.entries.size)]
                     
-                    player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+                    player.playClickSound()
                     notifyWindows()
                 }
             }
