@@ -66,7 +66,8 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val energyPerBreak by efficiencyDividedValue(ENERGY_PER_BREAK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
-    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) { size ->
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
+        val size = 1 + it * 2
         Region.inFrontOf(this, size, size, size * 2, 0)
     }
     

@@ -58,7 +58,8 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val itemHolder = storedItemHolder(inventory to INSERT)
     private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
     
-    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) { size ->
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
+        val size = 1 + it * 2
         Region.inFrontOf(this, size, size, 4, -1)
     }
     

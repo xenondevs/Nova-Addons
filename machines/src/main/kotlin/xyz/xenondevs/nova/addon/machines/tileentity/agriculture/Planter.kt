@@ -65,8 +65,9 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     
     private lateinit var soilRegion: Region
     private val plantRegion = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
-        soilRegion = Region.inFrontOf(this, it, it, 1, -1)
-        Region.inFrontOf(this, it, it, 1, 0)
+        val size = 1 + it * 2
+        soilRegion = Region.inFrontOf(this, size, size, 1, -1)
+        Region.inFrontOf(this, size, size, 1, 0)
     }
     
     private var autoTill = retrieveData("autoTill") { true }

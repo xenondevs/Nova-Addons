@@ -52,8 +52,9 @@ class Fertilizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     private val itemHolder = storedItemHolder(fertilizerInventory to INSERT)
     
     private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
-    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) { size ->
-        Region.inFrontOf(this, size * 2, size * 2, 1, 0)
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
+        val size = 1 + it * 2
+        Region.inFrontOf(this, size, size, 1, 0)
     }
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
