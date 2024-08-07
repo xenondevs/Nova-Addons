@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.simpleupgrades.registry
 
+import org.bukkit.Material
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades
 import xyz.xenondevs.nova.initialize.Init
@@ -20,7 +21,10 @@ object GuiItems : ItemRegistry by SimpleUpgrades.registry {
     private fun guiItem(name: String, localizedName: String = ""): NovaItem = item("gui/$name") {
         localizedName(localizedName)
         hidden(true)
-        models { selectModel { createGuiModel("item/$name", background = true, stretched = false) } }
+        models {
+            itemType(Material.SHULKER_SHELL)
+            selectModel { createGuiModel(background = true, stretched = false, "item/$name") }
+        }
     }
     
 }

@@ -58,7 +58,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         models {
             itemType(Material.SHULKER_SHELL)
             selectModel {
-                createGuiModel("item/gui/$name", background = true, stretched = false)
+                createGuiModel(background = true, stretched = false,"item/gui/$name")
             }
         }
     }
@@ -70,7 +70,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         models {
             itemType(Material.SHULKER_SHELL)
             selectModel {
-                createGuiModel("item/gui/$name", background = false, stretched = false)
+                createGuiModel(background = false, stretched = false, "item/gui/$name")
             }
         }
     }
@@ -82,7 +82,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         models {
             itemType(Material.SHULKER_SHELL)
             selectModels(range, true) {
-                createGuiModel("item/gui/$name/$it", background = true, stretched = false)
+                createGuiModel(background = true, stretched = false, "item/gui/$name/$it")
             }
         }
     }
@@ -94,7 +94,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         models {
             itemType(Material.SHULKER_SHELL)
             selectModels(range, true) {
-                createGuiModel("item/gui/$name/$it", background = false, stretched = false)
+                createGuiModel(background = false, stretched = false, "item/gui/$name/$it")
             }
         }
     }

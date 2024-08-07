@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.logistics.registry
 
+import org.bukkit.Material
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
@@ -20,14 +21,20 @@ object GuiItems : ItemRegistry by Logistics.registry {
         item(name) {
             localizedName("")
             hidden(true)
-            models { selectModel { createGuiModel("item/$name", background = false, stretched = false) } }
+            models {
+                itemType(Material.SHULKER_SHELL)
+                selectModel { createGuiModel(background = false, stretched = false, "item/$name") }
+            }
         }
     
     private fun guiItem(name: String, localizedName: String = ""): NovaItem =
         item(name) {
             localizedName(localizedName)
             hidden(true)
-            models { selectModel { createGuiModel("item/$name", background = true, stretched = false) } }
+            models {
+                itemType(Material.SHULKER_SHELL)
+                selectModel { createGuiModel(background = true, stretched = false, "item/$name") }
+            }
         }
     
 }
