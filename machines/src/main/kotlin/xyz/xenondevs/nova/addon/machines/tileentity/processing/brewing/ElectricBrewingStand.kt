@@ -46,8 +46,11 @@ import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.FluidBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
+import xyz.xenondevs.nova.ui.menu.item.ScrollDownItem
+import xyz.xenondevs.nova.ui.menu.item.ScrollUpItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.data.MutableLazy
 import xyz.xenondevs.nova.util.item.ItemUtils
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -77,22 +80,22 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     
     private var color = retrieveData("potionColor") { Color(0, 0, 0) }
     private var potionType = retrieveData("potionType") { PotionBuilder.PotionType.NORMAL }
-    private lateinit var potionEffects: List<PotionEffectBuilder>
-    private var requiredItems: List<ItemStack>? = null
-    private var requiredItemsStatus: MutableMap<ItemStack, Boolean>? = null
-    private var nextPotion: ItemStack? = null
-    
-    init {
+    private var potionEffects: List<PotionEffectBuilder> by MutableLazy {
         val potionEffects = ArrayList<PotionEffectBuilder>()
-        
         retrieveDataOrNull<List<Compound>>("potionEffects")?.forEach { potionCompound ->
             val type = Registry.POTION_EFFECT_TYPE.get(potionCompound.get<NamespacedKey>("type")!!)
             val duration: Int = potionCompound["duration"]!!
             val amplifier: Int = potionCompound["amplifier"]!!
-            
             potionEffects += PotionEffectBuilder(type, duration, amplifier)
         }
-        
+        potionEffects
+    }
+    private var requiredItems: List<ItemStack>? = null
+    private var requiredItemsStatus: MutableMap<ItemStack, Boolean>? = null
+    private var nextPotion: ItemStack? = null
+    
+    override fun handleEnable() {
+        super.handleEnable()
         updatePotionData(potionType, potionEffects, color)
     }
     
@@ -238,12 +241,16 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     
     // These values need to be accessed from outside the class
     companion object {
-        @Suppress("UNCHECKED_CAST")
-        val AVAILABLE_POTION_EFFECTS: Map<PotionEffectType, ElectricBrewingStandRecipe> =
-            (RecipeManager.novaRecipes[RecipeTypes.ELECTRIC_BREWING_STAND]?.values as Iterable<ElectricBrewingStandRecipe>?)
-                ?.associateBy { it.result } ?: emptyMap()
+        
+        val AVAILABLE_POTION_EFFECTS: Map<PotionEffectType, ElectricBrewingStandRecipe> by lazy {
+            RecipeManager.novaRecipes[RecipeTypes.ELECTRIC_BREWING_STAND]?.values
+                ?.filterIsInstance<ElectricBrewingStandRecipe>()
+                ?.associateBy { it.result }
+                ?: emptyMap()
+        }
         
         val ALLOW_DURATION_AMPLIFIER_MIXING by ELECTRIC_BREWING_STAND.config.entry<Boolean>("duration_amplifier_mixing")
+        
     }
     
     @TileEntityMenuClass
