@@ -38,7 +38,7 @@ import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
 import xyz.xenondevs.nova.world.block.TileEntityConstructor
 import xyz.xenondevs.nova.world.block.behavior.BlockSounds
 import xyz.xenondevs.nova.world.block.behavior.Breakable
-import xyz.xenondevs.nova.world.block.behavior.FluidFillable
+import xyz.xenondevs.nova.world.block.behavior.Bucketable
 import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
 import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
 import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
@@ -72,15 +72,9 @@ object Blocks : BlockRegistry by Logistics.registry {
     val ULTIMATE_FLUID_TANK = tank("ultimate", ::UltimateFluidTank)
     val CREATIVE_FLUID_TANK = tank("creative", ::CreativeFluidTank)
     
-    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) {
-        behaviors(CABLE, BlockSounds(SoundGroup.STONE))
-    }
-    val FLUID_STORAGE_UNIT = interactiveTileEntity("fluid_storage_unit", ::FluidStorageUnit) {
-        behaviors(FluidFillable, OTHER, BlockSounds(SoundGroup.STONE))
-    }
-    val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) {
-        behaviors(OTHER, BlockSounds(SoundGroup.STONE))
-    }
+    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) { behaviors(CABLE, BlockSounds(SoundGroup.STONE)) }
+    val FLUID_STORAGE_UNIT = interactiveTileEntity("fluid_storage_unit", ::FluidStorageUnit) { behaviors(Bucketable, OTHER, BlockSounds(SoundGroup.STONE)) }
+    val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) { behaviors(OTHER, BlockSounds(SoundGroup.STONE)) }
     val TRASH_CAN = interactiveTileEntity("trash_can", ::TrashCan) {
         behaviors(OTHER, BlockSounds(SoundGroup.STONE))
         stateProperties(AXIS_HORIZONTAL)
@@ -146,8 +140,8 @@ object Blocks : BlockRegistry by Logistics.registry {
         constructor: TileEntityConstructor,
         init: NovaTileEntityBlockBuilder.() -> Unit
     ): NovaTileEntityBlock = tileEntity(name, constructor) {
-        behaviors(TileEntityLimited, TileEntityDrops, TileEntityInteractive)
         init()
+        behaviors(TileEntityLimited, TileEntityDrops, TileEntityInteractive)
     }
     
     private fun powerCell(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
@@ -163,7 +157,7 @@ object Blocks : BlockRegistry by Logistics.registry {
     
     private fun tank(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
         interactiveTileEntity("${tier}_fluid_tank", constructor) {
-            behaviors(FluidFillable, TANK, BlockSounds(SoundGroup.GLASS))
+            behaviors(Bucketable, TANK, BlockSounds(SoundGroup.GLASS))
             models {
                 selectModel {
                     getModel("block/fluid_tank/$tier")

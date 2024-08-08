@@ -50,6 +50,7 @@ import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
 import xyz.xenondevs.nova.world.block.TileEntityConstructor
 import xyz.xenondevs.nova.world.block.behavior.BlockSounds
 import xyz.xenondevs.nova.world.block.behavior.Breakable
+import xyz.xenondevs.nova.world.block.behavior.Bucketable
 import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
 import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
 import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
@@ -79,7 +80,7 @@ object Blocks : BlockRegistry by Machines.registry {
     val BREEDER = stateBackedMachine("breeder", ::Breeder)
     val MOB_DUPLICATOR = stateBackedMachine("mob_duplicator", ::MobDuplicator)
     val MOB_KILLER = stateBackedMachine("mob_killer", ::MobKiller)
-    val COBBLESTONE_GENERATOR = entityBackedMachine("cobblestone_generator", ::CobblestoneGenerator)
+    val COBBLESTONE_GENERATOR = entityBackedMachine("cobblestone_generator", ::CobblestoneGenerator) { behaviors(Bucketable) }
     val ELECTRIC_FURNACE = activeMachine("electric_furnace", ::ElectricFurnace)
     val MECHANICAL_PRESS = stateBackedMachine("mechanical_press", ::MechanicalPress)
     val PULVERIZER = stateBackedMachine("pulverizer", ::Pulverizer)
@@ -87,32 +88,29 @@ object Blocks : BlockRegistry by Machines.registry {
     val BLOCK_PLACER = stateBackedMachine("block_placer", ::BlockPlacer) { asyncTickrate(20.0) }
     val STAR_COLLECTOR = entityBackedMachine("star_collector", ::StarCollector)
     val CHUNK_LOADER = stateBackedMachine("chunk_loader", ::ChunkLoader)
-    val ELECTRIC_BREWING_STAND = entityBackedMachine("electric_brewing_stand", ::ElectricBrewingStand)
-    val PUMP = stateBackedMachine("pump", ::Pump)
-    val FREEZER = stateBackedMachine("freezer", ::Freezer)
-    val FLUID_INFUSER = stateBackedMachine("fluid_infuser", ::FluidInfuser)
-    val SPRINKLER = interactiveTileEntity("sprinkler", ::Sprinkler) { behaviors(LIGHT_METAL, BlockSounds(SoundGroup.METAL)) }
+    val ELECTRIC_BREWING_STAND = entityBackedMachine("electric_brewing_stand", ::ElectricBrewingStand) { behaviors(Bucketable) }
+    val PUMP = entityBackedMachine("pump", ::Pump)
+    val FREEZER = stateBackedMachine("freezer", ::Freezer) { behaviors(Bucketable) }
+    val FLUID_INFUSER = stateBackedMachine("fluid_infuser", ::FluidInfuser) { behaviors(Bucketable) }
+    val SPRINKLER = interactiveTileEntity("sprinkler", ::Sprinkler) { behaviors(LIGHT_METAL, BlockSounds(SoundGroup.METAL), Bucketable) }
     val SOLAR_PANEL = entityBackedMachine("solar_panel", ::SolarPanel)
     val LIGHTNING_EXCHANGER = interactiveTileEntity("lightning_exchanger", ::LightningExchanger) { behaviors(METAL, BlockSounds(SoundGroup.METAL)) }
     val FURNACE_GENERATOR = activeMachine("furnace_generator", ::FurnaceGenerator)
-    val LAVA_GENERATOR = activeMachine("lava_generator", ::LavaGenerator)
-    val INFINITE_WATER_SOURCE = interactiveTileEntity("infinite_water_source", ::InfiniteWaterSource) { behaviors(SANDSTONE, BlockSounds(SoundGroup.STONE)) }
+    val LAVA_GENERATOR = activeMachine("lava_generator", ::LavaGenerator) { behaviors(Bucketable) }
+    val INFINITE_WATER_SOURCE = interactiveTileEntity("infinite_water_source", ::InfiniteWaterSource) { behaviors(SANDSTONE, BlockSounds(SoundGroup.STONE), Bucketable) }
     val CRYSTALLIZER = entityBackedMachine("crystallizer", ::Crystallizer)
     val AUTO_CRAFTER = stateBackedMachine("auto_crafter", ::AutoCrafter)
-    
     val QUARRY = interactiveTileEntity("quarry", ::Quarry) {
         behaviors(Quarry, STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
         asyncTickrate(20.0)
     }
-    
     val WIND_TURBINE = interactiveTileEntity("wind_turbine", ::WindTurbine) {
         behaviors(WindTurbineBehavior, METAL, BlockSounds(SoundGroup.METAL))
         stateProperties(FACING_HORIZONTAL)
         asyncTickrate(20.0)
         models { selectModel { getModel("block/wind_turbine/base").rotated() } }
     }
-    
     val WIND_TURBINE_EXTRA = block("wind_turbine_extra") {
         behaviors(WindTurbineSectionBehavior, METAL, BlockSounds(SoundGroup.METAL))
         stateProperties(ScopedBlockStateProperties.TURBINE_SECTION)
@@ -120,9 +118,7 @@ object Blocks : BlockRegistry by Machines.registry {
     }
     
     // Normal blocks
-    val STAR_DUST_BLOCK = nonInteractiveBlock("star_dust_block") {
-        behaviors(SAND, BlockSounds(SoundGroup.SAND))
-    }
+    val STAR_DUST_BLOCK = nonInteractiveBlock("star_dust_block") { behaviors(SAND, BlockSounds(SoundGroup.SAND)) }
     val BASIC_MACHINE_FRAME = machineFrame("basic")
     val ADVANCED_MACHINE_FRAME = machineFrame("advanced")
     val ELITE_MACHINE_FRAME = machineFrame("elite")
@@ -130,17 +126,15 @@ object Blocks : BlockRegistry by Machines.registry {
     val CREATIVE_MACHINE_FRAME = machineFrame("creative")
     
     // Ores
-    val STAR_SHARDS_ORE = nonInteractiveBlock("star_shards_ore") {
-        behaviors(StarShardsOre, STONE_ORE, BlockSounds(SoundGroup.STONE))
-    }
-    val DEEPSLATE_STAR_SHARDS_ORE = nonInteractiveBlock("deepslate_star_shards_ore") {
-        behaviors(StarShardsOre, DEEPSLATE_ORE, BlockSounds(SoundGroup.DEEPSLATE))
-    }
+    val STAR_SHARDS_ORE = nonInteractiveBlock("star_shards_ore") { behaviors(StarShardsOre, STONE_ORE, BlockSounds(SoundGroup.STONE)) }
+    val DEEPSLATE_STAR_SHARDS_ORE = nonInteractiveBlock("deepslate_star_shards_ore") { behaviors(StarShardsOre, DEEPSLATE_ORE, BlockSounds(SoundGroup.DEEPSLATE)) }
     
     private fun activeMachine(
         name: String,
         ctor: TileEntityConstructor,
+        init: NovaTileEntityBlockBuilder.() -> Unit = {}
     ): NovaTileEntityBlock = interactiveTileEntity(name, ctor) {
+        init()
         behaviors(STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL, ScopedBlockStateProperties.ACTIVE)
         models {
@@ -155,7 +149,9 @@ object Blocks : BlockRegistry by Machines.registry {
     private fun stateBackedMachine(
         name: String,
         ctor: TileEntityConstructor,
+        init: NovaTileEntityBlockBuilder.() -> Unit = {}
     ): NovaTileEntityBlock = interactiveTileEntity(name, ctor) {
+        init()
         behaviors(STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
         models {
@@ -166,8 +162,10 @@ object Blocks : BlockRegistry by Machines.registry {
     
     private fun entityBackedMachine(
         name: String,
-        ctor: TileEntityConstructor
+        ctor: TileEntityConstructor,
+        init: NovaTileEntityBlockBuilder.() -> Unit = {}
     ): NovaTileEntityBlock = interactiveTileEntity(name, ctor) {
+        init()
         behaviors(STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
         models { selectModel { defaultModel.rotated() } }
