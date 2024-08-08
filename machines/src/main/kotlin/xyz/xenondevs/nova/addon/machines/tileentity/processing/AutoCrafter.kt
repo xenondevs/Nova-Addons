@@ -50,7 +50,7 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     
     private val recipeInv = storedInventory("recipe", 9, ::putItemRecipe) { validateCraftingRecipe() }
     private val resultInv = storedInventory("result", 1, ::preventSteal)
-    private val inputInv = storedInventory("input", 9, ::putInputItem, ::validateCraftingIngredients)
+    private val inputInv = storedInventory("input", 9, false, IntArray(9) { 1 }, ::putInputItem, ::validateCraftingIngredients)
     private val outputInv = storedInventory("output", 9, ::preventOutputInput)
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.ENERGY, UpgradeTypes.EFFICIENCY)
