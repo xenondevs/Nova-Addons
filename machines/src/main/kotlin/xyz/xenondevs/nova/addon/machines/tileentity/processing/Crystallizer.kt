@@ -3,10 +3,13 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.provider.immutable.combinedProvider
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.gui.ProgressBar
+import xyz.xenondevs.nova.addon.machines.recipe.CrystallizerRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -42,11 +45,14 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     private val itemHolder = storedItemHolder(inventory to BUFFER)
     
-    private val progressPerTick by upgradeHolder.getValueProvider(UpgradeTypes.SPEED)
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val recipeProvider = mutableProvider { inventory.getItem(0)?.let { RecipeManager.getConversionRecipeFor(RecipeTypes.CRYSTALLIZER, it) } }
+    private var recipe: CrystallizerRecipe? by recipeProvider
+    private val progressPerTick by combinedProvider(
+        upgradeHolder.getValueProvider(UpgradeTypes.SPEED), recipeProvider
+    ) { speed, recipe -> if (recipe == null) 0.0 else speed / recipe.time }
     private val progressProvider = storedValue("progress") { 0.0 }
     private var progress by progressProvider
-    private var recipe = inventory.getItem(0)?.let { RecipeManager.getConversionRecipeFor(RecipeTypes.CRYSTALLIZER, it) }
     
     private val particleTask: PacketTask
     private var displayState: Boolean
@@ -129,7 +135,7 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             energyHolder.energy -= energyPerTick
             progress += progressPerTick
             
-            if (progress >= recipe.time) {
+            if (progress >= 1) {
                 inventory.setItem(SELF_UPDATE_REASON, 0, recipe.result)
             }
             
