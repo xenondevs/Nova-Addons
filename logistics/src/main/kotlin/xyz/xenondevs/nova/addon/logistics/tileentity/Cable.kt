@@ -26,6 +26,7 @@ import xyz.xenondevs.nova.addon.logistics.util.MathUtils
 import xyz.xenondevs.nova.data.context.Context
 import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
 import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockPlace
+import xyz.xenondevs.nova.data.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.tileentity.TileEntity
 import xyz.xenondevs.nova.tileentity.network.NetworkManager
 import xyz.xenondevs.nova.tileentity.network.node.NetworkEndPoint
@@ -42,6 +43,7 @@ import xyz.xenondevs.nova.tileentity.network.type.fluid.holder.FluidHolder
 import xyz.xenondevs.nova.tileentity.network.type.item.ItemBridge
 import xyz.xenondevs.nova.tileentity.network.type.item.ItemNetwork
 import xyz.xenondevs.nova.tileentity.network.type.item.holder.ItemHolder
+import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.CUBE_FACES
 import xyz.xenondevs.nova.util.LocationUtils
 import xyz.xenondevs.nova.util.add
@@ -220,6 +222,7 @@ open class Cable(
         for (face in CUBE_FACES) {
             if (face in connectedNodes.columnKeySet()) {
                 hitboxes += createCableHitbox(face, false)
+                hitboxes += createCableDestructionHitbox(face)
             } else if (face !in bridgeFaces) {
                 hitboxes += createCableHitbox(face, true)
             }
@@ -238,6 +241,22 @@ open class Cable(
         return VirtualHitbox(from, to).apply {
             setQualifier { it.item?.novaItem == Items.WRENCH }
             addRightClickHandler { _, _, _ -> cycleBridgeFaces(face) }
+        }
+    }
+    
+    private fun createCableDestructionHitbox(face: BlockFace): VirtualHitbox {
+        val pointA = Vector3d(0.4, 0.4, 0.5)
+        val pointB = Vector3d(0.6, 0.6, 1.0)
+        val (from, to) = createHitboxPoints(pointA, pointB, face)
+        
+        return VirtualHitbox(from, to).apply {
+            addLeftClickHandler { player, _, _ ->
+                val ctx = Context.intention(BlockBreak)
+                    .param(DefaultContextParamTypes.BLOCK_POS, pos)
+                    .param(DefaultContextParamTypes.SOURCE_PLAYER, player)
+                    .build()
+                BlockUtils.breakBlockNaturally(ctx)
+            }
         }
     }
     
