@@ -52,7 +52,7 @@ class StorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
         
         if (event.isAdd || event.isSwap) {
             event.isCancelled = true
-        } else if (event.isRemove && inventory.type.isEmpty) {
+        } else if (event.isRemove && !inventory.type.isEmpty) {
             inventory.take(0, event.removedAmount)
             runTaskLater(1) { menuContainer.forEachMenu(StorageUnitMenu::update) }
         }
