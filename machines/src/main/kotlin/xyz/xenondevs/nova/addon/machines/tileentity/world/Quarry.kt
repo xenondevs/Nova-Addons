@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import org.joml.Vector3f
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.immutable.combinedProvider
 import xyz.xenondevs.commons.provider.immutable.map
 import xyz.xenondevs.invui.gui.Gui
@@ -80,6 +81,8 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+
 private val MIN_SIZE by QUARRY.config.entry<Int>("min_size")
 private val MAX_SIZE = QUARRY.config.entry<Int>("max_size")
 private val MIN_DEPTH by QUARRY.config.entry<Int>("min_depth")
@@ -100,8 +103,8 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     
     private val inventory = storedInventory("quarryInventory", 9)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     
     private var sizeXProvider = storedValue("sizeX") { DEFAULT_SIZE_X }
     private var sizeZProvider = storedValue("sizeZ") { DEFAULT_SIZE_Z }

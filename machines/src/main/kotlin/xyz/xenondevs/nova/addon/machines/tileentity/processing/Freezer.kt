@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
@@ -30,11 +31,14 @@ import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.FluidBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import java.lang.Long.min
 import kotlin.math.roundToInt
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val WATER_CAPACITY = FREEZER.config.entry<Long>("water_capacity")
 private val ENERGY_CAPACITY = FREEZER.config.entry<Long>("energy_capacity")
@@ -46,9 +50,9 @@ class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
     private val inventory = storedInventory("inventory", 6, ::handleInventoryUpdate)
     private val waterTank = storedFluidContainer("water", setOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder)
-    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to EXTRACT)
-    private val fluidHolder = storedFluidHolder(waterTank to INSERT)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
+    private val fluidHolder = storedFluidHolder(waterTank to INSERT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)

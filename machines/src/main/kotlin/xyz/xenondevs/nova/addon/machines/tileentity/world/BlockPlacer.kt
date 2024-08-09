@@ -2,6 +2,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_PLACER
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -19,12 +20,15 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.item.isReplaceable
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.format.WorldDataManager
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = BLOCK_PLACER.config.entry<Long>("capacity")
 private val ENERGY_PER_PLACE = BLOCK_PLACER.config.entry<Long>("energy_per_place")
@@ -33,8 +37,8 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     
     private val inventory = storedInventory("inventory", 9) {}
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to INSERT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerPlace by efficiencyDividedValue(ENERGY_PER_PLACE, upgradeHolder)
     

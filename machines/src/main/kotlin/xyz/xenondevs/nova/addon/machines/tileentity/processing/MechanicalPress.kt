@@ -5,6 +5,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mutable.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -32,10 +33,13 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import kotlin.math.max
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = MECHANICAL_PRESS.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = MECHANICAL_PRESS.config.entry<Long>("energy_per_tick")
@@ -51,8 +55,8 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
     private val inputInv = storedInventory("input", 1, ::handleInputUpdate)
     private val outputInv = storedInventory("output", 1, ::handleOutputUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inputInv to INSERT, outputInv to EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inputInv to INSERT, outputInv to EXTRACT, blockedSides = BLOCKED_SIDES)
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val pressSpeed by speedMultipliedValue(PRESS_SPEED, upgradeHolder)
     

@@ -7,6 +7,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.weather.LightningStrikeEvent
 import org.bukkit.event.weather.LightningStrikeEvent.Cause
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.LIGHTNING_EXCHANGER
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -27,6 +28,8 @@ import xyz.xenondevs.nova.world.pos
 import kotlin.math.min
 import kotlin.random.Random
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+
 private val MAX_ENERGY = LIGHTNING_EXCHANGER.config.entry<Long>("capacity")
 private val CONVERSION_RATE by LIGHTNING_EXCHANGER.config.entry<Long>("conversion_rate")
 private val MIN_BURST = LIGHTNING_EXCHANGER.config.entry<Long>("burst", "min")
@@ -35,7 +38,7 @@ private val MAX_BURST = LIGHTNING_EXCHANGER.config.entry<Long>("burst", "max")
 class LightningExchanger(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_FACES)
     private val minBurst by efficiencyDividedValue(MIN_BURST, upgradeHolder)
     private val maxBurst by efficiencyDividedValue(MAX_BURST, upgradeHolder)
     private var toCharge = 0L

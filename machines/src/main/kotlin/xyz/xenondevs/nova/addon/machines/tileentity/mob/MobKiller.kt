@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
@@ -22,11 +23,14 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.region.Region
 import kotlin.math.min
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = MOB_KILLER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = MOB_KILLER.config.entry<Long>("energy_per_tick")
@@ -41,7 +45,7 @@ private val DEFAULT_RANGE by MOB_KILLER.config.entry<Int>("range", "default")
 class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val fakePlayer = EntityUtils.createFakePlayer(pos.location).bukkitEntity
     
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {

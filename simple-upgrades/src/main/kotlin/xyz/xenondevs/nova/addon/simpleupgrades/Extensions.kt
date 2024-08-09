@@ -13,6 +13,7 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType
 import xyz.xenondevs.nova.tileentity.network.type.energy.holder.DefaultEnergyHolder
 import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.tileentity.network.type.fluid.container.FluidContainer
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.CUBE_FACES
 import xyz.xenondevs.nova.world.region.DynamicRegion
 import xyz.xenondevs.nova.world.region.Region
@@ -48,20 +49,34 @@ fun TileEntity.storedUpgradeHolder(persistent: Boolean, vararg allowedTypes: Upg
  *
  * @see NetworkedTileEntity.storedEnergyHolder
  */
+@JvmName("storedEnergyHolderBlockSide")
 fun NetworkedTileEntity.storedEnergyHolder(
     maxEnergy: Provider<Long>,
     upgradeHolder: UpgradeHolder,
     allowedConnectionType: NetworkConnectionType,
+    blockedSides: Set<BlockSide>,
     defaultConnectionConfig: () -> Map<BlockFace, NetworkConnectionType> = { CUBE_FACES.associateWithTo(enumMap()) { allowedConnectionType } }
-): DefaultEnergyHolder =
-    storedEnergyHolder(
-        combinedProvider(
-            maxEnergy,
-            upgradeHolder.getValueProvider(UpgradeTypes.ENERGY)
-        ).map { (maxEnergy, energy) -> (maxEnergy * energy).roundToLong() },
-        allowedConnectionType,
-        defaultConnectionConfig
-    )
+) = storedEnergyHolder(upgradedMaxEnergy(maxEnergy, upgradeHolder), allowedConnectionType, blockedSides, defaultConnectionConfig)
+
+/**
+ * Creates a [DefaultEnergyHolder] whose [maxEnergy] will be automatically affected by
+ * the [UpgradeTypes.ENERGY] value of [upgradeHolder].
+ *
+ * @see NetworkedTileEntity.storedEnergyHolder
+ */
+@JvmName("storedEnergyHolderBlockFace")
+fun NetworkedTileEntity.storedEnergyHolder(
+    maxEnergy: Provider<Long>,
+    upgradeHolder: UpgradeHolder,
+    allowedConnectionType: NetworkConnectionType,
+    blockedFaces: Set<BlockFace> = emptySet(),
+    defaultConnectionConfig: () -> Map<BlockFace, NetworkConnectionType> = { CUBE_FACES.associateWithTo(enumMap()) { allowedConnectionType } }
+) = storedEnergyHolder(upgradedMaxEnergy(maxEnergy, upgradeHolder), allowedConnectionType, blockedFaces, defaultConnectionConfig)
+
+private fun upgradedMaxEnergy(maxEnergy: Provider<Long>, upgradeHolder: UpgradeHolder): Provider<Long> =
+    combinedProvider(
+        maxEnergy, upgradeHolder.getValueProvider(UpgradeTypes.ENERGY)
+    ) { cap, energy -> (cap * energy).roundToLong() }
 
 
 /**

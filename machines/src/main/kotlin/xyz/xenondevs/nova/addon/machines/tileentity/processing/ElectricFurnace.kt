@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.SmeltingRecipe
 import org.bukkit.World
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mutable.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -30,6 +31,7 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.REGISTRY_ACCESS
 import xyz.xenondevs.nova.util.serverLevel
@@ -43,6 +45,8 @@ private fun getRecipe(input: ItemStack, world: World): RecipeHolder<SmeltingReci
         .firstOrNull { it.value().matches(SingleRecipeInput(input.unwrap().copy()), world.serverLevel) }
 }
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+
 private val MAX_ENERGY = ELECTRIC_FURNACE.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = ELECTRIC_FURNACE.config.entry<Long>("energy_per_tick")
 private val COOK_SPEED = ELECTRIC_FURNACE.config.entry<Int>("cook_speed")
@@ -52,8 +56,8 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
     private val inputInventory = storedInventory("input", 1, ::handleInputInventoryUpdate)
     private val outputInventory = storedInventory("output", 1, ::handleOutputInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inputInventory to INSERT, outputInventory to EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inputInventory to INSERT, outputInventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     
     private var currentRecipe: RecipeHolder<SmeltingRecipe>? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
         { MINECRAFT_SERVER.recipeManager.byKey(it).orElse(null) as? RecipeHolder<SmeltingRecipe> },

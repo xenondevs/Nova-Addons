@@ -2,6 +2,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import net.minecraft.core.particles.ParticleTypes
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.immutable.combinedProvider
 import xyz.xenondevs.commons.provider.immutable.map
@@ -35,6 +36,8 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import kotlin.math.roundToInt
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+
 private val MAX_ENERGY = FURNACE_GENERATOR.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = FURNACE_GENERATOR.config.entry<Long>("energy_per_tick")
 private val BURN_TIME_MULTIPLIER = FURNACE_GENERATOR.config.entry<Double>("burn_time_multiplier")
@@ -43,8 +46,8 @@ class FurnaceGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound
     
     private val inventory = storedInventory("fuel", 1, ::handleInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT)
-    private val itemHolder = storedItemHolder(inventory to INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to INSERT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick: Long by speedMultipliedValue(ENERGY_PER_TICK, upgradeHolder)
     private val burnTimeMultiplier: Provider<Double> = combinedProvider(

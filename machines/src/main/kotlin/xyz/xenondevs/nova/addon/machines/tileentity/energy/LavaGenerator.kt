@@ -2,6 +2,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import net.minecraft.core.particles.ParticleTypes
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.immutable.combinedProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
@@ -30,6 +31,8 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import kotlin.math.roundToLong
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+
 private val ENERGY_CAPACITY = LAVA_GENERATOR.config.entry<Long>("energy_capacity")
 private val FLUID_CAPACITY = LAVA_GENERATOR.config.entry<Long>("fluid_capacity")
 private val ENERGY_PER_MB = LAVA_GENERATOR.config.entry<Double>("energy_per_mb")
@@ -39,8 +42,8 @@ class LavaGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
     private val fluidContainer = storedFluidContainer("tank", setOf(FluidType.LAVA), FLUID_CAPACITY, upgradeHolder)
-    private val fluidHolder = storedFluidHolder(fluidContainer to BUFFER)
-    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, EXTRACT)
+    private val fluidHolder = storedFluidHolder(fluidContainer to BUFFER, blockedSides = BLOCKED_SIDES)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, EXTRACT, BLOCKED_SIDES)
     
     private val burnRate: Double by combinedProvider(
         BURN_RATE,

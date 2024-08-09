@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
@@ -51,6 +52,7 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 private const val MAX_STATE = 99
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT, BlockSide.LEFT, BlockSide.RIGHT)
 
 private val ENERGY_CAPACITY = COBBLESTONE_GENERATOR.config.entry<Long>("energy_capacity")
 private val ENERGY_PER_TICK = COBBLESTONE_GENERATOR.config.entry<Long>("energy_per_tick")
@@ -65,9 +67,9 @@ class CobblestoneGenerator(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private val waterTank = storedFluidContainer("water", setOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder, false, ::updateWaterLevel)
     private val lavaTank = storedFluidContainer("lava", setOf(FluidType.LAVA), LAVA_CAPACITY, upgradeHolder, false, ::updateLavaLevel)
     
-    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to EXTRACT)
-    private val fluidHolder = storedFluidHolder(waterTank to BUFFER, lavaTank to BUFFER)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
+    private val fluidHolder = storedFluidHolder(waterTank to BUFFER, lavaTank to BUFFER, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)

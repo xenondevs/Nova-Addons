@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
@@ -31,6 +32,7 @@ import xyz.xenondevs.nova.ui.menu.FluidBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import kotlin.math.roundToInt
@@ -54,6 +56,8 @@ fun getFluidInfuserExtractRecipeFor(input: ItemStack): FluidInfuserRecipe? {
         }
 }
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+
 private val ENERGY_PER_TICK = FLUID_INFUSER.config.entry<Long>("energy_per_tick")
 private val ENERGY_CAPACITY = FLUID_INFUSER.config.entry<Long>("energy_capacity")
 private val FLUID_CAPACITY = FLUID_INFUSER.config.entry<Long>("fluid_capacity")
@@ -64,9 +68,9 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private val input = storedInventory("input", 1, ::handleInputInventoryUpdate)
     private val output = storedInventory("output", 1, ::handleOutputInventoryUpdate)
     private val tank = storedFluidContainer("tank", setOf(FluidType.WATER, FluidType.LAVA), FLUID_CAPACITY, upgradeHolder)
-    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT)
-    private val fluidHolder = storedFluidHolder(tank to BUFFER)
-    private val itemHolder = storedItemHolder(input to INSERT, output to EXTRACT)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val fluidHolder = storedFluidHolder(tank to BUFFER, blockedSides = BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(input to INSERT, output to EXTRACT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     

@@ -3,12 +3,14 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.block.BlockFace
 import org.bukkit.block.data.type.Farmland
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SPRINKLER
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -33,6 +35,8 @@ import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 import kotlin.math.min
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+
 private val WATER_CAPACITY = SPRINKLER.config.entry<Long>("water_capacity")
 private val WATER_PER_MOISTURE_LEVEL = SPRINKLER.config.entry<Long>("water_per_moisture_level")
 private val MIN_RANGE = SPRINKLER.config.entry<Int>("range", "min")
@@ -43,7 +47,7 @@ class Sprinkler(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.FLUID, UpgradeTypes.RANGE)
     private val tank = storedFluidContainer("tank", setOf(FluidType.WATER), WATER_CAPACITY, upgradeHolder)
-    private val fluidHolder = storedFluidHolder(tank to BUFFER)
+    private val fluidHolder = storedFluidHolder(tank to BUFFER, blockedFaces = BLOCKED_FACES)
     
     private val waterPerMoistureLevel by efficiencyDividedValue(WATER_PER_MOISTURE_LEVEL, upgradeHolder)
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {

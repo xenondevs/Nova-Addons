@@ -3,6 +3,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.immutable.combinedProvider
 import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
@@ -35,6 +36,8 @@ import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeItem
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+
 private val MAX_ENERGY = Blocks.CRYSTALLIZER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = Blocks.CRYSTALLIZER.config.entry<Long>("energy_per_tick")
 
@@ -42,8 +45,8 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     
     private val inventory = storedInventory("inventory", 1, false, intArrayOf(1), ::handleInventoryUpdate, ::handleInventoryUpdated)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to BUFFER)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_FACES)
+    private val itemHolder = storedItemHolder(inventory to BUFFER, blockedFaces = BLOCKED_FACES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val recipeProvider = mutableProvider { inventory.getItem(0)?.let { RecipeManager.getConversionRecipeFor(RecipeTypes.CRYSTALLIZER, it) } }

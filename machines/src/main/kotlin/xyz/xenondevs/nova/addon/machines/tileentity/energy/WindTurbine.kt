@@ -2,6 +2,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import org.joml.Quaternionf
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.immutable.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
@@ -15,6 +16,7 @@ import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.yaw
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -23,6 +25,8 @@ import xyz.xenondevs.nova.world.model.Model
 import xyz.xenondevs.nova.world.model.MovableMultiModel
 import kotlin.math.roundToLong
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.LEFT, BlockSide.RIGHT, BlockSide.BACK, BlockSide.BOTTOM, BlockSide.TOP)
+
 private val MAX_ENERGY = Blocks.WIND_TURBINE.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = Blocks.WIND_TURBINE.config.entry<Long>("energy_per_tick")
 private val PLAY_ANIMATION by Blocks.WIND_TURBINE.config.entry<Boolean>("animation")
@@ -30,7 +34,7 @@ private val PLAY_ANIMATION by Blocks.WIND_TURBINE.config.entry<Boolean>("animati
 class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_SIDES)
     
     private val turbineModel = MovableMultiModel()
     private val altitude = (pos.y - pos.world.minHeight) / (pos.world.maxHeight - pos.world.minHeight - 1).toDouble()

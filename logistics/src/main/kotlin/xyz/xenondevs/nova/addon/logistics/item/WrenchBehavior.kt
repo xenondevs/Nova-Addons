@@ -51,12 +51,12 @@ internal object WrenchBehavior : ItemBehavior {
         }
     
     override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
-        if (wrappedEvent.actionPerformed)
+        if (wrappedEvent.actionPerformed || !player.isSneaking || !action.isRightClick)
             return
         
-        if (action == Action.RIGHT_CLICK_BLOCK && !player.isSneaking) {
+        if (action == Action.RIGHT_CLICK_BLOCK) {
             cycleEndPointConfig(player, wrappedEvent.event.clickedBlock!!.pos, itemStack, wrappedEvent)
-        } else if (action.isRightClick && player.isSneaking) {
+        } else {
             cycleWrenchMode(player, itemStack, wrappedEvent)
         }
     }
@@ -148,6 +148,9 @@ internal object WrenchBehavior : ItemBehavior {
         endPoint: NetworkEndPoint, energyHolder: EnergyHolder,
         type: NetworkType<*>, face: BlockFace
     ): NetworkConnectionType {
+        if (face in energyHolder.blockedFaces)
+            return NetworkConnectionType.NONE
+        
         val currentType = energyHolder.connectionConfig[face]!!
         val newType = energyHolder.allowedConnectionType.supertypes.after(currentType)
         energyHolder.connectionConfig[face] = newType
@@ -164,6 +167,9 @@ internal object WrenchBehavior : ItemBehavior {
         endPoint: NetworkEndPoint, holder: ContainerEndPointDataHolder<*>,
         type: NetworkType<*>, face: BlockFace
     ): NetworkConnectionType {
+        if (face in holder.blockedFaces)
+            return NetworkConnectionType.NONE
+        
         val currentType = holder.connectionConfig[face]!!
         val container = holder.containerConfig[face]!!
         val newType = holder.containers[container]!!.supertypes.after(currentType)

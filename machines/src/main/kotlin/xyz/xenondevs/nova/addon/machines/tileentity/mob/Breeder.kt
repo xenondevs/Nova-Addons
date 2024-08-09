@@ -5,6 +5,7 @@ import org.bukkit.Tag
 import org.bukkit.entity.Animals
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -23,6 +24,7 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.getSurroundingChunks
 import xyz.xenondevs.nova.util.nmsEntity
@@ -32,6 +34,8 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 import kotlin.math.min
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = BREEDER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = BREEDER.config.entry<Long>("energy_per_tick")
@@ -54,8 +58,8 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     
     private val inventory = storedInventory("inventory", 9, ::handleInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to INSERT, blockedSides = BLOCKED_SIDES)
     private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
     
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {

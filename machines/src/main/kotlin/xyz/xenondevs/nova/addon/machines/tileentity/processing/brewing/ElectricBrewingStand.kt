@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
+import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -14,6 +15,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -57,6 +59,8 @@ import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import java.awt.Color
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
+
 private val ENERGY_CAPACITY = ELECTRIC_BREWING_STAND.config.entry<Long>("energy_capacity")
 private val ENERGY_PER_TICK = ELECTRIC_BREWING_STAND.config.entry<Long>("energy_per_tick")
 private val FLUID_CAPACITY = ELECTRIC_BREWING_STAND.config.entry<Long>("fluid_capacity")
@@ -71,9 +75,9 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private val ingredientsInventory = storedInventory("ingredients", 27, null, ::handleIngredientsInventoryAfterUpdate)
     private val outputInventory = storedInventory("output", 3, ::handleOutputPreUpdate) { checkBrewingPossibility() }
     
-    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(ingredientsInventory to INSERT, outputInventory to EXTRACT)
-    private val fluidHolder = storedFluidHolder(fluidTank to INSERT)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT, BLOCKED_FACES)
+    private val itemHolder = storedItemHolder(ingredientsInventory to INSERT, outputInventory to EXTRACT, blockedFaces = BLOCKED_FACES)
+    private val fluidHolder = storedFluidHolder(fluidTank to INSERT, blockedFaces = BLOCKED_FACES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val maxBrewTime by maxIdleTime(BREW_TIME, upgradeHolder)

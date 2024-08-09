@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.impl.AbstractItem
@@ -35,6 +36,7 @@ import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.below
 import xyz.xenondevs.nova.util.item.damage
 import xyz.xenondevs.nova.util.playClickSound
@@ -42,6 +44,8 @@ import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.Region
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = PLANTER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = PLANTER.config.entry<Long>("energy_per_tick")
@@ -56,8 +60,8 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val inputInventory = storedInventory("input", 6, ::handleSeedUpdate)
     private val hoesInventory = storedInventory("hoes", 1, ::handleHoeUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inputInventory to INSERT, hoesInventory to INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inputInventory to INSERT, hoesInventory to INSERT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val energyPerPlant by efficiencyDividedValue(ENERGY_PER_PLANT, upgradeHolder)

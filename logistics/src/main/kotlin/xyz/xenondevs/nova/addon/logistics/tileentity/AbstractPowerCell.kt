@@ -22,6 +22,8 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 
 private class InfiniteEnergyHolder(compound: Provider<Compound>) : EnergyHolder {
     
+    override val blockedFaces: Set<BlockFace>
+        get() = emptySet()
     override val allowedConnectionType = NetworkConnectionType.EXTRACT
     override val connectionConfig: MutableMap<BlockFace, NetworkConnectionType>
         by compound.entry<MutableMap<BlockFace, NetworkConnectionType>>("connectionConfig")

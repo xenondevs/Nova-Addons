@@ -2,6 +2,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import org.bukkit.Material
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_BREAKER
@@ -24,6 +25,7 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.hardness
 import xyz.xenondevs.nova.util.item.ToolUtils
@@ -35,6 +37,8 @@ import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import kotlin.math.min
 import kotlin.math.roundToInt
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+
 private val MAX_ENERGY = BLOCK_BREAKER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = BLOCK_BREAKER.config.entry<Long>("energy_per_tick")
 private val BREAK_SPEED_MULTIPLIER = BLOCK_BREAKER.config.entry<Double>("break_speed_multiplier")
@@ -44,8 +48,8 @@ class BlockBreaker(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     
     private val inventory = storedInventory("inventory", 9, ::handleInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(inventory to EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val breakSpeed by speedMultipliedValue(BREAK_SPEED_MULTIPLIER, upgradeHolder)

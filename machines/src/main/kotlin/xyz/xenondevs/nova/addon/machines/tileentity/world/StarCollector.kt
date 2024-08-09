@@ -3,8 +3,10 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.world.entity.EquipmentSlot
 import org.bukkit.Bukkit
+import org.bukkit.block.BlockFace
 import org.bukkit.util.Vector
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -39,6 +41,8 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeArmorStand
 import java.awt.Color
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+
 private val MAX_ENERGY = STAR_COLLECTOR.config.entry<Long>("capacity")
 private val IDLE_ENERGY_PER_TICK = STAR_COLLECTOR.config.entry<Long>("energy_per_tick_idle")
 private val COLLECTING_ENERGY_PER_TICK = STAR_COLLECTOR.config.entry<Long>("energy_per_tick_collecting")
@@ -51,8 +55,8 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     
     private val inventory = storedInventory("inventory", 1, ::handleInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val itemHolder = storedItemHolder(inventory to EXTRACT)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
+    private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedFaces = BLOCKED_FACES)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_FACES)
     
     private val idleEnergyPerTick by efficiencyDividedValue(IDLE_ENERGY_PER_TICK, upgradeHolder)
     private val collectingEnergyPerTick by efficiencyDividedValue(COLLECTING_ENERGY_PER_TICK, upgradeHolder)

@@ -1,8 +1,10 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import org.bukkit.Material
+import org.bukkit.block.BlockFace
 import org.bukkit.scheduler.BukkitTask
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SOLAR_PANEL
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -22,13 +24,15 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+
 private val MAX_ENERGY = SOLAR_PANEL.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = SOLAR_PANEL.config.entry<Long>("energy_per_tick")
 
 class SolarPanel(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_FACES)
     
     private val peakEnergyOutput by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     

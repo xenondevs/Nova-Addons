@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.collections.rotateRight
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.ItemProvider
@@ -44,6 +45,8 @@ import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 import java.util.*
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.DOWN)
+
 private val ENERGY_CAPACITY = PUMP.config.entry<Long>("energy_capacity")
 private val ENERGY_PER_TICK = PUMP.config.entry<Long>("energy_per_tick")
 private val FLUID_CAPACITY = PUMP.config.entry<Long>("fluid_capacity")
@@ -58,8 +61,8 @@ class Pump(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Networke
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE, UpgradeTypes.FLUID)
     private val fluidTank = storedFluidContainer("tank", setOf(FluidType.WATER, FluidType.LAVA), FLUID_CAPACITY, upgradeHolder)
-    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, NetworkConnectionType.INSERT)
-    private val fluidHolder = storedFluidHolder(fluidTank to NetworkConnectionType.EXTRACT)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, NetworkConnectionType.INSERT, BLOCKED_FACES)
+    private val fluidHolder = storedFluidHolder(fluidTank to NetworkConnectionType.EXTRACT, blockedFaces = BLOCKED_FACES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)

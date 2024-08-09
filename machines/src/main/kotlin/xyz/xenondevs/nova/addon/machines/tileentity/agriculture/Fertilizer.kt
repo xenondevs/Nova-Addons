@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FERTILIZER
@@ -28,6 +29,7 @@ import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.world.BlockPos
@@ -35,6 +37,8 @@ import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = FERTILIZER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = FERTILIZER.config.entry<Long>("energy_per_tick")
@@ -48,8 +52,8 @@ class Fertilizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     
     private val fertilizerInventory = storedInventory("fertilizer", 12, this::handleInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(fertilizerInventory to INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(fertilizerInventory to INSERT, blockedSides = BLOCKED_SIDES)
     
     private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {

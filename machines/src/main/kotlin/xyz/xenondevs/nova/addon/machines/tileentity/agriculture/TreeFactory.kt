@@ -5,6 +5,7 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.joml.Vector3f
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.TREE_FACTORY
@@ -27,6 +28,7 @@ import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.dropItem
 import xyz.xenondevs.nova.util.particle.color
 import xyz.xenondevs.nova.util.particle.particle
@@ -52,6 +54,8 @@ private val PLANTS = mapOf(
     Material.BROWN_MUSHROOM to PlantConfiguration(Models.GIANT_BROWN_MUSHROOM_MINIATURE, ItemStack(Material.BROWN_MUSHROOM, 3), Color(149, 112, 80))
 )
 
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT, BlockSide.LEFT, BlockSide.RIGHT, BlockSide.TOP)
+
 private val MAX_ENERGY = TREE_FACTORY.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = TREE_FACTORY.config.entry<Long>("energy_per_tick")
 private val PROGRESS_PER_TICK = TREE_FACTORY.config.entry<Double>("progress_per_tick")
@@ -62,8 +66,8 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val inputInventory = storedInventory("input", 1, false, intArrayOf(1), ::handleInputInventoryUpdate)
     private val outputInventory = storedInventory("output", 9, ::handleOutputInventoryUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
-    private val itemHolder = storedItemHolder(outputInventory to EXTRACT, inputInventory to INSERT)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(outputInventory to EXTRACT, inputInventory to INSERT, blockedSides = BLOCKED_SIDES)
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val progressPerTick by speedMultipliedValue(PROGRESS_PER_TICK, upgradeHolder)
