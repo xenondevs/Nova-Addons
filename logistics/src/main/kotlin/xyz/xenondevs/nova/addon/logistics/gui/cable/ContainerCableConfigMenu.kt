@@ -10,10 +10,10 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.setDisplayName
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.item.notifyWindows
-import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.tileentity.network.node.ContainerEndPointDataHolder
-import xyz.xenondevs.nova.tileentity.network.node.NetworkEndPoint
-import xyz.xenondevs.nova.tileentity.network.type.NetworkConnectionType
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
+import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
+import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
 import xyz.xenondevs.nova.ui.menu.item.BUTTON_COLORS
 import xyz.xenondevs.nova.util.playClickSound
 

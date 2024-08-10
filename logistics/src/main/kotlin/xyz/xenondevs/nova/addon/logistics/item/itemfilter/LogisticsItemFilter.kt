@@ -4,8 +4,8 @@ import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
 import xyz.xenondevs.nova.addon.logistics.registry.Items
 import xyz.xenondevs.nova.addon.logistics.util.setItemFilter
-import xyz.xenondevs.nova.item.NovaItem
-import xyz.xenondevs.nova.tileentity.network.type.item.ItemFilter
+import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilter
 
 private val FILTER_TYPES: Map<Int, NovaItem> = setOf(
     Items.BASIC_ITEM_FILTER,

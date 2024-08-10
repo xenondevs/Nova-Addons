@@ -8,10 +8,10 @@ import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.item.behavior.Damageable
-import xyz.xenondevs.nova.item.behavior.Enchantable
-import xyz.xenondevs.nova.item.behavior.Tool
-import xyz.xenondevs.nova.item.behavior.Wearable
+import xyz.xenondevs.nova.world.item.behavior.Damageable
+import xyz.xenondevs.nova.world.item.behavior.Enchantable
+import xyz.xenondevs.nova.world.item.behavior.Tool
+import xyz.xenondevs.nova.world.item.behavior.Wearable
 
 @Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Machines.registry {

@@ -27,11 +27,9 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.UltimatePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.VacuumChest
 import xyz.xenondevs.nova.addon.logistics.util.MathUtils
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
-import xyz.xenondevs.nova.data.resources.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.item.tool.VanillaToolCategories
-import xyz.xenondevs.nova.item.tool.VanillaToolTiers
+import xyz.xenondevs.nova.resources.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.util.bukkitBlockData
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
@@ -44,6 +42,8 @@ import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
 import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
 import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.AXIS_HORIZONTAL
+import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
+import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 import net.minecraft.world.level.block.state.properties.BlockStateProperties as MojangBlockStateProperties
 
 @Init(stage = InitStage.PRE_PACK)

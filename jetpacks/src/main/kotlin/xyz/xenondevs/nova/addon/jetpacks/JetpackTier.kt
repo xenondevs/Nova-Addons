@@ -4,9 +4,9 @@ import xyz.xenondevs.nova.addon.jetpacks.ability.JetpackFlyAbility
 import xyz.xenondevs.nova.addon.jetpacks.registry.Abilities
 import xyz.xenondevs.nova.addon.jetpacks.registry.Attachments
 import xyz.xenondevs.nova.addon.jetpacks.registry.Items
-import xyz.xenondevs.nova.item.NovaItem
-import xyz.xenondevs.nova.player.ability.AbilityType
-import xyz.xenondevs.nova.player.attachment.AttachmentType
+import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.world.player.ability.AbilityType
+import xyz.xenondevs.nova.world.player.attachment.AttachmentType
 
 enum class JetpackTier(
     lazyAbilityType: () -> AbilityType<JetpackFlyAbility>,

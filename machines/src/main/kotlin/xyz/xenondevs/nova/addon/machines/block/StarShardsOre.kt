@@ -4,9 +4,9 @@ import org.bukkit.GameMode
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.data.context.Context
-import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.data.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.Context
+import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
+import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.behavior.BlockBehavior
 import xyz.xenondevs.nova.world.block.state.NovaBlockState

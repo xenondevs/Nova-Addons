@@ -22,8 +22,8 @@ import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeType
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.GuiItems
-import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.tileentity.TileEntity
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
+import xyz.xenondevs.nova.world.block.tileentity.TileEntity
 import xyz.xenondevs.nova.ui.menu.item.BackItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollLeftItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollRightItem

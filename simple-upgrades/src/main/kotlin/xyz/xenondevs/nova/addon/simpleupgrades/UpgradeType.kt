@@ -7,9 +7,9 @@ import xyz.xenondevs.commons.provider.immutable.orElse
 import xyz.xenondevs.commons.provider.immutable.requireNotNull
 import xyz.xenondevs.commons.reflection.createType
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypeRegistry
-import xyz.xenondevs.nova.data.config.ConfigProvider
-import xyz.xenondevs.nova.data.config.Configs
-import xyz.xenondevs.nova.item.NovaItem
+import xyz.xenondevs.nova.config.ConfigProvider
+import xyz.xenondevs.nova.config.Configs
+import xyz.xenondevs.nova.world.item.NovaItem
 import kotlin.reflect.KType
 
 /**

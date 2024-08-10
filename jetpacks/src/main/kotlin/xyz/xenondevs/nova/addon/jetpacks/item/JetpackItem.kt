@@ -3,10 +3,10 @@ package xyz.xenondevs.nova.addon.jetpacks.item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.jetpacks.JetpackTier
-import xyz.xenondevs.nova.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.player.ability.AbilityManager
-import xyz.xenondevs.nova.player.attachment.AttachmentManager
-import xyz.xenondevs.nova.player.equipment.ArmorEquipEvent
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.player.ability.AbilityManager
+import xyz.xenondevs.nova.world.player.attachment.AttachmentManager
+import xyz.xenondevs.nova.world.player.equipment.ArmorEquipEvent
 
 class JetpackBehavior(
     private val tier: JetpackTier

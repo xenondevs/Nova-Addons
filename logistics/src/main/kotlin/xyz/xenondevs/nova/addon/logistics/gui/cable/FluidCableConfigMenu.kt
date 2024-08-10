@@ -2,9 +2,9 @@ package xyz.xenondevs.nova.addon.logistics.gui.cable
 
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.tileentity.network.node.NetworkEndPoint
-import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidNetwork
-import xyz.xenondevs.nova.tileentity.network.type.fluid.holder.FluidHolder
+import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidNetwork
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.holder.FluidHolder
 import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
 import xyz.xenondevs.nova.ui.menu.item.DisplayNumberItem
 import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem

@@ -4,8 +4,8 @@ import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.AbstractProvider
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.UpgradesGui
-import xyz.xenondevs.nova.data.config.ConfigProvider
-import xyz.xenondevs.nova.tileentity.TileEntity
+import xyz.xenondevs.nova.config.ConfigProvider
+import xyz.xenondevs.nova.world.block.tileentity.TileEntity
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set

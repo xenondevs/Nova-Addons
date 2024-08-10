@@ -2,7 +2,7 @@ package xyz.xenondevs.nova.addon.logistics.item.itemfilter
 
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.nova.tileentity.network.type.item.ItemFilterType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilterType
 
 abstract class LogisticsItemFilterSerializer(
     private val constructor: (List<ItemStack>, Boolean) -> LogisticsItemFilter

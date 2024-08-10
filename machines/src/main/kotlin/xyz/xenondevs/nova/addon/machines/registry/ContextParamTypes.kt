@@ -1,9 +1,9 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
 import xyz.xenondevs.nova.addon.machines.Machines
-import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.data.context.param.ContextParamType
-import xyz.xenondevs.nova.data.context.param.DefaultingContextParamType
+import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
+import xyz.xenondevs.nova.context.param.ContextParamType
+import xyz.xenondevs.nova.context.param.DefaultingContextParamType
 
 object ContextParamTypes {
     

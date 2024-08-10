@@ -3,7 +3,7 @@ package xyz.xenondevs.nova.addon.machines.util
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.data.Levelled
-import xyz.xenondevs.nova.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 
 /**
  * Checks if this block is a source fluid.

@@ -38,11 +38,9 @@ import xyz.xenondevs.nova.addon.machines.tileentity.world.Quarry
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Sprinkler
 import xyz.xenondevs.nova.addon.machines.tileentity.world.StarCollector
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
-import xyz.xenondevs.nova.data.resources.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.item.tool.VanillaToolCategories
-import xyz.xenondevs.nova.item.tool.VanillaToolTiers
+import xyz.xenondevs.nova.resources.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.world.block.NovaBlock
 import xyz.xenondevs.nova.world.block.NovaBlockBuilder
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
@@ -56,6 +54,8 @@ import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
 import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
 import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.FACING_HORIZONTAL
+import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
+import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 
 @Init(stage = InitStage.PRE_PACK)
 object Blocks : BlockRegistry by Machines.registry {

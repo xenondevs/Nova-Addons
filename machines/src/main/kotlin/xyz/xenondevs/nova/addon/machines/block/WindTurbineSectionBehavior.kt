@@ -2,10 +2,10 @@ package xyz.xenondevs.nova.addon.machines.block
 
 import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.machines.registry.ContextParamTypes
-import xyz.xenondevs.nova.data.context.Context
-import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockInteract
-import xyz.xenondevs.nova.data.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.Context
+import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
+import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockInteract
+import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.behavior.BlockBehavior

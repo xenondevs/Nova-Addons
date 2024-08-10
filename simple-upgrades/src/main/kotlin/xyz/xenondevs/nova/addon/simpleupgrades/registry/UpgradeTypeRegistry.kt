@@ -3,7 +3,7 @@ package xyz.xenondevs.nova.addon.simpleupgrades.registry
 import xyz.xenondevs.nova.addon.Addon
 import xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeType
-import xyz.xenondevs.nova.item.NovaItem
+import xyz.xenondevs.nova.world.item.NovaItem
 import xyz.xenondevs.nova.registry.NovaRegistryAccess
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.util.set

@@ -7,9 +7,9 @@ import org.bukkit.block.data.Ageable
 import org.bukkit.block.data.type.CaveVinesPlant
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.collections.enumMapOf
-import xyz.xenondevs.nova.data.context.Context
-import xyz.xenondevs.nova.data.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.data.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.Context
+import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
+import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.integration.customitems.CustomBlockType
 import xyz.xenondevs.nova.integration.customitems.CustomItemServiceManager
 import xyz.xenondevs.nova.integration.customitems.CustomItemType

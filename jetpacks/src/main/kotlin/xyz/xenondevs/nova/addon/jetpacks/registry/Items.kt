@@ -8,8 +8,8 @@ import xyz.xenondevs.nova.addon.jetpacks.item.JetpackBehavior
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.item.behavior.Chargeable
-import xyz.xenondevs.nova.item.behavior.Wearable
+import xyz.xenondevs.nova.world.item.behavior.Chargeable
+import xyz.xenondevs.nova.world.item.behavior.Wearable
 
 @Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Jetpacks.registry {
