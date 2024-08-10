@@ -6,10 +6,10 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
-import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.block.tileentity.TileEntity
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
 import xyz.xenondevs.nova.util.item.ItemUtils
+import xyz.xenondevs.nova.world.block.tileentity.TileEntity
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 
 object StorageUnitItemBehavior : ItemBehavior {
     

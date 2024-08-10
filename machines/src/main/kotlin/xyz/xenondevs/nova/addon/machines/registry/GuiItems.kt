@@ -58,7 +58,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         models {
             itemType(Material.SHULKER_SHELL)
             selectModel {
-                createGuiModel(background = true, stretched = false,"item/gui/$name")
+                createGuiModel(background = true, stretched = false, "item/gui/$name")
             }
         }
     }

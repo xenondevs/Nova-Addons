@@ -9,11 +9,11 @@ import xyz.xenondevs.invui.item.builder.PotionBuilder
 import xyz.xenondevs.nova.addon.machines.recipe.ElectricBrewingStandRecipe
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.world.item.DefaultGuiItems
 import xyz.xenondevs.nova.ui.menu.explorer.recipes.createRecipeChoiceItem
 import xyz.xenondevs.nova.ui.menu.explorer.recipes.group.RecipeGroup
 import xyz.xenondevs.nova.ui.menu.item.ScrollLeftItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollRightItem
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
 
 object ElectricBrewingStandRecipeGroup : RecipeGroup<ElectricBrewingStandRecipe>() {
     

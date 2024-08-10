@@ -12,11 +12,6 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
-import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.BUFFER
-import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
-import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.FluidBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
@@ -29,6 +24,11 @@ import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.BUFFER
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import kotlin.math.roundToLong
 
 private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)

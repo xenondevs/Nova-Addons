@@ -12,11 +12,6 @@ import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterMenu
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.NbtItemFilter
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
-import xyz.xenondevs.nova.world.item.NovaItem
-import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
-import xyz.xenondevs.nova.world.item.behavior.ItemFilterContainer
-import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
 import xyz.xenondevs.nova.util.item.ItemUtils
@@ -24,6 +19,11 @@ import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.util.item.takeUnlessEmpty
+import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
+import xyz.xenondevs.nova.world.item.behavior.ItemFilterContainer
+import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import org.bukkit.inventory.ItemStack as BukkitStack
 
 private val ITEM_FILTER_KEY = ResourceLocation(Logistics, "item_filter")

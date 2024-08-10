@@ -11,9 +11,6 @@ import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.DefaultContextIntentions
 import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.world.item.NovaItem
-import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.util.BlockFaceUtils
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.advance
@@ -24,6 +21,9 @@ import xyz.xenondevs.nova.util.runTaskTimer
 import xyz.xenondevs.nova.util.setBreakStage
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent.Action
+import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.world.pos
 import kotlin.math.abs
 import kotlin.random.Random

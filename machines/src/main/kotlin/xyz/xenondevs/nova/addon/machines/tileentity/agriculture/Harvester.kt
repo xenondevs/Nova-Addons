@@ -26,12 +26,6 @@ import xyz.xenondevs.nova.config.GlobalValues
 import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
 import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
-import xyz.xenondevs.nova.world.item.tool.ToolCategory
-import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
-import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
-import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
@@ -42,6 +36,12 @@ import xyz.xenondevs.nova.util.dropItemsNaturally
 import xyz.xenondevs.nova.util.item.damage
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.item.tool.ToolCategory
+import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
@@ -66,7 +66,7 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(
-        inventory to EXTRACT, shearInventory to INSERT, axeInventory to INSERT, hoeInventory to INSERT, 
+        inventory to EXTRACT, shearInventory to INSERT, axeInventory to INSERT, hoeInventory to INSERT,
         blockedSides = BLOCKED_SIDES
     )
     

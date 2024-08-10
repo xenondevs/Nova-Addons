@@ -8,15 +8,15 @@ import org.bukkit.entity.Player
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.jetpacks.ui.JetpackOverlay
 import xyz.xenondevs.nova.config.Configs
-import xyz.xenondevs.nova.world.item.behavior.Chargeable
-import xyz.xenondevs.nova.world.player.ability.Ability
-import xyz.xenondevs.nova.world.player.ability.AbilityManager
 import xyz.xenondevs.nova.ui.overlay.actionbar.ActionbarOverlayManager
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.broadcast
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.particle.ParticleBuilder
 import xyz.xenondevs.nova.util.serverTick
+import xyz.xenondevs.nova.world.item.behavior.Chargeable
+import xyz.xenondevs.nova.world.player.ability.Ability
+import xyz.xenondevs.nova.world.player.ability.AbilityManager
 
 private val IGNORED_GAME_MODES by Configs["jetpacks:config"].entry<Set<GameMode>>("ignored_game_modes")
 

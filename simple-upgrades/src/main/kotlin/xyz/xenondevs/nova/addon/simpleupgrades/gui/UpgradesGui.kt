@@ -22,8 +22,6 @@ import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeType
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.GuiItems
-import xyz.xenondevs.nova.world.item.DefaultGuiItems
-import xyz.xenondevs.nova.world.block.tileentity.TileEntity
 import xyz.xenondevs.nova.ui.menu.item.BackItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollLeftItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollRightItem
@@ -31,6 +29,8 @@ import xyz.xenondevs.nova.util.addItemCorrectly
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.playItemPickupSound
+import xyz.xenondevs.nova.world.block.tileentity.TileEntity
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
 
 private fun ItemStack.getUpgradeType(): UpgradeType<*>? =
     novaItem?.let { UpgradeType.of<UpgradeType<*>>(it) }

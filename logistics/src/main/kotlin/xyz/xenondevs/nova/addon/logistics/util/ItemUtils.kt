@@ -1,9 +1,9 @@
 package xyz.xenondevs.nova.addon.logistics.util
 
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.nova.world.item.behavior.ItemFilterContainer
-import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilter
 import xyz.xenondevs.nova.util.item.novaItem
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilter
+import xyz.xenondevs.nova.world.item.behavior.ItemFilterContainer
 
 fun <T : ItemFilter<T>> ItemStack.setItemFilter(itemFilter: T) {
     val container = novaItem?.getBehavior<ItemFilterContainer<T>>()

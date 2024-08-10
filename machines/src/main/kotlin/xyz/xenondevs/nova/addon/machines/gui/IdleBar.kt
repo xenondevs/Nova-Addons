@@ -5,9 +5,9 @@ import net.kyori.adventure.text.format.NamedTextColor
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.nova.world.item.DefaultGuiItems
 import xyz.xenondevs.nova.ui.menu.VerticalBar
 import xyz.xenondevs.nova.ui.menu.item.reactiveItem
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
 
 class IdleBar(
     height: Int,

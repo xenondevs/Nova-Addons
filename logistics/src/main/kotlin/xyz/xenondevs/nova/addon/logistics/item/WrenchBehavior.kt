@@ -11,17 +11,8 @@ import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.immutable.provider
 import xyz.xenondevs.nova.addon.logistics.Logistics
-import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
-import xyz.xenondevs.nova.world.block.tileentity.network.NetworkManager
-import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
-import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
-import xyz.xenondevs.nova.world.block.tileentity.network.type.DefaultNetworkTypes
-import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
-import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkType
-import xyz.xenondevs.nova.world.block.tileentity.network.type.energy.holder.EnergyHolder
+import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.util.item.retrieveData
@@ -29,7 +20,16 @@ import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.util.runTask
 import xyz.xenondevs.nova.util.toString
 import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.tileentity.network.NetworkManager
+import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
+import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
+import xyz.xenondevs.nova.world.block.tileentity.network.type.DefaultNetworkTypes
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.energy.holder.EnergyHolder
 import xyz.xenondevs.nova.world.format.NetworkState
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.world.pos
 import kotlin.collections.set
 

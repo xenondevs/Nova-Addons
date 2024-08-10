@@ -7,7 +7,7 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.TabGui
 import xyz.xenondevs.invui.window.Window
 import xyz.xenondevs.invui.window.type.context.setTitle
-import xyz.xenondevs.nova.world.item.DefaultGuiItems
+import xyz.xenondevs.nova.ui.menu.item.ClickyTabItem
 import xyz.xenondevs.nova.world.block.tileentity.network.NetworkManager
 import xyz.xenondevs.nova.world.block.tileentity.network.ProtoNetwork
 import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
@@ -17,8 +17,8 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.DefaultNetworkType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.holder.FluidHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
-import xyz.xenondevs.nova.ui.menu.item.ClickyTabItem
 import xyz.xenondevs.nova.world.format.NetworkState
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
 
 class CableConfigMenu(
     private val bridge: NetworkBridge,

@@ -19,10 +19,8 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
+import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.addPrioritized
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
@@ -30,6 +28,8 @@ import xyz.xenondevs.nova.util.data.NamespacedKey
 import xyz.xenondevs.nova.util.getTargetLocation
 import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 
 private val DATA_KEY = NamespacedKey(Machines, "entitydata")
 private val TYPE_KEY = NamespacedKey(Machines, "entitytype")

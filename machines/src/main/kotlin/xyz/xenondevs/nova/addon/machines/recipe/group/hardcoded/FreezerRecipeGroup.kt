@@ -3,10 +3,10 @@ package xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.ui.menu.StaticFluidBar
 import xyz.xenondevs.nova.ui.menu.explorer.recipes.createRecipeChoiceItem
 import xyz.xenondevs.nova.ui.menu.explorer.recipes.group.RecipeGroup
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 
 object FreezerRecipeGroup : RecipeGroup<FreezerRecipe>() {
     

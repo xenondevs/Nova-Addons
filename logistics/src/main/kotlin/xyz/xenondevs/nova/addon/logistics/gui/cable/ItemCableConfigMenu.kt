@@ -9,13 +9,13 @@ import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.logistics.registry.GuiItems
 import xyz.xenondevs.nova.addon.logistics.util.getItemFilter
 import xyz.xenondevs.nova.addon.logistics.util.isItemFilter
-import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
-import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemNetwork
-import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
 import xyz.xenondevs.nova.ui.menu.item.DisplayNumberItem
 import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem
+import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemNetwork
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
 
 class ItemCableConfigMenu(
     endPoint: NetworkEndPoint,
