@@ -27,6 +27,8 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.DefaultNetworkType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.energy.holder.EnergyHolder
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.holder.FluidHolder
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
 import xyz.xenondevs.nova.world.format.NetworkState
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
@@ -107,13 +109,13 @@ internal object WrenchBehavior : ItemBehavior {
                 }
                 
                 DefaultNetworkTypes.ITEM -> {
-                    val itemHolder = endPoint.holders.firstInstanceOfOrNull<ContainerEndPointDataHolder<*>>()
+                    val itemHolder = endPoint.holders.firstInstanceOfOrNull<ItemHolder>()
                         ?: return@queue false
                     cycleConnectionConfig(state, endPoint, itemHolder, netType, face)
                 }
                 
                 DefaultNetworkTypes.FLUID -> {
-                    val fluidHolder = endPoint.holders.firstInstanceOfOrNull<ContainerEndPointDataHolder<*>>()
+                    val fluidHolder = endPoint.holders.firstInstanceOfOrNull<FluidHolder>()
                         ?: return@queue false
                     cycleConnectionConfig(state, endPoint, fluidHolder, netType, face)
                 }
