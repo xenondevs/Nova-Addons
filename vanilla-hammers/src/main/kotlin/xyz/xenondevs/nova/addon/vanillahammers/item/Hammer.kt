@@ -31,12 +31,14 @@ import kotlin.random.Random
 class Hammer(
     range: Provider<Int>,
     depth: Provider<Int>,
-    hardnessTolerance: Provider<Double>
+    hardnessTolerance: Provider<Double>,
+    slowdownPerBlock: Provider<Double>
 ) : ItemBehavior {
     
     private val range by range
     private val depth by depth
     private val hardnessTolerance by hardnessTolerance
+    private val slowdownPerBlock by slowdownPerBlock
     
     override fun handleBlockBreakAction(player: Player, itemStack: ItemStack, event: BlockBreakActionEvent) {
         when (event.action) {
@@ -55,7 +57,6 @@ class Hammer(
         }
     }
     
-    // TODO: slow down breaking based on range
     private fun selectBlocks(player: Player, itemStack: ItemStack, middle: Block, face: BlockFace, cursed: Boolean): List<Block> {
         if (!ProtectionManager.canBreak(player, itemStack, middle.pos))
             return emptyList()
@@ -102,6 +103,14 @@ class Hammer(
         Axis.Z -> Axis.X
     }
     
+    override fun modifyBlockDamage(player: Player, itemStack: ItemStack, damage: Double): Double {
+        val blockCount = hammerWorkers[player]?.size ?: 1
+        val slowdown = blockCount * slowdownPerBlock
+        if (slowdown <= 0)
+            return damage
+        return damage / slowdown
+    }
+    
     companion object : ItemBehaviorFactory<Hammer> {
         
         override fun create(item: NovaItem): Hammer {
@@ -109,7 +118,8 @@ class Hammer(
             return Hammer(
                 cfg.entry<Int>("range"),
                 cfg.entry<Int>("depth"),
-                cfg.entry<Double>("hardness_tolerance")
+                cfg.entry<Double>("hardness_tolerance"),
+                cfg.entry<Double>("slowdown_per_block")
             )
         }
         
@@ -129,6 +139,8 @@ class Hammer(
         }
         
         private fun startHammerWorkers(player: Player, blocks: List<Block>) {
+            if (blocks.isEmpty())
+                return
             hammerWorkers[player] = blocks.associateWithTo(HashMap()) { Random.nextInt() }
         }
         

@@ -10,6 +10,7 @@ knockback_bonus: 3
 range: 1
 depth: 1
 hardness_tolerance: 0
+slowdown_per_block: 0.2
 
 # Damageable Options
 durability: 1500
