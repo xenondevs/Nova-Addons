@@ -105,8 +105,8 @@ class Hammer(
     
     override fun modifyBlockDamage(player: Player, itemStack: ItemStack, damage: Double): Double {
         val blockCount = hammerWorkers[player]?.size ?: 1
-        val slowdown = blockCount * slowdownPerBlock
-        if (slowdown <= 0)
+        val slowdown = 1 + blockCount * slowdownPerBlock
+        if (slowdown <= 1)
             return damage
         return damage / slowdown
     }
