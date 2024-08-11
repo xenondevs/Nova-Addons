@@ -83,7 +83,7 @@ object Blocks : BlockRegistry by Logistics.registry {
     
     private fun cable(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
         tileEntity("${tier}_cable", constructor) {
-            syncTickrate(0)
+            tickrate(0)
             behaviors(TileEntityLimited, TileEntityDrops, CABLE, BlockSounds(SoundGroup.METAL))
             stateProperties(
                 ScopedBlockStateProperties.NORTH,

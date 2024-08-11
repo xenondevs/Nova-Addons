@@ -1,5 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.bukkit.Material
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
@@ -59,6 +62,7 @@ class BlockBreaker(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private var lastType: Material? = null
     private var breakProgress by storedValue("breakProgress") { 0.0 }
     
+    @Volatile
     private var hasBreakPermission = false
     
     override fun handleDisable() {
@@ -71,8 +75,14 @@ class BlockBreaker(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             event.isCancelled = true
     }
     
-    override suspend fun handleAsyncTick() {
-        hasBreakPermission = ProtectionManager.canBreak(this, null, targetPos)
+    
+    override fun handleEnableTicking() {
+        CoroutineScope(coroutineSupervisor).launch {
+            while (true) {
+                hasBreakPermission = ProtectionManager.canBreak(this@BlockBreaker, null, targetPos)
+                delay(50)
+            }
+        }
     }
     
     override fun handleTick() {

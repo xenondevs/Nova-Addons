@@ -1,5 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -247,9 +250,14 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
     }
     
-    override suspend fun handleAsyncTick() {
-        if (!done && energyHolder.energy != 0L)
-            updatePointer()
+    override fun handleEnableTicking() {
+        CoroutineScope(coroutineSupervisor).launch {
+            while (true) {
+                if (!done && energyHolder.energy != 0L)
+                    updatePointer()
+                delay(50)
+            }
+        }
     }
     
     private fun moveToPointer(pointerDestination: Location) {

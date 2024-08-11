@@ -84,8 +84,8 @@ object Blocks : BlockRegistry by Machines.registry {
     val ELECTRIC_FURNACE = activeMachine("electric_furnace", ::ElectricFurnace)
     val MECHANICAL_PRESS = stateBackedMachine("mechanical_press", ::MechanicalPress)
     val PULVERIZER = stateBackedMachine("pulverizer", ::Pulverizer)
-    val BLOCK_BREAKER = stateBackedMachine("block_breaker", ::BlockBreaker) { asyncTickrate(20.0) }
-    val BLOCK_PLACER = stateBackedMachine("block_placer", ::BlockPlacer) { asyncTickrate(20.0) }
+    val BLOCK_BREAKER = stateBackedMachine("block_breaker", ::BlockBreaker)
+    val BLOCK_PLACER = stateBackedMachine("block_placer", ::BlockPlacer)
     val STAR_COLLECTOR = entityBackedMachine("star_collector", ::StarCollector)
     val CHUNK_LOADER = stateBackedMachine("chunk_loader", ::ChunkLoader)
     val ELECTRIC_BREWING_STAND = entityBackedMachine("electric_brewing_stand", ::ElectricBrewingStand) { behaviors(Bucketable) }
@@ -103,12 +103,10 @@ object Blocks : BlockRegistry by Machines.registry {
     val QUARRY = interactiveTileEntity("quarry", ::Quarry) {
         behaviors(Quarry, STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
-        asyncTickrate(20.0)
     }
     val WIND_TURBINE = interactiveTileEntity("wind_turbine", ::WindTurbine) {
         behaviors(WindTurbineBehavior, METAL, BlockSounds(SoundGroup.METAL))
         stateProperties(FACING_HORIZONTAL)
-        asyncTickrate(20.0)
         models { selectModel { getModel("block/wind_turbine/base").rotated() } }
     }
     val WIND_TURBINE_EXTRA = block("wind_turbine_extra") {

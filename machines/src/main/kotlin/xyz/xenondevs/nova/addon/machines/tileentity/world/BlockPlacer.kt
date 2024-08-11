@@ -1,5 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
@@ -45,6 +48,7 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val placePos = pos.advance(blockState.getOrThrow(DefaultBlockStateProperties.FACING))
     private val placeBlock = placePos.block
     
+    @Volatile
     private var permittedTypes: Set<ItemStack> = emptySet()
     
     override fun handleTick() {
@@ -58,11 +62,16 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         }
     }
     
-    override suspend fun handleAsyncTick() {
-        permittedTypes = inventory.items.asSequence()
-            .filterNotNull()
-            .onEach { it.amount = 1 }
-            .filterTo(HashSet()) { ProtectionManager.canPlace(this, it, placePos) }
+    override fun handleEnableTicking() {
+        CoroutineScope(coroutineSupervisor).launch {
+            while (true) {
+                permittedTypes = inventory.items.asSequence()
+                    .filterNotNull()
+                    .onEach { it.amount = 1 }
+                    .filterTo(HashSet()) { ProtectionManager.canPlace(this@BlockPlacer, it, placePos) }
+                delay(50)
+            }
+        }
     }
     
     private fun placeBlock(): Boolean {

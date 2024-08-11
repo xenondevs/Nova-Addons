@@ -1,5 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.joml.Quaternionf
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
@@ -72,16 +75,21 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         energyHolder.energy += energyPerTick
     }
     
-    override suspend fun handleAsyncTick() {
+    override fun handleEnableTicking() {
         if (!PLAY_ANIMATION)
             return
         
-        turbineModel.useMetadata {
-            it.leftRotation = it.leftRotation.rotateAxis(
-                Math.toRadians(rotationPerTick).toFloat(),
-                0f, 0f, 1f,
-                Quaternionf()
-            )
+        CoroutineScope(coroutineSupervisor).launch { 
+            while (true) {
+                turbineModel.useMetadata {
+                    it.leftRotation = it.leftRotation.rotateAxis(
+                        Math.toRadians(rotationPerTick).toFloat(),
+                        0f, 0f, 1f,
+                        Quaternionf()
+                    )
+                }
+                delay(50)
+            }
         }
     }
     
