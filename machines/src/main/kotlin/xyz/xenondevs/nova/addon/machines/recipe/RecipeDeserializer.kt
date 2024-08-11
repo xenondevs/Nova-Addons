@@ -44,7 +44,7 @@ object FluidInfuserRecipeDeserializer : RecipeDeserializer<FluidInfuserRecipe> {
         val fluidAmount = json.getLong("fluid_amount")
         val input = parseRecipeChoice(json.get("input"))
         val time = json.getInt("time")
-        val result = ItemUtils.getItemBuilder(json.getString("result")).get()
+        val result = ItemUtils.getItemStack(json.getString("result"))
         
         return FluidInfuserRecipe(getRecipeId(file), mode, fluidType, fluidAmount, input, result, time)
     }
