@@ -1,4 +1,4 @@
-version = "1.5-SNAPSHOT"
+version = "1.5-alpha.1"
 
 addon {
     main.set("xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers")
