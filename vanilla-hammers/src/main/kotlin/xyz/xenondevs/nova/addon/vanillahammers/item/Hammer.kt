@@ -7,24 +7,23 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Enchantments
-import xyz.xenondevs.nova.data.config.entry
+import xyz.xenondevs.nova.context.Context
+import xyz.xenondevs.nova.context.intention.DefaultContextIntentions
+import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.item.NovaItem
-import xyz.xenondevs.nova.item.behavior.Enchantable
-import xyz.xenondevs.nova.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.util.BlockFaceUtils
+import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
-import xyz.xenondevs.nova.util.breakNaturally
 import xyz.xenondevs.nova.util.destroyProgress
 import xyz.xenondevs.nova.util.hardness
-import xyz.xenondevs.nova.util.nmsCopy
 import xyz.xenondevs.nova.util.runTaskTimer
 import xyz.xenondevs.nova.util.setBreakStage
-import xyz.xenondevs.nova.world.block.context.BlockBreakContext
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent.Action
+import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.world.pos
 import kotlin.math.abs
 import kotlin.random.Random
@@ -32,12 +31,14 @@ import kotlin.random.Random
 class Hammer(
     range: Provider<Int>,
     depth: Provider<Int>,
-    hardnessTolerance: Provider<Double>
+    hardnessTolerance: Provider<Double>,
+    slowdownPerBlock: Provider<Double>
 ) : ItemBehavior {
     
     private val range by range
     private val depth by depth
     private val hardnessTolerance by hardnessTolerance
+    private val slowdownPerBlock by slowdownPerBlock
     
     override fun handleBlockBreakAction(player: Player, itemStack: ItemStack, event: BlockBreakActionEvent) {
         when (event.action) {
@@ -48,7 +49,7 @@ class Hammer(
                     return
                 
                 val face = BlockFaceUtils.determineBlockFaceLookingAt(player.eyeLocation) ?: BlockFace.NORTH
-                startHammerWorkers(player, selectBlocks(player, itemStack, event.block, face, Enchantments.CURSE_OF_GIGANTISM in Enchantable.getEnchantments(itemStack.nmsCopy)))
+                startHammerWorkers(player, selectBlocks(player, itemStack, event.block, face, itemStack.containsEnchantment(Enchantments.CURSE_OF_GIGANTISM)))
             }
             
             Action.FINISH -> finishHammerWorkers(player)
@@ -56,9 +57,8 @@ class Hammer(
         }
     }
     
-    // TODO: slow down breaking based on range
     private fun selectBlocks(player: Player, itemStack: ItemStack, middle: Block, face: BlockFace, cursed: Boolean): List<Block> {
-        if (!ProtectionManager.canBreak(player, itemStack, middle.location).get())
+        if (!ProtectionManager.canBreak(player, itemStack, middle.pos))
             return emptyList()
         
         val blocks = ArrayList<Block>()
@@ -86,7 +86,7 @@ class Hammer(
                     val hardnessDifference = abs(block.hardness - middle.hardness)
                     if (hardnessDifference > hardnessTolerance)
                         continue
-                    if (!ProtectionManager.canBreak(player, itemStack, block.location).get())
+                    if (!ProtectionManager.canBreak(player, itemStack, block.pos))
                         continue
                     
                     blocks += block
@@ -103,6 +103,14 @@ class Hammer(
         Axis.Z -> Axis.X
     }
     
+    override fun modifyBlockDamage(player: Player, itemStack: ItemStack, damage: Double): Double {
+        val blockCount = hammerWorkers[player]?.size ?: 1
+        val slowdown = 1 + blockCount * slowdownPerBlock
+        if (slowdown <= 1)
+            return damage
+        return damage / slowdown
+    }
+    
     companion object : ItemBehaviorFactory<Hammer> {
         
         override fun create(item: NovaItem): Hammer {
@@ -110,7 +118,8 @@ class Hammer(
             return Hammer(
                 cfg.entry<Int>("range"),
                 cfg.entry<Int>("depth"),
-                cfg.entry<Double>("hardness_tolerance")
+                cfg.entry<Double>("hardness_tolerance"),
+                cfg.entry<Double>("slowdown_per_block")
             )
         }
         
@@ -130,6 +139,8 @@ class Hammer(
         }
         
         private fun startHammerWorkers(player: Player, blocks: List<Block>) {
+            if (blocks.isEmpty())
+                return
             hammerWorkers[player] = blocks.associateWithTo(HashMap()) { Random.nextInt() }
         }
         
@@ -137,8 +148,13 @@ class Hammer(
             hammerWorkers.remove(player)?.forEach { (block, breakerId) ->
                 block.setBreakStage(breakerId, -1)
                 
-                val ctx = BlockBreakContext(block.pos, player, player.location, null, player.inventory.itemInMainHand)
-                block.breakNaturally(ctx)
+                BlockUtils.breakBlockNaturally(
+                    Context.intention(DefaultContextIntentions.BlockBreak)
+                        .param(DefaultContextParamTypes.BLOCK_POS, block.pos)
+                        .param(DefaultContextParamTypes.SOURCE_PLAYER, player)
+                        .param(DefaultContextParamTypes.TOOL_ITEM_STACK, player.inventory.itemInMainHand)
+                        .build()
+                )
             }
         }
         

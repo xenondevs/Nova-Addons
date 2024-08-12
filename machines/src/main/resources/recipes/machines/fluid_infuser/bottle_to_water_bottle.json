@@ -3,6 +3,6 @@
   "fluid_type": "WATER",
   "fluid_amount": 300,
   "input": "minecraft:glass_bottle",
-  "result": "minecraft:potion{\"Potion\": \"minecraft:water\"}",
+  "result": "minecraft:potion[potion_contents={potion: \"minecraft:water\"}]",
   "time": 30
 }

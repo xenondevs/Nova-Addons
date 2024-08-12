@@ -1,3 +1,4 @@
+# Tool Options
 tool_tier: minecraft:iron
 tool_category: minecraft:pickaxe
 break_speed: 40
@@ -5,8 +6,17 @@ attack_damage: 4
 attack_speed: 1.5
 can_sweep_attack: false
 can_break_blocks_in_creative: true
+
+# Damageable Options
 max_durability: 250
 item_damage_on_attack_entity: 2
 item_damage_on_break_block: 1
+
+# Enchantable Options
 enchantment_value: 10
-enchantment_categories: ["digger", "breakable"]
+supported_enchantments:
+  - minecraft:efficiency
+  - minecraft:silk_touch
+  - minecraft:fortune
+  - minecraft:unbreaking
+  - minecraft:mending

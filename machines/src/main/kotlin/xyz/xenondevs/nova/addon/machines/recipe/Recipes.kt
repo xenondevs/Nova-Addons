@@ -5,10 +5,10 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice
 import org.bukkit.potion.PotionEffectType
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.data.recipe.ConversionNovaRecipe
-import xyz.xenondevs.nova.data.recipe.MultiInputChoiceRecipe
-import xyz.xenondevs.nova.data.recipe.NovaRecipe
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.world.item.recipe.ConversionNovaRecipe
+import xyz.xenondevs.nova.world.item.recipe.MultiInputChoiceRecipe
+import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
 
 class PulverizerRecipe(
     id: ResourceLocation,
@@ -73,6 +73,6 @@ class CrystallizerRecipe(
     input: RecipeChoice,
     result: ItemStack,
     time: Int
-): ConversionNovaRecipe(id, input, result, time) {
+) : ConversionNovaRecipe(id, input, result, time) {
     override val type = RecipeTypes.CRYSTALLIZER
 }

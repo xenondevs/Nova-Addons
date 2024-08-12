@@ -2,22 +2,26 @@ package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.WIRELESS_CHARGER
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.behavior.Chargeable
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.item.novaItem
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.item.behavior.Chargeable
+import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 
 private val MAX_ENERGY = WIRELESS_CHARGER.config.entry<Long>("capacity")
@@ -26,12 +30,13 @@ private val MIN_RANGE = WIRELESS_CHARGER.config.entry<Int>("range", "min")
 private val MAX_RANGE = WIRELESS_CHARGER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by WIRELESS_CHARGER.config.entry<Int>("range", "default")
 
-class WirelessCharger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class WirelessCharger(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, CHARGE_SPEED, null, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT) }
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     
-    private val region = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, ::getSurroundingRegion)
+    private val chargePerTick by speedMultipliedValue(CHARGE_SPEED, upgradeHolder)
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) { Region.surrounding(pos, it) }
     
     private var players: List<Player> = emptyList()
     private var findPlayersCooldown = 0
@@ -41,17 +46,20 @@ class WirelessCharger(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
         
         if (--findPlayersCooldown <= 0) {
             findPlayersCooldown = 100
-            players = world.players.filter { it.location in region }
+            players = pos.world.players.filter { it.location in region }
         }
         
         if (energyHolder.energy != 0L && players.isNotEmpty()) {
             playerLoop@ for (player in players) {
                 energyTransferred = 0L
-                if (energyHolder.energy == 0L) break
+                if (energyHolder.energy == 0L)
+                    break
                 for (itemStack in player.inventory) {
                     energyTransferred += chargeItemStack(energyTransferred, itemStack)
-                    if (energyHolder.energy == 0L) break@playerLoop
-                    if (energyTransferred == energyHolder.energyConsumption) break
+                    if (energyHolder.energy == 0L)
+                        break@playerLoop
+                    if (energyTransferred >= chargePerTick)
+                        break
                 }
             }
         }
@@ -64,7 +72,7 @@ class WirelessCharger(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
             val maxEnergy = chargeable.maxEnergy
             val currentEnergy = chargeable.getEnergy(itemStack)
             
-            val energyToTransfer = minOf(energyHolder.energyConsumption - alreadyTransferred, maxEnergy - currentEnergy, energyHolder.energy)
+            val energyToTransfer = minOf(chargePerTick - alreadyTransferred, maxEnergy - currentEnergy, energyHolder.energy)
             energyHolder.energy -= energyToTransfer
             chargeable.addEnergy(itemStack, energyToTransfer)
             
@@ -74,8 +82,8 @@ class WirelessCharger(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
         return 0
     }
     
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
+    override fun handleDisable() {
+        super.handleDisable()
         VisualRegion.removeRegion(uuid)
     }
     

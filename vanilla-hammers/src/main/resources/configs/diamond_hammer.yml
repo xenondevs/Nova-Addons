@@ -9,6 +9,7 @@ attack_speed: 1
 range: 1
 depth: 1
 hardness_tolerance: 0
+slowdown_per_block: 0.2
 
 # Damageable Options
 durability: 1560
@@ -18,4 +19,10 @@ repair_ingredient: "minecraft:diamond"
 
 # Enchantable Options
 enchantment_value: 10
-enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]
+supported_enchantments:
+  - "vanilla_hammers:curse_of_gigantism"
+  - "minecraft:efficiency"
+  - "minecraft:silk_touch"
+  - "minecraft:fortune"
+  - "minecraft:unbreaking"
+  - "minecraft:mending"

@@ -11,14 +11,14 @@ import xyz.xenondevs.commons.gson.getInt
 import xyz.xenondevs.commons.gson.getIntOrNull
 import xyz.xenondevs.commons.gson.getLong
 import xyz.xenondevs.commons.gson.getString
-import xyz.xenondevs.nova.data.serialization.json.getDeserialized
-import xyz.xenondevs.nova.data.serialization.json.serializer.ConversionRecipeDeserializer
-import xyz.xenondevs.nova.data.serialization.json.serializer.RecipeDeserializer
-import xyz.xenondevs.nova.data.serialization.json.serializer.RecipeDeserializer.Companion.getRecipeId
-import xyz.xenondevs.nova.data.serialization.json.serializer.RecipeDeserializer.Companion.parseRecipeChoice
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
+import xyz.xenondevs.nova.serialization.json.getDeserialized
+import xyz.xenondevs.nova.serialization.json.serializer.ConversionRecipeDeserializer
+import xyz.xenondevs.nova.serialization.json.serializer.RecipeDeserializer
+import xyz.xenondevs.nova.serialization.json.serializer.RecipeDeserializer.Companion.getRecipeId
+import xyz.xenondevs.nova.serialization.json.serializer.RecipeDeserializer.Companion.parseRecipeChoice
 import xyz.xenondevs.nova.util.data.getInputStacks
 import xyz.xenondevs.nova.util.item.ItemUtils
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import java.io.File
 
 object PulverizerRecipeDeserializer : ConversionRecipeDeserializer<PulverizerRecipe>() {
@@ -44,7 +44,7 @@ object FluidInfuserRecipeDeserializer : RecipeDeserializer<FluidInfuserRecipe> {
         val fluidAmount = json.getLong("fluid_amount")
         val input = parseRecipeChoice(json.get("input"))
         val time = json.getInt("time")
-        val result = ItemUtils.getItemBuilder(json.getString("result")).get()
+        val result = ItemUtils.getItemStack(json.getString("result"))
         
         return FluidInfuserRecipe(getRecipeId(file), mode, fluidType, fluidAmount, input, result, time)
     }

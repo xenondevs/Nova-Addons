@@ -32,3 +32,6 @@ build/
 # Logs
 logs/
 *.log
+
+# Kotlin
+.kotlin/

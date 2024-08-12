@@ -1,75 +1,67 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
-import org.bukkit.Location
-import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.joml.Quaternionf
+import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
+import xyz.xenondevs.commons.provider.immutable.map
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.addon.machines.registry.Blocks.WIND_TURBINE
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.machines.registry.Blocks
+import xyz.xenondevs.nova.addon.machines.registry.Models
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.resources.model.data.DisplayEntityBlockModelData
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.concurrent.CombinedBooleanFuture
-import xyz.xenondevs.nova.util.item.isReplaceable
+import xyz.xenondevs.nova.util.yaw
 import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.world.model.Model
 import xyz.xenondevs.nova.world.model.MovableMultiModel
-import xyz.xenondevs.nova.world.pos
-import java.util.concurrent.CompletableFuture
-import kotlin.math.abs
+import kotlin.math.roundToLong
 
-private val MAX_ENERGY = WIND_TURBINE.config.entry<Long>("capacity")
-private val ENERGY_PER_TICK = WIND_TURBINE.config.entry<Long>("energy_per_tick")
-private val PLAY_ANIMATION by WIND_TURBINE.config.entry<Boolean>("animation")
+private val BLOCKED_SIDES = enumSetOf(BlockSide.LEFT, BlockSide.RIGHT, BlockSide.BACK, BlockSide.BOTTOM, BlockSide.TOP)
 
-class WindTurbine(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+private val MAX_ENERGY = Blocks.WIND_TURBINE.config.entry<Long>("capacity")
+private val ENERGY_PER_TICK = Blocks.WIND_TURBINE.config.entry<Long>("energy_per_tick")
+private val PLAY_ANIMATION by Blocks.WIND_TURBINE.config.entry<Boolean>("animation")
+
+class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    override val energyHolder = ProviderEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, upgradeHolder, UpgradeTypes.EFFICIENCY) {
-        createExclusiveSideConfig(NetworkConnectionType.EXTRACT, BlockSide.FRONT, BlockSide.BOTTOM)
-    }
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_SIDES)
     
     private val turbineModel = MovableMultiModel()
-    private val altitude = (location.y + abs(world.minHeight)) / (world.maxHeight - 1 + abs(world.minHeight))
-    private val rotationPerTick = altitude * 15
-    private var energyPerTick = 0
+    private val altitude = (pos.y - pos.world.minHeight) / (pos.world.maxHeight - pos.world.minHeight - 1).toDouble()
+    private val rotationPerTick = altitude * 15.0
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder).map { (it * altitude).roundToLong() }
     
-    init {
-        reload()
+    override fun handleEnable() {
+        super.handleEnable()
         spawnModels()
     }
     
-    override fun reload() {
-        super.reload()
-        energyPerTick = (altitude * energyHolder.energyGeneration).toInt()
-    }
-    
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
+    override fun handleDisable() {
+        super.handleDisable()
         turbineModel.close()
     }
     
     private fun spawnModels() {
-        val location = location.add(0.5, 3.5, 0.5)
+        val location = pos.location.add(0.5, 3.5, 0.5)
+        location.yaw = blockState.getOrThrow(DefaultBlockStateProperties.FACING).yaw
         
-        turbineModel.add(Model(
-            (block.model as DisplayEntityBlockModelData)[4].get(),
-            location
-        ))
-        
+        turbineModel.add(Model(Models.WIND_TURBINE_ROTOR_MIDDLE, location))
         for (blade in 0..2) {
             turbineModel.add(Model(
-                (block.model as DisplayEntityBlockModelData)[5].get(),
+                Models.WIND_TURBINE_ROTOR_BLADE,
                 location,
                 rightRotation = Quaternionf().setAngleAxis(
                     (Math.PI * 2 / 3 * blade).toFloat(),
@@ -83,35 +75,22 @@ class WindTurbine(blockState: NovaTileEntityState) : NetworkedTileEntity(blockSt
         energyHolder.energy += energyPerTick
     }
     
-    override fun handleAsyncTick() {
-        if (PLAY_ANIMATION) {
-            turbineModel.useMetadata {
-                it.leftRotation = it.leftRotation.rotateAxis(
-                    Math.toRadians(rotationPerTick).toFloat(),
-                    0f, 0f, 1f
-                )
+    override fun handleEnableTicking() {
+        if (!PLAY_ANIMATION)
+            return
+        
+        CoroutineScope(coroutineSupervisor).launch { 
+            while (true) {
+                turbineModel.useMetadata {
+                    it.leftRotation = it.leftRotation.rotateAxis(
+                        Math.toRadians(rotationPerTick).toFloat(),
+                        0f, 0f, 1f,
+                        Quaternionf()
+                    )
+                }
+                delay(50)
             }
         }
-    }
-    
-    companion object {
-        
-        fun canPlace(player: Player, item: ItemStack, location: Location): CompletableFuture<Boolean> {
-            return CombinedBooleanFuture(loadMultiBlock(location.pos).map {
-                if (!it.block.type.isReplaceable())
-                    return CompletableFuture.completedFuture(false)
-                
-                ProtectionManager.canPlace(player, item, it.location)
-            })
-        }
-        
-        fun loadMultiBlock(pos: BlockPos): List<BlockPos> =
-            listOf(
-                pos.copy(y = pos.y + 1),
-                pos.copy(y = pos.y + 2),
-                pos.copy(y = pos.y + 3)
-            )
-        
     }
     
     @TileEntityMenuClass

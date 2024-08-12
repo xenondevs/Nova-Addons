@@ -1,11 +1,11 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
 import net.minecraft.resources.ResourceLocation
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
-import xyz.xenondevs.commons.provider.mutable.map
+import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mutable.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -14,53 +14,54 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.gui.PressProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MECHANICAL_PRESS
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.recipe.ConversionNovaRecipe
-import xyz.xenondevs.nova.data.recipe.NovaRecipe
-import xyz.xenondevs.nova.data.recipe.RecipeManager
-import xyz.xenondevs.nova.data.recipe.RecipeType
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide.FRONT
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.util.playClickSound
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.item.recipe.ConversionNovaRecipe
+import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
+import xyz.xenondevs.nova.world.item.recipe.RecipeManager
+import xyz.xenondevs.nova.world.item.recipe.RecipeType
 import kotlin.math.max
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = MECHANICAL_PRESS.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = MECHANICAL_PRESS.config.entry<Long>("energy_per_tick")
-private val PRESS_SPEED by MECHANICAL_PRESS.config.entry<Int>("speed")
+private val PRESS_SPEED = MECHANICAL_PRESS.config.entry<Int>("speed")
 
 private enum class PressType(val recipeType: RecipeType<out ConversionNovaRecipe>) {
     PLATE(RecipeTypes.PLATE_PRESS),
     GEAR(RecipeTypes.GEAR_PRESS)
 }
 
-class MechanicalPress(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inputInv = getInventory("input", 1, ::handleInputUpdate)
-    private val outputInv = getInventory("output", 1, ::handleOutputUpdate)
-    
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, null, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT, FRONT) }
-    override val itemHolder = NovaItemHolder(
-        this,
-        inputInv to NetworkConnectionType.INSERT,
-        outputInv to NetworkConnectionType.EXTRACT
-    ) { createSideConfig(NetworkConnectionType.BUFFER, FRONT) }
+    private val inputInv = storedInventory("input", 1, ::handleInputUpdate)
+    private val outputInv = storedInventory("output", 1, ::handleOutputUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inputInv to INSERT, outputInv to EXTRACT, blockedSides = BLOCKED_SIDES)
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val pressSpeed by speedMultipliedValue(PRESS_SPEED, upgradeHolder)
     
     private var type by storedValue("pressType") { PressType.PLATE }
     private var timeLeft by storedValue("pressTime") { 0 }
-    private var pressSpeed = 0
     
     private var currentRecipe: ConversionNovaRecipe? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
         { RecipeManager.getRecipe(type.recipeType, it) },
@@ -68,21 +69,17 @@ class MechanicalPress(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
     )
     
     init {
-        reload()
-        if (currentRecipe == null) timeLeft = 0
-    }
-    
-    override fun reload() {
-        super.reload()
-        pressSpeed = (PRESS_SPEED * upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
+        if (currentRecipe == null)
+            timeLeft = 0
     }
     
     override fun handleTick() {
-        if (energyHolder.energy >= energyHolder.energyConsumption) {
-            if (timeLeft == 0) takeItem()
+        if (energyHolder.energy >= energyPerTick) {
+            if (timeLeft == 0)
+                takeItem()
             if (timeLeft != 0) { // is pressing
                 timeLeft = max(timeLeft - pressSpeed, 0)
-                energyHolder.energy -= energyHolder.energyConsumption
+                energyHolder.energy -= energyPerTick
                 
                 if (timeLeft == 0) {
                     outputInv.putItem(SELF_UPDATE_REASON, 0, currentRecipe!!.result)
@@ -133,7 +130,7 @@ class MechanicalPress(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
         
         private val sideConfigGui = SideConfigMenu(
             this@MechanicalPress,
-            listOf(
+            mapOf(
                 itemHolder.getNetworkedInventory(inputInv) to "inventory.nova.input",
                 itemHolder.getNetworkedInventory(outputInv) to "inventory.nova.output",
             ),
@@ -170,17 +167,17 @@ class MechanicalPress(blockState: NovaTileEntityState) : NetworkedTileEntity(blo
             
             override fun getItemProvider(): ItemProvider {
                 return if (type == PressType.PLATE) {
-                    if (this@MechanicalPress.type == PressType.PLATE) GuiMaterials.PLATE_BTN_OFF.clientsideProvider
-                    else GuiMaterials.PLATE_BTN_ON.clientsideProvider
+                    if (this@MechanicalPress.type == PressType.PLATE) GuiItems.PLATE_BTN_OFF.model.clientsideProvider
+                    else GuiItems.PLATE_BTN_ON.model.clientsideProvider
                 } else {
-                    if (this@MechanicalPress.type == PressType.GEAR) GuiMaterials.GEAR_BTN_OFF.clientsideProvider
-                    else GuiMaterials.GEAR_BTN_ON.clientsideProvider
+                    if (this@MechanicalPress.type == PressType.GEAR) GuiItems.GEAR_BTN_OFF.model.clientsideProvider
+                    else GuiItems.GEAR_BTN_ON.model.clientsideProvider
                 }
             }
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 if (this@MechanicalPress.type != type) {
-                    player.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+                    player.playClickSound()
                     this@MechanicalPress.type = type
                     pressTypeItems.forEach(Item::notifyWindows)
                 }

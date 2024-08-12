@@ -7,13 +7,13 @@ import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.CobblestoneGenerator
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.Freezer
-import xyz.xenondevs.nova.data.recipe.NovaRecipe
-import xyz.xenondevs.nova.data.recipe.RecipeRegistry
-import xyz.xenondevs.nova.data.recipe.SingleResultRecipe
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.util.ResourceLocation
+import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
+import xyz.xenondevs.nova.world.item.recipe.RecipeRegistry
+import xyz.xenondevs.nova.world.item.recipe.SingleResultRecipe
 
 @Init(stage = InitStage.POST_PACK_PRE_WORLD)
 object HardcodedRecipes {

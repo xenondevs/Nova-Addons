@@ -10,6 +10,7 @@ knockback_bonus: 3
 range: 1
 depth: 1
 hardness_tolerance: 0
+slowdown_per_block: 0.2
 
 # Damageable Options
 durability: 1500
@@ -19,4 +20,10 @@ repair_ingredient: "minecraft:slime_ball"
 
 # Enchantable Options
 enchantment_value: 20
-enchantment_categories: ["vanilla_hammers:hammer", "minecraft:digger", "minecraft:breakable"]
+supported_enchantments:
+  - "vanilla_hammers:curse_of_gigantism"
+  - "minecraft:efficiency"
+  - "minecraft:silk_touch"
+  - "minecraft:fortune"
+  - "minecraft:unbreaking"
+  - "minecraft:mending"

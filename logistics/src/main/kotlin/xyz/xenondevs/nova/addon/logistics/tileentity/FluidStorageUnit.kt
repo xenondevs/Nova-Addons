@@ -1,60 +1,62 @@
 package xyz.xenondevs.nova.addon.logistics.tileentity
 
-import net.minecraft.util.Brightness
-import net.minecraft.world.item.ItemDisplayContext
 import org.bukkit.Material
+import org.bukkit.entity.Display
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
+import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks.FLUID_STORAGE_UNIT
-import xyz.xenondevs.nova.addon.logistics.registry.Items
-import xyz.xenondevs.nova.data.config.Reloadable
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.NovaFluidHolder
-import xyz.xenondevs.nova.ui.FluidBar
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.nmsCopy
+import xyz.xenondevs.nova.addon.logistics.registry.Models
+import xyz.xenondevs.nova.ui.menu.FluidBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.world.fakeentity.impl.FakeItemDisplay
 
 private val MAX_CAPACITY = FLUID_STORAGE_UNIT.config.entry<Long>("max_capacity")
 
-class FluidStorageUnit(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Reloadable {
+class FluidStorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, state, data) {
     
-    private val fluidTank = getFluidContainer("fluid", setOf(FluidType.LAVA, FluidType.WATER), MAX_CAPACITY, 0, ::handleFluidUpdate)
-    private val fluidLevel = FakeItemDisplay(location.add(.5, .5, .5)) { _, data -> data.itemDisplay = ItemDisplayContext.HEAD }
-    override val fluidHolder = NovaFluidHolder(this, fluidTank to NetworkConnectionType.BUFFER) { createSideConfig(NetworkConnectionType.BUFFER) }
-    
-    init {
-        handleFluidUpdate()
-    }
+    private val fluidTank = storedFluidContainer("fluid", setOf(FluidType.LAVA, FluidType.WATER), MAX_CAPACITY, true, ::handleFluidUpdate)
+    private val fluidLevel = FakeItemDisplay(pos.location.add(.5, .5, .5), false)
+    private val fluidHolder = storedFluidHolder(fluidTank to NetworkConnectionType.BUFFER)
     
     private fun handleFluidUpdate() {
-        val stack = if (fluidTank.hasFluid()) {
-            when (fluidTank.type) {
-                FluidType.LAVA -> Items.TANK_LAVA_LEVELS
-                FluidType.WATER -> Items.TANK_WATER_LEVELS
-                else -> throw IllegalStateException()
-            }.clientsideProviders[10].get()
-        } else null
-        
         fluidLevel.updateEntityData(true) {
-            brightness = if (fluidTank.type == FluidType.LAVA) Brightness.FULL_BRIGHT else null
-            itemStack = stack.nmsCopy
+            brightness = if (fluidTank.type == FluidType.LAVA)
+                Display.Brightness(15, 15)
+            else null
+            
+            itemStack = if (!fluidTank.isEmpty()) {
+                when (fluidTank.type) {
+                    FluidType.LAVA -> Models.TANK_LAVA_LEVELS
+                    FluidType.WATER -> Models.TANK_WATER_LEVELS
+                    else -> throw IllegalStateException()
+                }.model.unnamedClientsideProviders[10].get()
+            } else null
         }
     }
     
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
+    override fun handleEnable() {
+        super.handleEnable()
+        
+        fluidLevel.register()
+        handleFluidUpdate()
+    }
+    
+    override fun handleDisable() {
+        super.handleDisable()
+        
         fluidLevel.remove()
     }
     
@@ -63,8 +65,8 @@ class FluidStorageUnit(blockState: NovaTileEntityState) : NetworkedTileEntity(bl
         
         private val SideConfigMenu = SideConfigMenu(
             this@FluidStorageUnit,
-            fluidContainerNames = listOf(fluidTank to "container.nova.fluid_tank"),
-            openPrevious = ::openWindow
+            mapOf(fluidTank to "container.nova.fluid_tank"),
+            ::openWindow
         )
         
         override val gui = Gui.normal()
@@ -82,7 +84,7 @@ class FluidStorageUnit(blockState: NovaTileEntityState) : NetworkedTileEntity(bl
         private inner class FluidStorageUnitDisplay : AbstractItem() {
             
             init {
-                fluidTank.updateHandlers += { notifyWindows() }
+                fluidTank.addUpdateHandler { notifyWindows() }
             }
             
             override fun getItemProvider(): ItemProvider {

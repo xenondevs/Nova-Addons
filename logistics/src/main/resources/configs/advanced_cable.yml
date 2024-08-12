@@ -2,5 +2,5 @@
 energy_transfer_rate: 2000
 # The maximum amount of mB that can be transferred per tick.
 fluid_transfer_rate: 400
-# The maximum amount of items that can ben transferred per second.
-item_transfer_rate: 16
+# The maximum amount of items that can ben transferred per tick.
+item_transfer_rate: 0.8

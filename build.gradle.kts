@@ -1,10 +1,8 @@
-
 import org.gradle.configurationcache.extensions.capitalized
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "xyz.xenondevs.nova.addon"
-
-val mojangMapped = project.hasProperty("mojang-mapped")
 
 plugins {
     alias(libs.plugins.paperweight)
@@ -48,8 +46,8 @@ subprojects {
     
     tasks {
         withType<KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = "17"
+            compilerOptions {
+                jvmTarget = JvmTarget.JVM_21
             }
         }
         
@@ -63,16 +61,18 @@ subprojects {
         val outDir = (project.findProperty("outDir") as? String)?.let(::File) ?: buildDir
         register<Copy>("addonJar") {
             group = "build"
-            if (mojangMapped) {
-                dependsOn("jar")
-                from(File(buildDir, "libs/${project.name}-${project.version}-dev.jar"))
-            } else {
-                dependsOn("reobfJar")
-                from(File(buildDir, "libs/${project.name}-${project.version}.jar"))
-            }
+            dependsOn("jar")
             
+            from(File(buildDir, "libs/${project.name}-${project.version}.jar"))
             into(outDir)
             rename { "${addonMetadata.get().addonName.get()}-${project.version}.jar" }
+        }
+    }
+    
+    afterEvaluate {
+        // remove "dev" classifier set by paperweight-userdev
+        tasks.getByName<Jar>("jar") {
+            archiveClassifier = ""
         }
     }
 }

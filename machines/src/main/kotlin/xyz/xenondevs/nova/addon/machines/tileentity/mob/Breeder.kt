@@ -1,134 +1,120 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
+import net.minecraft.world.InteractionHand
+import org.bukkit.Tag
 import org.bukkit.entity.Animals
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
+import xyz.xenondevs.commons.provider.mutable.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BREEDER
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.item.DefaultGuiItems
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.VerticalBar
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.getSurroundingChunks
-import xyz.xenondevs.nova.util.item.FoodUtils
-import xyz.xenondevs.nova.util.item.canBredNow
-import xyz.xenondevs.nova.util.item.genericMaxHealth
+import xyz.xenondevs.nova.util.nmsEntity
+import xyz.xenondevs.nova.util.unwrap
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 import kotlin.math.min
+
+private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
 
 private val MAX_ENERGY = BREEDER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = BREEDER.config.entry<Long>("energy_per_tick")
 private val ENERGY_PER_BREED = BREEDER.config.entry<Long>("energy_per_breed")
-private val IDLE_TIME by BREEDER.config.entry<Int>("idle_time")
+private val IDLE_TIME = BREEDER.config.entry<Int>("idle_time")
 private val BREED_LIMIT by BREEDER.config.entry<Int>("breed_limit")
 private val MIN_RANGE = BREEDER.config.entry<Int>("range", "min")
 private val MAX_RANGE = BREEDER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by BREEDER.config.entry<Int>("range", "default")
 
-class Breeder(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+private val FOOD_MATERIALS = setOf(
+    Tag.ITEMS_PIGLIN_FOOD, Tag.ITEMS_FOX_FOOD, Tag.ITEMS_COW_FOOD, Tag.ITEMS_GOAT_FOOD, Tag.ITEMS_SHEEP_FOOD,
+    Tag.ITEMS_WOLF_FOOD, Tag.ITEMS_CAT_FOOD, Tag.ITEMS_HORSE_FOOD, Tag.ITEMS_CAMEL_FOOD, Tag.ITEMS_ARMADILLO_FOOD,
+    Tag.ITEMS_BEE_FOOD, Tag.ITEMS_CHICKEN_FOOD, Tag.ITEMS_FROG_FOOD, Tag.ITEMS_HOGLIN_FOOD, Tag.ITEMS_LLAMA_FOOD, Tag.ITEMS_OCELOT_FOOD,
+    Tag.ITEMS_PANDA_FOOD, Tag.ITEMS_PIG_FOOD, Tag.ITEMS_RABBIT_FOOD, Tag.ITEMS_STRIDER_FOOD, Tag.ITEMS_TURTLE_FOOD, Tag.ITEMS_PARROT_FOOD,
+    Tag.ITEMS_PARROT_POISONOUS_FOOD, Tag.ITEMS_AXOLOTL_FOOD
+).flatMapTo(HashSet()) { it.values }
+
+class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inventory = getInventory("inventory", 9, ::handleInventoryUpdate)
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
-    override val energyHolder = ConsumerEnergyHolder(this, MAX_ENERGY, ENERGY_PER_TICK, ENERGY_PER_BREED, upgradeHolder) { createSideConfig(NetworkConnectionType.INSERT) }
-    override val itemHolder = NovaItemHolder(this, inventory to NetworkConnectionType.INSERT) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
+    private val inventory = storedInventory("inventory", 9, ::handleInventoryUpdate)
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
+    private val itemHolder = storedItemHolder(inventory to INSERT, blockedSides = BLOCKED_SIDES)
+    private val fakePlayer = EntityUtils.createFakePlayer(pos.location)
     
-    private val region = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE) { getBlockFrontRegion(it, it, 4, -1) }
-    
-    private var timePassed = 0
-    private var maxIdleTime = 0
-    
-    init {
-        reload()
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
+        val size = 1 + it * 2
+        Region.inFrontOf(this, size, size, 4, -1)
     }
     
-    override fun reload() {
-        super.reload()
-        
-        maxIdleTime = (IDLE_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
-        if (timePassed > maxIdleTime) timePassed = maxIdleTime
+    private val energyPerTick by speedMultipliedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerBreed by speedMultipliedValue(ENERGY_PER_BREED, upgradeHolder)
+    private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
+    private val mxIdleTime by maxIdleTimeProvider
+    
+    private val idleTimeProvider = mutableProvider(0)
+    private var idleTime by idleTimeProvider
+    
+    override fun handleDisable() {
+        super.handleDisable()
+        VisualRegion.removeRegion(uuid)
     }
     
     override fun handleTick() {
-        if (energyHolder.energy >= energyHolder.energyConsumption) {
-            energyHolder.energy -= energyHolder.energyConsumption
+        if (energyHolder.energy >= energyPerTick) {
+            energyHolder.energy -= energyPerTick
             
-            if (timePassed++ >= maxIdleTime) {
-                timePassed = 0
+            if (idleTime++ >= mxIdleTime) {
+                idleTime = 0
                 
-                val breedableEntities =
-                    location
-                        .chunk
-                        .getSurroundingChunks(1, includeCurrent = true, ignoreUnloaded = true)
-                        .flatMap { it.entities.asList() }
-                        .filterIsInstance<Animals>()
-                        .filter { it.canBredNow && it.location in region }
+                val breedableEntities = pos.location.chunk
+                    .getSurroundingChunks(1, includeCurrent = true, ignoreUnloaded = true)
+                    .flatMap { it.entities.asList() }
+                    .filterIsInstance<Animals>()
+                // TODO: protection check?
                 
-                var breedsLeft = min((energyHolder.energy / energyHolder.specialEnergyConsumption).toInt(), BREED_LIMIT)
+                var breedsLeft = min((energyHolder.energy / energyPerBreed).toInt(), BREED_LIMIT)
                 for (animal in breedableEntities) {
-                    val success = if (FoodUtils.requiresHealing(animal)) tryHeal(animal)
-                    else tryBreed(animal)
+                    val success = interact(animal)
                     
                     if (success) {
                         breedsLeft--
-                        energyHolder.energy -= energyHolder.specialEnergyConsumption
+                        energyHolder.energy -= energyPerBreed
                         if (breedsLeft == 0) break
                     }
                 }
             }
         }
-        
-        menuContainer.forEachMenu<BreederMenu> { it.idleBar.percentage = timePassed / maxIdleTime.toDouble() }
     }
     
-    private fun tryHeal(animal: Animals): Boolean {
+    private fun interact(animal: Animals): Boolean {
         for ((index, item) in inventory.items.withIndex()) {
             if (item == null) continue
             
-            val healAmount = FoodUtils.getHealAmount(animal, item.type)
-            if (healAmount > 0) {
-                animal.health = min(animal.health + healAmount, animal.genericMaxHealth)
+            fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, item.unwrap())
+            val result = animal.nmsEntity.interact(fakePlayer, InteractionHand.MAIN_HAND)
+            if (result.consumesAction()) {
                 inventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
-                
-                val remains = FoodUtils.getItemRemains(item.type)
-                if (remains != null)
-                    inventory.setItem(SELF_UPDATE_REASON, index, ItemStack(remains))
-                
-                return true
-            }
-        }
-        
-        return false
-    }
-    
-    private fun tryBreed(animal: Animals): Boolean {
-        for ((index, item) in inventory.items.withIndex()) {
-            if (item == null) continue
-            
-            if (FoodUtils.canUseBreedFood(animal, item.type)) {
-                animal.loveModeTicks = 600
-                inventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
-                
-                val remains = FoodUtils.getItemRemains(item.type)
-                if (remains != null)
-                    inventory.setItem(SELF_UPDATE_REASON, index, ItemStack(remains))
-                
                 return true
             }
         }
@@ -137,13 +123,8 @@ class Breeder(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
-        if (event.updateReason != SELF_UPDATE_REASON && !event.isRemove && !FoodUtils.isFood(event.newItem!!.type))
+        if (event.updateReason != SELF_UPDATE_REASON && !event.isRemove && event.newItem!!.type !in FOOD_MATERIALS)
             event.isCancelled = true
-    }
-    
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
-        VisualRegion.removeRegion(uuid)
     }
     
     @TileEntityMenuClass
@@ -151,19 +132,9 @@ class Breeder(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
         
         private val sideConfigGui = SideConfigMenu(
             this@Breeder,
-            listOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
+            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
             ::openWindow
         )
-        
-        val idleBar = object : VerticalBar(3) {
-            override val barItem = DefaultGuiItems.BAR_GREEN
-            override fun modifyItemBuilder(itemBuilder: ItemBuilder) =
-                itemBuilder.setDisplayName(Component.translatable(
-                    "menu.machines.breeder.idle",
-                    NamedTextColor.GRAY,
-                    Component.text(maxIdleTime - timePassed)
-                ))
-        }
         
         override val gui = Gui.normal()
             .setStructure(
@@ -180,7 +151,7 @@ class Breeder(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)
             .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('b', idleBar)
+            .addIngredient('b', IdleBar(3, "menu.machines.breeder.idle", idleTimeProvider, maxIdleTimeProvider))
             .build()
         
     }

@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.Registry
+import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -13,6 +15,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -26,84 +29,79 @@ import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.gui.BrewProgressItem
 import xyz.xenondevs.nova.addon.machines.recipe.ElectricBrewingStandRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.ELECTRIC_BREWING_STAND
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.recipe.RecipeManager
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.NovaFluidHolder
-import xyz.xenondevs.nova.tileentity.network.item.holder.NovaItemHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.FluidBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.FluidBar
+import xyz.xenondevs.nova.ui.menu.addIngredient
+import xyz.xenondevs.nova.ui.menu.item.ScrollDownItem
+import xyz.xenondevs.nova.ui.menu.item.ScrollUpItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.util.data.MutableLazy
 import xyz.xenondevs.nova.util.item.ItemUtils
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
+import xyz.xenondevs.nova.world.item.recipe.RecipeManager
 import java.awt.Color
-import kotlin.math.roundToInt
+
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
 
 private val ENERGY_CAPACITY = ELECTRIC_BREWING_STAND.config.entry<Long>("energy_capacity")
 private val ENERGY_PER_TICK = ELECTRIC_BREWING_STAND.config.entry<Long>("energy_per_tick")
 private val FLUID_CAPACITY = ELECTRIC_BREWING_STAND.config.entry<Long>("fluid_capacity")
-private val BREW_TIME by ELECTRIC_BREWING_STAND.config.entry<Int>("brew_time")
+private val BREW_TIME = ELECTRIC_BREWING_STAND.config.entry<Int>("brew_time")
 
 private val IGNORE_UPDATE_REASON = object : UpdateReason {}
 
-class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
-    private val fluidTank = getFluidContainer("tank", setOf(FluidType.WATER), FLUID_CAPACITY, upgradeHolder = upgradeHolder)
-    private val ingredientsInventory = getInventory("ingredients", 27, null, ::handleIngredientsInventoryAfterUpdate)
-    private val outputInventory = getInventory("output", 3, ::handleOutputPreUpdate) { checkBrewingPossibility() }
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
+    private val fluidTank = storedFluidContainer("tank", setOf(FluidType.WATER), FLUID_CAPACITY, upgradeHolder)
+    private val ingredientsInventory = storedInventory("ingredients", 27, null, ::handleIngredientsInventoryAfterUpdate)
+    private val outputInventory = storedInventory("output", 3, ::handleOutputPreUpdate) { checkBrewingPossibility() }
     
-    override val energyHolder = ConsumerEnergyHolder(
-        this, ENERGY_CAPACITY, ENERGY_PER_TICK, null, upgradeHolder
-    ) { createSideConfig(NetworkConnectionType.INSERT, BlockSide.FRONT) }
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, INSERT, BLOCKED_FACES)
+    private val itemHolder = storedItemHolder(ingredientsInventory to INSERT, outputInventory to EXTRACT, blockedFaces = BLOCKED_FACES)
+    private val fluidHolder = storedFluidHolder(fluidTank to INSERT, blockedFaces = BLOCKED_FACES)
     
-    override val itemHolder = NovaItemHolder(
-        this,
-        ingredientsInventory to NetworkConnectionType.INSERT,
-        outputInventory to NetworkConnectionType.EXTRACT
-    ) { createSideConfig(NetworkConnectionType.BUFFER) }
-    
-    override val fluidHolder = NovaFluidHolder(
-        this,
-        fluidTank to NetworkConnectionType.BUFFER
-    ) { createSideConfig(NetworkConnectionType.INSERT) }
-    
-    private var maxBrewTime = 0
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val maxBrewTime by maxIdleTime(BREW_TIME, upgradeHolder)
     private var timePassed = 0
     
     private var color = retrieveData("potionColor") { Color(0, 0, 0) }
     private var potionType = retrieveData("potionType") { PotionBuilder.PotionType.NORMAL }
-    private lateinit var potionEffects: List<PotionEffectBuilder>
+    private var potionEffects: List<PotionEffectBuilder> by MutableLazy {
+        val potionEffects = ArrayList<PotionEffectBuilder>()
+        retrieveDataOrNull<List<Compound>>("potionEffects")?.forEach { potionCompound ->
+            val type = Registry.POTION_EFFECT_TYPE.get(potionCompound.get<NamespacedKey>("type")!!)
+            val duration: Int = potionCompound["duration"]!!
+            val amplifier: Int = potionCompound["amplifier"]!!
+            potionEffects += PotionEffectBuilder(type, duration, amplifier)
+        }
+        potionEffects
+    }
     private var requiredItems: List<ItemStack>? = null
     private var requiredItemsStatus: MutableMap<ItemStack, Boolean>? = null
     private var nextPotion: ItemStack? = null
     
-    init {
-        val potionEffects = ArrayList<PotionEffectBuilder>()
-        
-        retrieveDataOrNull<List<Compound>>("potionEffects")?.forEach { potionCompound ->
-            val type = PotionEffectType.getByKey(potionCompound.get<NamespacedKey>("type"))!!
-            val duration: Int = potionCompound["duration"]!!
-            val amplifier: Int = potionCompound["amplifier"]!!
-            
-            potionEffects += PotionEffectBuilder(type, duration, amplifier)
-        }
-        
+    override fun handleEnable() {
+        super.handleEnable()
         updatePotionData(potionType, potionEffects, color)
-        reload()
     }
     
     override fun saveData() {
@@ -122,10 +120,6 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
         storeData("potionColor", color)
     }
     
-    override fun reload() {
-        super.reload()
-        maxBrewTime = (BREW_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).roundToInt()
-    }
     
     private fun updatePotionData(type: PotionBuilder.PotionType, effects: List<PotionEffectBuilder>, color: Color) {
         this.potionEffects = effects.map(PotionEffectBuilder::clone)
@@ -230,8 +224,8 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
     }
     
     override fun handleTick() {
-        if (nextPotion != null && energyHolder.energy >= energyHolder.energyConsumption && fluidTank.amount >= 1000) {
-            energyHolder.energy -= energyHolder.energyConsumption
+        if (nextPotion != null && energyHolder.energy >= energyPerTick && fluidTank.amount >= 1000) {
+            energyHolder.energy -= energyPerTick
             
             if (++timePassed >= maxBrewTime) {
                 outputInventory.addItem(SELF_UPDATE_REASON, nextPotion!!)
@@ -252,12 +246,16 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
     
     // These values need to be accessed from outside the class
     companion object {
-        @Suppress("UNCHECKED_CAST")
-        val AVAILABLE_POTION_EFFECTS: Map<PotionEffectType, ElectricBrewingStandRecipe> =
-            (RecipeManager.novaRecipes[RecipeTypes.ELECTRIC_BREWING_STAND]?.values as Iterable<ElectricBrewingStandRecipe>?)
-                ?.associateBy { it.result } ?: emptyMap()
+        
+        val AVAILABLE_POTION_EFFECTS: Map<PotionEffectType, ElectricBrewingStandRecipe> by lazy {
+            RecipeManager.novaRecipes[RecipeTypes.ELECTRIC_BREWING_STAND]?.values
+                ?.filterIsInstance<ElectricBrewingStandRecipe>()
+                ?.associateBy { it.result }
+                ?: emptyMap()
+        }
         
         val ALLOW_DURATION_AMPLIFIER_MIXING by ELECTRIC_BREWING_STAND.config.entry<Boolean>("duration_amplifier_mixing")
+        
     }
     
     @TileEntityMenuClass
@@ -265,11 +263,11 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
         
         private val sideConfigGui = SideConfigMenu(
             this@ElectricBrewingStand,
-            listOf(
+            mapOf(
                 itemHolder.getNetworkedInventory(ingredientsInventory) to "inventory.machines.ingredients",
                 itemHolder.getNetworkedInventory(outputInventory) to "inventory.nova.output",
             ),
-            listOf(fluidTank to "container.nova.fluid_tank"),
+            mapOf(fluidTank to "container.nova.fluid_tank"),
             ::openWindow
         )
         
@@ -286,13 +284,15 @@ class ElectricBrewingStand(blockState: NovaTileEntityState) : NetworkedTileEntit
                 ". o . o . . . f e",
                 ". . o . . . . f e")
             .addContent(ingredientsInventory)
+            .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.model.clientsideProvider))
+            .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.model.clientsideProvider))
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('U', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(4, energyHolder))
             .addIngredient('f', FluidBar(4, fluidHolder, fluidTank))
             .addIngredient('i', ingredientsDisplay)
             .addIngredient('p', configurePotionItem)
-            .addIngredient('o', outputInventory, GuiMaterials.BOTTLE_PLACEHOLDER.clientsideProvider)
+            .addIngredient('o', outputInventory, GuiItems.BOTTLE_PLACEHOLDER)
             .addIngredient('^', progressItem)
             .build()
         

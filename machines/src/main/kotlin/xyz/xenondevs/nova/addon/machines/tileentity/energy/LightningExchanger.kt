@@ -6,50 +6,42 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.weather.LightningStrikeEvent
 import org.bukkit.event.weather.LightningStrikeEvent.Cause
+import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.LIGHTNING_EXCHANGER
-import xyz.xenondevs.nova.addon.simpleupgrades.ProviderEnergyHolder
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.TileEntityManager
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.registerEvents
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
+import xyz.xenondevs.nova.world.format.WorldDataManager
+import xyz.xenondevs.nova.world.pos
 import kotlin.math.min
 import kotlin.random.Random
 
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+
 private val MAX_ENERGY = LIGHTNING_EXCHANGER.config.entry<Long>("capacity")
 private val CONVERSION_RATE by LIGHTNING_EXCHANGER.config.entry<Long>("conversion_rate")
-private val MIN_BURST by LIGHTNING_EXCHANGER.config.entry<Long>("burst", "min")
-private val MAX_BURST by LIGHTNING_EXCHANGER.config.entry<Long>("burst", "max")
+private val MIN_BURST = LIGHTNING_EXCHANGER.config.entry<Long>("burst", "min")
+private val MAX_BURST = LIGHTNING_EXCHANGER.config.entry<Long>("burst", "max")
 
-class LightningExchanger(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class LightningExchanger(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
-    override val energyHolder = ProviderEnergyHolder(this, MAX_ENERGY, upgradeHolder) {
-        createExclusiveSideConfig(NetworkConnectionType.EXTRACT, BlockSide.BOTTOM)
-    }
-    
-    private var minBurst = 0L
-    private var maxBurst = 0L
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
+    private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_FACES)
+    private val minBurst by efficiencyDividedValue(MIN_BURST, upgradeHolder)
+    private val maxBurst by efficiencyDividedValue(MAX_BURST, upgradeHolder)
     private var toCharge = 0L
-    
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        minBurst = (MIN_BURST * upgradeHolder.getValue(UpgradeTypes.EFFICIENCY)).toLong()
-        maxBurst = (MAX_BURST * upgradeHolder.getValue(UpgradeTypes.EFFICIENCY)).toLong()
-    }
     
     override fun handleTick() {
         val charge = min(CONVERSION_RATE, toCharge)
@@ -89,11 +81,13 @@ class LightningExchanger(blockState: NovaTileEntityState) : NetworkedTileEntity(
             val struckBlock = event.lightning.location.advance(BlockFace.DOWN).block
             if (event.cause != Cause.WEATHER || struckBlock.type != Material.LIGHTNING_ROD)
                 return
-            val tile = TileEntityManager.getTileEntity(struckBlock.location.advance(BlockFace.DOWN), false)
-            if (tile !is LightningExchanger)
-                return
-            tile.addEnergyBurst()
             
+            val tileEntity = WorldDataManager.getTileEntity(struckBlock.pos.advance(BlockFace.DOWN))
+            if (tileEntity is LightningExchanger) {
+                tileEntity.addEnergyBurst()
+            }
         }
+        
     }
+    
 }

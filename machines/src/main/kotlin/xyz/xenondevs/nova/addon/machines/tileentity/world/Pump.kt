@@ -1,90 +1,94 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import kotlinx.coroutines.runBlocking
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
+import xyz.xenondevs.cbf.Compound
+import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.collections.rotateRight
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PUMP
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
-import xyz.xenondevs.nova.addon.simpleupgrades.ConsumerEnergyHolder
-import xyz.xenondevs.nova.addon.simpleupgrades.getFluidContainer
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.isSourceFluid
+import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
+import xyz.xenondevs.nova.addon.machines.util.sourceFluidType
+import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.data.config.entry
-import xyz.xenondevs.nova.data.world.block.state.NovaTileEntityState
+import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
+import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
+import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
+import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.tileentity.menu.TileEntityMenuClass
-import xyz.xenondevs.nova.tileentity.network.NetworkConnectionType
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.tileentity.network.fluid.holder.NovaFluidHolder
-import xyz.xenondevs.nova.tileentity.upgrade.Upgradable
-import xyz.xenondevs.nova.ui.EnergyBar
-import xyz.xenondevs.nova.ui.FluidBar
-import xyz.xenondevs.nova.ui.OpenUpgradesItem
-import xyz.xenondevs.nova.ui.config.side.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.config.side.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.ui.menu.EnergyBar
+import xyz.xenondevs.nova.ui.menu.FluidBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.HORIZONTAL_FACES
 import xyz.xenondevs.nova.util.VERTICAL_FACES
 import xyz.xenondevs.nova.util.advance
-import xyz.xenondevs.nova.util.isSourceFluid
 import xyz.xenondevs.nova.util.item.playPlaceSoundEffect
-import xyz.xenondevs.nova.util.sourceFluidType
+import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
+import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.world.pos
 import xyz.xenondevs.nova.world.region.Region
 import xyz.xenondevs.nova.world.region.VisualRegion
 import java.util.*
+
+private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.DOWN)
 
 private val ENERGY_CAPACITY = PUMP.config.entry<Long>("energy_capacity")
 private val ENERGY_PER_TICK = PUMP.config.entry<Long>("energy_per_tick")
 private val FLUID_CAPACITY = PUMP.config.entry<Long>("fluid_capacity")
 private val REPLACEMENT_BLOCK by PUMP.config.entry<Material>("replacement_block")
-private val IDLE_TIME by PUMP.config.entry<Long>("idle_time")
+private val IDLE_TIME = PUMP.config.entry<Int>("idle_time")
 
 private val MIN_RANGE = PUMP.config.entry<Int>("range", "min")
 private val MAX_RANGE = PUMP.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by PUMP.config.entry<Int>("range", "default")
 
-class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), Upgradable {
+class Pump(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    override val upgradeHolder = getUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE, UpgradeTypes.FLUID)
-    private val fluidTank = getFluidContainer("tank", hashSetOf(FluidType.WATER, FluidType.LAVA), FLUID_CAPACITY, upgradeHolder = upgradeHolder)
-    override val energyHolder = ConsumerEnergyHolder(this, ENERGY_CAPACITY, ENERGY_PER_TICK, upgradeHolder = upgradeHolder) { createExclusiveSideConfig(NetworkConnectionType.INSERT, BlockSide.TOP) }
-    override val fluidHolder = NovaFluidHolder(this, fluidTank to NetworkConnectionType.EXTRACT) { createExclusiveSideConfig(NetworkConnectionType.EXTRACT, BlockSide.TOP) }
+    private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE, UpgradeTypes.FLUID)
+    private val fluidTank = storedFluidContainer("tank", setOf(FluidType.WATER, FluidType.LAVA), FLUID_CAPACITY, upgradeHolder)
+    private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, NetworkConnectionType.INSERT, BLOCKED_FACES)
+    private val fluidHolder = storedFluidHolder(fluidTank to NetworkConnectionType.EXTRACT, blockedFaces = BLOCKED_FACES)
+    
+    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     
     private var mode = retrieveData("mode") { PumpMode.REPLACE }
-    private val region = getUpgradableRegion(UpgradeTypes.RANGE, MIN_RANGE, MAX_RANGE, DEFAULT_RANGE) {
+    private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
         idleTime = maxIdleTime // resets idle time for the case that the pump has already finished
         
         val range = it.toDouble()
-        val min = location.clone().subtract(range - 1, range, range - 1)
-        val max = location.clone().add(range, 0.0, range)
+        val min = pos.location.subtract(range - 1, range, range - 1)
+        val max = pos.location.add(range, 0.0, range)
         Region(min, max)
     }
     
-    private var maxIdleTime = 0
     private var idleTime = 0
     
     private var lastBlock: Block? = null
     private var sortedFaces = LinkedList(HORIZONTAL_FACES)
     
-    init {
-        reload()
-    }
-    
-    override fun reload() {
-        super.reload()
-        
-        maxIdleTime = (IDLE_TIME / upgradeHolder.getValue(UpgradeTypes.SPEED)).toInt()
-        if (idleTime > maxIdleTime) idleTime = maxIdleTime
+    override fun handleDisable() {
+        super.handleDisable()
+        VisualRegion.removeRegion(uuid)
     }
     
     override fun handleTick() {
-        if (energyHolder.energy >= energyHolder.energyConsumption && fluidTank.accepts(FluidType.WATER, 1000)) {
+        if (energyHolder.energy >= energyPerTick && fluidTank.accepts(FluidType.WATER, 1000)) {
             if (--idleTime <= 0)
                 pumpNextBlock()
         }
@@ -101,11 +105,11 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
             }
             fluidTank.addFluid(type, 1000)
             lastBlock = block
-            energyHolder.energy -= energyHolder.energyConsumption
+            energyHolder.energy -= energyPerTick
             idleTime = maxIdleTime
         } else {
             lastBlock = null
-            idleTime = 60 * 20 // ByteZ' Idee
+            idleTime = 60 * 20
         }
     }
     
@@ -134,7 +138,7 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
             val newBlock = location.clone().advance(face, 1.0).block
             
             val fluidType = newBlock.sourceFluidType ?: continue
-            if (fluidTank.accepts(fluidType) && newBlock in region && ProtectionManager.canBreak(this, null, newBlock.location).get()) {
+            if (fluidTank.accepts(fluidType) && newBlock in region && runBlocking { ProtectionManager.canBreak(this@Pump, null, newBlock.pos) }) { // TODO: non-blocking
                 if (face !in VERTICAL_FACES)
                     sortedFaces.rotateRight()
                 block = newBlock
@@ -148,9 +152,9 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
     private fun searchBlock(): Pair<Block?, FluidType?> {
         repeat(region.size) { r ->
             if (r == 0) {
-                val block = location.clone().advance(BlockFace.DOWN).block
+                val block = pos.advance(BlockFace.DOWN).block
                 val fluidType = block.sourceFluidType ?: return@repeat
-                if (fluidTank.accepts(fluidType) && ProtectionManager.canBreak(this, null, block.location).get())
+                if (fluidTank.accepts(fluidType) && runBlocking { ProtectionManager.canBreak(this@Pump, null, block.pos) }) // TODO: non-blocking
                     return block to fluidType
                 return@repeat
             }
@@ -159,9 +163,9 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
                     for (z in -r..r) {
                         if ((x != -r && x != r) && (y != -r - 1 && y != -1) && (z != -r && z != r))
                             continue
-                        val block = location.clone().add(x.toDouble(), y.toDouble(), z.toDouble()).block
+                        val block = pos.add(x, y, z).block
                         val fluidType = block.sourceFluidType ?: continue
-                        if (fluidTank.accepts(fluidType) && ProtectionManager.canBreak(this, null, block.location).get())
+                        if (fluidTank.accepts(fluidType) && runBlocking { ProtectionManager.canBreak(this@Pump, null, block.pos) }) // TODO: non-blocking
                             return block to fluidType
                     }
                 }
@@ -181,23 +185,13 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
         return false
     }
     
-    override fun handleRemoved(unload: Boolean) {
-        super.handleRemoved(unload)
-        VisualRegion.removeRegion(uuid)
-    }
-    
-    override fun saveData() {
-        super.saveData()
-        storeData("mode", mode)
-    }
-    
     @TileEntityMenuClass
     inner class PumpMenu(player: Player) : IndividualTileEntityMenu(player) {
         
         private val sideConfigGui = SideConfigMenu(
             this@Pump,
-            fluidContainerNames = listOf(fluidTank to "container.nova.fluid_tank"),
-            openPrevious = ::openWindow
+            mapOf(fluidTank to "container.nova.fluid_tank"),
+            ::openWindow
         )
         
         override val gui = Gui.normal()
@@ -220,13 +214,17 @@ class Pump(blockState: NovaTileEntityState) : NetworkedTileEntity(blockState), U
         
         private inner class PumpModeItem : AbstractItem() {
             
-            override fun getItemProvider() =
-                (if (mode == PumpMode.PUMP) GuiMaterials.PUMP_MODE_BTN else GuiMaterials.PUMP_REPLACE_MODE_BTN).clientsideProvider
+            override fun getItemProvider(): ItemProvider =
+                when (mode) {
+                    PumpMode.PUMP -> GuiItems.PUMP_MODE_BTN.model.clientsideProvider
+                    PumpMode.REPLACE -> GuiItems.PUMP_REPLACE_MODE_BTN.model.clientsideProvider
+                }
             
             override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
                 mode = if (mode == PumpMode.PUMP) PumpMode.REPLACE else PumpMode.PUMP
                 notifyWindows()
             }
+            
         }
         
     }

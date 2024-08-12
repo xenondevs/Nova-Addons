@@ -3,22 +3,23 @@ package xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded
 import net.kyori.adventure.text.Component
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.nova.addon.machines.registry.GuiMaterials
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
-import xyz.xenondevs.nova.tileentity.network.fluid.FluidType
-import xyz.xenondevs.nova.ui.StaticFluidBar
-import xyz.xenondevs.nova.ui.menu.item.recipes.createRecipeChoiceItem
-import xyz.xenondevs.nova.ui.menu.item.recipes.group.RecipeGroup
+import xyz.xenondevs.nova.ui.menu.StaticFluidBar
+import xyz.xenondevs.nova.ui.menu.addIngredient
+import xyz.xenondevs.nova.ui.menu.explorer.recipes.createRecipeChoiceItem
+import xyz.xenondevs.nova.ui.menu.explorer.recipes.group.RecipeGroup
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 
 object CobblestoneGeneratorRecipeGroup : RecipeGroup<CobblestoneGeneratorRecipe>() {
     
     override val priority = 7
     override val texture = GuiTextures.RECIPE_COBBLESTONE_GENERATOR
-    override val icon = Items.COBBLESTONE_GENERATOR.basicClientsideProvider
+    override val icon = Items.COBBLESTONE_GENERATOR.model.clientsideProvider
     
     override fun createGui(recipe: CobblestoneGeneratorRecipe): Gui {
-        val progressItem = GuiMaterials.TP_FLUID_PROGRESS_LEFT_RIGHT
+        val progressItem = GuiItems.TP_FLUID_PROGRESS_LEFT_RIGHT.model
             .createClientsideItemBuilder()
             .setDisplayName(Component.translatable("menu.machines.recipe.cobblestone_generator.${recipe.mode.name.lowercase()}"))
         
@@ -28,10 +29,10 @@ object CobblestoneGeneratorRecipeGroup : RecipeGroup<CobblestoneGeneratorRecipe>
                 ". w l . > . r . .",
                 ". w l . m . . . .")
             .addIngredient('r', createRecipeChoiceItem(listOf(recipe.result)))
-            .addIngredient('m', recipe.mode.uiItem.clientsideProvider)
+            .addIngredient('m', recipe.mode.uiItem)
             .addIngredient('>', progressItem)
-            .addIngredient('w', StaticFluidBar(FluidType.WATER, 1000, 1000, 3))
-            .addIngredient('l', StaticFluidBar(FluidType.LAVA, 1000, 1000, 3))
+            .addIngredient('w', StaticFluidBar(3, 1000, FluidType.WATER, 1000))
+            .addIngredient('l', StaticFluidBar(3, 1000, FluidType.LAVA, 1000))
             .build()
         
     }
