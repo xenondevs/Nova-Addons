@@ -2,7 +2,7 @@
   "mode": "EXTRACT",
   "fluid_type": "WATER",
   "fluid_amount": 300,
-  "input": "minecraft:potion{\"Potion\": \"minecraft:water\"}",
+  "input": "minecraft:potion[potion_contents={potion: \"minecraft:water\"}]",
   "result": "minecraft:glass_bottle",
   "time": 30
 }
