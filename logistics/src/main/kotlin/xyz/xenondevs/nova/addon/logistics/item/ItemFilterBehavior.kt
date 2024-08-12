@@ -15,6 +15,7 @@ import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
 import xyz.xenondevs.nova.util.item.ItemUtils
+import xyz.xenondevs.nova.util.item.isActuallyInteractable
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
@@ -49,7 +50,7 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContaine
             return
         
         val event = wrappedEvent.event
-        if (action == Action.RIGHT_CLICK_AIR) {
+        if (action == Action.RIGHT_CLICK_AIR || (action == Action.RIGHT_CLICK_BLOCK && !event.clickedBlock!!.type.isActuallyInteractable())) {
             event.isCancelled = true
             wrappedEvent.actionPerformed = true
             
