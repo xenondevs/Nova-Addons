@@ -28,13 +28,16 @@ class ItemCableConfigMenu(
     private var insertFilter: ItemStack? = null
     private var extractFilter: ItemStack? = null
     
-    private val insertFilterInventory = VirtualInventory(null, 1, arrayOf(insertFilter), intArrayOf(1))
-        .apply { setPreUpdateHandler(::validateIsItemFilter) }
-    private val extractFilterInventory = VirtualInventory(null, 1, arrayOf(extractFilter), intArrayOf(1))
-        .apply { setPreUpdateHandler(::validateIsItemFilter) }
+    private val insertFilterInventory: VirtualInventory
+    private val extractFilterInventory: VirtualInventory
     
     init {
         updateValues()
+        
+        insertFilterInventory = VirtualInventory(null, 1, arrayOf(insertFilter), intArrayOf(1))
+        insertFilterInventory.setPreUpdateHandler(::validateIsItemFilter)
+        extractFilterInventory = VirtualInventory(null, 1, arrayOf(extractFilter), intArrayOf(1))
+        extractFilterInventory.setPreUpdateHandler(::validateIsItemFilter)
         
         gui = Gui.normal()
             .setStructure(
