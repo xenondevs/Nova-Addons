@@ -1,6 +1,5 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -28,6 +27,7 @@ import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
@@ -177,10 +177,10 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             progressItem.percentage = if (recipe != null) timePassed.toDouble() / recipeTime.toDouble() else 0.0
         }
         
-        private fun changeMode(player: Player?, modeOrdinal: Int) {
+        private fun changeMode(player: Player, modeOrdinal: Int) {
             mode = FluidInfuserRecipe.InfuserMode.entries[modeOrdinal]
             reset()
-            player!!.playSound(player.location, Sound.UI_BUTTON_CLICK, 1f, 1f)
+            player.playClickSound()
         }
         
         private inner class InfuserProgressItem : AbstractItem() {
