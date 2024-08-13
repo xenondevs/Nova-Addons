@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Efektyvumo atnaujinimas",
   "item.simple_upgrades.energy_upgrade": "Energijos vartojimo atnaujinimas",
   "item.simple_upgrades.range_upgrade": "Diapazono atnaujinimas",
-  "item.simple_upgrades.fluid_upgrade": "Skysčių atnaujinimas"
+  "item.simple_upgrades.fluid_upgrade": "Skysčių atnaujinimas",
+  "menu.simple_upgrades.upgrades": "Atnaujinimai"
 }

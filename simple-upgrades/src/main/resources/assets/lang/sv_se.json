@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Effektivitetsförbättringar: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energiförbättringar: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Uppgraderingar av intervall: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Vätskeuppgraderingar: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Vätskeuppgraderingar: %s/%s",
+  "menu.simple_upgrades.upgrades": "Uppgraderingar"
 }

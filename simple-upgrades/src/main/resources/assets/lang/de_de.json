@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Effizienz-Upgrade",
   "item.simple_upgrades.energy_upgrade": "Energie-Upgrade",
   "item.simple_upgrades.range_upgrade": "Reichweite-Upgrade",
-  "item.simple_upgrades.fluid_upgrade": "Flüssigkeits-Upgrade"
+  "item.simple_upgrades.fluid_upgrade": "Flüssigkeits-Upgrade",
+  "menu.simple_upgrades.upgrades": "Upgrades"
 }

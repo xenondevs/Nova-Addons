@@ -8,5 +8,6 @@
   "item.simple_upgrades.energy_upgrade": "能源升级",
   "item.simple_upgrades.efficiency_upgrade": "效率升级",
   "item.simple_upgrades.range_upgrade": "范围升级",
-  "item.simple_upgrades.fluid_upgrade": "液体升级"
+  "item.simple_upgrades.fluid_upgrade": "液体升级",
+  "menu.simple_upgrades.upgrades": "升级"
 }

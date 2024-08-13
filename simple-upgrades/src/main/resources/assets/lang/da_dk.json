@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Effektivitetsopgraderinger: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energiforbedringer: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Opgraderinger af rækkevidde: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Væskeopgraderinger: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Væskeopgraderinger: %s/%s",
+  "menu.simple_upgrades.upgrades": "Opgraderinger"
 }

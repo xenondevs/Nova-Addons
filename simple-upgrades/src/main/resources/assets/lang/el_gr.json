@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Αναβαθμίσεις απόδοσης: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Ενεργειακές αναβαθμίσεις: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Αναβαθμίσεις εμβέλειας: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Αναβαθμίσεις υγρών: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Αναβαθμίσεις υγρών: %s/%s",
+  "menu.simple_upgrades.upgrades": "Αναβαθμίσεις"
 }

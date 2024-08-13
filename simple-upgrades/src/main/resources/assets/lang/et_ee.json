@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Tõhususe suurendamine: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energiamuudatused: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Valikuala uuendused: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Vedelikuparandused: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Vedelikuparandused: %s/%s",
+  "menu.simple_upgrades.upgrades": "Uuendused"
 }

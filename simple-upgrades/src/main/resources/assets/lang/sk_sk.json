@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Zlepšenia účinnosti: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energetická modernizácia: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Aktualizácie rozsahu: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Aktualizácie tekutín: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Aktualizácie tekutín: %s/%s",
+  "menu.simple_upgrades.upgrades": "Aktualizácie"
 }

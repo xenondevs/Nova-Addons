@@ -8,5 +8,6 @@
   "item.simple_upgrades.energy_upgrade": "Покращення Енергоємності",
   "item.simple_upgrades.range_upgrade": "Покращення Дальності Дії",
   "item.simple_upgrades.fluid_upgrade": "Покращення Об'єму",
-  "item.simple_upgrades.efficiency_upgrade": "Покращення Ефективності"
+  "item.simple_upgrades.efficiency_upgrade": "Покращення Ефективності",
+  "menu.simple_upgrades.upgrades": "Оновлення"
 }

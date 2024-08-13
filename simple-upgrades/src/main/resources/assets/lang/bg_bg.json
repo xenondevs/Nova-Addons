@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Подобрения на ефективността: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Енергийни подобрения: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Подобрения на обхвата: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Подобрения на флуидите: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Подобрения на флуидите: %s/%s",
+  "menu.simple_upgrades.upgrades": "Актуализации"
 }

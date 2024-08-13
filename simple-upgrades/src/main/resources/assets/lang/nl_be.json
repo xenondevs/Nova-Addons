@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Efficiëntieverbeteringen: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energie-upgrades: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Bereik Upgrades: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Vloeistofupgrades: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Vloeistofupgrades: %s/%s",
+  "menu.simple_upgrades.upgrades": "Upgrades"
 }

@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "效率升级：%s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "能源升级：%s/%s",
   "menu.simple_upgrades.upgrades.type.range": "范围升级：%s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "流体升级：%s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "流体升级：%s/%s",
+  "menu.simple_upgrades.upgrades": "升级"
 }

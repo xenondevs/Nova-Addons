@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Verimlilik Yükseltmesi",
   "item.simple_upgrades.energy_upgrade": "Enerji Yükseltme",
   "item.simple_upgrades.range_upgrade": "Menzil Yükseltme",
-  "item.simple_upgrades.fluid_upgrade": "Sıvı Yükseltmesi"
+  "item.simple_upgrades.fluid_upgrade": "Sıvı Yükseltmesi",
+  "menu.simple_upgrades.upgrades": "Yükseltmeler"
 }

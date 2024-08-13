@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "効率アップグレード",
   "item.simple_upgrades.energy_upgrade": "エネルギーのアップグレード",
   "item.simple_upgrades.range_upgrade": "レンジのアップグレード",
-  "item.simple_upgrades.fluid_upgrade": "フルード・アップグレード"
+  "item.simple_upgrades.fluid_upgrade": "フルード・アップグレード",
+  "menu.simple_upgrades.upgrades": "アップグレード"
 }

@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Effizienzverbesserungen: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energetische Modernisierungen: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Bereichsaufwertungen: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Flüssigkeits-Upgrades: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Flüssigkeits-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades": "Upgrades"
 }

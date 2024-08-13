@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "효율성 업그레이드",
   "item.simple_upgrades.energy_upgrade": "에너지 업그레이드",
   "item.simple_upgrades.range_upgrade": "범위 업그레이드",
-  "item.simple_upgrades.fluid_upgrade": "유체 업그레이드"
+  "item.simple_upgrades.fluid_upgrade": "유체 업그레이드",
+  "menu.simple_upgrades.upgrades": "업그레이드"
 }

@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Modernizacja wydajności: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Modernizacje energetyczne: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Ulepszenia zasięgu: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Ulepszenia płynów: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Ulepszenia płynów: %s/%s",
+  "menu.simple_upgrades.upgrades": "Aktualizacje"
 }

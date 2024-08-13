@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Mejora de la eficiencia",
   "item.simple_upgrades.energy_upgrade": "Mejora energética",
   "item.simple_upgrades.range_upgrade": "Mejora de la gama",
-  "item.simple_upgrades.fluid_upgrade": "Actualización de fluidos"
+  "item.simple_upgrades.fluid_upgrade": "Actualización de fluidos",
+  "menu.simple_upgrades.upgrades": "Actualizaciones"
 }

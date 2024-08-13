@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Efektivitātes uzlabojumi: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energoefektivitātes modernizācija: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Range Upgrades: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Šķidruma uzlabojumi: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Šķidruma uzlabojumi: %s/%s",
+  "menu.simple_upgrades.upgrades": "Uzlabojumi"
 }

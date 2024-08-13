@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Улучшение Эффективности",
   "item.simple_upgrades.fluid_upgrade": "Улучшение Объема",
   "item.simple_upgrades.range_upgrade": "Улучшение Области действия",
-  "item.simple_upgrades.energy_upgrade": "Улучшение Энергоёмкости"
+  "item.simple_upgrades.energy_upgrade": "Улучшение Энергоёмкости",
+  "menu.simple_upgrades.upgrades": "Обновления"
 }

@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Nadgradnje učinkovitosti: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energetske posodobitve: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Nadgradnje območja: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Nadgradnje tekočin: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Nadgradnje tekočin: %s/%s",
+  "menu.simple_upgrades.upgrades": "Nadgradnje"
 }

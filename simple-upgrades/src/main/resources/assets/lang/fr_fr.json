@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Améliorateur d'efficacité",
   "item.simple_upgrades.energy_upgrade": "Améliorateur d'énergie",
   "item.simple_upgrades.range_upgrade": "Améliorateur de portée",
-  "item.simple_upgrades.fluid_upgrade": "Améliorateur de capacité de fluide"
+  "item.simple_upgrades.fluid_upgrade": "Améliorateur de capacité de fluide",
+  "menu.simple_upgrades.upgrades": "Améliorations"
 }

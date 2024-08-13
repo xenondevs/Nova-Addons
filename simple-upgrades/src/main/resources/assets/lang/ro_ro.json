@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Îmbunătățiri de eficiență: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Îmbunătățiri energetice: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Îmbunătățiri de gamă: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Îmbunătățiri ale fluidelor: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Îmbunătățiri ale fluidelor: %s/%s",
+  "menu.simple_upgrades.upgrades": "Actualizări"
 }

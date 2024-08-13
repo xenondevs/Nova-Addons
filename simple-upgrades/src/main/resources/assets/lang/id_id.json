@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Peningkatan Efisiensi: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Peningkatan Energi: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Peningkatan Rentang: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Peningkatan Cairan: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Peningkatan Cairan: %s/%s",
+  "menu.simple_upgrades.upgrades": "Peningkatan"
 }

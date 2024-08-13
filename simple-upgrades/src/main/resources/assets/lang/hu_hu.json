@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Hatékonysági fejlesztések: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energetikai korszerűsítések: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Tartományfejlesztés: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Folyadék frissítések: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Folyadék frissítések: %s/%s",
+  "menu.simple_upgrades.upgrades": "Frissítések"
 }

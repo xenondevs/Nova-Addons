@@ -8,5 +8,6 @@
   "menu.simple_upgrades.upgrades.type.efficiency": "Tehokkuusparannukset: %s/%s",
   "menu.simple_upgrades.upgrades.type.energy": "Energiauudistukset: %s/%s",
   "menu.simple_upgrades.upgrades.type.range": "Valikoiman päivitykset: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Nesteen päivitykset: %s/%s"
+  "menu.simple_upgrades.upgrades.type.fluid": "Nesteen päivitykset: %s/%s",
+  "menu.simple_upgrades.upgrades": "Päivitykset"
 }

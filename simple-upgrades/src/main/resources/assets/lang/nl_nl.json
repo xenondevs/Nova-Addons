@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "Efficiëntie Upgrade",
   "item.simple_upgrades.energy_upgrade": "Energie Upgrade",
   "item.simple_upgrades.range_upgrade": "Waaier Upgrade",
-  "item.simple_upgrades.fluid_upgrade": "Vloeistof Upgrade"
+  "item.simple_upgrades.fluid_upgrade": "Vloeistof Upgrade",
+  "menu.simple_upgrades.upgrades": "Upgrades"
 }
