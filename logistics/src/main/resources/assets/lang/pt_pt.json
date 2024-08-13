@@ -76,5 +76,21 @@
   "menu.logistics.storage_unit.item_display_singular": "%s Item",
   "advancement.logistics.root.title": "Logística",
   "advancement.logistics.fluid_storage_unit.title": "Líquidos infinitos!",
-  "advancement.logistics.fluid_storage_unit.description": "Criar uma unidade de armazenamento de fluidos"
+  "advancement.logistics.fluid_storage_unit.description": "Criar uma unidade de armazenamento de fluidos",
+  "item.logistics.wrench": "Chave inglesa",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Artigos",
+  "item.logistics.wrench.network.nova.fluid": "Fluido",
+  "item.logistics.wrench.face.north": "Zona Norte",
+  "item.logistics.wrench.face.east": "Zona Este",
+  "item.logistics.wrench.face.south": "Zona Sul",
+  "item.logistics.wrench.face.west": "Zona Oeste",
+  "item.logistics.wrench.face.up": "Topo",
+  "item.logistics.wrench.face.down": "Fundo",
+  "item.logistics.wrench.connection.none": "Nenhum",
+  "item.logistics.wrench.connection.insert": "Entrada",
+  "item.logistics.wrench.connection.extract": "Saída",
+  "item.logistics.wrench.connection.buffer": "Entrada e saída",
+  "item.logistics.wrench.toggle_mode": "Modo: %s",
+  "item.logistics.wrench.use": "Alterado %s de %s para %s (%s)"
 }

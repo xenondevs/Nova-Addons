@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.type.blacklist": "Черный список",
   "item.logistics.item_filter.lore.nbt.on": "Не игнорируются",
   "item.logistics.item_filter.lore.nbt.off": "Игнорируются",
-  "item.logistics.item_filter.lore.contents": "Содержит (%s):"
+  "item.logistics.item_filter.lore.contents": "Содержит (%s):",
+  "item.logistics.wrench": "Гаечный ключ",
+  "item.logistics.wrench.network.nova.energy": "Энергия",
+  "item.logistics.wrench.network.nova.item": "Товары",
+  "item.logistics.wrench.network.nova.fluid": "Жидкость",
+  "item.logistics.wrench.face.north": "Северная сторона",
+  "item.logistics.wrench.face.east": "Ист-Сайд",
+  "item.logistics.wrench.face.south": "Саутсайд",
+  "item.logistics.wrench.face.west": "Вест-Сайд",
+  "item.logistics.wrench.face.up": "Топ",
+  "item.logistics.wrench.face.down": "Дно",
+  "item.logistics.wrench.connection.none": "Нет",
+  "item.logistics.wrench.connection.insert": "Вход",
+  "item.logistics.wrench.connection.extract": "Выход",
+  "item.logistics.wrench.connection.buffer": "Вход и выход",
+  "item.logistics.wrench.toggle_mode": "Режим: %s",
+  "item.logistics.wrench.use": "Изменили %s из %s на %s (%s)"
 }

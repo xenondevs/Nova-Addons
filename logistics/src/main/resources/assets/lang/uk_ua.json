@@ -76,5 +76,21 @@
   "advancement.logistics.elite_power_cell.description": "Створіть Елітний Елемент Живлення",
   "advancement.logistics.elite_fluid_tank.description": "Створіть Елітний Резервуар для Рідини",
   "advancement.logistics.trash_can.title": "Мені це більше не потрібно!",
-  "advancement.logistics.storage_unit.description": "Створіть Одиницю Зберігання"
+  "advancement.logistics.storage_unit.description": "Створіть Одиницю Зберігання",
+  "item.logistics.wrench": "Гайковий ключ.",
+  "item.logistics.wrench.network.nova.energy": "Енергія",
+  "item.logistics.wrench.network.nova.item": "Елементи",
+  "item.logistics.wrench.network.nova.fluid": "Рідина",
+  "item.logistics.wrench.face.north": "Північна сторона",
+  "item.logistics.wrench.face.east": "Іст-Сайд",
+  "item.logistics.wrench.face.south": "Південна сторона",
+  "item.logistics.wrench.face.west": "Вестсайд",
+  "item.logistics.wrench.face.up": "Верхня частина",
+  "item.logistics.wrench.face.down": "Дно.",
+  "item.logistics.wrench.connection.none": "Ні.",
+  "item.logistics.wrench.connection.insert": "Вхідні дані",
+  "item.logistics.wrench.connection.extract": "Вихідні дані",
+  "item.logistics.wrench.connection.buffer": "Вхід і вихід",
+  "item.logistics.wrench.toggle_mode": "Режим: %s",
+  "item.logistics.wrench.use": "Змінено %s з %s на %s (%s)"
 }

@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Detta verkar säkert",
   "advancement.logistics.vacuum_chest.description": "Skapa en vakuumbehållare",
   "advancement.logistics.storage_unit.title": "Oändliga föremål",
-  "advancement.logistics.storage_unit.description": "Skapa en förvaringsenhet"
+  "advancement.logistics.storage_unit.description": "Skapa en förvaringsenhet",
+  "item.logistics.wrench": "Skiftnyckel",
+  "item.logistics.wrench.network.nova.energy": "Energi",
+  "item.logistics.wrench.network.nova.item": "Föremål",
+  "item.logistics.wrench.network.nova.fluid": "Vätska",
+  "item.logistics.wrench.face.north": "Norra sidan",
+  "item.logistics.wrench.face.east": "Östra sidan",
+  "item.logistics.wrench.face.south": "Södra sidan",
+  "item.logistics.wrench.face.west": "Västra sidan",
+  "item.logistics.wrench.face.up": "Topp",
+  "item.logistics.wrench.face.down": "Botten",
+  "item.logistics.wrench.connection.none": "Ingen",
+  "item.logistics.wrench.connection.insert": "Ingång",
+  "item.logistics.wrench.connection.extract": "Utgång",
+  "item.logistics.wrench.connection.buffer": "Inmatning och utmatning",
+  "item.logistics.wrench.toggle_mode": "Läge: %s",
+  "item.logistics.wrench.use": "Ändrade %s av %s till %s (%s)"
 }

@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Tas šķiet droši",
   "advancement.logistics.vacuum_chest.description": "Izgatavojiet vakuuma lādi",
   "advancement.logistics.storage_unit.title": "Bezgalīgi priekšmeti",
-  "advancement.logistics.storage_unit.description": "Izgatavojiet glabāšanas vienību"
+  "advancement.logistics.storage_unit.description": "Izgatavojiet glabāšanas vienību",
+  "item.logistics.wrench": "Atslēga",
+  "item.logistics.wrench.network.nova.energy": "Enerģija",
+  "item.logistics.wrench.network.nova.item": "Preces",
+  "item.logistics.wrench.network.nova.fluid": "Šķidrums",
+  "item.logistics.wrench.face.north": "Ziemeļu puse",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Apakšējā daļa",
+  "item.logistics.wrench.connection.none": "Nav",
+  "item.logistics.wrench.connection.insert": "Ieeja",
+  "item.logistics.wrench.connection.extract": "Izvades",
+  "item.logistics.wrench.connection.buffer": "Ievade un izvade",
+  "item.logistics.wrench.toggle_mode": "Režīms: %s",
+  "item.logistics.wrench.use": "Mainīts %s no %s uz %s (%s)"
 }

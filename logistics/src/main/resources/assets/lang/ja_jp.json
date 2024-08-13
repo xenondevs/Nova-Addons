@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.type.blacklist": "ブラックリスト",
   "item.logistics.item_filter.lore.nbt": "NBTデータ: %s",
   "item.logistics.item_filter.lore.nbt.on": "無視しない",
-  "item.logistics.item_filter.lore.nbt.off": "無視する"
+  "item.logistics.item_filter.lore.nbt.off": "無視する",
+  "item.logistics.wrench": "レンチ",
+  "item.logistics.wrench.network.nova.energy": "エネルギー",
+  "item.logistics.wrench.network.nova.item": "アイテム",
+  "item.logistics.wrench.network.nova.fluid": "流体",
+  "item.logistics.wrench.face.north": "ノースサイド",
+  "item.logistics.wrench.face.east": "イーストサイド",
+  "item.logistics.wrench.face.south": "サウスサイド",
+  "item.logistics.wrench.face.west": "ウエストサイド",
+  "item.logistics.wrench.face.up": "トップ",
+  "item.logistics.wrench.face.down": "ボトム",
+  "item.logistics.wrench.connection.none": "なし",
+  "item.logistics.wrench.connection.insert": "インプット",
+  "item.logistics.wrench.connection.extract": "出力",
+  "item.logistics.wrench.connection.buffer": "入出力",
+  "item.logistics.wrench.toggle_mode": "モード: %s",
+  "item.logistics.wrench.use": "s の %s を %s (%s) に変更しました。"
 }

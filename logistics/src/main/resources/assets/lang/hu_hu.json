@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Ez biztonságosnak tűnik.",
   "advancement.logistics.vacuum_chest.description": "Craft egy vákuum láda",
   "advancement.logistics.storage_unit.title": "Végtelen tételek",
-  "advancement.logistics.storage_unit.description": "Craft egy tárolóegység"
+  "advancement.logistics.storage_unit.description": "Craft egy tárolóegység",
+  "item.logistics.wrench": "Csavarkulcs",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Tételek",
+  "item.logistics.wrench.network.nova.fluid": "Folyadék",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Alul",
+  "item.logistics.wrench.connection.none": "Nincs",
+  "item.logistics.wrench.connection.insert": "Bemenet",
+  "item.logistics.wrench.connection.extract": "Kimenet",
+  "item.logistics.wrench.connection.buffer": "Bemenet és kimenet",
+  "item.logistics.wrench.toggle_mode": "Mód: %s",
+  "item.logistics.wrench.use": "A %s %s %s-t %s-re változtatta (%s)"
 }

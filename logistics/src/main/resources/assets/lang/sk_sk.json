@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Zdá sa to byť bezpečné",
   "advancement.logistics.vacuum_chest.description": "Vyrobte si vákuovú truhlicu",
   "advancement.logistics.storage_unit.title": "Nekonečné položky",
-  "advancement.logistics.storage_unit.description": "Vytvorte si úložnú jednotku"
+  "advancement.logistics.storage_unit.description": "Vytvorte si úložnú jednotku",
+  "item.logistics.wrench": "Kľúč",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Položky",
+  "item.logistics.wrench.network.nova.fluid": "Fluid",
+  "item.logistics.wrench.face.north": "Severná strana",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "Južná strana",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Spodná časť",
+  "item.logistics.wrench.connection.none": "Žiadne",
+  "item.logistics.wrench.connection.insert": "Vstup",
+  "item.logistics.wrench.connection.extract": "Výstup",
+  "item.logistics.wrench.connection.buffer": "Vstup a výstup",
+  "item.logistics.wrench.toggle_mode": "Režim: %s",
+  "item.logistics.wrench.use": "Zmenené %s z %s na %s (%s)"
 }

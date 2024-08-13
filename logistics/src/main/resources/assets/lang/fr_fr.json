@@ -76,5 +76,21 @@
   "menu.logistics.items.category.crafting": "Composants de fabrication",
   "advancement.logistics.root.title": "Logistique",
   "advancement.logistics.fluid_storage_unit.title": "Des liquides à l'infini !",
-  "advancement.logistics.fluid_storage_unit.description": "Fabriquer une unité de stockage des fluides"
+  "advancement.logistics.fluid_storage_unit.description": "Fabriquer une unité de stockage des fluides",
+  "item.logistics.wrench": "Clé à molette",
+  "item.logistics.wrench.network.nova.energy": "L'énergie",
+  "item.logistics.wrench.network.nova.item": "Articles",
+  "item.logistics.wrench.network.nova.fluid": "Fluide",
+  "item.logistics.wrench.face.north": "Côté nord",
+  "item.logistics.wrench.face.east": "Côté Est",
+  "item.logistics.wrench.face.south": "Côté sud",
+  "item.logistics.wrench.face.west": "Côté ouest",
+  "item.logistics.wrench.face.up": "Haut de page",
+  "item.logistics.wrench.face.down": "Le fond",
+  "item.logistics.wrench.connection.none": "Aucun",
+  "item.logistics.wrench.connection.insert": "Entrée",
+  "item.logistics.wrench.connection.extract": "Sortie",
+  "item.logistics.wrench.connection.buffer": "Entrée et sortie",
+  "item.logistics.wrench.toggle_mode": "Mode : %s",
+  "item.logistics.wrench.use": "Modification de %s de %s en %s (%s)"
 }

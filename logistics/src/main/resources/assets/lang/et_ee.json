@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "See tundub turvaline",
   "advancement.logistics.vacuum_chest.description": "Vaakumkirstu valmistamine",
   "advancement.logistics.storage_unit.title": "Lõputud esemed",
-  "advancement.logistics.storage_unit.description": "Craft ladustamise üksus"
+  "advancement.logistics.storage_unit.description": "Craft ladustamise üksus",
+  "item.logistics.wrench": "Võtmega",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Artiklid",
+  "item.logistics.wrench.network.nova.fluid": "Fluid",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Alumine",
+  "item.logistics.wrench.connection.none": "Puudub",
+  "item.logistics.wrench.connection.insert": "Sisend",
+  "item.logistics.wrench.connection.extract": "Väljund",
+  "item.logistics.wrench.connection.buffer": "Sisend ja väljund",
+  "item.logistics.wrench.toggle_mode": "Režiim: %s",
+  "item.logistics.wrench.use": "Muutis %s %s-i %s-i (%s) %s-i (%s)"
 }

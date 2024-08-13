@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Ini tampaknya aman",
   "advancement.logistics.vacuum_chest.description": "Membuat Peti Vakum",
   "advancement.logistics.storage_unit.title": "Item Tak Terbatas",
-  "advancement.logistics.storage_unit.description": "Membuat Unit Penyimpanan"
+  "advancement.logistics.storage_unit.description": "Membuat Unit Penyimpanan",
+  "item.logistics.wrench": "Kunci pas",
+  "item.logistics.wrench.network.nova.energy": "Energi",
+  "item.logistics.wrench.network.nova.item": "Item",
+  "item.logistics.wrench.network.nova.fluid": "Cairan",
+  "item.logistics.wrench.face.north": "Sisi Utara",
+  "item.logistics.wrench.face.east": "Sisi Timur",
+  "item.logistics.wrench.face.south": "Sisi Selatan",
+  "item.logistics.wrench.face.west": "Sisi Barat",
+  "item.logistics.wrench.face.up": "Atas",
+  "item.logistics.wrench.face.down": "Bawah",
+  "item.logistics.wrench.connection.none": "Tidak ada",
+  "item.logistics.wrench.connection.insert": "Masukan",
+  "item.logistics.wrench.connection.extract": "Keluaran",
+  "item.logistics.wrench.connection.buffer": "Masukan & Keluaran",
+  "item.logistics.wrench.use": "Mengubah %s dari %s menjadi %s (%s)",
+  "item.logistics.wrench.toggle_mode": "Mode: %s"
 }

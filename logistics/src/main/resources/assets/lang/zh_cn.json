@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.nbt": "NBT数据: %s",
   "item.logistics.item_filter.lore.nbt.on": "检查",
   "item.logistics.item_filter.lore.contents": "内容 (%s项):",
-  "item.logistics.item_filter.lore.nbt.off": "不检查"
+  "item.logistics.item_filter.lore.nbt.off": "不检查",
+  "item.logistics.wrench.face.up": "返回顶部",
+  "item.logistics.wrench": "扳手",
+  "item.logistics.wrench.network.nova.energy": "能源",
+  "item.logistics.wrench.network.nova.item": "项目",
+  "item.logistics.wrench.network.nova.fluid": "流体",
+  "item.logistics.wrench.face.north": "北侧",
+  "item.logistics.wrench.face.east": "东区",
+  "item.logistics.wrench.face.south": "南区",
+  "item.logistics.wrench.face.west": "西区",
+  "item.logistics.wrench.face.down": "底部",
+  "item.logistics.wrench.connection.none": "无",
+  "item.logistics.wrench.connection.insert": "输入",
+  "item.logistics.wrench.connection.extract": "输出",
+  "item.logistics.wrench.connection.buffer": "输入和输出",
+  "item.logistics.wrench.toggle_mode": "模式：%s",
+  "item.logistics.wrench.use": "将 %s 的 %s 更改为 %s (%s)"
 }

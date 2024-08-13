@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Das scheint sicher zu sein",
   "advancement.logistics.vacuum_chest.description": "Basteln Sie eine Vakuumtruhe",
   "advancement.logistics.storage_unit.title": "Unendliche Gegenstände",
-  "advancement.logistics.storage_unit.description": "Eine Lagereinheit basteln"
+  "advancement.logistics.storage_unit.description": "Eine Lagereinheit basteln",
+  "item.logistics.wrench": "Schraubenschlüssel",
+  "item.logistics.wrench.network.nova.energy": "Energie",
+  "item.logistics.wrench.network.nova.item": "Artikel",
+  "item.logistics.wrench.network.nova.fluid": "Flüssigkeit",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.down": "Unten",
+  "item.logistics.wrench.connection.none": "Keine",
+  "item.logistics.wrench.connection.insert": "Eingabe",
+  "item.logistics.wrench.connection.extract": "Ausgabe",
+  "item.logistics.wrench.connection.buffer": "Eingabe und Ausgabe",
+  "item.logistics.wrench.toggle_mode": "Modus: %s",
+  "item.logistics.wrench.use": "Geändert %s von %s in %s (%s)",
+  "item.logistics.wrench.face.up": "Top"
 }

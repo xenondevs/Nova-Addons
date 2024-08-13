@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Това изглежда безопасно",
   "advancement.logistics.vacuum_chest.description": "Изработване на вакуумно сандъче",
   "advancement.logistics.storage_unit.title": "Безкрайни предмети",
-  "advancement.logistics.storage_unit.description": "Изработване на модул за съхранение"
+  "advancement.logistics.storage_unit.description": "Изработване на модул за съхранение",
+  "item.logistics.wrench.connection.none": "Няма",
+  "item.logistics.wrench": "Гаечен ключ",
+  "item.logistics.wrench.network.nova.energy": "Енергия",
+  "item.logistics.wrench.network.nova.item": "Елементи",
+  "item.logistics.wrench.network.nova.fluid": "Fluid",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Топ",
+  "item.logistics.wrench.face.down": "Дъно",
+  "item.logistics.wrench.connection.insert": "Вход",
+  "item.logistics.wrench.connection.extract": "Изход",
+  "item.logistics.wrench.connection.buffer": "Вход и изход",
+  "item.logistics.wrench.toggle_mode": "Режим: %s",
+  "item.logistics.wrench.use": "Променен %s от %s на %s (%s)"
 }

@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Esto parece seguro",
   "advancement.logistics.vacuum_chest.description": "Crear un baúl de vacío",
   "advancement.logistics.storage_unit.title": "Artículos infinitos",
-  "advancement.logistics.storage_unit.description": "Crear una unidad de almacenamiento"
+  "advancement.logistics.storage_unit.description": "Crear una unidad de almacenamiento",
+  "item.logistics.wrench": "Llave inglesa",
+  "item.logistics.wrench.network.nova.energy": "Energía",
+  "item.logistics.wrench.network.nova.item": "Artículos",
+  "item.logistics.wrench.network.nova.fluid": "Fluido",
+  "item.logistics.wrench.face.north": "Lado Norte",
+  "item.logistics.wrench.face.east": "Lado Este",
+  "item.logistics.wrench.face.south": "Lado Sur",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Fondo",
+  "item.logistics.wrench.connection.none": "Ninguno",
+  "item.logistics.wrench.connection.insert": "Entrada",
+  "item.logistics.wrench.connection.extract": "Salida",
+  "item.logistics.wrench.connection.buffer": "Entrada y salida",
+  "item.logistics.wrench.toggle_mode": "Modo: %s",
+  "item.logistics.wrench.use": "Cambiado %s de %s a %s (%s)"
 }

@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.nbt": "Data NBT: %s",
   "item.logistics.item_filter.lore.nbt.on": "Non ignorato",
   "item.logistics.item_filter.lore.nbt.off": "Ignorato",
-  "item.logistics.item_filter.lore.contents": "Contenuto (%s):"
+  "item.logistics.item_filter.lore.contents": "Contenuto (%s):",
+  "item.logistics.wrench": "Chiave",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Articoli",
+  "item.logistics.wrench.network.nova.fluid": "Fluido",
+  "item.logistics.wrench.face.north": "Lato Nord",
+  "item.logistics.wrench.face.east": "Lato est",
+  "item.logistics.wrench.face.south": "Lato sud",
+  "item.logistics.wrench.face.west": "Lato ovest",
+  "item.logistics.wrench.face.up": "In alto",
+  "item.logistics.wrench.face.down": "Fondo",
+  "item.logistics.wrench.connection.none": "Nessuno",
+  "item.logistics.wrench.connection.insert": "Ingresso",
+  "item.logistics.wrench.connection.extract": "Uscita",
+  "item.logistics.wrench.connection.buffer": "Ingresso e uscita",
+  "item.logistics.wrench.toggle_mode": "Modalità: %s",
+  "item.logistics.wrench.use": "Modificato %s di %s in %s (%s)"
 }

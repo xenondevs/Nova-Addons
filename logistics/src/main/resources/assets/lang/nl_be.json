@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Dit lijkt veilig",
   "advancement.logistics.vacuum_chest.description": "Knutsel een Vacuumkist",
   "advancement.logistics.storage_unit.title": "Oneindige items",
-  "advancement.logistics.storage_unit.description": "Een opbergeenheid maken"
+  "advancement.logistics.storage_unit.description": "Een opbergeenheid maken",
+  "item.logistics.wrench.network.nova.fluid": "Vloeistof",
+  "item.logistics.wrench.face.north": "Noordzijde",
+  "item.logistics.wrench.face.east": "Oostzijde",
+  "item.logistics.wrench.face.south": "Zuidzijde",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Bodem",
+  "item.logistics.wrench.connection.none": "Geen",
+  "item.logistics.wrench.connection.insert": "Invoer",
+  "item.logistics.wrench.connection.extract": "Uitgang",
+  "item.logistics.wrench.connection.buffer": "Invoer en uitvoer",
+  "item.logistics.wrench.toggle_mode": "Modus: %s",
+  "item.logistics.wrench.use": "Gewijzigd %s van %s in %s (%s)",
+  "item.logistics.wrench": "Moersleutel",
+  "item.logistics.wrench.network.nova.energy": "Energie",
+  "item.logistics.wrench.network.nova.item": "Items"
 }

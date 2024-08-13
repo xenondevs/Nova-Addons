@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.type.blacklist": "Filtr Zakázaných",
   "item.logistics.item_filter.lore.nbt": "NBT Data :%s",
   "item.logistics.item_filter.lore.nbt.on": "Není Ignorován",
-  "item.logistics.item_filter.lore.contents": "Obsah (%s):"
+  "item.logistics.item_filter.lore.contents": "Obsah (%s):",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Nahoru",
+  "item.logistics.wrench.face.down": "Spodní část",
+  "item.logistics.wrench.connection.none": "Žádné",
+  "item.logistics.wrench.connection.insert": "Vstup",
+  "item.logistics.wrench.connection.extract": "Výstup",
+  "item.logistics.wrench.connection.buffer": "Vstup a výstup",
+  "item.logistics.wrench.toggle_mode": "Režim: %s",
+  "item.logistics.wrench.use": "Změněno %s z %s na %s (%s)",
+  "item.logistics.wrench": "Klíč",
+  "item.logistics.wrench.network.nova.energy": "Energie",
+  "item.logistics.wrench.network.nova.item": "Položky",
+  "item.logistics.wrench.network.nova.fluid": "Fluid",
+  "item.logistics.wrench.face.north": "North-Side"
 }

@@ -76,5 +76,21 @@
   "advancement.logistics.fluid_storage_unit.title": "Nieskończone płyny!",
   "advancement.logistics.fluid_storage_unit.description": "Stwórz jednostkę magazynowania płynów",
   "advancement.logistics.trash_can.title": "Już tego nie potrzebuję!",
-  "advancement.logistics.trash_can.description": "Stwórz kosz na śmieci"
+  "advancement.logistics.trash_can.description": "Stwórz kosz na śmieci",
+  "item.logistics.wrench": "Klucz",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Przedmioty",
+  "item.logistics.wrench.network.nova.fluid": "Płyn",
+  "item.logistics.wrench.face.north": "Strona północna",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Dół",
+  "item.logistics.wrench.connection.none": "Brak",
+  "item.logistics.wrench.connection.insert": "Wejście",
+  "item.logistics.wrench.connection.extract": "Wyjście",
+  "item.logistics.wrench.connection.buffer": "Wejście i wyjście",
+  "item.logistics.wrench.toggle_mode": "Tryb: %s",
+  "item.logistics.wrench.use": "Zmieniono %s z %s na %s (%s)"
 }

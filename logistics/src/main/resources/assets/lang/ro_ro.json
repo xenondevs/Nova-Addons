@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Asta pare sigur.",
   "advancement.logistics.vacuum_chest.description": "Meșteșugul unui piept de vid",
   "advancement.logistics.storage_unit.title": "Articole infinite",
-  "advancement.logistics.storage_unit.description": "Artizanat o unitate de depozitare"
+  "advancement.logistics.storage_unit.description": "Artizanat o unitate de depozitare",
+  "item.logistics.wrench.network.nova.energy": "Energie",
+  "item.logistics.wrench.network.nova.fluid": "Fluid",
+  "item.logistics.wrench.face.north": "Latura de nord",
+  "item.logistics.wrench.face.east": "Latura de est",
+  "item.logistics.wrench.face.south": "Latura de sud",
+  "item.logistics.wrench.face.west": "Latura de vest",
+  "item.logistics.wrench.face.up": "Sus",
+  "item.logistics.wrench.face.down": "Fund",
+  "item.logistics.wrench.connection.none": "Niciuna",
+  "item.logistics.wrench.connection.insert": "Introducere",
+  "item.logistics.wrench.connection.extract": "Ieșire",
+  "item.logistics.wrench.connection.buffer": "Intrare și ieșire",
+  "item.logistics.wrench.toggle_mode": "Mod: %s",
+  "item.logistics.wrench.use": "A schimbat %s din %s în %s (%s)",
+  "item.logistics.wrench": "Cheie",
+  "item.logistics.wrench.network.nova.item": "Articole"
 }

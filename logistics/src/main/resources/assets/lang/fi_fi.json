@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Tämä vaikuttaa turvalliselta",
   "advancement.logistics.vacuum_chest.description": "Craft tyhjiö arkku",
   "advancement.logistics.storage_unit.title": "Äärettömät kohteet",
-  "advancement.logistics.storage_unit.description": "Craft varastointiyksikkö"
+  "advancement.logistics.storage_unit.description": "Craft varastointiyksikkö",
+  "item.logistics.wrench": "Avainavain",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Tuotteet",
+  "item.logistics.wrench.network.nova.fluid": "Neste",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Pohja",
+  "item.logistics.wrench.connection.none": "Ei ole",
+  "item.logistics.wrench.connection.insert": "Tulo",
+  "item.logistics.wrench.connection.extract": "Lähtö",
+  "item.logistics.wrench.connection.buffer": "Tulo ja lähtö",
+  "item.logistics.wrench.toggle_mode": "Tila: %s",
+  "item.logistics.wrench.use": "Muutettu %s %s:n %s:ksi (%s)"
 }

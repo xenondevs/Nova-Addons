@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Det virker sikkert",
   "advancement.logistics.vacuum_chest.description": "Lav en vakuumkiste",
   "advancement.logistics.storage_unit.title": "Uendelige genstande",
-  "advancement.logistics.storage_unit.description": "Lav et opbevaringsrum"
+  "advancement.logistics.storage_unit.description": "Lav et opbevaringsrum",
+  "item.logistics.wrench": "Skruenøgle",
+  "item.logistics.wrench.network.nova.energy": "Energi",
+  "item.logistics.wrench.network.nova.item": "Genstande",
+  "item.logistics.wrench.network.nova.fluid": "Væske",
+  "item.logistics.wrench.face.north": "Nordsiden",
+  "item.logistics.wrench.face.east": "Østsiden",
+  "item.logistics.wrench.face.south": "Sydsiden",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Til toppen",
+  "item.logistics.wrench.face.down": "I bunden",
+  "item.logistics.wrench.connection.none": "Ingen",
+  "item.logistics.wrench.connection.insert": "Input",
+  "item.logistics.wrench.connection.extract": "Output",
+  "item.logistics.wrench.connection.buffer": "Input og output",
+  "item.logistics.wrench.toggle_mode": "Tilstand: %s",
+  "item.logistics.wrench.use": "Ændret %s af %s til %s (%s)"
 }

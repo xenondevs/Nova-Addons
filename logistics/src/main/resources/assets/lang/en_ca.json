@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "This seems safe",
   "advancement.logistics.vacuum_chest.description": "Craft a Vacuum Chest",
   "advancement.logistics.storage_unit.title": "Infinite Items",
-  "advancement.logistics.storage_unit.description": "Craft a Storage Unit"
+  "advancement.logistics.storage_unit.description": "Craft a Storage Unit",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench": "Wrench",
+  "item.logistics.wrench.network.nova.energy": "Energy",
+  "item.logistics.wrench.network.nova.item": "Items",
+  "item.logistics.wrench.network.nova.fluid": "Fluid",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "Bottom",
+  "item.logistics.wrench.connection.none": "None",
+  "item.logistics.wrench.connection.insert": "Input",
+  "item.logistics.wrench.connection.extract": "Output",
+  "item.logistics.wrench.connection.buffer": "Input & Output",
+  "item.logistics.wrench.toggle_mode": "Mode: %s",
+  "item.logistics.wrench.use": "Changed %s of %s to %s (%s)"
 }

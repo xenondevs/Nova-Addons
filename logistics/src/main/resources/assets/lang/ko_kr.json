@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.nbt": "NBT 데이터: %s",
   "item.logistics.item_filter.lore.nbt.on": "무시되지 않음",
   "item.logistics.item_filter.lore.nbt.off": "무시됨",
-  "item.logistics.item_filter.lore.contents": "내용(%s):"
+  "item.logistics.item_filter.lore.contents": "내용(%s):",
+  "item.logistics.wrench": "렌치",
+  "item.logistics.wrench.network.nova.energy": "에너지",
+  "item.logistics.wrench.network.nova.item": "항목",
+  "item.logistics.wrench.network.nova.fluid": "유체",
+  "item.logistics.wrench.face.north": "북쪽",
+  "item.logistics.wrench.face.east": "동쪽",
+  "item.logistics.wrench.face.south": "남쪽",
+  "item.logistics.wrench.face.west": "서쪽",
+  "item.logistics.wrench.face.up": "Top",
+  "item.logistics.wrench.face.down": "하단",
+  "item.logistics.wrench.connection.none": "없음",
+  "item.logistics.wrench.connection.insert": "입력",
+  "item.logistics.wrench.connection.extract": "출력",
+  "item.logistics.wrench.connection.buffer": "입력 및 출력",
+  "item.logistics.wrench.toggle_mode": "모드: %s",
+  "item.logistics.wrench.use": "의 %s를 %s(%s)로 변경했습니다."
 }

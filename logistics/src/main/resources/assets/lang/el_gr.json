@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Αυτό φαίνεται ασφαλές",
   "advancement.logistics.vacuum_chest.description": "Δημιουργήστε ένα σεντούκι κενού",
   "advancement.logistics.storage_unit.title": "Άπειρα αντικείμενα",
-  "advancement.logistics.storage_unit.description": "Δημιουργήστε μια μονάδα αποθήκευσης"
+  "advancement.logistics.storage_unit.description": "Δημιουργήστε μια μονάδα αποθήκευσης",
+  "item.logistics.wrench": "Κλειδί",
+  "item.logistics.wrench.network.nova.energy": "Ενέργεια",
+  "item.logistics.wrench.network.nova.item": "Στοιχεία",
+  "item.logistics.wrench.network.nova.fluid": "Υγρό",
+  "item.logistics.wrench.face.north": "North-Side",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "South-Side",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Κορυφή",
+  "item.logistics.wrench.face.down": "Κάτω μέρος",
+  "item.logistics.wrench.connection.none": "Κανένα",
+  "item.logistics.wrench.connection.insert": "Είσοδος",
+  "item.logistics.wrench.connection.extract": "Έξοδος",
+  "item.logistics.wrench.connection.buffer": "Είσοδος & Έξοδος",
+  "item.logistics.wrench.toggle_mode": "Λειτουργία: %s",
+  "item.logistics.wrench.use": "Αλλαγή του %s του %s σε %s (%s)"
 }

@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.nbt.off": "Görmezden gelindi",
   "item.logistics.item_filter.lore.contents": "İçindekiler (%s):",
   "menu.logistics.items.category.logistics": "Lojistik",
-  "advancement.logistics.root.title": "Lojistik"
+  "advancement.logistics.root.title": "Lojistik",
+  "item.logistics.wrench": "İngiliz Anahtarı",
+  "item.logistics.wrench.network.nova.energy": "Enerji",
+  "item.logistics.wrench.network.nova.item": "Eşyalar",
+  "item.logistics.wrench.network.nova.fluid": "Akışkan",
+  "item.logistics.wrench.face.north": "Kuzey Tarafı",
+  "item.logistics.wrench.face.east": "Doğu Yakası",
+  "item.logistics.wrench.face.south": "Güney Tarafı",
+  "item.logistics.wrench.face.west": "Batı Yakası",
+  "item.logistics.wrench.face.up": "Üst",
+  "item.logistics.wrench.face.down": "Alt",
+  "item.logistics.wrench.connection.none": "Hiçbiri",
+  "item.logistics.wrench.connection.insert": "Giriş",
+  "item.logistics.wrench.connection.extract": "Çıktı",
+  "item.logistics.wrench.connection.buffer": "Giriş ve Çıkış",
+  "item.logistics.wrench.toggle_mode": "Mod: %s",
+  "item.logistics.wrench.use": "s'nin %s'si %s (%s) olarak değiştirildi"
 }

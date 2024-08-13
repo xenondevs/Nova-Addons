@@ -76,5 +76,21 @@
   "item.logistics.item_filter.lore.contents": "Conteúdo (%s):",
   "menu.logistics.items.category.logistics": "Logística",
   "menu.logistics.storage_unit.item_display_singular": "%s Item",
-  "advancement.logistics.root.title": "Logística"
+  "advancement.logistics.root.title": "Logística",
+  "item.logistics.wrench": "Chave inglesa",
+  "item.logistics.wrench.network.nova.energy": "Energia",
+  "item.logistics.wrench.network.nova.item": "Itens",
+  "item.logistics.wrench.network.nova.fluid": "Fluido",
+  "item.logistics.wrench.face.north": "Lado Norte",
+  "item.logistics.wrench.face.east": "Lado leste",
+  "item.logistics.wrench.face.south": "Lado sul",
+  "item.logistics.wrench.face.west": "Lado oeste",
+  "item.logistics.wrench.face.up": "Topo",
+  "item.logistics.wrench.face.down": "Parte inferior",
+  "item.logistics.wrench.connection.none": "Nenhum",
+  "item.logistics.wrench.connection.insert": "Entrada",
+  "item.logistics.wrench.connection.extract": "Saída",
+  "item.logistics.wrench.connection.buffer": "Entrada e saída",
+  "item.logistics.wrench.toggle_mode": "Modo: %s",
+  "item.logistics.wrench.use": "Alterado %s de %s para %s (%s)"
 }

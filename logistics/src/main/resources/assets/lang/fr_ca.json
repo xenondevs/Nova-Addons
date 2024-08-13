@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "Cela semble sûr",
   "advancement.logistics.vacuum_chest.description": "Fabriquer un coffre à vide",
   "advancement.logistics.storage_unit.title": "Articles à l'infini",
-  "advancement.logistics.storage_unit.description": "Fabriquer un meuble de rangement"
+  "advancement.logistics.storage_unit.description": "Fabriquer un meuble de rangement",
+  "item.logistics.wrench": "Clé à molette",
+  "item.logistics.wrench.network.nova.energy": "L'énergie",
+  "item.logistics.wrench.network.nova.item": "Articles",
+  "item.logistics.wrench.network.nova.fluid": "Fluide",
+  "item.logistics.wrench.face.north": "Côté nord",
+  "item.logistics.wrench.face.east": "Côté Est",
+  "item.logistics.wrench.face.south": "Côté sud",
+  "item.logistics.wrench.face.west": "Côté ouest",
+  "item.logistics.wrench.face.up": "Haut de page",
+  "item.logistics.wrench.face.down": "Le fond",
+  "item.logistics.wrench.connection.none": "Aucun",
+  "item.logistics.wrench.connection.insert": "Entrée",
+  "item.logistics.wrench.connection.extract": "Sortie",
+  "item.logistics.wrench.connection.buffer": "Entrée et sortie",
+  "item.logistics.wrench.toggle_mode": "Mode : %s",
+  "item.logistics.wrench.use": "Modification de %s de %s en %s (%s)"
 }

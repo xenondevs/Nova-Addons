@@ -76,5 +76,21 @@
   "advancement.logistics.vacuum_chest.title": "To se zdi varno",
   "advancement.logistics.vacuum_chest.description": "Izdelava vakuumske skrinje",
   "advancement.logistics.storage_unit.title": "Neskončno predmetov",
-  "advancement.logistics.storage_unit.description": "Izdelajte enoto za shranjevanje"
+  "advancement.logistics.storage_unit.description": "Izdelajte enoto za shranjevanje",
+  "item.logistics.wrench": "Ključ",
+  "item.logistics.wrench.network.nova.energy": "Energija",
+  "item.logistics.wrench.network.nova.item": "Elementi",
+  "item.logistics.wrench.network.nova.fluid": "Tekočina",
+  "item.logistics.wrench.face.north": "Severna stran",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "Južna stran",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Vrh",
+  "item.logistics.wrench.face.down": "Dno",
+  "item.logistics.wrench.connection.none": "Ni",
+  "item.logistics.wrench.connection.insert": "Vhod",
+  "item.logistics.wrench.connection.extract": "Izhod",
+  "item.logistics.wrench.connection.buffer": "Vhod in izhod",
+  "item.logistics.wrench.toggle_mode": "Način: %s",
+  "item.logistics.wrench.use": "Spremenjeno %s iz %s v %s (%s)"
 }

@@ -76,5 +76,21 @@
   "advancement.logistics.fluid_storage_unit.title": "Begalė skysčių!",
   "advancement.logistics.trash_can.title": "Man to nebereikia!",
   "advancement.logistics.vacuum_chest.title": "Tai atrodo saugu",
-  "advancement.logistics.storage_unit.title": "Begalė daiktų"
+  "advancement.logistics.storage_unit.title": "Begalė daiktų",
+  "item.logistics.wrench": "Veržliaraktis",
+  "item.logistics.wrench.network.nova.energy": "Energija",
+  "item.logistics.wrench.network.nova.item": "Prekės",
+  "item.logistics.wrench.network.nova.fluid": "Skystis",
+  "item.logistics.wrench.face.north": "Šiaurės pusė",
+  "item.logistics.wrench.face.east": "East-Side",
+  "item.logistics.wrench.face.south": "Pietų pusė",
+  "item.logistics.wrench.face.west": "West-Side",
+  "item.logistics.wrench.face.up": "Viršuje",
+  "item.logistics.wrench.face.down": "Dugnas",
+  "item.logistics.wrench.connection.none": "Nėra",
+  "item.logistics.wrench.connection.insert": "Įvestis",
+  "item.logistics.wrench.connection.extract": "Išėjimas",
+  "item.logistics.wrench.connection.buffer": "Įvestis ir išvestis",
+  "item.logistics.wrench.toggle_mode": "Režimas: %s",
+  "item.logistics.wrench.use": "Pakeista %s iš %s į %s (%s)"
 }
