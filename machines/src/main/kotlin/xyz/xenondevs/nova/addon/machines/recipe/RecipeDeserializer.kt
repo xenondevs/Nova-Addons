@@ -11,7 +11,6 @@ import xyz.xenondevs.commons.gson.getInt
 import xyz.xenondevs.commons.gson.getIntOrNull
 import xyz.xenondevs.commons.gson.getLong
 import xyz.xenondevs.commons.gson.getString
-import xyz.xenondevs.nova.serialization.json.getDeserialized
 import xyz.xenondevs.nova.serialization.json.serializer.ConversionRecipeDeserializer
 import xyz.xenondevs.nova.serialization.json.serializer.RecipeDeserializer
 import xyz.xenondevs.nova.serialization.json.serializer.RecipeDeserializer.Companion.getRecipeId
@@ -39,8 +38,8 @@ object GearPressRecipeDeserializer : ConversionRecipeDeserializer<GearPressRecip
 object FluidInfuserRecipeDeserializer : RecipeDeserializer<FluidInfuserRecipe> {
     
     override fun deserialize(json: JsonObject, file: File): FluidInfuserRecipe {
-        val mode = json.getDeserialized<FluidInfuserRecipe.InfuserMode>("mode")
-        val fluidType = json.getDeserialized<FluidType>("fluid_type")
+        val mode = FluidInfuserRecipe.InfuserMode.valueOf(json.getString("mode"))
+        val fluidType = FluidType.valueOf(json.getString("fluid_type"))
         val fluidAmount = json.getLong("fluid_amount")
         val input = parseRecipeChoice(json.get("input"))
         val time = json.getInt("time")
