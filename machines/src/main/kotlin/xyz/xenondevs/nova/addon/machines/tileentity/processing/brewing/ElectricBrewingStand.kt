@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
+import xyz.xenondevs.commons.provider.mutable.map
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
@@ -46,7 +47,6 @@ import xyz.xenondevs.nova.ui.menu.item.ScrollDownItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollUpItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.data.MutableLazy
 import xyz.xenondevs.nova.util.item.ItemUtils
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -83,18 +83,28 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private val maxBrewTime by maxIdleTime(BREW_TIME, upgradeHolder)
     private var timePassed = 0
     
-    private var color = retrieveData("potionColor") { Color(0, 0, 0) }
-    private var potionType = retrieveData("potionType") { PotionBuilder.PotionType.NORMAL }
-    private var potionEffects: List<PotionEffectBuilder> by MutableLazy {
-        val potionEffects = ArrayList<PotionEffectBuilder>()
-        retrieveDataOrNull<List<Compound>>("potionEffects")?.forEach { potionCompound ->
-            val type = Registry.POTION_EFFECT_TYPE.get(potionCompound.get<NamespacedKey>("type")!!)
-            val duration: Int = potionCompound["duration"]!!
-            val amplifier: Int = potionCompound["amplifier"]!!
-            potionEffects += PotionEffectBuilder(type, duration, amplifier)
-        }
-        potionEffects
-    }
+    private var color by storedValue("potionColor") { Color(0, 0, 0) }
+    private var potionType by storedValue("potionType") { PotionBuilder.PotionType.NORMAL }
+    private var potionEffects: List<PotionEffectBuilder> by storedValue<List<Compound>>("potionEffects", ::emptyList)
+        .map(
+            { compounds ->
+                compounds.map { compound ->
+                    val type = Registry.POTION_EFFECT_TYPE.get(compound.get<NamespacedKey>("type")!!)
+                    val duration: Int = compound["duration"]!!
+                    val amplifier: Int = compound["amplifier"]!!
+                    PotionEffectBuilder(type, duration, amplifier)
+                }
+            },
+            { effects ->
+                effects.map { effect ->
+                    Compound().also {
+                        it["type"] = effect.type!!.key
+                        it["duration"] = effect.durationLevel
+                        it["amplifier"] = effect.amplifierLevel
+                    }
+                }
+            }
+        )
     private var requiredItems: List<ItemStack>? = null
     private var requiredItemsStatus: MutableMap<ItemStack, Boolean>? = null
     private var nextPotion: ItemStack? = null
@@ -103,23 +113,6 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
         super.handleEnable()
         updatePotionData(potionType, potionEffects, color)
     }
-    
-    override fun saveData() {
-        super.saveData()
-        
-        val list = potionEffects.map { effect ->
-            Compound().also {
-                it["type"] = effect.type!!.key
-                it["duration"] = effect.durationLevel
-                it["amplifier"] = effect.amplifierLevel
-            }
-        }
-        
-        storeData("potionEffects", list)
-        storeData("potionType", potionType)
-        storeData("potionColor", color)
-    }
-    
     
     private fun updatePotionData(type: PotionBuilder.PotionType, effects: List<PotionEffectBuilder>, color: Color) {
         this.potionEffects = effects.map(PotionEffectBuilder::clone)

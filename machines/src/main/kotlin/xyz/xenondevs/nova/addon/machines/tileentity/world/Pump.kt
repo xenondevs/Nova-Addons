@@ -67,7 +67,7 @@ class Pump(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Networke
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     
-    private var mode = retrieveData("mode") { PumpMode.REPLACE }
+    private var mode by storedValue("mode") { PumpMode.REPLACE }
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
         idleTime = maxIdleTime // resets idle time for the case that the pump has already finished
         

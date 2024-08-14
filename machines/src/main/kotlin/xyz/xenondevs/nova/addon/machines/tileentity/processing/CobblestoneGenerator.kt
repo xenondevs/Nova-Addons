@@ -74,7 +74,7 @@ class CobblestoneGenerator(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)
     
-    private var mode = retrieveData("mode") { Mode.COBBLESTONE }
+    private var mode by storedValue("mode") { Mode.COBBLESTONE }
     private var currentMode = mode
     private var mbUsed = 0L
     

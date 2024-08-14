@@ -116,12 +116,6 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
         event.isCancelled = !event.isRemove && event.updateReason != SELF_UPDATE_REASON
     }
     
-    override fun saveData() {
-        super.saveData()
-        storeData("currentRecipe", currentRecipe?.id)
-    }
-    
-    
     @TileEntityMenuClass
     inner class MechanicalPressMenu : GlobalTileEntityMenu() {
         

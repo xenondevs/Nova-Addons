@@ -74,17 +74,12 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     
-    private var mode = retrieveData("mode") { FluidInfuserRecipe.InfuserMode.INSERT }
+    private var mode by storedValue("mode") { FluidInfuserRecipe.InfuserMode.INSERT }
     
     private var recipe: FluidInfuserRecipe? = null
     private val recipeTime: Int
         get() = (recipe!!.time.toDouble() / upgradeHolder.getValue(UpgradeTypes.SPEED)).roundToInt()
     private var timePassed = 0
-    
-    override fun saveData() {
-        super.saveData()
-        storeData("mode", mode)
-    }
     
     private fun handleInputInventoryUpdate(event: ItemPreUpdateEvent) {
         event.isCancelled = !event.isRemove && RecipeManager.getConversionRecipeFor(RecipeTypes.FLUID_INFUSER, event.newItem!!) == null

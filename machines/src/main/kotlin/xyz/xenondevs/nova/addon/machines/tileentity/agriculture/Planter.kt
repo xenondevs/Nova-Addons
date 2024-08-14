@@ -74,7 +74,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         Region.inFrontOf(this, size, size, 1, 0)
     }
     
-    private var autoTill = retrieveData("autoTill") { true }
+    private var autoTill by storedValue("autoTill") { true }
     private var timePassed = 0
     
     override fun handleTick() {
@@ -183,11 +183,6 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             return
         
         hoesInventory.modifyItem(null, 0) { it?.damage(1, pos.world) }
-    }
-    
-    override fun saveData() {
-        super.saveData()
-        storeData("autoTill", autoTill)
     }
     
     @TileEntityMenuClass

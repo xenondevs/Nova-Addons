@@ -57,7 +57,7 @@ class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)
     private var mbUsed = 0L
-    private var mode = retrieveData("mode") { Mode.ICE }
+    private var mode by storedValue("mode") { Mode.ICE }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
         event.isCancelled = !event.isRemove && event.updateReason != SELF_UPDATE_REASON
@@ -90,11 +90,6 @@ class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             
             menuContainer.forEachMenu(FreezerMenu::updateProgress)
         }
-    }
-    
-    override fun saveData() {
-        super.saveData()
-        storeData("mode", mode)
     }
     
     @TileEntityMenuClass
