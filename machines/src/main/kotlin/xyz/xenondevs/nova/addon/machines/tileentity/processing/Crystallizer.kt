@@ -90,6 +90,7 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     override fun handleDisable() {
         super.handleDisable()
         itemDisplay.remove()
+        particleTask.stop()
     }
     
     private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {

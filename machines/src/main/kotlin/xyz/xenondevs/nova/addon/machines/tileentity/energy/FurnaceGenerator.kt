@@ -88,6 +88,10 @@ class FurnaceGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound
             }
         }
     
+    override fun handleDisable() {
+        particleTask.stop()
+    }
+    
     override fun handleTick() {
         if (currentBurnTime >= totalBurnTime) {
             tryBurnItem()
