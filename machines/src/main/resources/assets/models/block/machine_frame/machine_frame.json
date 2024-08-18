@@ -2,7 +2,8 @@
 	"parent": "nova:block/base",
 	"textures": {
 		"1": "machines:block/machine_frame/machine_frame",
-		"2": "machines:block/machine_frame/machine_frame"
+		"2": "machines:block/machine_frame/machine_frame",
+		"particle": "#inside"
 	},
 	"elements": [
 		{
