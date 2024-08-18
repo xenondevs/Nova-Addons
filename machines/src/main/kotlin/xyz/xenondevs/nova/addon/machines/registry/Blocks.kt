@@ -46,6 +46,7 @@ import xyz.xenondevs.nova.world.block.NovaBlockBuilder
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
 import xyz.xenondevs.nova.world.block.TileEntityConstructor
+import xyz.xenondevs.nova.world.block.behavior.BlockDrops
 import xyz.xenondevs.nova.world.block.behavior.BlockSounds
 import xyz.xenondevs.nova.world.block.behavior.Breakable
 import xyz.xenondevs.nova.world.block.behavior.Bucketable
@@ -180,7 +181,7 @@ object Blocks : BlockRegistry by Machines.registry {
     
     private fun machineFrame(tier: String): NovaBlock =
         block("${tier}_machine_frame") {
-            behaviors(MACHINE_FRAME, BlockSounds(SoundGroup.METAL))
+            behaviors(MACHINE_FRAME, BlockSounds(SoundGroup.METAL), BlockDrops)
             models {
                 stateBacked(BackingStateCategory.LEAVES)
                 selectModel { getModel("block/machine_frame/$tier") }
