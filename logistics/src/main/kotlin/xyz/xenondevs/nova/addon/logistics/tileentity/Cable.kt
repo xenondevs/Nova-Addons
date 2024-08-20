@@ -114,7 +114,7 @@ open class Cable(
     
     override fun handleDisable() {
         super.handleDisable()
-        multiModel.close()
+        multiModel.clear()
         hitboxes.forEach { it.remove() }
         isValid = false
     }

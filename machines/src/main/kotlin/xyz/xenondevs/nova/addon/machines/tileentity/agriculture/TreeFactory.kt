@@ -74,7 +74,9 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder) // TODO: idle time works backwards here
     
     private var plantType = inputInventory.getItem(0)?.type
-    private val plant = FakeItemDisplay(pos.location.add(0.5, 1.0 / 16.0, 0.5), false)
+    private val plant = FakeItemDisplay(pos.location.add(0.5, 1.0 / 16.0, 0.5), false) { _, meta ->
+        meta.transformationInterpolationDuration = 1
+    }
     
     private var growthProgress = 0.0
     private var idleTimeLeft = 0
@@ -102,7 +104,7 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
                     if (growthProgress >= 1.0)
                         idleTimeLeft = maxIdleTime
                     
-                    updatePlantArmorStand()
+                    updatePlantEntity()
                 }
             } else {
                 idleTimeLeft--
@@ -129,9 +131,10 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         }
     }
     
-    private fun updatePlantArmorStand() {
+    private fun updatePlantEntity() {
         val size = growthProgress.coerceIn(0.0..1.0).toFloat()
         plant.updateEntityData(true) {
+            transformationInterpolationDelay = 0
             itemStack = plantType?.let { PLANTS[it]!!.miniature.model.clientsideProvider.get() }
             scale = Vector3f(size, size, size)
             translation = Vector3f(0.0f, 0.5f * size, 0.0f)
@@ -144,7 +147,7 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         } else {
             plantType = event.newItem?.type
             growthProgress = 0.0
-            updatePlantArmorStand()
+            updatePlantEntity()
         }
     }
     

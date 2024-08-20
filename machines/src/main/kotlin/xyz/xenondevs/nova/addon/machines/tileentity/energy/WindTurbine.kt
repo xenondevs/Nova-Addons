@@ -51,7 +51,7 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     
     override fun handleDisable() {
         super.handleDisable()
-        turbineModel.close()
+        turbineModel.clear()
     }
     
     private fun spawnModels() {
@@ -69,6 +69,8 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
                 )
             ))
         }
+        
+        turbineModel.useMetadata(false) { it.transformationInterpolationDuration = 1 }
     }
     
     override fun handleTick() {
@@ -81,15 +83,19 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         
         CoroutineScope(coroutineSupervisor).launch { 
             while (true) {
-                turbineModel.useMetadata {
-                    it.leftRotation = it.leftRotation.rotateAxis(
-                        Math.toRadians(rotationPerTick).toFloat(),
-                        0f, 0f, 1f,
-                        Quaternionf()
-                    )
-                }
+                rotate()
                 delay(50)
             }
+        }
+    }
+    
+    private fun rotate() {
+        turbineModel.useMetadata {
+            it.transformationInterpolationDelay = 0
+            it.leftRotation = it.leftRotation.rotateZ(
+                Math.toRadians(rotationPerTick).toFloat(),
+                Quaternionf()
+            )
         }
     }
     
