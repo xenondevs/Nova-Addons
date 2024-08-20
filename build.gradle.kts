@@ -76,3 +76,7 @@ subprojects {
         }
     }
 }
+
+tasks {
+    getByName("addonMetadata").enabled = false
+}
