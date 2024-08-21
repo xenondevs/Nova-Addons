@@ -15,6 +15,14 @@ fun efficiencyDividedValue(
     upgradeHolder.getValueProvider(UpgradeTypes.EFFICIENCY)
 ) { baseValue, efficiency -> (baseValue / efficiency).roundToLong() }
 
+fun efficiencyMultipliedValue(
+    value: Provider<Long>,
+    upgradeHolder: UpgradeHolder
+): Provider<Long> = combinedProvider(
+    value,
+    upgradeHolder.getValueProvider(UpgradeTypes.EFFICIENCY)
+) { baseValue, efficiency -> (baseValue * efficiency).roundToLong() }
+
 @JvmName("speedMultipliedValueDouble")
 fun speedMultipliedValue(
     value: Provider<Double>,

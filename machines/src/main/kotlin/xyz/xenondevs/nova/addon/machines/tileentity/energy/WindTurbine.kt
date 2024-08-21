@@ -10,7 +10,7 @@ import xyz.xenondevs.commons.provider.immutable.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.Models
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.efficiencyMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -42,7 +42,7 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val turbineModel = MovableMultiModel()
     private val altitude = (pos.y - pos.world.minHeight) / (pos.world.maxHeight - pos.world.minHeight - 1).toDouble()
     private val rotationPerTick = altitude * 15.0
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder).map { (it * altitude).roundToLong() }
+    private val energyPerTick by efficiencyMultipliedValue(ENERGY_PER_TICK, upgradeHolder).map { (it * altitude).roundToLong() }
     
     override fun handleEnable() {
         super.handleEnable()
