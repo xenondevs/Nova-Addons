@@ -78,9 +78,9 @@ class CreativePowerCell(pos: BlockPos, state: NovaBlockState, data: Compound) : 
 }
 
 private val BASIC_CAPACITY = Blocks.BASIC_POWER_CELL.config.entry<Long>("capacity")
-private val ADVANCED_CAPACITY = Blocks.BASIC_POWER_CELL.config.entry<Long>("capacity")
-private val ELITE_CAPACITY = Blocks.BASIC_POWER_CELL.config.entry<Long>("capacity")
-private val ULTIMATE_CAPACITY = Blocks.BASIC_POWER_CELL.config.entry<Long>("capacity")
+private val ADVANCED_CAPACITY = Blocks.ADVANCED_POWER_CELL.config.entry<Long>("capacity")
+private val ELITE_CAPACITY = Blocks.ELITE_POWER_CELL.config.entry<Long>("capacity")
+private val ULTIMATE_CAPACITY = Blocks.ULTIMATE_POWER_CELL.config.entry<Long>("capacity")
 
 class BasicPowerCell(pos: BlockPos, state: NovaBlockState, data: Compound) : PowerCell(BASIC_CAPACITY, pos, state, data)
 class AdvancedPowerCell(pos: BlockPos, state: NovaBlockState, data: Compound) : PowerCell(ADVANCED_CAPACITY, pos, state, data)
