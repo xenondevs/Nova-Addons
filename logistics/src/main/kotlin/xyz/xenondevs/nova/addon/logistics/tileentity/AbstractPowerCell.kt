@@ -30,7 +30,7 @@ private class InfiniteEnergyHolder(compound: Provider<Compound>) : EnergyHolder 
             .orElseLazily { CUBE_FACES.associateWithTo(enumMap()) { NetworkConnectionType.EXTRACT } }
     
     override var energy = Long.MAX_VALUE
-    override val requestedEnergy = 0L
+    override val maxEnergy = Long.MAX_VALUE
     
 }
 
