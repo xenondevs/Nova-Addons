@@ -53,7 +53,9 @@ import xyz.xenondevs.nova.world.block.behavior.Bucketable
 import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
 import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
 import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
+import xyz.xenondevs.nova.world.block.behavior.Waterloggable
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
+import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties
 import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.FACING_HORIZONTAL
 import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
@@ -181,7 +183,8 @@ object Blocks : BlockRegistry by Machines.registry {
     
     private fun machineFrame(tier: String): NovaBlock =
         block("${tier}_machine_frame") {
-            behaviors(MACHINE_FRAME, BlockSounds(SoundGroup.METAL), BlockDrops)
+            stateProperties(DefaultScopedBlockStateProperties.WATERLOGGED)
+            behaviors(MACHINE_FRAME, BlockSounds(SoundGroup.METAL), BlockDrops, Waterloggable)
             models {
                 stateBacked(BackingStateCategory.LEAVES)
                 selectModel { getModel("block/machine_frame/$tier") }
