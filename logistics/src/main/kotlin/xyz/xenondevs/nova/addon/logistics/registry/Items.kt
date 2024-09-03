@@ -42,7 +42,10 @@ object Items : ItemRegistry by Logistics.registry {
     val ELITE_ITEM_FILTER = registerItem("elite_item_filter", ItemFilterBehavior)
     val ULTIMATE_ITEM_FILTER = registerItem("ultimate_item_filter", ItemFilterBehavior)
     
-    val WRENCH = registerItem("wrench", WrenchBehavior)
+    val WRENCH = item("wrench") {
+        behaviors(WrenchBehavior)
+        maxStackSize(1)
+    }
     
     private fun cable(block: NovaBlock, tier: String) = item(block) {
         models {
