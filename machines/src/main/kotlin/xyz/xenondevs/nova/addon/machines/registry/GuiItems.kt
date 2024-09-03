@@ -33,13 +33,13 @@ object GuiItems : ItemRegistry by Machines.registry {
     val TP_GREEN_PLUS = guiItem("green_plus")
     val TP_RED_MINUS = guiItem("red_minus")
     
-    val AXE_PLACEHOLDER = tpGuiItem("placeholder/axe")
-    val HOE_PLACEHOLDER = tpGuiItem("placeholder/hoe")
-    val SHEARS_PLACEHOLDER = tpGuiItem("placeholder/shears")
-    val BOTTLE_PLACEHOLDER = tpGuiItem("placeholder/bottle")
-    val FISHING_ROD_PLACEHOLDER = tpGuiItem("placeholder/fishing_rod")
-    val MOB_CATCHER_PLACEHOLDER = tpGuiItem("placeholder/mob_catcher")
-    val SAPLING_PLACEHOLDER = tpGuiItem("placeholder/sapling")
+    val AXE_PLACEHOLDER = tpGuiItem("placeholder/axe", null)
+    val HOE_PLACEHOLDER = tpGuiItem("placeholder/hoe", null)
+    val SHEARS_PLACEHOLDER = tpGuiItem("placeholder/shears", null)
+    val BOTTLE_PLACEHOLDER = tpGuiItem("placeholder/bottle", null)
+    val FISHING_ROD_PLACEHOLDER = tpGuiItem("placeholder/fishing_rod", null)
+    val MOB_CATCHER_PLACEHOLDER = tpGuiItem("placeholder/mob_catcher", null)
+    val SAPLING_PLACEHOLDER = tpGuiItem("placeholder/sapling", null)
     
     val ARROW_PROGRESS = progressItem("progress/arrow", 0..16)
     val ENERGY_PROGRESS = progressItem("progress/energy", 0..16)
@@ -51,8 +51,8 @@ object GuiItems : ItemRegistry by Machines.registry {
     val TP_FLUID_PROGRESS_LEFT_RIGHT = tpProgressItem("progress/fluid/left_right", 0..16)
     val TP_FLUID_PROGRESS_RIGHT_LEFT = tpProgressItem("progress/fluid/right_left", 0..16)
     
-    private fun guiItem(name: String, localizedName: String = ""): NovaItem = item("gui/opaque/$name") {
-        localizedName(localizedName)
+    private fun guiItem(name: String, localizedName: String? = ""): NovaItem = item("gui/opaque/$name") {
+        if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         
         models {
@@ -63,8 +63,8 @@ object GuiItems : ItemRegistry by Machines.registry {
         }
     }
     
-    private fun tpGuiItem(name: String, localizedName: String = ""): NovaItem = item("gui/transparent/$name") {
-        localizedName(localizedName)
+    private fun tpGuiItem(name: String, localizedName: String? = ""): NovaItem = item("gui/transparent/$name") {
+        if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         
         models {
