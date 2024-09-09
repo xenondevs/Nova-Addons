@@ -6,14 +6,11 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
-import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -45,21 +42,15 @@ object MobCatcherBehavior : ItemBehavior {
             && ProtectionManager.canInteractWithEntity(player, clicked, itemStack)
             && getEntityData(itemStack) == null
         ) {
-            val fakeDamageEvent = EntityDamageByEntityEvent(player, clicked, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Double.MAX_VALUE)
-            Bukkit.getPluginManager().callEvent(fakeDamageEvent)
+            val newCatcher = Items.MOB_CATCHER.createItemStack()
+            absorbEntity(newCatcher, clicked)
             
-            if (!fakeDamageEvent.isCancelled && fakeDamageEvent.damage != 0.0) {
-                val newCatcher = Items.MOB_CATCHER.createItemStack()
-                absorbEntity(newCatcher, clicked)
-                
-                player.inventory.getItem(event.hand).amount -= 1
-                player.inventory.addPrioritized(event.hand, newCatcher)
-                
-                if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
-                
-                event.isCancelled = true
-            }
+            player.inventory.getItem(event.hand).amount -= 1
+            player.inventory.addPrioritized(event.hand, newCatcher)
             
+            if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
+            
+            event.isCancelled = true
         }
     }
     
