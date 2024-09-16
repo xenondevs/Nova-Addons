@@ -1,6 +1,8 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
 import kotlinx.coroutines.runBlocking
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.damagesource.DamageTypes
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
@@ -17,11 +19,13 @@ import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
+import xyz.xenondevs.nova.registry.vanilla.VanillaRegistries
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.EntityUtils
+import xyz.xenondevs.nova.util.nmsEntity
+import xyz.xenondevs.nova.util.toVec3
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
@@ -37,7 +41,7 @@ private val ENERGY_PER_TICK = MOB_KILLER.config.entry<Long>("energy_per_tick")
 private val ENERGY_PER_DAMAGE = MOB_KILLER.config.entry<Long>("energy_per_damage")
 private val IDLE_TIME = MOB_KILLER.config.entry<Int>("idle_time")
 private val KILL_LIMIT by MOB_KILLER.config.entry<Int>("kill_limit")
-private val DAMAGE by MOB_KILLER.config.entry<Double>("damage")
+private val DAMAGE by MOB_KILLER.config.entry<Float>("damage")
 private val MIN_RANGE = MOB_KILLER.config.entry<Int>("range", "min")
 private val MAX_RANGE = MOB_KILLER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by MOB_KILLER.config.entry<Int>("range", "default")
@@ -46,7 +50,6 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
-    private val fakePlayer = EntityUtils.createFakePlayer(pos.location).bukkitEntity
     
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
         val size = 1 + it * 2
@@ -76,8 +79,9 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                     .filter { it.location in region && runBlocking { ProtectionManager.canHurtEntity(this@MobKiller, it, null) } } // TODO non-blocking
                     .take(killLimit)
                     .forEach { entity ->
-                        energyHolder.energy -= energyPerDamage
-                        entity.damage(DAMAGE, fakePlayer)
+                        // TODO: custom damage type
+                        val damageType = VanillaRegistries.DAMAGE_TYPE.getHolderOrThrow(DamageTypes.MOB_ATTACK)
+                        entity.nmsEntity.hurt(DamageSource(damageType, pos.location.toVec3()), DAMAGE)
                     }
             }
         }
