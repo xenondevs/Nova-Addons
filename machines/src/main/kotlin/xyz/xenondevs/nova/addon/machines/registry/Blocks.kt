@@ -106,6 +106,7 @@ object Blocks : BlockRegistry by Machines.registry {
     val QUARRY = interactiveTileEntity("quarry", ::Quarry) {
         behaviors(Quarry, STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
+        models { selectModel { defaultModel.rotated() } }
     }
     val WIND_TURBINE = interactiveTileEntity("wind_turbine", ::WindTurbine) {
         behaviors(WindTurbineBehavior, METAL, BlockSounds(SoundGroup.METAL))
