@@ -190,7 +190,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     
     private fun updateBounds(checkPermission: Boolean): Boolean {
         val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
-        val (minX, maxX, minZ, maxZ) = getMinMaxPositions(
+        val (minX, minZ, maxX, maxZ) = getMinMaxPositions(
             pos,
             sizeX, sizeZ,
             BlockSide.BACK.getBlockFace(facing), BlockSide.RIGHT.getBlockFace(facing)
@@ -665,7 +665,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             val minZ = min(pos.z, pos.z + distanceZ)
             val maxZ = max(pos.z, pos.z + distanceZ)
             
-            return intArrayOf(minX, maxX, minZ, maxZ)
+            return intArrayOf(minX, minZ, maxX, maxZ)
         }
         
     }
