@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.jetpacks.ui.JetpackOverlay
 import xyz.xenondevs.nova.config.Configs
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.overlay.actionbar.ActionbarOverlayManager
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.broadcast

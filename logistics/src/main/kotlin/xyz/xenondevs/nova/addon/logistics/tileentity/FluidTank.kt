@@ -3,10 +3,11 @@ package xyz.xenondevs.nova.addon.logistics.tileentity
 import org.bukkit.entity.Display
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.immutable.provider
+import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
 import xyz.xenondevs.nova.addon.logistics.registry.Models
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.menu.FluidBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu

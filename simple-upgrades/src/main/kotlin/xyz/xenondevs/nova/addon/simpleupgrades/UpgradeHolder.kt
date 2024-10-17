@@ -1,10 +1,10 @@
 package xyz.xenondevs.nova.addon.simpleupgrades
 
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.commons.provider.AbstractProvider
 import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.commons.provider.combinedProvider
+import xyz.xenondevs.commons.provider.mutableProvider
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.UpgradesGui
-import xyz.xenondevs.nova.config.ConfigProvider
 import xyz.xenondevs.nova.world.block.tileentity.TileEntity
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -23,15 +23,25 @@ class UpgradeHolder(
     upgrades: Provider<MutableMap<UpgradeType<*>, Int>>
 ) {
     
-    internal val upgrades: MutableMap<UpgradeType<*>, Int> by upgrades
-    private val config: ConfigProvider = tileEntity.block.config
-    private val valueProviders: Map<UpgradeType<*>, ModifierProvider<*>> = allowed.associateWithTo(HashMap()) { ModifierProvider(it) }
+    private val config = tileEntity.block.config
+    private val upgradeCountProviders = allowed.associateWithTo(HashMap()) { type ->
+        val countProvider = mutableProvider { upgrades.get()[type] ?: 0 }
+        countProvider.subscribe { upgrades.get()[type] = it }
+        countProvider
+    }
+    private val valueProviders: Map<UpgradeType<*>, Provider<*>> = allowed.associateWithTo(HashMap()) { type ->
+        combinedProvider(
+            type.getValueListProvider(config), upgradeCountProviders[type]!!
+        ) { valueList, level ->
+            valueList[level.coerceIn(0..valueList.lastIndex)]
+        }
+    }
     internal val gui = lazy { UpgradesGui(this) { tileEntity.menuContainer.openWindow(it) } }
     
     /**
      * Gets the upgrade value of the given [type] based on the amount of upgrades this [UpgradeHolder] contains.
      */
-    fun <T> getValue(type: UpgradeType<T>): T = type.getValue(config, upgrades[type] ?: 0)
+    fun <T> getValue(type: UpgradeType<T>): T = type.getValue(config, upgradeCountProviders[type]?.get() ?: 0)
     
     /**
      * Gets a provider for the upgrade value of the given [type].
@@ -42,12 +52,12 @@ class UpgradeHolder(
     /**
      * Gets the amount of upgrades that this [UpgradeHolder] contains for the given [type].
      */
-    fun getLevel(type: UpgradeType<*>): Int = upgrades[type] ?: 0
+    fun getLevel(type: UpgradeType<*>): Int = upgradeCountProviders[type]?.get() ?: 0
     
     /**
      * Checks whether this [UpgradeHolder] contains any upgrades of the given [type].
      */
-    fun hasUpgrade(type: UpgradeType<*>): Boolean = type in upgrades
+    fun hasUpgrade(type: UpgradeType<*>): Boolean = getLevel(type) > 0
     
     /**
      * Gets the maximum amount of upgrades that this [UpgradeHolder] can contain for the given [type].
@@ -57,7 +67,11 @@ class UpgradeHolder(
     /**
      * Gets the [ItemStack] representation of all upgrades that this [UpgradeHolder] contains.
      */
-    fun getUpgradeItems(): List<ItemStack> = upgrades.map { (type, amount) -> type.item.createItemStack(amount) }
+    fun getUpgradeItems(): List<ItemStack> = upgradeCountProviders.asSequence()
+        .map { (type, provider) -> type to provider.get() }
+        .filter { (_, amount) -> amount > 0 }
+        .map { (type, amount) -> type.item.createItemStack(amount) }
+        .toList()
     
     /**
      * Tries adding the given amount of upgrades and returns the amount of upgrades that wasn't added.
@@ -68,13 +82,14 @@ class UpgradeHolder(
         
         val limit = getLimit(type)
         
-        val current = upgrades[type] ?: 0
+        val currentProvider = upgradeCountProviders[type]!!
+        val current = currentProvider.get()
         if (limit - current < amount) {
-            upgrades[type] = limit
+            currentProvider.set(limit)
             handleUpgradeUpdates()
             return amount - (limit - current)
         } else {
-            upgrades[type] = current + amount
+            currentProvider.set(current + amount)
             handleUpgradeUpdates()
             return 0
         }
@@ -84,13 +99,18 @@ class UpgradeHolder(
      * Removes one or all upgrades of the given type and returns the [ItemStack] of removed upgrades.
      */
     fun removeUpgrade(type: UpgradeType<*>, all: Boolean): ItemStack? {
-        val amount = upgrades[type] ?: return null
+        if (type !in allowed)
+            return null
+        
+        val amountProvider = upgradeCountProviders[type]!!
+        val amount = amountProvider.get()
+        if (amount <= 0)
+            return null
         
         if (all) {
-            upgrades.remove(type)
+            amountProvider.set(0)
         } else {
-            if (amount - 1 == 0) upgrades.remove(type)
-            else upgrades[type] = amount - 1
+            amountProvider.set(amount - 1)
         }
         
         handleUpgradeUpdates()
@@ -98,24 +118,8 @@ class UpgradeHolder(
     }
     
     private fun handleUpgradeUpdates() {
-        valueProviders.values.forEach(Provider<*>::update)
-        
         if (gui.isInitialized())
             gui.value.updateUpgrades()
-    }
-    
-    private inner class ModifierProvider<T>(private val type: UpgradeType<T>) : AbstractProvider<T>() {
-        
-        private val parent = type.getValueListProvider(config)
-        
-        init {
-            parent.addChild(this)
-        }
-        
-        override fun loadValue(): T {
-            return getValue(type)
-        }
-        
     }
     
 }

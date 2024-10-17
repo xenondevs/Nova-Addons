@@ -1,14 +1,15 @@
 package xyz.xenondevs.nova.addon.simpleupgrades
 
 import net.minecraft.resources.ResourceLocation
+import org.spongepowered.configurate.ConfigurationNode
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.immutable.map
-import xyz.xenondevs.commons.provider.immutable.orElse
-import xyz.xenondevs.commons.provider.immutable.requireNotNull
+import xyz.xenondevs.commons.provider.map
+import xyz.xenondevs.commons.provider.orElse
+import xyz.xenondevs.commons.provider.requireNotNull
 import xyz.xenondevs.commons.reflection.createType
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypeRegistry
-import xyz.xenondevs.nova.config.ConfigProvider
 import xyz.xenondevs.nova.config.Configs
+import xyz.xenondevs.nova.config.optionalEntry
 import xyz.xenondevs.nova.world.item.NovaItem
 import kotlin.reflect.KType
 
@@ -29,21 +30,21 @@ class UpgradeType<T> internal constructor(
     
     private val listValueType = createType(List::class, valueType)
     private val globalConfig = Configs["${id.namespace}:upgrade_values"]
-    private val valueListProviders = HashMap<ConfigProvider, Provider<List<T>>>()
-    private val valueProviders = HashMap<ConfigProvider, HashMap<Int, Provider<T>>>()
+    private val valueListProviders = HashMap<Provider<ConfigurationNode>, Provider<List<T>>>()
+    private val valueProviders = HashMap<Provider<ConfigurationNode>, HashMap<Int, Provider<T>>>()
     
     /**
      * Gets the upgrade value for the given [level] configured in [config].
      * If the given [config] does not configure upgrade values, the global config will be used instead.
      */
-    fun getValue(config: ConfigProvider, level: Int): T =
+    fun getValue(config: Provider<ConfigurationNode>, level: Int): T =
         getValueProvider(config, level).get()
     
     /**
      * Gets a provider for the upgrade value for the given [level] configured in [config].
      * If the given [config] does not configure upgrade values, the global config will be used instead.
      */
-    fun getValueProvider(config: ConfigProvider, level: Int): Provider<T> =
+    fun getValueProvider(config: Provider<ConfigurationNode>, level: Int): Provider<T> =
         valueProviders
             .getOrPut(config, ::HashMap)
             .getOrPut(level) { getValueListProvider(config).map { list -> list[level.coerceIn(0..list.lastIndex)] } }
@@ -52,14 +53,14 @@ class UpgradeType<T> internal constructor(
      * Gets the list of upgrade values configured in [config].
      * If the given [config] does not configure upgrade values, the global config will be used instead.
      */
-    fun getValueList(config: ConfigProvider): List<T> =
+    fun getValueList(config: Provider<ConfigurationNode>): List<T> =
         getValueListProvider(config).get()
     
     /**
      * Gets a provider for the list of upgrade values configured in [config].
      * If the given [config] does not configure upgrade values, the global config will be used instead.
      */
-    fun getValueListProvider(config: ConfigProvider): Provider<List<T>> =
+    fun getValueListProvider(config: Provider<ConfigurationNode>): Provider<List<T>> =
         valueListProviders.getOrPut(config) {
             config.optionalEntry<List<T>>(listValueType, "upgrade_values", id.path)
                 .orElse(globalConfig.optionalEntry(listValueType, id.path))

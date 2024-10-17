@@ -9,6 +9,7 @@ import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.menu.StaticFluidBar
 import xyz.xenondevs.nova.ui.menu.explorer.recipes.createRecipeChoiceItem
 import xyz.xenondevs.nova.ui.menu.explorer.recipes.group.RecipeGroup

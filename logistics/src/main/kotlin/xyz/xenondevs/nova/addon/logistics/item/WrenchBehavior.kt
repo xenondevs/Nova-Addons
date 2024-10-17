@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.collections.after
 import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.immutable.provider
+import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound

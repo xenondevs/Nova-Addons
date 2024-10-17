@@ -102,7 +102,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
         
         val limit = upgradeHolder.getLimit(upgradeType)
         
-        val currentAmount = upgradeHolder.upgrades[upgradeType] ?: 0
+        val currentAmount = upgradeHolder.getLevel(upgradeType)
         if (currentAmount == limit) {
             event.isCancelled = true
             return
@@ -139,7 +139,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
             builder.setDisplayName(Component.translatable(
                 "menu.${typeId.namespace}.upgrades.type.${typeId.path}",
                 NamedTextColor.GRAY,
-                Component.text(upgradeHolder.upgrades[type] ?: 0),
+                Component.text(upgradeHolder.getLevel(type)),
                 Component.text(upgradeHolder.getLimit(type))
             ))
             
@@ -163,7 +163,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
         }
         
         override fun getItemProvider(): ItemProvider =
-            DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = upgradeHolder.upgrades[type] ?: 0)
+            DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = upgradeHolder.getLevel(type))
         
         override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
         

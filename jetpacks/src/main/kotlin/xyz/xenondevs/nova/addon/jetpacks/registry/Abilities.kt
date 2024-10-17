@@ -3,6 +3,7 @@ package xyz.xenondevs.nova.addon.jetpacks.registry
 import xyz.xenondevs.nova.addon.jetpacks.Jetpacks
 import xyz.xenondevs.nova.addon.jetpacks.ability.JetpackFlyAbility
 import xyz.xenondevs.nova.addon.registry.AbilityTypeRegistry
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 

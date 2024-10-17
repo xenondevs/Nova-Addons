@@ -11,6 +11,7 @@ import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterMenu
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.NbtItemFilter
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting

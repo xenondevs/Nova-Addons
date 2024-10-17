@@ -1,7 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.util
 
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.immutable.combinedProvider
+import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.roundToInt

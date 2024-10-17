@@ -7,7 +7,7 @@ import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.commons.provider.mutable.mutableProvider
+import xyz.xenondevs.commons.provider.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_KILLER
@@ -18,6 +18,7 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.registry.vanilla.VanillaRegistries
 import xyz.xenondevs.nova.ui.menu.EnergyBar

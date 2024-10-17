@@ -2,13 +2,14 @@ package xyz.xenondevs.nova.addon.logistics.tileentity
 
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.cbf.provider.entry
+import xyz.xenondevs.cbf.entry
 import xyz.xenondevs.commons.collections.enumMap
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.immutable.provider
-import xyz.xenondevs.commons.provider.mutable.orElseLazily
+import xyz.xenondevs.commons.provider.provider
+import xyz.xenondevs.commons.provider.orElseLazily
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
@@ -67,7 +68,7 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
 class CreativePowerCell(pos: BlockPos, state: NovaBlockState, data: Compound) : AbstractPowerCell(pos, state, data) {
     
     override val energyHolder: EnergyHolder
-    override val energyBar = EnergyBar(3, provider(Long.MAX_VALUE), provider(Long.MAX_VALUE), provider(0L), provider(0L))
+    override val energyBar = EnergyBar(3, provider(Long.MAX_VALUE), provider(Long.MAX_VALUE), { 0L }, { 0L })
     
     init {
         val energyHolder = InfiniteEnergyHolder(storedValue("energyHolder", ::Compound))

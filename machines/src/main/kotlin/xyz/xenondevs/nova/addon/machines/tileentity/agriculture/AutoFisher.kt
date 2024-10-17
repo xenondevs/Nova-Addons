@@ -8,7 +8,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.provider.mutable.mutableProvider
+import xyz.xenondevs.commons.provider.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
@@ -21,6 +21,7 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.GlobalValues
+import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
