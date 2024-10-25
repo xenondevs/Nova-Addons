@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
@@ -9,6 +10,7 @@ import org.bukkit.event.weather.LightningStrikeEvent.Cause
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.LIGHTNING_EXCHANGER
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
@@ -18,7 +20,6 @@ import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.util.advance
-import xyz.xenondevs.nova.util.registerEvents
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
@@ -74,7 +75,7 @@ class LightningExchanger(pos: BlockPos, blockState: NovaBlockState, data: Compou
     private companion object LightningHandler : Listener {
         
         init {
-            registerEvents()
+            Bukkit.getPluginManager().registerEvents(this, Machines)
         }
         
         @EventHandler

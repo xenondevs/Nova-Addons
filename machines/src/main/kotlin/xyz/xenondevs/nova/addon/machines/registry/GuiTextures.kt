@@ -1,12 +1,13 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
 import xyz.xenondevs.nova.addon.machines.Machines
+import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.GuiTextureRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 
 @Init(stage = InitStage.PRE_PACK)
-object GuiTextures : GuiTextureRegistry by Machines.registry {
+object GuiTextures : GuiTextureRegistry, AddonHolder by Machines {
     
     val CONFIGURE_POTION = guiTexture("configure_potion") { texture { path("gui/configure_potion") } }
     val ELECTRIC_BREWING_STAND = guiTexture("electric_brewing_stand") { texture { path("gui/electric_brewing_stand") } }

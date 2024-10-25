@@ -2,13 +2,14 @@ package xyz.xenondevs.nova.addon.logistics.registry
 
 import org.bukkit.Material
 import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
-object GuiItems : ItemRegistry by Logistics.registry {
+object GuiItems : ItemRegistry, AddonHolder by Logistics {
     
     val ITEM_FILTER_PLACEHOLDER = tpGuiItem("gui/placeholder/item_filter", null)
     val TRASH_CAN_PLACEHOLDER = tpGuiItem("gui/placeholder/trash_can", null)

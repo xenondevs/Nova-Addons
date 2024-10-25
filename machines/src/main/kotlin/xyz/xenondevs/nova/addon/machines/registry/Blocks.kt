@@ -37,6 +37,7 @@ import xyz.xenondevs.nova.addon.machines.tileentity.world.Pump
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Quarry
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Sprinkler
 import xyz.xenondevs.nova.addon.machines.tileentity.world.StarCollector
+import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
@@ -61,7 +62,7 @@ import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 
 @Init(stage = InitStage.PRE_PACK)
-object Blocks : BlockRegistry by Machines.registry {
+object Blocks : BlockRegistry, AddonHolder by Machines {
     
     private val SAND = Breakable(0.5, VanillaToolCategories.SHOVEL, VanillaToolTiers.WOOD, false, Material.PURPLE_CONCRETE_POWDER)
     private val SANDSTONE = Breakable(0.8, VanillaToolCategories.PICKAXE, VanillaToolTiers.WOOD, true, Material.SANDSTONE)

@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.vanillahammers.registry
 
+import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
 import xyz.xenondevs.nova.addon.vanillahammers.item.Hammer
@@ -12,7 +13,7 @@ import xyz.xenondevs.nova.world.item.behavior.Fuel
 import xyz.xenondevs.nova.world.item.behavior.Tool
 
 @Init(stage = InitStage.PRE_PACK)
-object Items : ItemRegistry by VanillaHammers.registry {
+object Items : ItemRegistry, AddonHolder by VanillaHammers {
     
     val WOODEN_HAMMER = item("wooden_hammer") {
         behaviors(Tool, Hammer, Damageable, Enchantable, Fuel)

@@ -1,17 +1,11 @@
 package xyz.xenondevs.nova.addon.machines
 
+import org.bukkit.plugin.java.JavaPlugin
 import xyz.xenondevs.nova.addon.Addon
 import xyz.xenondevs.nova.update.ProjectDistributor
-import java.util.logging.Logger
 
-lateinit var LOGGER: Logger
-
-object Machines : Addon() {
+object Machines : JavaPlugin(), Addon {
     
     override val projectDistributors = listOf(ProjectDistributor.hangar("xenondevs/Machines"))
-    
-    override fun init() {
-        LOGGER = logger
-    }
     
 }
