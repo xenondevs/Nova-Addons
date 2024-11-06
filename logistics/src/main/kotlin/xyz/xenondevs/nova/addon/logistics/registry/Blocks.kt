@@ -72,7 +72,7 @@ object Blocks : BlockRegistry by Logistics.registry {
     val ULTIMATE_FLUID_TANK = tank("ultimate", ::UltimateFluidTank)
     val CREATIVE_FLUID_TANK = tank("creative", ::CreativeFluidTank)
     
-    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) { behaviors(CABLE, BlockSounds(SoundGroup.STONE)) }
+    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) { behaviors(OTHER, BlockSounds(SoundGroup.STONE)) }
     val FLUID_STORAGE_UNIT = interactiveTileEntity("fluid_storage_unit", ::FluidStorageUnit) { behaviors(Bucketable, OTHER, BlockSounds(SoundGroup.STONE)) }
     val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) { behaviors(OTHER, BlockSounds(SoundGroup.STONE)) }
     val TRASH_CAN = interactiveTileEntity("trash_can", ::TrashCan) {
