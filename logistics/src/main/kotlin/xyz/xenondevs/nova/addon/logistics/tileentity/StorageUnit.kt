@@ -11,6 +11,7 @@ import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.provider.mutable.MutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.VirtualInventory
+import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
@@ -20,7 +21,6 @@ import xyz.xenondevs.nova.addon.logistics.registry.Blocks.STORAGE_UNIT
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.item.takeUnlessEmpty
-import xyz.xenondevs.nova.util.runTaskLater
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
@@ -35,7 +35,7 @@ class StorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
     
     private val inventory = StorageUnitInventory(storedValue("type", true, ItemStack::empty), storedValue("amount", true) { 0 })
     private val inputInventory = VirtualInventory(null, 1).apply { setPreUpdateHandler(::handleInputInventoryUpdate) }
-    private val outputInventory = VirtualInventory(null, 1).apply { setPreUpdateHandler(::handleOutputInventoryUpdate) }
+    private val outputInventory = VirtualInventory(null, 1).apply { setPreUpdateHandler(::handlePreOutputInventoryUpdate); setPostUpdateHandler(::handlePostOutputInventoryUpdate) }
     
     init {
         storedItemHolder(inventory to NetworkConnectionType.BUFFER)
@@ -46,16 +46,21 @@ class StorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
             event.isCancelled = true
     }
     
-    private fun handleOutputInventoryUpdate(event: ItemPreUpdateEvent) {
+    private fun handlePreOutputInventoryUpdate(event: ItemPreUpdateEvent) {
         if (event.updateReason == SELF_UPDATE_REASON)
             return
         
-        if (event.isAdd || event.isSwap) {
+        if (!event.isRemove) {
             event.isCancelled = true
-        } else if (event.isRemove && !inventory.type.isEmpty) {
-            inventory.take(0, event.removedAmount)
-            runTaskLater(1) { menuContainer.forEachMenu(StorageUnitMenu::update) }
         }
+    }
+    
+    private fun handlePostOutputInventoryUpdate(event: ItemPostUpdateEvent) {
+        if (event.updateReason == SELF_UPDATE_REASON)
+            return
+        
+        // preUpdateHandler enforces that only remove is possible
+        inventory.take(0, event.removedAmount)
     }
     
     private fun updateOutputSlot() {
