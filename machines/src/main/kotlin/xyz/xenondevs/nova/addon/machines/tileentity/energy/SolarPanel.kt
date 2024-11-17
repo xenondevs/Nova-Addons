@@ -7,7 +7,7 @@ import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SOLAR_PANEL
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.efficiencyMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -34,7 +34,7 @@ class SolarPanel(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_FACES)
     
-    private val peakEnergyOutput by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val peakEnergyOutput by efficiencyMultipliedValue(ENERGY_PER_TICK, upgradeHolder)
     
     private lateinit var obstructionTask: BukkitTask
     private var obstructed = true
