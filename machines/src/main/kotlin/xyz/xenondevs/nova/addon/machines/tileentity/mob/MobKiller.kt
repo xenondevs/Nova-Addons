@@ -73,10 +73,9 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                 
                 val killLimit = min((energyHolder.energy / energyPerDamage).toInt(), KILL_LIMIT)
                 
-                pos.world.entities
-                    .asSequence()
+                pos.world.getNearbyEntities(region.toBoundingBox()).asSequence()
                     .filterIsInstance<Mob>()
-                    .filter { it.location in region && runBlocking { ProtectionManager.canHurtEntity(this@MobKiller, it, null) } } // TODO non-blocking
+                    .filter { runBlocking { ProtectionManager.canHurtEntity(this@MobKiller, it, null) } } // TODO non-blocking
                     .take(killLimit)
                     .forEach { entity ->
                         // TODO: custom damage type
