@@ -79,10 +79,10 @@ class VacuumChest(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
         items.clear()
         
         if (serverTick % 10 == 0) {
-            pos.world.entities.forEach {
+            pos.world.getNearbyEntities(region.toBoundingBox()).forEach {
                 if (it is Item
-                    && it.location in region
                     && filter?.allows(it.itemStack) != false
+                    && inventory.canHold(it.itemStack.clone().apply { amount = 1 })
                     && runBlocking { ProtectionManager.canInteractWithEntity(this@VacuumChest, it, null) } // TODO: non-blocking
                 ) {
                     items += it
