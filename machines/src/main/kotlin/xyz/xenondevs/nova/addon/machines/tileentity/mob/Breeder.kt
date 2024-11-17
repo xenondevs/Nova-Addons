@@ -23,7 +23,6 @@ import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.EntityUtils
-import xyz.xenondevs.nova.util.getSurroundingChunks
 import xyz.xenondevs.nova.util.nmsEntity
 import xyz.xenondevs.nova.util.unwrap
 import xyz.xenondevs.nova.world.BlockPos
@@ -88,10 +87,10 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             if (idleTime++ >= mxIdleTime) {
                 idleTime = 0
                 
-                val breedableEntities = pos.location.chunk
-                    .getSurroundingChunks(1, includeCurrent = true, ignoreUnloaded = true)
-                    .flatMap { it.entities.asList() }
+                val breedableEntities = pos.location.world
+                    .getNearbyEntities(region.toBoundingBox())
                     .filterIsInstance<Animals>()
+                
                 // TODO: protection check?
                 
                 var breedsLeft = min((energyHolder.energy / energyPerBreed).toInt(), BREED_LIMIT)
