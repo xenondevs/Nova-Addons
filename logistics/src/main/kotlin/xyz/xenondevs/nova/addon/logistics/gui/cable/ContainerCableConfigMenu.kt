@@ -56,7 +56,7 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
      *
      * Should only be called from the main thread.
      */
-    open fun updateGui() {
+    fun updateGui() {
         updatableItems.notifyWindows()
     }
     
