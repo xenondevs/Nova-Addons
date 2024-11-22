@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
+import net.minecraft.world.level.block.Blocks
 import org.bukkit.Material
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.block.StarShardsOre
@@ -37,7 +38,6 @@ import xyz.xenondevs.nova.addon.machines.tileentity.world.Pump
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Quarry
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Sprinkler
 import xyz.xenondevs.nova.addon.machines.tileentity.world.StarCollector
-import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
@@ -62,16 +62,16 @@ import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 
 @Init(stage = InitStage.PRE_PACK)
-object Blocks : BlockRegistry, AddonHolder by Machines {
+object Blocks : BlockRegistry by Machines.registry {
     
-    private val SAND = Breakable(0.5, VanillaToolCategories.SHOVEL, VanillaToolTiers.WOOD, false, Material.PURPLE_CONCRETE_POWDER)
-    private val SANDSTONE = Breakable(0.8, VanillaToolCategories.PICKAXE, VanillaToolTiers.WOOD, true, Material.SANDSTONE)
-    private val STONE = Breakable(3.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.WOOD, true, Material.NETHERITE_BLOCK)
-    private val LIGHT_METAL = Breakable(0.5, VanillaToolCategories.PICKAXE, VanillaToolTiers.WOOD, false, Material.IRON_BLOCK)
-    private val STONE_ORE = Breakable(3.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.STONE)
-    private val DEEPSLATE_ORE = Breakable(3.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.DEEPSLATE)
-    private val METAL = Breakable(5.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.WOOD, true, Material.IRON_BLOCK)
-    private val MACHINE_FRAME = Breakable(2.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.WOOD, true, Material.STONE)
+    private val SAND = Breakable(0.5, setOf(VanillaToolCategories.SHOVEL), VanillaToolTiers.WOOD, false, Material.PURPLE_CONCRETE_POWDER)
+    private val SANDSTONE = Breakable(0.8, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.WOOD, true, Material.SANDSTONE)
+    private val STONE = Breakable(3.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.WOOD, true, Material.NETHERITE_BLOCK)
+    private val LIGHT_METAL = Breakable(0.5, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.WOOD, false, Material.IRON_BLOCK)
+    private val STONE_ORE = Breakable(3.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.STONE)
+    private val DEEPSLATE_ORE = Breakable(3.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.DEEPSLATE)
+    private val METAL = Breakable(5.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.WOOD, true, Material.IRON_BLOCK)
+    private val MACHINE_FRAME = Breakable(2.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.WOOD, true, Material.STONE)
     
     // TileEntities
     val AUTO_FISHER = stateBackedMachine("auto_fisher", ::AutoFisher)
@@ -117,7 +117,7 @@ object Blocks : BlockRegistry, AddonHolder by Machines {
     val WIND_TURBINE_EXTRA = block("wind_turbine_extra") {
         behaviors(WindTurbineSectionBehavior, METAL, BlockSounds(SoundGroup.METAL))
         stateProperties(ScopedBlockStateProperties.TURBINE_SECTION)
-        models { modelLess { Material.BARRIER.createBlockData() } }
+        models { modelLess { Blocks.BARRIER.defaultBlockState() } }
     }
     
     // Normal blocks

@@ -17,7 +17,7 @@ import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
 import xyz.xenondevs.nova.util.unwrap
 import java.util.*
 
-@Init(stage = InitStage.POST_PACK_PRE_WORLD)
+@Init(stage = InitStage.POST_WORLD)
 object Advancements {
     
     private val ROOT = advancement(Logistics, "root") {

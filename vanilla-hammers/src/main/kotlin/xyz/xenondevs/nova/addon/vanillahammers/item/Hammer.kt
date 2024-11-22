@@ -11,6 +11,9 @@ import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.DefaultContextIntentions
 import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.initialize.Init
+import xyz.xenondevs.nova.initialize.InitFun
+import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.util.BlockFaceUtils
 import xyz.xenondevs.nova.util.BlockUtils
@@ -104,7 +107,7 @@ class Hammer(
         Axis.Z -> Axis.X
     }
     
-    override fun modifyBlockDamage(player: Player, itemStack: ItemStack, damage: Double): Double {
+    override fun modifyBlockDamage(player: Player, itemStack: ItemStack, block: Block, damage: Double): Double {
         val blockCount = hammerWorkers[player]?.size ?: 1
         val slowdown = 1 + blockCount * slowdownPerBlock
         if (slowdown <= 1)
@@ -112,6 +115,7 @@ class Hammer(
         return damage / slowdown
     }
     
+    @Init(stage = InitStage.POST_WORLD)
     companion object : ItemBehaviorFactory<Hammer> {
         
         override fun create(item: NovaItem): Hammer {
@@ -126,7 +130,8 @@ class Hammer(
         
         private val hammerWorkers = HashMap<Player, Map<Block, Int>>()
         
-        init {
+        @InitFun
+        private fun startHammerTask() {
             runTaskTimer(0, 1) {
                 hammerWorkers.forEach { (player, workers) ->
                     val progress = player.destroyProgress

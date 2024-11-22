@@ -1,6 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
 import kotlinx.coroutines.runBlocking
+import net.minecraft.core.registries.Registries
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
 import org.bukkit.entity.Mob
@@ -20,12 +21,13 @@ import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.registry.vanilla.VanillaRegistries
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.util.getOrThrow
 import xyz.xenondevs.nova.util.nmsEntity
+import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.util.toVec3
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -80,8 +82,8 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                     .take(killLimit)
                     .forEach { entity ->
                         // TODO: custom damage type
-                        val damageType = VanillaRegistries.DAMAGE_TYPE.getHolderOrThrow(DamageTypes.MOB_ATTACK)
-                        entity.nmsEntity.hurt(DamageSource(damageType, pos.location.toVec3()), DAMAGE)
+                        val damageType = Registries.DAMAGE_TYPE.getOrThrow(DamageTypes.MOB_ATTACK)
+                        entity.nmsEntity.hurtServer(entity.world.serverLevel, DamageSource(damageType, pos.location.toVec3()), DAMAGE)
                     }
             }
         }

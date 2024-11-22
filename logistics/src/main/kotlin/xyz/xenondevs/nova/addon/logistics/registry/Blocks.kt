@@ -26,12 +26,10 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.UltimateFluidTank
 import xyz.xenondevs.nova.addon.logistics.tileentity.UltimatePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.VacuumChest
 import xyz.xenondevs.nova.addon.logistics.util.MathUtils
-import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.resources.layout.block.BackingStateCategory
-import xyz.xenondevs.nova.util.bukkitBlockData
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
 import xyz.xenondevs.nova.world.block.TileEntityConstructor
@@ -48,12 +46,12 @@ import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 import net.minecraft.world.level.block.state.properties.BlockStateProperties as MojangBlockStateProperties
 
 @Init(stage = InitStage.PRE_PACK)
-object Blocks : BlockRegistry, AddonHolder by Logistics {
+object Blocks : BlockRegistry by Logistics.registry {
     
-    private val CABLE = Breakable(0.0)
-    private val POWER_CELL = Breakable(4.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.IRON_BLOCK)
-    private val TANK = Breakable(2.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.GLASS)
-    private val OTHER = Breakable(4.0, VanillaToolCategories.PICKAXE, VanillaToolTiers.STONE, true, Material.COBBLESTONE)
+    private val CABLE = Breakable(0.0, requiresToolForDrops = false)
+    private val POWER_CELL = Breakable(4.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.IRON_BLOCK)
+    private val TANK = Breakable(2.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.GLASS)
+    private val OTHER = Breakable(4.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.COBBLESTONE)
     
     val BASIC_CABLE = cable("basic", ::BasicCable)
     val ADVANCED_CABLE = cable("advanced", ::AdvancedCable)
@@ -107,17 +105,14 @@ object Blocks : BlockRegistry, AddonHolder by Logistics {
                     when {
                         east && west -> Blocks.CHAIN.defaultBlockState()
                             .setValue(MojangBlockStateProperties.AXIS, Axis.X)
-                            .bukkitBlockData
                         
                         north && south -> Blocks.CHAIN.defaultBlockState()
                             .setValue(MojangBlockStateProperties.AXIS, Axis.Z)
-                            .bukkitBlockData
                         
                         up && down -> Blocks.CHAIN.defaultBlockState()
                             .setValue(MojangBlockStateProperties.AXIS, Axis.Y)
-                            .bukkitBlockData
                         
-                        else -> Material.STRUCTURE_VOID.createBlockData()
+                        else -> Blocks.STRUCTURE_VOID.defaultBlockState()
                     }
                 }
                 

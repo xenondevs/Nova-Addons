@@ -103,7 +103,7 @@ object MobCatcherBehavior : ItemBehavior {
     
     override fun modifyClientSideStack(player: Player?, itemStack: ItemStack, data: NamespacedCompound): ItemStack {
         val type = getEntityType(data) ?: return itemStack
-        val nmsType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.fromNamespaceAndPath("minecraft", type.key.key))
+        val nmsType = BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", type.key.key))
         
         val lore = itemStack.lore() ?: mutableListOf()
         lore += Component.translatable(

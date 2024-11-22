@@ -5,7 +5,7 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypeRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.util.byNameBinaryAdapter
+import xyz.xenondevs.nova.serialization.cbf.adapter.byNameBinaryAdapter
 
 @Init(stage = InitStage.PRE_PACK)
 internal object BinaryAdapters {

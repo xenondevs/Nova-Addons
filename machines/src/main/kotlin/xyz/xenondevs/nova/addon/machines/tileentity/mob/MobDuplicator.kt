@@ -135,7 +135,7 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         
         val spawnLocation = pos.location.add(0.5, 1.0, 0.5)
         val entity = if (keepNbt) {
-            EntityUtils.deserializeAndSpawn(entityData!!, spawnLocation, NBTUtils::removeItemData).bukkitEntity
+            EntityUtils.deserializeAndSpawn(entityData!!, spawnLocation, nbtModifier = NBTUtils::removeItemData).bukkitEntity
         } else spawnLocation.world!!.spawnEntity(spawnLocation, entityType!!)
         
         val nmsEntity = entity.nmsEntity

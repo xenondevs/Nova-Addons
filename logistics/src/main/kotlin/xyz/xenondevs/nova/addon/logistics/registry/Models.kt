@@ -2,14 +2,13 @@ package xyz.xenondevs.nova.addon.logistics.registry
 
 import org.joml.Vector3d
 import xyz.xenondevs.nova.addon.logistics.Logistics
-import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
-object Models : ItemRegistry, AddonHolder by Logistics {
+object Models : ItemRegistry by Logistics.registry {
     
     val CABLE_ATTACHMENT = item("cable_attachment") {
         hidden(true)

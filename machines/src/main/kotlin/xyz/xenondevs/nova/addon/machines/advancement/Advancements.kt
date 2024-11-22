@@ -124,7 +124,7 @@ private val WIRELESS_CHARGER = obtainNovaItemAdvancement(Machines, CHARGER, Item
 private val AUTO_FISHER = obtainNovaItemAdvancement(Machines, ROOT, Items.AUTO_FISHER)
 //</editor-fold>
 
-@Init(stage = InitStage.POST_PACK_PRE_WORLD)
+@Init(stage = InitStage.POST_WORLD)
 object Advancements {
     
     @InitFun

@@ -15,7 +15,7 @@ import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
 import xyz.xenondevs.nova.world.item.recipe.RecipeRegistry
 import xyz.xenondevs.nova.world.item.recipe.SingleResultRecipe
 
-@Init(stage = InitStage.POST_PACK_PRE_WORLD)
+@Init(stage = InitStage.POST_WORLD)
 object HardcodedRecipes {
     
     private val recipes: List<NovaRecipe> = listOf(

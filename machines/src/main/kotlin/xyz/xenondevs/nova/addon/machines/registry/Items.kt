@@ -2,20 +2,21 @@
 
 package xyz.xenondevs.nova.addon.machines.registry
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.inventory.EquipmentSlot
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
-import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.behavior.Damageable
 import xyz.xenondevs.nova.world.item.behavior.Enchantable
+import xyz.xenondevs.nova.world.item.behavior.Equippable
 import xyz.xenondevs.nova.world.item.behavior.Tool
-import xyz.xenondevs.nova.world.item.behavior.Wearable
 
 @Init(stage = InitStage.PRE_PACK)
-object Items : ItemRegistry, AddonHolder by Machines {
+object Items : ItemRegistry by Machines.registry {
     
     val WIND_TURBINE = item(Blocks.WIND_TURBINE) { models { selectModel { getModel("item/wind_turbine") } } }
     val SOLAR_PANEL = registerItem(Blocks.SOLAR_PANEL)
@@ -98,31 +99,33 @@ object Items : ItemRegistry, AddonHolder by Machines {
     
     // Tools
     val STAR_SWORD = item("star_sword") {
-        behaviors(Tool, Damageable, Enchantable)
+        style(NamedTextColor.RED)
+        lore(Component.text("The Star Sword is a powerful weapon that can be used to defeat any enemy."))
+        behaviors(Tool(), Damageable(), Enchantable())
         maxStackSize(1)
     }
     val STAR_SHOVEL = item("star_shovel") {
-        behaviors(Tool, Damageable, Enchantable)
+        behaviors(Tool(), Damageable(), Enchantable())
         maxStackSize(1)
     }
     val STAR_PICKAXE = item("star_pickaxe") {
-        behaviors(Tool, Damageable, Enchantable)
+        behaviors(Tool(), Damageable(), Enchantable())
         maxStackSize(1)
     }
     val STAR_AXE = item("star_axe") {
-        behaviors(Tool, Damageable, Enchantable)
+        behaviors(Tool(), Damageable(), Enchantable())
         maxStackSize(1)
     }
     val STAR_HOE = item("star_hoe") {
-        behaviors(Tool, Damageable, Enchantable)
+        behaviors(Tool(), Damageable(), Enchantable())
         maxStackSize(1)
     }
     
     // Armor
-    val STAR_HELMET = registerItem("star_helmet", Wearable(Armor.STAR, EquipmentSlot.HEAD, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
-    val STAR_CHESTPLATE = registerItem("star_chestplate", Wearable(Armor.STAR, EquipmentSlot.CHEST, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
-    val STAR_LEGGINGS = registerItem("star_leggings", Wearable(Armor.STAR, EquipmentSlot.LEGS, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
-    val STAR_BOOTS = registerItem("star_boots", Wearable(Armor.STAR, EquipmentSlot.FEET, Sounds.ARMOR_EQUIP_STAR), Damageable, Enchantable)
+    val STAR_HELMET = registerItem("star_helmet", Equippable(Equipment.STAR, EquipmentSlot.HEAD, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+    val STAR_CHESTPLATE = registerItem("star_chestplate", Equippable(Equipment.STAR, EquipmentSlot.CHEST, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+    val STAR_LEGGINGS = registerItem("star_leggings", Equippable(Equipment.STAR, EquipmentSlot.LEGS, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+    val STAR_BOOTS = registerItem("star_boots", Equippable(Equipment.STAR, EquipmentSlot.FEET, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
     
     val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior)
     

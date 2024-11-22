@@ -2,7 +2,6 @@ package xyz.xenondevs.nova.addon.jetpacks.registry
 
 import org.joml.Vector3f
 import xyz.xenondevs.nova.addon.jetpacks.Jetpacks
-import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.AttachmentTypeRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
@@ -11,7 +10,7 @@ import xyz.xenondevs.nova.world.player.attachment.AttachmentType
 import xyz.xenondevs.nova.world.player.attachment.HideDownItemAttachment
 
 @Init(stage = InitStage.POST_PACK_PRE_WORLD)
-object Attachments : AttachmentTypeRegistry, AddonHolder by Jetpacks {
+object Attachments : AttachmentTypeRegistry by Jetpacks.registry {
     
     private fun registerJetpackAttachment(name: String, item: NovaItem): AttachmentType<*> =
         registerAttachmentType(name) { player ->

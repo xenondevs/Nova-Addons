@@ -2,12 +2,12 @@
 
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
-import net.minecraft.world.item.crafting.SmeltingRecipe
+import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
 import org.bukkit.World
+import org.bukkit.inventory.CookingRecipe
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
@@ -30,7 +30,6 @@ import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
-import xyz.xenondevs.nova.util.REGISTRY_ACCESS
 import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.util.spawnExpOrb
 import xyz.xenondevs.nova.util.unwrap
@@ -41,9 +40,10 @@ import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
 
-private fun getRecipe(input: ItemStack, world: World): RecipeHolder<SmeltingRecipe>? {
-    return MINECRAFT_SERVER.recipeManager.getAllRecipesFor(RecipeType.SMELTING)
+private fun getRecipe(input: ItemStack, world: World): CookingRecipe<*>? {
+    return MINECRAFT_SERVER.recipeManager.recipes.byType(RecipeType.SMELTING)
         .firstOrNull { it.value().matches(SingleRecipeInput(input.unwrap().copy()), world.serverLevel) }
+        ?.toBukkitRecipe() as? CookingRecipe<*>
 }
 
 private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
@@ -60,9 +60,9 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(inputInventory to INSERT, outputInventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     
-    private var currentRecipe: RecipeHolder<SmeltingRecipe>? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
-        { MINECRAFT_SERVER.recipeManager.byKey(it).orElse(null) as? RecipeHolder<SmeltingRecipe> },
-        RecipeHolder<SmeltingRecipe>::id
+    private var currentRecipe: CookingRecipe<*>? by storedValue<NamespacedKey>("currentRecipe").mapNonNull(
+        { Bukkit.getRecipe(it) as? CookingRecipe<*> },
+        CookingRecipe<*>::getKey
     )
     private var timeCooked: Int by storedValue("timeCooked") { 0 }
     private var experience: Float by storedValue("experience") { 0f }
@@ -113,7 +113,7 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
                 val item = inputInventory.getItem(0)
                 if (item != null) {
                     val recipe = getRecipe(item, pos.world)
-                    if (recipe != null && outputInventory.canHold(recipe.value().getResultItem(REGISTRY_ACCESS).asBukkitCopy())) {
+                    if (recipe != null && outputInventory.canHold(recipe.result)) {
                         currentRecipe = recipe
                         inputInventory.addItemAmount(null, 0, -1)
                         
@@ -127,9 +127,9 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
                 energyHolder.energy -= energyPerTick
                 timeCooked += cookSpeed
                 
-                if (timeCooked >= currentRecipe.value().cookingTime) {
-                    outputInventory.addItem(SELF_UPDATE_REASON, currentRecipe.value().getResultItem(REGISTRY_ACCESS).asBukkitCopy())
-                    experience += currentRecipe.value().experience
+                if (timeCooked >= currentRecipe.cookingTime) {
+                    outputInventory.addItem(SELF_UPDATE_REASON, currentRecipe.result)
+                    experience += currentRecipe.experience
                     timeCooked = 0
                     this.currentRecipe = null
                 }
@@ -173,7 +173,7 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
         }
         
         fun updateProgress() {
-            val cookTime = currentRecipe?.value()?.cookingTime ?: 0
+            val cookTime = currentRecipe?.cookingTime ?: 0
             progressItem.percentage = if (timeCooked == 0) 0.0 else timeCooked.toDouble() / cookTime.toDouble()
         }
         

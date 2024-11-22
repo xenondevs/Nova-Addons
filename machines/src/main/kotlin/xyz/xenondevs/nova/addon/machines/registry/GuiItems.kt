@@ -2,14 +2,13 @@ package xyz.xenondevs.nova.addon.machines.registry
 
 import org.bukkit.Material
 import xyz.xenondevs.nova.addon.machines.Machines
-import xyz.xenondevs.nova.addon.registry.AddonHolder
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
-object GuiItems : ItemRegistry, AddonHolder by Machines {
+object GuiItems : ItemRegistry by Machines.registry {
     
     val GEAR_BTN_OFF = guiItem("btn/gear_off", "menu.machines.mechanical_press.press_gears")
     val GEAR_BTN_ON = guiItem("btn/gear_on", "menu.machines.mechanical_press.press_gears")
