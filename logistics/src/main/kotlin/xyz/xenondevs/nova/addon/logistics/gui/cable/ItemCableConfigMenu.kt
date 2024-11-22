@@ -13,6 +13,7 @@ import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
 import xyz.xenondevs.nova.ui.menu.item.DisplayNumberItem
 import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem
+import xyz.xenondevs.nova.util.runTask
 import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemNetwork
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
@@ -63,13 +64,11 @@ class ItemCableConfigMenu(
         
         insertFilter = holder.insertFilters[face]?.toItemStack()
         extractFilter = holder.extractFilters[face]?.toItemStack()
-    }
-    
-    override fun updateGui() {
-        super.updateGui()
         
-        insertFilterInventory.setItemSilently(0, insertFilter)
-        extractFilterInventory.setItemSilently(0, extractFilter)
+        runTask {
+            insertFilterInventory.setItemSilently(0, insertFilter)
+            extractFilterInventory.setItemSilently(0, extractFilter)
+        }
     }
     
     override fun writeChanges(): Boolean {

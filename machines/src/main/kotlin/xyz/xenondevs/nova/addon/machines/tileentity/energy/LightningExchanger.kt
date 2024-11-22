@@ -12,7 +12,7 @@ import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.LIGHTNING_EXCHANGER
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.efficiencyMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -41,8 +41,8 @@ class LightningExchanger(pos: BlockPos, blockState: NovaBlockState, data: Compou
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_FACES)
-    private val minBurst by efficiencyDividedValue(MIN_BURST, upgradeHolder)
-    private val maxBurst by efficiencyDividedValue(MAX_BURST, upgradeHolder)
+    private val minBurst by efficiencyMultipliedValue(MIN_BURST, upgradeHolder)
+    private val maxBurst by efficiencyMultipliedValue(MAX_BURST, upgradeHolder)
     private var toCharge = 0L
     
     override fun handleTick() {
