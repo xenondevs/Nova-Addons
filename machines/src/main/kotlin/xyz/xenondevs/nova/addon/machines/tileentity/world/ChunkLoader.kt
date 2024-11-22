@@ -41,7 +41,10 @@ class ChunkLoader(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private var active = false
     
     private val energyPerTick by combinedProvider(ENERGY_PER_CHUNK, range, upgradeHolder.getValueProvider(UpgradeTypes.EFFICIENCY))
-        .map { (energyPerChunk, range, efficiency) -> (energyPerChunk * range * range / efficiency).roundToLong() }
+        .map { (energyPerChunk, range, efficiency) ->
+            val diameter = range * 2 + 1
+            (energyPerChunk * diameter * diameter / efficiency).roundToLong()
+        }
     
     override fun handleDisable() {
         super.handleDisable()
