@@ -9,18 +9,16 @@ import xyz.xenondevs.nova.initialize.InitStage
 object Equipment : EquipmentRegistry by Machines.registry {
     
     val STAR = equipment("star") {
-        texture {
-            humanoid {
-                layer {
-                    texture("star")
-                    emissivityMap("star_emissivity_map")
-                }
+        humanoid {
+            layer {
+                texture("star")
+                emissivityMap("star_emissivity_map")
             }
-            humanoidLeggings {
-                layer {
-                    texture("star")
-                    emissivityMap("star_emissivity_map")
-                }
+        }
+        humanoidLeggings {
+            layer {
+                texture("star")
+                emissivityMap("star_emissivity_map")
             }
         }
     }
