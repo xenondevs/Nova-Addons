@@ -2,8 +2,6 @@
 
 package xyz.xenondevs.nova.addon.machines.registry
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.inventory.EquipmentSlot
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
@@ -99,8 +97,6 @@ object Items : ItemRegistry by Machines.registry {
     
     // Tools
     val STAR_SWORD = item("star_sword") {
-        style(NamedTextColor.RED)
-        lore(Component.text("The Star Sword is a powerful weapon that can be used to defeat any enemy."))
         behaviors(Tool(), Damageable(), Enchantable())
         maxStackSize(1)
     }
