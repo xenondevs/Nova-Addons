@@ -118,10 +118,22 @@ object Items : ItemRegistry by Machines.registry {
     }
     
     // Armor
-    val STAR_HELMET = registerItem("star_helmet", Equippable(Equipment.STAR, EquipmentSlot.HEAD, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
-    val STAR_CHESTPLATE = registerItem("star_chestplate", Equippable(Equipment.STAR, EquipmentSlot.CHEST, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
-    val STAR_LEGGINGS = registerItem("star_leggings", Equippable(Equipment.STAR, EquipmentSlot.LEGS, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
-    val STAR_BOOTS = registerItem("star_boots", Equippable(Equipment.STAR, EquipmentSlot.FEET, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+    val STAR_HELMET = item("star_helmet") {
+        behaviors(Equippable(Equipment.STAR, EquipmentSlot.HEAD, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+        maxStackSize(1)
+    }
+    val STAR_CHESTPLATE = item("star_chestplate") {
+        behaviors(Equippable(Equipment.STAR, EquipmentSlot.CHEST, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+        maxStackSize(1)
+    }
+    val STAR_LEGGINGS = item("star_leggings") {
+        behaviors(Equippable(Equipment.STAR, EquipmentSlot.LEGS, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+        maxStackSize(1)
+    }
+    val STAR_BOOTS = item("star_boots") {
+        behaviors(Equippable(Equipment.STAR, EquipmentSlot.FEET, equipSound = Sounds.ARMOR_EQUIP_STAR), Damageable(), Enchantable())
+        maxStackSize(1)
+    }
     
     val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior)
     
