@@ -10,9 +10,8 @@ import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.impl.SimpleItem
+import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.window.Window
-import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.AUTO_CRAFTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
@@ -166,10 +165,12 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     @TileEntityMenuClass
     private inner class AutoCrafterMenu : GlobalTileEntityMenu(GuiTextures.AUTO_CRAFTER_RECIPE) {
         
-        private val openInventoryMenuItem = SimpleItem(GuiItems.INVENTORY_BTN.model.clientsideProvider) {
-            it.player.playClickSound()
-            inventoryWindow.open(it.player)
-        }
+        private val openInventoryMenuItem = Item.builder()
+            .setItemProvider(GuiItems.INVENTORY_BTN.clientsideProvider)
+            .addClickHandler { _, click ->
+                click.player.playClickSound()
+                inventoryWindow.open(click.player)
+            }.build()
         
         private val sideConfigGui = SideConfigMenu(
             this@AutoCrafter,
@@ -206,7 +207,7 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             )
             .addIngredient('i', inputInv)
             .addIngredient('o', outputInv)
-            .addIngredient('<', BackItem(DefaultGuiItems.TP_ARROW_LEFT_ON.model.clientsideProvider) { openWindow(it) })
+            .addIngredient('<', BackItem(DefaultGuiItems.TP_ARROW_LEFT_ON.clientsideProvider) { openWindow(it) })
             .build()
         
         private val inventoryWindow = Window.single()

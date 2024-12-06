@@ -2,18 +2,22 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
+import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.invui.item.impl.CycleItem
+import xyz.xenondevs.invui.item.setItemProvider
 import xyz.xenondevs.nova.addon.machines.recipe.FluidInfuserRecipe
+import xyz.xenondevs.nova.addon.machines.recipe.FluidInfuserRecipe.InfuserMode
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FLUID_INFUSER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems.FLUID_LEFT_RIGHT_BTN
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems.FLUID_RIGHT_LEFT_BTN
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
@@ -42,7 +46,7 @@ fun getFluidInfuserInsertRecipeFor(fluidType: FluidType, input: ItemStack): Flui
     return RecipeManager.novaRecipes[RecipeTypes.FLUID_INFUSER]?.values?.asSequence()
         ?.map { it as FluidInfuserRecipe }
         ?.firstOrNull { recipe ->
-            recipe.mode == FluidInfuserRecipe.InfuserMode.INSERT
+            recipe.mode == InfuserMode.INSERT
                 && recipe.fluidType == fluidType
                 && recipe.input.test(input)
         }
@@ -52,7 +56,7 @@ fun getFluidInfuserExtractRecipeFor(input: ItemStack): FluidInfuserRecipe? {
     return RecipeManager.novaRecipes[RecipeTypes.FLUID_INFUSER]?.values?.asSequence()
         ?.map { it as FluidInfuserRecipe }
         ?.firstOrNull { recipe ->
-            recipe.mode == FluidInfuserRecipe.InfuserMode.EXTRACT
+            recipe.mode == InfuserMode.EXTRACT
                 && recipe.input.test(input)
         }
 }
@@ -75,7 +79,8 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     
     private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
     
-    private var mode by storedValue("mode") { FluidInfuserRecipe.InfuserMode.INSERT }
+    private val _mode = storedValue("mode") { InfuserMode.INSERT }
+    private var mode by _mode
     
     private var recipe: FluidInfuserRecipe? = null
     private val recipeTime: Int
@@ -102,17 +107,17 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             if (recipe == null && !input.isEmpty) {
                 val item = input.getItem(0)!!
                 
-                if (mode == FluidInfuserRecipe.InfuserMode.INSERT && !tank.isEmpty()) {
+                if (mode == InfuserMode.INSERT && !tank.isEmpty()) {
                     recipe = getFluidInfuserInsertRecipeFor(tank.type!!, item)
-                } else if (mode == FluidInfuserRecipe.InfuserMode.EXTRACT) {
+                } else if (mode == InfuserMode.EXTRACT) {
                     recipe = getFluidInfuserExtractRecipeFor(item)
                 }
             }
             
             val recipe = recipe
             if (recipe != null) {
-                if (((mode == FluidInfuserRecipe.InfuserMode.INSERT && tank.amount >= recipe.fluidAmount)
-                        || (mode == FluidInfuserRecipe.InfuserMode.EXTRACT && tank.accepts(recipe.fluidType, recipe.fluidAmount)))
+                if (((mode == InfuserMode.INSERT && tank.amount >= recipe.fluidAmount)
+                        || (mode == InfuserMode.EXTRACT && tank.accepts(recipe.fluidType, recipe.fluidAmount)))
                     && output.canHold(recipe.result)) {
                     
                     energyHolder.energy -= energyPerTick
@@ -120,7 +125,7 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
                         input.addItemAmount(SELF_UPDATE_REASON, 0, -1)
                         output.addItem(SELF_UPDATE_REASON, recipe.result)
                         
-                        if (mode == FluidInfuserRecipe.InfuserMode.INSERT) tank.takeFluid(recipe.fluidAmount)
+                        if (mode == InfuserMode.INSERT) tank.takeFluid(recipe.fluidAmount)
                         else tank.addFluid(recipe.fluidType, recipe.fluidAmount)
                         
                         reset()
@@ -134,12 +139,18 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     inner class FluidInfuserMenu : GlobalTileEntityMenu() {
         
         private val progressItem = InfuserProgressItem()
-        private val changeModeItem = CycleItem.withStateChangeHandler(
-            ::changeMode,
-            mode.ordinal,
-            GuiItems.FLUID_LEFT_RIGHT_BTN.model.clientsideProvider,
-            GuiItems.FLUID_RIGHT_LEFT_BTN.model.clientsideProvider
-        )
+        
+        private val changeModeItem = Item.builder()
+            .setItemProvider(_mode) { mode ->
+                when (mode) {
+                    InfuserMode.INSERT -> FLUID_LEFT_RIGHT_BTN
+                    InfuserMode.EXTRACT -> FLUID_RIGHT_LEFT_BTN
+                }.clientsideProvider
+            }.addClickHandler { _, click -> 
+                mode = InfuserMode.entries[(mode.ordinal + 1) % InfuserMode.entries.size]
+                reset()
+                click.player.playClickSound()
+            }
         
         private val sideConfigGui = SideConfigMenu(
             this@FluidInfuser,
@@ -173,12 +184,6 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             progressItem.percentage = if (recipe != null) timePassed.toDouble() / recipeTime.toDouble() else 0.0
         }
         
-        private fun changeMode(player: Player, modeOrdinal: Int) {
-            mode = FluidInfuserRecipe.InfuserMode.entries[modeOrdinal]
-            reset()
-            player.playClickSound()
-        }
-        
         private inner class InfuserProgressItem : AbstractItem() {
             
             var percentage: Double = 0.0
@@ -187,15 +192,15 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
                     notifyWindows()
                 }
             
-            override fun getItemProvider(): ItemProvider {
-                val material = if (mode == FluidInfuserRecipe.InfuserMode.INSERT)
+            override fun getItemProvider(player: Player): ItemProvider {
+                val material = if (mode == InfuserMode.INSERT)
                     GuiItems.FLUID_PROGRESS_LEFT_RIGHT
                 else GuiItems.FLUID_PROGRESS_RIGHT_LEFT
                 
-                return material.model.unnamedClientsideProviders[(percentage * 16).roundToInt()]
+                return material.createClientsideItemBuilder().addCustomModelData(percentage)
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
         }
         
     }

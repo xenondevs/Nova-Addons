@@ -1,7 +1,6 @@
 package xyz.xenondevs.nova.addon.logistics.tileentity
 
 import com.google.common.collect.Table
-import net.minecraft.resources.ResourceLocation
 import org.bukkit.Location
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
@@ -90,7 +89,7 @@ open class Cable(
     override val itemTransferRate by itemTransferRateDelegate
     override val fluidTransferRate by fluidTransferRateDelegate
     override val linkedNodes: Set<NetworkNode> = emptySet()
-    override val typeId: ResourceLocation get() = block.id
+    override val typeId get() = block.id
     
     private val configMenus = ConcurrentHashMap<BlockFace, CableConfigMenu>()
     
@@ -290,7 +289,7 @@ open class Cable(
         val models = HashSet<Model>()
         attachments.forEach { (face, id) ->
             models += Model(
-                Models.CABLE_ATTACHMENT.model.unnamedClientsideProviders[id].get(),
+                Models.CABLE_ATTACHMENT.createClientsideItemBuilder().addCustomModelData(id).get(),
                 pos.location.add(.5, .5, .5),
                 // attachment models face south, display entities make north side of models face south,
                 // therefore attachments face north by default TODO: make attachment models face north

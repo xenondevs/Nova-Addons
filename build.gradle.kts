@@ -22,9 +22,6 @@ fun RepositoryHandler.configureRepositories() {
 
 fun DependencyHandlerScope.configureDependencies() {
     paperweight.paperDevBundle(rootProject.libs.versions.paper)
-    configurations.getByName("mojangMappedServer").apply {
-        exclude("org.spongepowered", "configurate-yaml")
-    }
     implementation(rootProject.libs.nova)
 }
 
@@ -48,6 +45,9 @@ subprojects {
         withType<KotlinCompile> {
             compilerOptions {
                 jvmTarget = JvmTarget.JVM_21
+                freeCompilerArgs.addAll(
+                    "-opt-in=xyz.xenondevs.invui.ExperimentalReactiveApi"
+                )
             }
         }
         

@@ -16,7 +16,7 @@ import xyz.xenondevs.nova.world.item.behavior.Tool
 @Init(stage = InitStage.PRE_PACK)
 object Items : ItemRegistry by Machines.registry {
     
-    val WIND_TURBINE = item(Blocks.WIND_TURBINE) { models { selectModel { getModel("item/wind_turbine") } } }
+    val WIND_TURBINE = item(Blocks.WIND_TURBINE) { modelDefinition { model = buildModel { getModel("item/wind_turbine") } } }
     val SOLAR_PANEL = registerItem(Blocks.SOLAR_PANEL)
     val LIGHTNING_EXCHANGER = registerItem(Blocks.LIGHTNING_EXCHANGER)
     val FURNACE_GENERATOR = registerItem(Blocks.FURNACE_GENERATOR)
@@ -60,7 +60,7 @@ object Items : ItemRegistry by Machines.registry {
     // Crafting components
     val STAR_SHARDS = registerItem("star_shards")
     val STAR_CRYSTAL = registerItem("star_crystal")
-    val NETHERITE_DRILL = item("netherite_drill") { models { selectModel { getModel("block/netherite_drill") } } }
+    val NETHERITE_DRILL = item("netherite_drill") { modelDefinition { model = buildModel { getModel("block/netherite_drill") } } }
     val SCAFFOLDING = registerItem("scaffolding")
     val SOLAR_CELL = registerItem("solar_cell")
     

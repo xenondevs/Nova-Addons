@@ -7,6 +7,6 @@ import xyz.xenondevs.nova.ui.menu.explorer.recipes.group.ConversionRecipeGroup
 
 object PulverizingRecipeGroup : ConversionRecipeGroup<PulverizerRecipe>() {
     override val priority = 4
-    override val icon = Items.PULVERIZER.model.clientsideProvider
+    override val icon = Items.PULVERIZER.clientsideProvider
     override val texture = GuiTextures.RECIPE_PULVERIZER
 }

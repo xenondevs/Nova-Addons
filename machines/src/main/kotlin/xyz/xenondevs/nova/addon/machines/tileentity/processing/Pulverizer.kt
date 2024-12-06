@@ -1,7 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
+import net.kyori.adventure.key.Key
 import net.minecraft.core.particles.ParticleTypes
-import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mapNonNull
@@ -56,7 +56,7 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     
     private var timeLeft by storedValue("pulverizerTime") { 0 }
     
-    private var currentRecipe: PulverizerRecipe? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
+    private var currentRecipe: PulverizerRecipe? by storedValue<Key>("currentRecipe").mapNonNull(
         { RecipeManager.getRecipe(RecipeTypes.PULVERIZER, it) },
         NovaRecipe::id
     )

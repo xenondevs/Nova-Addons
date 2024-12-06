@@ -3,14 +3,14 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FREEZER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
@@ -125,10 +125,10 @@ class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         
         private inner class ChangeModeItem : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider =
-                mode.uiItem.model.clientsideProvider
+            override fun getItemProvider(player: Player): ItemProvider =
+                mode.uiItem.clientsideProvider
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
                 if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
                     val direction = if (clickType == ClickType.LEFT) 1 else -1
                     mode = Mode.entries[(mode.ordinal + direction).mod(Mode.entries.size)]

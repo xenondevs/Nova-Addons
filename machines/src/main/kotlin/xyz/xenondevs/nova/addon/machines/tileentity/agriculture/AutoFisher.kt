@@ -83,7 +83,7 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
         
         // the fake fishing hook is required for the "in_open_water" check as the
         // fishing location affects the loot table
-        val fakeFishingHook = FishingHook(fakePlayer, pos.world.serverLevel, luck, 0, MojangStack.EMPTY)
+        val fakeFishingHook = FishingHook(fakePlayer, pos.world.serverLevel, luck, 0)
         
         val params = LootParams.Builder(pos.world.serverLevel)
             .withParameter(LootContextParams.ORIGIN, pos.location.toVec3())

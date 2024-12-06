@@ -4,12 +4,12 @@ import org.bukkit.Material
 import org.bukkit.entity.Display
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
+import xyz.xenondevs.invui.item.ItemBuilder
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks.FLUID_STORAGE_UNIT
 import xyz.xenondevs.nova.addon.logistics.registry.Models
 import xyz.xenondevs.nova.config.entry
@@ -43,7 +43,7 @@ class FluidStorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : N
                     FluidType.LAVA -> Models.TANK_LAVA_LEVELS
                     FluidType.WATER -> Models.TANK_WATER_LEVELS
                     else -> throw IllegalStateException()
-                }.model.unnamedClientsideProviders[10].get()
+                }.createClientsideItemBuilder().addCustomModelData(10).get()
             } else null
         }
     }
@@ -88,14 +88,14 @@ class FluidStorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : N
                 fluidTank.addUpdateHandler { notifyWindows() }
             }
             
-            override fun getItemProvider(): ItemProvider {
+            override fun getItemProvider(player: Player): ItemProvider {
                 val type = fluidTank.type?.bucket
-                    ?: return ItemBuilder(Material.BARRIER).setDisplayName("§r")
+                    ?: return ItemBuilder(Material.BARRIER).setName("§r")
                 val amount = fluidTank.amount
-                return ItemBuilder(type).setDisplayName("§a$amount §7mB").setAmount(1)
+                return ItemBuilder(type).setName("§a$amount §7mB").setAmount(1)
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
             
         }
     }

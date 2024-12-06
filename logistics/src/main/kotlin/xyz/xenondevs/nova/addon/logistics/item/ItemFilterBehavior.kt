@@ -13,7 +13,7 @@ import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.NbtItemFilter
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
-import xyz.xenondevs.nova.util.ResourceLocation
+import xyz.xenondevs.nova.util.Key
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
 import xyz.xenondevs.nova.util.item.ItemUtils
 import xyz.xenondevs.nova.util.item.isActuallyInteractable
@@ -28,7 +28,7 @@ import xyz.xenondevs.nova.world.item.behavior.ItemFilterContainer
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import org.bukkit.inventory.ItemStack as BukkitStack
 
-private val ITEM_FILTER_KEY = ResourceLocation(Logistics, "item_filter")
+private val ITEM_FILTER_KEY = Key(Logistics, "item_filter")
 
 class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContainer<LogisticsItemFilter> {
     

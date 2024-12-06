@@ -6,13 +6,13 @@ import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.collections.rotateRight
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PUMP
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
@@ -215,13 +215,13 @@ class Pump(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Networke
         
         private inner class PumpModeItem : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider =
+            override fun getItemProvider(player: Player): ItemProvider =
                 when (mode) {
-                    PumpMode.PUMP -> GuiItems.PUMP_MODE_BTN.model.clientsideProvider
-                    PumpMode.REPLACE -> GuiItems.PUMP_REPLACE_MODE_BTN.model.clientsideProvider
+                    PumpMode.PUMP -> GuiItems.PUMP_MODE_BTN.clientsideProvider
+                    PumpMode.REPLACE -> GuiItems.PUMP_REPLACE_MODE_BTN.clientsideProvider
                 }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
                 mode = if (mode == PumpMode.PUMP) PumpMode.REPLACE else PumpMode.PUMP
                 notifyWindows()
             }

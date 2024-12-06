@@ -1,6 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.recipe
 
-import net.minecraft.resources.ResourceLocation
+import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice
 import org.bukkit.potion.PotionEffectType
@@ -11,7 +11,7 @@ import xyz.xenondevs.nova.world.item.recipe.MultiInputChoiceRecipe
 import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
 
 class PulverizerRecipe(
-    id: ResourceLocation,
+    id: Key,
     input: RecipeChoice,
     result: ItemStack,
     time: Int,
@@ -20,7 +20,7 @@ class PulverizerRecipe(
 }
 
 class PlatePressRecipe(
-    id: ResourceLocation,
+    id: Key,
     input: RecipeChoice,
     result: ItemStack,
     time: Int
@@ -29,7 +29,7 @@ class PlatePressRecipe(
 }
 
 class GearPressRecipe(
-    id: ResourceLocation,
+    id: Key,
     input: RecipeChoice,
     result: ItemStack,
     time: Int
@@ -38,7 +38,7 @@ class GearPressRecipe(
 }
 
 class FluidInfuserRecipe(
-    override val id: ResourceLocation,
+    override val id: Key,
     val mode: InfuserMode,
     val fluidType: FluidType,
     val fluidAmount: Long,
@@ -56,7 +56,7 @@ class FluidInfuserRecipe(
 }
 
 class ElectricBrewingStandRecipe(
-    override val id: ResourceLocation,
+    override val id: Key,
     override val inputs: List<RecipeChoice>,
     val result: PotionEffectType,
     val defaultTime: Int,
@@ -69,7 +69,7 @@ class ElectricBrewingStandRecipe(
 }
 
 class CrystallizerRecipe(
-    id: ResourceLocation,
+    id: Key,
     input: RecipeChoice,
     result: ItemStack,
     time: Int

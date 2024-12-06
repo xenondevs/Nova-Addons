@@ -75,7 +75,7 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     private val rod = FakeArmorStand(pos.location.add(0.5, -1.0, 0.5), false) { ast, data ->
         data.isMarker = true
         data.isInvisible = true
-        ast.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_OFF.model.clientsideProvider.get(), false)
+        ast.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_OFF.clientsideProvider.get(), false)
     }
     
     private val particleTask = PacketTask(
@@ -136,7 +136,7 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
                 pos.location.dropItem(item)
             
             particleTask.stop()
-            rod.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_OFF.model.clientsideProvider.get(), true)
+            rod.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_OFF.clientsideProvider.get(), true)
         } else {
             val percentageCollected = (maxCollectionTime - timeSpentCollecting) / maxCollectionTime.toDouble()
             val particleDistance = percentageCollected * (STAR_PARTICLE_DISTANCE_PER_TICK * maxCollectionTime)
@@ -156,7 +156,7 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             
             particleTask.start()
             
-            rod.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_ON.model.clientsideProvider.get(), true)
+            rod.setEquipment(EquipmentSlot.HEAD, Models.STAR_COLLECTOR_ROD_ON.clientsideProvider.get(), true)
             
             rodLocation.yaw = rod.location.yaw
             particleVector = Vector(rod.location.yaw, -65F)

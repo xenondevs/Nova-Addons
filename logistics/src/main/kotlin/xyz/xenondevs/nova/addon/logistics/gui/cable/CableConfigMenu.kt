@@ -6,7 +6,6 @@ import org.bukkit.entity.Player
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.TabGui
 import xyz.xenondevs.invui.window.Window
-import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.ui.menu.item.ClickyTabItem
 import xyz.xenondevs.nova.world.block.tileentity.network.NetworkManager
 import xyz.xenondevs.nova.world.block.tileentity.network.ProtoNetwork
@@ -46,19 +45,19 @@ class CableConfigMenu(
             )
             .addIngredient('i', ClickyTabItem(0) {
                 val item = if (itemConfigGui != null) {
-                    if (it.currentTab == 0)
+                    if (it.tab == 0)
                         DefaultGuiItems.ITEM_BTN_SELECTED
                     else DefaultGuiItems.ITEM_BTN_ON
                 } else DefaultGuiItems.ITEM_BTN_OFF
-                item.model.clientsideProvider
+                item.clientsideProvider
             })
             .addIngredient('f', ClickyTabItem(1) {
                 val item = if (fluidConfigGui != null) {
-                    if (it.currentTab == 1)
+                    if (it.tab == 1)
                         DefaultGuiItems.FLUID_BTN_SELECTED
                     else DefaultGuiItems.FLUID_BTN_ON
                 } else DefaultGuiItems.FLUID_BTN_OFF
-                item.model.clientsideProvider
+                item.clientsideProvider
             })
             .setTabs(listOf(itemConfigGui?.gui, fluidConfigGui?.gui))
             .build()

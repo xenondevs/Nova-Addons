@@ -12,7 +12,7 @@ object FreezerRecipeGroup : RecipeGroup<FreezerRecipe>() {
     
     override val priority = 8
     override val texture = GuiTextures.RECIPE_FREEZER
-    override val icon = Items.FREEZER.model.clientsideProvider
+    override val icon = Items.FREEZER.clientsideProvider
     
     override fun createGui(recipe: FreezerRecipe): Gui {
         return Gui.normal()

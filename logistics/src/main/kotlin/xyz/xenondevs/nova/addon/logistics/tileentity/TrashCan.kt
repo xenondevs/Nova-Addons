@@ -2,11 +2,12 @@ package xyz.xenondevs.nova.addon.logistics.tileentity
 
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.inventory.VirtualInventory
+import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.nova.addon.logistics.registry.GuiItems
 import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.VoidingVirtualInventory
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
@@ -18,7 +19,7 @@ import java.util.*
 
 class TrashCan(pos: BlockPos, state: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, state, data) {
     
-    private val inventory = VoidingVirtualInventory(1)
+    private val inventory = VirtualInventory(1).apply { setPostUpdateHandler { setItem(UpdateReason.SUPPRESSED, 0, null) } }
     private val itemHolder = storedItemHolder(inventory to NetworkConnectionType.INSERT)
     private val fluidHolder = storedFluidHolder(VoidingFluidContainer to NetworkConnectionType.INSERT)
     

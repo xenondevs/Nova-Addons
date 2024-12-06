@@ -12,8 +12,8 @@ object Models : ItemRegistry by Logistics.registry {
     
     val CABLE_ATTACHMENT = item("cable_attachment") {
         hidden(true)
-        models {
-            selectModels(0..15, setDefault = true) {
+        modelDefinition { 
+            numberedModels(0..15) {
                 getModel("block/cable/attachments/$it")
             }
         }
@@ -24,8 +24,8 @@ object Models : ItemRegistry by Logistics.registry {
     
     private fun fluidLevels(name: String): NovaItem = item(name) {
         hidden(true)
-        models {
-            selectModels(0..100, setDefault = true) {
+        modelDefinition {
+            numberedModels(0..100) {
                 getModel("block/$name").scale(
                     pivot = Vector3d(0.0, 0.0, 0.0),
                     scale = Vector3d(1.0, it / 100.0, 1.0),

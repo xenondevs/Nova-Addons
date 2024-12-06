@@ -41,7 +41,7 @@ import xyz.xenondevs.nova.addon.machines.tileentity.world.StarCollector
 import xyz.xenondevs.nova.addon.registry.BlockRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.resources.layout.block.BackingStateCategory
+import xyz.xenondevs.nova.resources.builder.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.world.block.NovaBlock
 import xyz.xenondevs.nova.world.block.NovaBlockBuilder
 import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
@@ -107,17 +107,17 @@ object Blocks : BlockRegistry by Machines.registry {
     val QUARRY = interactiveTileEntity("quarry", ::Quarry) {
         behaviors(Quarry, STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
-        models { selectModel { defaultModel.rotated() } }
+        entityBacked { defaultModel.rotated() }
     }
     val WIND_TURBINE = interactiveTileEntity("wind_turbine", ::WindTurbine) {
         behaviors(WindTurbineBehavior, METAL, BlockSounds(SoundGroup.METAL))
         stateProperties(FACING_HORIZONTAL)
-        models { selectModel { getModel("block/wind_turbine/base").rotated() } }
+        entityBacked { getModel("block/wind_turbine/base").rotated() }
     }
     val WIND_TURBINE_EXTRA = block("wind_turbine_extra") {
         behaviors(WindTurbineSectionBehavior, METAL, BlockSounds(SoundGroup.METAL))
         stateProperties(ScopedBlockStateProperties.TURBINE_SECTION)
-        models { modelLess { Blocks.BARRIER.defaultBlockState() } }
+        modelLess { Blocks.BARRIER.defaultBlockState() }
     }
     
     // Normal blocks
@@ -140,12 +140,9 @@ object Blocks : BlockRegistry by Machines.registry {
         init()
         behaviors(STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL, ScopedBlockStateProperties.ACTIVE)
-        models {
-            stateBacked(BackingStateCategory.NOTE_BLOCK, BackingStateCategory.MUSHROOM_BLOCK)
-            selectModel {
-                val active = getPropertyValueOrThrow(BlockStateProperties.ACTIVE)
-                getModel("block/" + name + "_" + if (active) "on" else "off").rotated()
-            }
+        stateBacked(BackingStateCategory.NOTE_BLOCK, BackingStateCategory.MUSHROOM_BLOCK) {
+            val active = getPropertyValueOrThrow(BlockStateProperties.ACTIVE)
+            getModel("block/" + name + "_" + if (active) "on" else "off").rotated()
         }
     }
     
@@ -157,9 +154,8 @@ object Blocks : BlockRegistry by Machines.registry {
         init()
         behaviors(STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
-        models {
-            stateBacked(BackingStateCategory.NOTE_BLOCK, BackingStateCategory.MUSHROOM_BLOCK)
-            selectModel { defaultModel.rotated() }
+        stateBacked(BackingStateCategory.NOTE_BLOCK, BackingStateCategory.MUSHROOM_BLOCK) {
+            defaultModel.rotated()
         }
     }
     
@@ -171,7 +167,7 @@ object Blocks : BlockRegistry by Machines.registry {
         init()
         behaviors(STONE, BlockSounds(SoundGroup.STONE))
         stateProperties(FACING_HORIZONTAL)
-        models { selectModel { defaultModel.rotated() } }
+        entityBacked { defaultModel.rotated() }
     }
     
     private fun interactiveTileEntity(
@@ -187,9 +183,8 @@ object Blocks : BlockRegistry by Machines.registry {
         block("${tier}_machine_frame") {
             stateProperties(DefaultScopedBlockStateProperties.WATERLOGGED)
             behaviors(MACHINE_FRAME, BlockSounds(SoundGroup.METAL), BlockDrops, Waterloggable)
-            models {
-                stateBacked(BackingStateCategory.LEAVES)
-                selectModel { getModel("block/machine_frame/$tier") }
+            stateBacked(BackingStateCategory.LEAVES) {
+                getModel("block/machine_frame/$tier")
             }
         }
     
@@ -198,9 +193,7 @@ object Blocks : BlockRegistry by Machines.registry {
         block: NovaBlockBuilder.() -> Unit
     ): NovaBlock = block(name) {
         block()
-        models {
-            stateBacked(BackingStateCategory.MUSHROOM_BLOCK, BackingStateCategory.NOTE_BLOCK)
-        }
+        stateBacked(BackingStateCategory.MUSHROOM_BLOCK, BackingStateCategory.NOTE_BLOCK)
     }
     
 }

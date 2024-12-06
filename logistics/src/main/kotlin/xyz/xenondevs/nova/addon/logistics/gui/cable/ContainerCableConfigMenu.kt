@@ -4,11 +4,10 @@ import net.kyori.adventure.text.Component
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.item.notifyWindows
 import xyz.xenondevs.nova.ui.menu.item.BUTTON_COLORS
 import xyz.xenondevs.nova.util.playClickSound
@@ -81,13 +80,13 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
     
     protected inner class InsertItem : AbstractItem() {
         
-        override fun getItemProvider(): ItemProvider {
+        override fun getItemProvider(player: Player): ItemProvider {
             val item = if (insertState) DefaultGuiItems.GREEN_BTN else DefaultGuiItems.RED_BTN
-            return item.model.createClientsideItemBuilder()
-                .setDisplayName(Component.translatable("menu.logistics.cable_config.insert"))
+            return item.createClientsideItemBuilder()
+                .setName(Component.translatable("menu.logistics.cable_config.insert"))
         }
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
             if (!allowsInsert)
                 return
             
@@ -100,13 +99,13 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
     
     protected inner class ExtractItem : AbstractItem() {
         
-        override fun getItemProvider(): ItemProvider {
+        override fun getItemProvider(player: Player): ItemProvider {
             val item = if (extractState) DefaultGuiItems.GREEN_BTN else DefaultGuiItems.RED_BTN
-            return item.model.createClientsideItemBuilder()
-                .setDisplayName(Component.translatable("menu.logistics.cable_config.extract"))
+            return item.createClientsideItemBuilder()
+                .setName(Component.translatable("menu.logistics.cable_config.extract"))
         }
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
             if (!allowsExtract) return
             
             extractState = !extractState
@@ -118,12 +117,12 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
     
     protected inner class SwitchChannelItem : AbstractItem() {
         
-        override fun getItemProvider(): ItemProvider {
-            return BUTTON_COLORS[channel].model.createClientsideItemBuilder()
-                .setDisplayName(Component.translatable("menu.logistics.cable_config.channel", Component.text(channel + 1)))
+        override fun getItemProvider(player: Player): ItemProvider {
+            return BUTTON_COLORS[channel].createClientsideItemBuilder()
+                .setName(Component.translatable("menu.logistics.cable_config.channel", Component.text(channel + 1)))
         }
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
             if (clickType == ClickType.RIGHT || clickType == ClickType.LEFT) {
                 if (clickType == ClickType.LEFT) {
                     channel = (channel + 1).mod(channelAmount)

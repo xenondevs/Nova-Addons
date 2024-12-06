@@ -1,17 +1,17 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
-import net.minecraft.resources.ResourceLocation
+import net.kyori.adventure.key.Key
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mapNonNull
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.gui.PressProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MECHANICAL_PRESS
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
@@ -64,7 +64,7 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
     private var type by storedValue("pressType") { PressType.PLATE }
     private var timeLeft by storedValue("pressTime") { 0 }
     
-    private var currentRecipe: ConversionNovaRecipe? by storedValue<ResourceLocation>("currentRecipe").mapNonNull(
+    private var currentRecipe: ConversionNovaRecipe? by storedValue<Key>("currentRecipe").mapNonNull(
         { RecipeManager.getRecipe(type.recipeType, it) },
         NovaRecipe::id
     )
@@ -160,17 +160,17 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
         
         private inner class PressTypeItem(private val type: PressType) : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider {
+            override fun getItemProvider(player: Player): ItemProvider {
                 return if (type == PressType.PLATE) {
-                    if (this@MechanicalPress.type == PressType.PLATE) GuiItems.PLATE_BTN_OFF.model.clientsideProvider
-                    else GuiItems.PLATE_BTN_ON.model.clientsideProvider
+                    if (this@MechanicalPress.type == PressType.PLATE) GuiItems.PLATE_BTN_OFF.clientsideProvider
+                    else GuiItems.PLATE_BTN_ON.clientsideProvider
                 } else {
-                    if (this@MechanicalPress.type == PressType.GEAR) GuiItems.GEAR_BTN_OFF.model.clientsideProvider
-                    else GuiItems.GEAR_BTN_ON.model.clientsideProvider
+                    if (this@MechanicalPress.type == PressType.GEAR) GuiItems.GEAR_BTN_OFF.clientsideProvider
+                    else GuiItems.GEAR_BTN_ON.clientsideProvider
                 }
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
                 if (this@MechanicalPress.type != type) {
                     player.playClickSound()
                     this@MechanicalPress.type = type

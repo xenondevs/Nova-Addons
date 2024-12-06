@@ -22,7 +22,7 @@ object Advancements {
     
     private val ROOT = advancement(Logistics, "root") {
         display(DisplayInfo(
-            Items.ULTIMATE_CABLE.model.clientsideProvider.get().unwrap(),
+            Items.ULTIMATE_CABLE.clientsideProvider.get().unwrap(),
             Component.translatable("advancement.logistics.root.title").toNMSComponent(),
             Component.empty().toNMSComponent(),
             Optional.of(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/tuff.png")),

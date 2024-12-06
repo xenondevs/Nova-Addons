@@ -19,7 +19,7 @@ import java.util.*
 
 private val ROOT = advancement(VanillaHammers, "root") {
     display(DisplayInfo(
-        Items.WOODEN_HAMMER.model.clientsideProvider.get().unwrap().copy(),
+        Items.WOODEN_HAMMER.clientsideProvider.get().unwrap().copy(),
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
         Optional.of(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/tuff.png")),

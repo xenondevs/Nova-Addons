@@ -16,7 +16,7 @@ object Attachments : AttachmentTypeRegistry by Jetpacks.registry {
         registerAttachmentType(name) { player ->
             HideDownItemAttachment(
                 40f, player,
-                item.model.clientsideProvider.get(),
+                item.clientsideProvider.get(),
                 Vector3f(0f, -0.5f, -0.15f)
             )
         }

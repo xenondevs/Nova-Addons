@@ -1,7 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
 import xyz.xenondevs.nova.addon.machines.Machines
-import xyz.xenondevs.nova.util.data.Key
+import xyz.xenondevs.nova.util.Key
 
 object Sounds {
     

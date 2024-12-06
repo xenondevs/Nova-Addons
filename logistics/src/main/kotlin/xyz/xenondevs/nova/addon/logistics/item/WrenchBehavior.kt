@@ -14,7 +14,7 @@ import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.BlockUtils
-import xyz.xenondevs.nova.util.ResourceLocation
+import xyz.xenondevs.nova.util.Key
 import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.util.runTask
@@ -37,7 +37,7 @@ import kotlin.collections.set
 
 internal object WrenchBehavior : ItemBehavior {
     
-    private val WRENCH_MODE_KEY = ResourceLocation(Logistics, "wrench_mode")
+    private val WRENCH_MODE_KEY = Key(Logistics, "wrench_mode")
     private val NETWORK_TYPES = arrayOf(DefaultNetworkTypes.ENERGY, DefaultNetworkTypes.ITEM, DefaultNetworkTypes.FLUID)
     
     override val defaultCompound: Provider<NamespacedCompound> = provider {

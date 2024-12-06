@@ -136,7 +136,7 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         val size = growthProgress.coerceIn(0.0..1.0).toFloat()
         plant.updateEntityData(true) {
             transformationInterpolationDelay = 0
-            itemStack = plantType?.let { PLANTS[it]!!.miniature.model.clientsideProvider.get() }
+            itemStack = plantType?.let { PLANTS[it]!!.miniature.clientsideProvider.get() }
             scale = Vector3f(size, size, size)
             translation = Vector3f(0.0f, 0.5f * size, 0.0f)
         }

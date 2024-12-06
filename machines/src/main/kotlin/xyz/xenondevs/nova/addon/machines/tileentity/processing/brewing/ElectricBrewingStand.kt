@@ -1,5 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.PotionContents.potionContents
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
@@ -8,10 +10,8 @@ import org.bukkit.Registry
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice
-import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
@@ -21,12 +21,10 @@ import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.inventory.event.UpdateReason
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
+import xyz.xenondevs.invui.item.ItemBuilder
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.builder.PotionBuilder
-import xyz.xenondevs.invui.item.builder.addLoreLines
-import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.gui.BrewProgressItem
 import xyz.xenondevs.nova.addon.machines.recipe.ElectricBrewingStandRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.ELECTRIC_BREWING_STAND
@@ -85,7 +83,21 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private var timePassed = 0
     
     private var color by storedValue("potionColor") { Color(0, 0, 0) }
-    private var potionType by storedValue("potionType") { PotionBuilder.PotionType.NORMAL }
+    private var potionType: Material by storedValue<String>("potionType").map({
+        when (it) {
+            "NORMAL" -> Material.POTION
+            "SPLASH" -> Material.SPLASH_POTION
+            "LINGERING" -> Material.LINGERING_POTION
+            else -> throw IllegalArgumentException("Invalid potion type: $it")
+        }
+    }, {
+        when (it) {
+            Material.POTION -> "NORMAL"
+            Material.SPLASH_POTION -> "SPLASH"
+            Material.LINGERING_POTION -> "LINGERING"
+            else -> throw IllegalArgumentException("Invalid potion type: $it")
+        }
+    })
     private var potionEffects: List<PotionEffectBuilder> by storedValue<List<Compound>>("potionEffects", ::emptyList)
         .map(
             { compounds ->
@@ -115,7 +127,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
         updatePotionData(potionType, potionEffects, color)
     }
     
-    private fun updatePotionData(type: PotionBuilder.PotionType, effects: List<PotionEffectBuilder>, color: Color) {
+    private fun updatePotionData(type: Material, effects: List<PotionEffectBuilder>, color: Color) {
         this.potionEffects = effects.map(PotionEffectBuilder::clone)
         this.potionType = type
         this.color = color
@@ -125,9 +137,9 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
             
             // Potion type items
             requiredItems.add(ItemStack(Material.GLASS_BOTTLE, 3))
-            if (type == PotionBuilder.PotionType.SPLASH) {
+            if (type == Material.SPLASH_POTION) {
                 requiredItems.add(ItemStack(Material.GUNPOWDER))
-            } else if (type == PotionBuilder.PotionType.LINGERING) {
+            } else if (type == Material.LINGERING_POTION) {
                 requiredItems.add(ItemStack(Material.GUNPOWDER))
                 requiredItems.add(ItemStack(Material.DRAGON_BREATH))
             }
@@ -202,13 +214,16 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     
     private fun checkBrewingPossibility() {
         if (requiredItems != null && requiredItemsStatus != null && outputInventory.isEmpty && requiredItemsStatus!!.values.all { it }) {
-            val builder = PotionBuilder(potionType)
-            potionEffects.forEach { builder.addEffect(it.build()) }
-            nextPotion = builder
-                .setDisplayName(Component.translatable("item.minecraft.potion"))
+            nextPotion = ItemBuilder(potionType)
                 .setAmount(3)
-                .setColor(color)
-                .get()
+                .setName(Component.translatable("item.minecraft.potion"))
+                .set(
+                    DataComponentTypes.POTION_CONTENTS,
+                    potionContents().apply {
+                        for (effect in potionEffects) addCustomEffect(effect.build())
+                        customColor(org.bukkit.Color.fromRGB(color.rgb))
+                    }
+                ).get()
         } else {
             nextPotion = null
             timePassed = 0
@@ -278,8 +293,8 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
                 ". o . o . . . f e",
                 ". . o . . . . f e")
             .addContent(ingredientsInventory)
-            .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.model.clientsideProvider))
-            .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.model.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.model.clientsideProvider))
+            .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.clientsideProvider))
+            .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.clientsideProvider))
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('U', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(4, energyHolder))
@@ -300,16 +315,19 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
         
         inner class ConfigurePotionItem : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider {
-                val builder = PotionBuilder(potionType)
-                    .setColor(color)
-                    .setBasePotionData(PotionData(PotionType.WATER, false, false))
-                    .setDisplayName(Component.translatable("menu.machines.electric_brewing_stand.configured_potion"))
-                potionEffects.forEach { builder.addEffect(it.build()) }
-                return builder
+            override fun getItemProvider(player: Player): ItemProvider {
+                return ItemBuilder(potionType)
+                    .setName(Component.translatable("menu.machines.electric_brewing_stand.configured_potion"))
+                    .set(
+                        DataComponentTypes.POTION_CONTENTS,
+                        potionContents()
+                            .potion(PotionType.WATER)
+                            .customColor(org.bukkit.Color.fromRGB(color.rgb))
+                            .apply { for (effect in potionEffects) addCustomEffect(effect.build()) }
+                    )
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
                 configuratorWindow.openConfigurator(player)
             }
             
@@ -317,10 +335,10 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
         
         inner class IngredientsDisplay : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider {
+            override fun getItemProvider(player: Player): ItemProvider {
                 val hasAll = requiredItemsStatus?.all { it.value } ?: false
                 val builder = ItemBuilder(Material.KNOWLEDGE_BOOK)
-                    .setDisplayName(Component.translatable("menu.machines.electric_brewing_stand.ingredients", if (hasAll) NamedTextColor.GREEN else NamedTextColor.RED))
+                    .setName(Component.translatable("menu.machines.electric_brewing_stand.ingredients", if (hasAll) NamedTextColor.GREEN else NamedTextColor.RED))
                 requiredItems
                     ?.asSequence()
                     ?.sortedByDescending { it.amount }
@@ -338,7 +356,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
                 return builder
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
             
         }
         

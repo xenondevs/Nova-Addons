@@ -6,13 +6,13 @@ import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.impl.AbstractItem
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
@@ -219,10 +219,10 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         
         private inner class AutoTillingItem : AbstractItem() {
             
-            override fun getItemProvider() =
-                (if (autoTill) GuiItems.HOE_BTN_ON else GuiItems.HOE_BTN_OFF).model.clientsideProvider
+            override fun getItemProvider(player: Player) =
+                (if (autoTill) GuiItems.HOE_BTN_ON else GuiItems.HOE_BTN_OFF).clientsideProvider
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
                 autoTill = !autoTill
                 notifyWindows()
                 

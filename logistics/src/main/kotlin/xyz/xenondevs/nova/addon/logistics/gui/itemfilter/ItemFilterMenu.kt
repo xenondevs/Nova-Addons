@@ -3,17 +3,15 @@ package xyz.xenondevs.nova.addon.logistics.gui.itemfilter
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.VirtualInventory
-import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.inventory.event.UpdateReason
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.invui.window.Window
-import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.NbtItemFilter
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.TypeItemFilter
@@ -32,22 +30,21 @@ class ItemFilterMenu(
     private var nbt: Boolean,
 ) {
     
-    private val filterInventory = object : VirtualInventory(null, items.size, items, IntArray(items.size) { 1 }) {
-        
-        override fun addItem(updateReason: UpdateReason?, itemStack: ItemStack): Int {
-            items.withIndex()
-                .firstOrNull { (_, itemStack) -> itemStack == null }
-                ?.index
-                ?.also { putItem(updateReason, it, itemStack) }
+    private val filterInventory = VirtualInventory(null, items.size, items, IntArray(items.size) {1}).apply { 
+        setPreUpdateHandler { event ->
+            event.isCancelled = true
             
-            return itemStack.amount
+            // disallow item filters in item filters
+            if (event.newItem?.isItemFilter() == true)
+                return@setPreUpdateHandler
+                
+            if (event.isAdd || event.isSwap) {
+                putItem(UpdateReason.SUPPRESSED, event.slot, event.newItem!!.clone().apply { amount = 1} )
+            } else if (event.isRemove) {
+                setItem(UpdateReason.SUPPRESSED, event.slot, null)
+            }
         }
-        
-        override fun setItem(updateReason: UpdateReason?, slot: Int, itemStack: ItemStack?): Boolean {
-            return super.forceSetItem(updateReason, slot, itemStack)
-        }
-        
-    }.also { it.setPreUpdateHandler(::handleInventoryUpdate) }
+    }
     
     private val window: Window =
         Window.single {
@@ -100,21 +97,12 @@ class ItemFilterMenu(
         }
     }
     
-    private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
-        if (event.updateReason == null)
-            return
-        event.isCancelled = true
-        if (event.newItem?.isItemFilter() == true)
-            return
-        filterInventory.setItem(null, event.slot, event.newItem?.clone()?.apply { amount = 1 })
-    }
-    
     private inner class SwitchModeItem : AbstractItem() {
         
-        override fun getItemProvider(): ItemProvider =
-            (if (whitelist) GuiItems.WHITELIST_BTN else GuiItems.BLACKLIST_BTN).model.clientsideProvider
+        override fun getItemProvider(player: Player): ItemProvider =
+            (if (whitelist) GuiItems.WHITELIST_BTN else GuiItems.BLACKLIST_BTN).clientsideProvider
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
             if (clickType == ClickType.LEFT) {
                 whitelist = !whitelist
                 notifyWindows()
@@ -126,10 +114,10 @@ class ItemFilterMenu(
     
     private inner class SwitchNBTItem : AbstractItem() {
         
-        override fun getItemProvider(): ItemProvider =
-            (if (nbt) GuiItems.NBT_BTN_ON else GuiItems.NBT_BTN_OFF).model.clientsideProvider
+        override fun getItemProvider(player: Player): ItemProvider =
+            (if (nbt) GuiItems.NBT_BTN_ON else GuiItems.NBT_BTN_OFF).clientsideProvider
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
             if (clickType == ClickType.LEFT) {
                 nbt = !nbt
                 notifyWindows()

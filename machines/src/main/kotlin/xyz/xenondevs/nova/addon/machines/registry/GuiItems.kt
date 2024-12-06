@@ -1,6 +1,5 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
-import org.bukkit.Material
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
@@ -41,23 +40,22 @@ object GuiItems : ItemRegistry by Machines.registry {
     val MOB_CATCHER_PLACEHOLDER = tpGuiItem("placeholder/mob_catcher", null)
     val SAPLING_PLACEHOLDER = tpGuiItem("placeholder/sapling", null)
     
-    val ARROW_PROGRESS = progressItem("progress/arrow", 0..16)
-    val ENERGY_PROGRESS = progressItem("progress/energy", 0..16)
-    val PULVERIZER_PROGRESS = progressItem("progress/pulverizer", 0..14)
-    val PRESS_PROGRESS = progressItem("progress/press", 0..8)
-    val TP_BREW_PROGRESS = progressItem("progress/brew", 0..16)
-    val FLUID_PROGRESS_LEFT_RIGHT = progressItem("progress/fluid/left_right", 0..16)
-    val FLUID_PROGRESS_RIGHT_LEFT = progressItem("progress/fluid/right_left", 0..16)
-    val TP_FLUID_PROGRESS_LEFT_RIGHT = tpProgressItem("progress/fluid/left_right", 0..16)
-    val TP_FLUID_PROGRESS_RIGHT_LEFT = tpProgressItem("progress/fluid/right_left", 0..16)
+    val ARROW_PROGRESS = progressItem("progress/arrow", 17)
+    val ENERGY_PROGRESS = progressItem("progress/energy", 17)
+    val PULVERIZER_PROGRESS = progressItem("progress/pulverizer", 15)
+    val PRESS_PROGRESS = progressItem("progress/press", 9)
+    val TP_BREW_PROGRESS = progressItem("progress/brew", 17)
+    val FLUID_PROGRESS_LEFT_RIGHT = progressItem("progress/fluid/left_right",17)
+    val FLUID_PROGRESS_RIGHT_LEFT = progressItem("progress/fluid/right_left", 17)
+    val TP_FLUID_PROGRESS_LEFT_RIGHT = tpProgressItem("progress/fluid/left_right", 17)
+    val TP_FLUID_PROGRESS_RIGHT_LEFT = tpProgressItem("progress/fluid/right_left", 17)
     
     private fun guiItem(name: String, localizedName: String? = ""): NovaItem = item("gui/opaque/$name") {
         if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         
-        models {
-            itemType(Material.SHULKER_SHELL)
-            selectModel {
+        modelDefinition {
+            model = buildModel {
                 createGuiModel(background = true, stretched = false, "item/gui/$name")
             }
         }
@@ -67,33 +65,30 @@ object GuiItems : ItemRegistry by Machines.registry {
         if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         
-        models {
-            itemType(Material.SHULKER_SHELL)
-            selectModel {
+        modelDefinition {
+            model = buildModel {
                 createGuiModel(background = false, stretched = false, "item/gui/$name")
             }
         }
     }
     
-    private fun progressItem(name: String, range: IntRange) = item("gui/opaque/$name") {
+    private fun progressItem(name: String, count: Int) = item("gui/opaque/$name") {
         localizedName("")
         hidden(true)
         
-        models {
-            itemType(Material.SHULKER_SHELL)
-            selectModels(range, true) {
+        modelDefinition {
+            rangedModels(count) {
                 createGuiModel(background = true, stretched = false, "item/gui/$name/$it")
             }
         }
     }
     
-    private fun tpProgressItem(name: String, range: IntRange) = item("gui/transparent/$name") {
+    private fun tpProgressItem(name: String, count: Int) = item("gui/transparent/$name") {
         localizedName("")
         hidden(true)
         
-        models {
-            itemType(Material.SHULKER_SHELL)
-            selectModels(range, true) {
+        modelDefinition {
+            rangedModels(count) {
                 createGuiModel(background = false, stretched = false, "item/gui/$name/$it")
             }
         }

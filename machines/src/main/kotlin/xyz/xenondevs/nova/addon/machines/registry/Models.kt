@@ -46,13 +46,13 @@ object Models : ItemRegistry by Machines.registry {
     
     private fun modelItem(name: String): NovaItem = item("model/$name") {
         hidden(true)
-        models { selectModel { getModel("block/$name") } }
+        modelDefinition { model = buildModel { getModel("block/$name") } }
     }
     
     private fun fluidLevels(name: String): NovaItem = item("model/$name") {
         hidden(true)
-        models {
-            selectModels(0..100) {
+        modelDefinition { 
+            rangedModels(101) {
                 getModel("block/$name").scale(
                     Vector3d(0.0, 0.0, 0.0),
                     Vector3d(1.0, it / 100.0, 1.0),

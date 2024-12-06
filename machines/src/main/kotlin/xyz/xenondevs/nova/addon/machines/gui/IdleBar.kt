@@ -1,12 +1,14 @@
+@file:OptIn(ExperimentalReactiveApi::class)
+
 package xyz.xenondevs.nova.addon.machines.gui
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.invui.ExperimentalReactiveApi
 import xyz.xenondevs.invui.item.Item
-import xyz.xenondevs.invui.item.builder.setDisplayName
+import xyz.xenondevs.invui.item.setItemProvider
 import xyz.xenondevs.nova.ui.menu.VerticalBar
-import xyz.xenondevs.nova.ui.menu.item.reactiveItem
 import xyz.xenondevs.nova.world.item.DefaultGuiItems
 
 class IdleBar(
@@ -17,17 +19,18 @@ class IdleBar(
 ) : VerticalBar(height) {
     
     override fun createBarItem(section: Int): Item =
-        reactiveItem(timePassed, maxIdleTime) { timePassed, maxIdleTime ->
-            createItemBuilder(
-                DefaultGuiItems.BAR_GREEN,
-                section,
-                timePassed.toDouble() / maxIdleTime.toDouble()
-            ).setDisplayName(Component.translatable(
-                translationKey,
-                NamedTextColor.GRAY,
-                Component.text(maxIdleTime - timePassed)
-            ))
-        }
+        Item.builder()
+            .setItemProvider(timePassed, maxIdleTime) { timePassed, maxIdleTime ->
+                createItemBuilder(
+                    DefaultGuiItems.BAR_GREEN,
+                    section,
+                    timePassed.toDouble() / maxIdleTime.toDouble()
+                ).setName(Component.translatable(
+                    translationKey,
+                    NamedTextColor.GRAY,
+                    Component.text(maxIdleTime - timePassed)
+                ))
+            }.build()
     
 }
 
@@ -38,9 +41,9 @@ class ProgressBar(
 ) : VerticalBar(height) {
     
     override fun createBarItem(section: Int): Item =
-        reactiveItem(progress) { progress ->
+        Item.builder().setItemProvider(progress) { progress ->
             createItemBuilder(DefaultGuiItems.BAR_GREEN, section, progress)
-                .setDisplayName(Component.translatable(translationKey, NamedTextColor.GRAY))
-        }
+                .setName(Component.translatable(translationKey, NamedTextColor.GRAY))
+        }.build()
     
 }

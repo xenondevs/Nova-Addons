@@ -4,21 +4,18 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.gui.Markers
 import xyz.xenondevs.invui.gui.ScrollGui
-import xyz.xenondevs.invui.gui.structure.Markers
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.invui.item.impl.AbstractItem
-import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.window.Window
-import xyz.xenondevs.invui.window.type.context.setTitle
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeType
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.GuiItems
@@ -50,7 +47,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
         .addIngredient('<', ScrollLeftItem())
         .addIngredient('>', ScrollRightItem())
         .addIngredient('x', Markers.CONTENT_LIST_SLOT_VERTICAL)
-        .setBackground(DefaultGuiItems.INVENTORY_PART.model.clientsideProvider)
+        .setBackground(DefaultGuiItems.INVENTORY_PART.clientsideProvider)
         .setContent(createUpgradeItemList())
         .build()
     
@@ -133,10 +130,10 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
             upgradeItems += this
         }
         
-        override fun getItemProvider(): ItemProvider {
-            val builder = type.icon.model.createClientsideItemBuilder()
+        override fun getItemProvider(player: Player): ItemProvider {
+            val builder = type.icon.createClientsideItemBuilder()
             val typeId = type.id
-            builder.setDisplayName(Component.translatable(
+            builder.setName(Component.translatable(
                 "menu.${typeId.namespace}.upgrades.type.${typeId.path}",
                 NamedTextColor.GRAY,
                 Component.text(upgradeHolder.getLevel(type)),
@@ -146,7 +143,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
             return builder
         }
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
             val item = upgradeHolder.removeUpgrade(type, clickType.isShiftClick) ?: return
             val location = player.location
             val leftover = player.inventory.addItemCorrectly(item)
@@ -162,18 +159,20 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
             upgradeItems += this
         }
         
-        override fun getItemProvider(): ItemProvider =
-            DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = upgradeHolder.getLevel(type))
+        override fun getItemProvider(player: Player): ItemProvider =
+            DefaultGuiItems.NUMBER.createClientsideItemBuilder().addCustomModelData(upgradeHolder.getLevel(type))
         
-        override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
+        override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
         
     }
     
 }
 
-class OpenUpgradesItem(private val upgradeHolder: UpgradeHolder) : SimpleItem(GuiItems.UPGRADES_BTN.model.clientsideProvider) {
+class OpenUpgradesItem(private val upgradeHolder: UpgradeHolder) : AbstractItem() {
     
-    override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
+    override fun getItemProvider(player: Player) = GuiItems.UPGRADES_BTN.clientsideProvider
+    
+    override fun handleClick(clickType: ClickType, player: Player, click: Click) {
         player.playClickSound()
         upgradeHolder.gui.value.openWindow(player)
     }

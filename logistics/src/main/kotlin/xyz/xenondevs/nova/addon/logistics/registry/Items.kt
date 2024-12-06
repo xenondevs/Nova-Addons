@@ -48,11 +48,7 @@ object Items : ItemRegistry by Logistics.registry {
     }
     
     private fun cable(block: NovaBlock, tier: String) = item(block) {
-        models {
-            selectModel {
-                getModel("item/cable/$tier")
-            }
-        }
+        modelDefinition { model = buildModel { getModel("item/cable/$tier") } }
     }
     
 }

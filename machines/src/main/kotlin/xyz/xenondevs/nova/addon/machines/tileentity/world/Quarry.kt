@@ -16,7 +16,6 @@ import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import org.joml.Quaternionf
 import org.joml.Vector3f
@@ -25,11 +24,10 @@ import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.addLoreLines
-import xyz.xenondevs.invui.item.builder.setDisplayName
-import xyz.xenondevs.invui.item.impl.AbstractItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.QUARRY
 import xyz.xenondevs.nova.addon.machines.registry.Models
 import xyz.xenondevs.nova.addon.machines.util.rangeAffectedValue
@@ -720,27 +718,27 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         private inner class SizeDisplayItem(private val getNumber: () -> Int) : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider {
+            override fun getItemProvider(player: Player): ItemProvider {
                 val number = getNumber()
-                return DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = getNumber())
-                    .setDisplayName(Component.translatable("menu.machines.quarry.size", Component.text(number), Component.text(number)))
+                return DefaultGuiItems.NUMBER.createClientsideItemBuilder().addCustomModelData(getNumber())
+                    .setName(Component.translatable("menu.machines.quarry.size", Component.text(number), Component.text(number)))
                     .addLoreLines(Component.translatable("menu.machines.quarry.size_tip", NamedTextColor.GRAY))
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
             
         }
         
         private inner class DepthDisplayItem(private val getNumber: () -> Int) : AbstractItem() {
             
-            override fun getItemProvider(): ItemProvider {
+            override fun getItemProvider(player: Player): ItemProvider {
                 val number = getNumber()
-                return DefaultGuiItems.NUMBER.model.createClientsideItemBuilder(modelId = getNumber())
-                    .setDisplayName(Component.translatable("menu.machines.quarry.depth", Component.text(number)))
+                return DefaultGuiItems.NUMBER.createClientsideItemBuilder().addCustomModelData(getNumber())
+                    .setName(Component.translatable("menu.machines.quarry.depth", Component.text(number)))
                     .addLoreLines(Component.translatable("menu.machines.quarry.depth_tip", NamedTextColor.GRAY))
             }
             
-            override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) = Unit
+            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
             
         }
         

@@ -62,7 +62,7 @@ open class FluidTank(
                     FluidType.LAVA -> Models.TANK_LAVA_LEVELS
                     FluidType.WATER -> Models.TANK_WATER_LEVELS
                     else -> throw IllegalStateException()
-                }.model.unnamedClientsideProviders[state].get()
+                }.createClientsideItemBuilder().addCustomModelData(state).get()
             } else null
         }
     }

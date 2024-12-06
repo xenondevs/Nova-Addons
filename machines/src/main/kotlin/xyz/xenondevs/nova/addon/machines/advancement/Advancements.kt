@@ -20,7 +20,7 @@ import java.util.*
 
 private val ROOT = advancement(Machines, "root") {
     display(DisplayInfo(
-        Items.QUARRY.model.clientsideProvider.get().unwrap(),
+        Items.QUARRY.clientsideProvider.get().unwrap(),
         Component.translatable("advancement.machines.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
         Optional.of(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/tuff.png")),
