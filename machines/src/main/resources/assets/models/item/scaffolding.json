@@ -1,6 +1,7 @@
 {
   "parent": "nova:block/base",
   "textures": {
+    "particle": "#1",
     "1": "machines:block/quarry_scaffolding"
   },
   "elements": [

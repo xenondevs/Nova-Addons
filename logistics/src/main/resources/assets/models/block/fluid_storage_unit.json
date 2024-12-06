@@ -2,6 +2,7 @@
 	"parent": "nova:block/base",
 	"texture_size": [32, 32],
 	"textures": {
+		"particle": "#6",
 		"2": "logistics:block/machine_top",
 		"3": "logistics:block/machine_side_blank",
 		"4": "logistics:block/storage_unit/sphere",

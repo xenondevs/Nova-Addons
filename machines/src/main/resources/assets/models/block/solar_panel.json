@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#0",
 		"0": "machines:block/solar_panel_top",
 		"1": "machines:block/solar_panel_stand",
 		"2": "machines:block/solar_panel_side"

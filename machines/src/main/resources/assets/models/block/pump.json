@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#0",
 		"0": "machines:block/pump"
 	},
 	"elements": [

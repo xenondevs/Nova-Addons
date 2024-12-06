@@ -1,5 +1,6 @@
 {
 	"textures": {
+		"particle": "#1",
 		"1": "machines:block/wind_turbine"
 	},
 	"elements": [

@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#2",
 		"2": "machines:block/machine_side",
 		"3": "block/glass",
 		"4": "block/dirt",

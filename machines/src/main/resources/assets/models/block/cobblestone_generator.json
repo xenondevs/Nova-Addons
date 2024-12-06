@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#0",
 		"0": "machines:block/cobblestone_generator_front",
 		"3": "machines:block/machine_top",
 		"4": "machines:block/machine_side",

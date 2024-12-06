@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#4",
 		"0": "machines:block/star_collector_glass",
 		"2": "machines:block/star_collector_plate_top",
 		"3": "machines:block/star_collector_plate_bottom",

@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle":  "#4",
 		"2": "machines:block/sprinkler/3",
 		"3": "machines:block/sprinkler/2",
 		"4": "machines:block/sprinkler/1"

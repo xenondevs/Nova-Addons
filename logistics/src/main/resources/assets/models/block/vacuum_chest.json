@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#1",
 		"1": "entity/end_portal"
 	},
 	"elements": [

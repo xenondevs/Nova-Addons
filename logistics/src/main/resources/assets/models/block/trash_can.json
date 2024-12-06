@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/base",
 	"textures": {
+		"particle": "#2",
 		"2": "logistics:block/trash_can"
 	},
 	"elements": [

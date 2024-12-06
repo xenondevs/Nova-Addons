@@ -1,6 +1,0 @@
-{
-	"parent": "logistics:block/cable/all",
-	"textures": {
-		"0": "logistics:block/cable/elite"
-	}
-}

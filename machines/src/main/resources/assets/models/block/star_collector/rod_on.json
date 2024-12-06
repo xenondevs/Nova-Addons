@@ -1,5 +1,6 @@
 {
 	"textures": {
+		"particle": "#0",
 		"0": "machines:block/star_collector_rod_on",
 		"1": "machines:block/star_collector_plate_top"
 	},
