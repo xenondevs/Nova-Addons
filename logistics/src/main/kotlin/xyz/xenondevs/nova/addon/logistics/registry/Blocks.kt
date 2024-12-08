@@ -40,7 +40,7 @@ import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
 import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
 import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
-import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.AXIS_HORIZONTAL
+import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.AXIS
 import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 import net.minecraft.world.level.block.state.properties.BlockStateProperties as MojangBlockStateProperties
@@ -76,7 +76,7 @@ object Blocks : BlockRegistry by Logistics.registry {
     val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) { behaviors(OTHER, BlockSounds(SoundGroup.STONE)) }
     val TRASH_CAN = interactiveTileEntity("trash_can", ::TrashCan) {
         behaviors(OTHER, BlockSounds(SoundGroup.STONE))
-        stateProperties(AXIS_HORIZONTAL)
+        stateProperties(AXIS)
         entityBacked { defaultModel.rotated() }
     }
     
