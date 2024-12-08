@@ -72,11 +72,6 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
         ::getViewers
     )
     
-    init {
-        if (currentRecipe == null)
-            timeLeft = 0
-    }
-    
     override fun handleDisable() {
         super.handleDisable()
         particleTask.stop()
