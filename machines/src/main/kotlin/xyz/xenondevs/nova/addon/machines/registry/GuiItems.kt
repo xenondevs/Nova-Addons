@@ -77,7 +77,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         hidden(true)
         
         modelDefinition {
-            rangedModels(count) {
+            model = rangedModels(count) {
                 createGuiModel(background = true, stretched = false, "item/gui/$name/$it")
             }
         }
@@ -88,7 +88,7 @@ object GuiItems : ItemRegistry by Machines.registry {
         hidden(true)
         
         modelDefinition {
-            rangedModels(count) {
+            model = rangedModels(count) {
                 createGuiModel(background = false, stretched = false, "item/gui/$name/$it")
             }
         }
