@@ -117,7 +117,7 @@ class StorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
         private inner class StorageUnitDisplay : AbstractItem() {
             
             override fun getItemProvider(player: Player): ItemProvider {
-                val type = inventory.type.takeUnlessEmpty() ?: return ItemBuilder(Material.BARRIER).setName("§r")
+                val type = inventory.type.takeUnlessEmpty() ?: return ItemBuilder(Material.BARRIER).hideTooltip(true)
                 val amount = inventory.amount
                 val component = Component.translatable(
                     "menu.logistics.storage_unit.item_display_" + if (amount > 1) "plural" else "singular",

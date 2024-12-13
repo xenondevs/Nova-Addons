@@ -90,9 +90,9 @@ class FluidStorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : N
             
             override fun getItemProvider(player: Player): ItemProvider {
                 val type = fluidTank.type?.bucket
-                    ?: return ItemBuilder(Material.BARRIER).setName("§r")
+                    ?: return ItemBuilder(Material.BARRIER).hideTooltip(true)
                 val amount = fluidTank.amount
-                return ItemBuilder(type).setName("§a$amount §7mB").setAmount(1)
+                return ItemBuilder(type).setName("<green>$amount <gray>mB").setAmount(1)
             }
             
             override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit

@@ -28,7 +28,7 @@
   "menu.logistics.item_filter.blacklist": "Configuração: Lista Negra",
   "menu.logistics.item_filter.nbt.on": "Dados NBT: Não Ignorado",
   "menu.logistics.item_filter.nbt.off": "Dados NBT: Ignorado",
-  "menu.logistics.storage_unit.item_display_plural": "%s §7Itens",
+  "menu.logistics.storage_unit.item_display_plural": "%s Itens",
   "advancement.logistics.basic_cable.title": "Conexões Básicas",
   "advancement.logistics.basic_cable.description": "Construa um Cabo Básico",
   "advancement.logistics.advanced_cable.title": "Tecnologia Avançada de Cabos",
