@@ -92,7 +92,7 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
                     particleTask.start()
                 
                 if (timeLeft == 0) {
-                    outputInv.addItem(SELF_UPDATE_REASON, currentRecipe!!.result)
+                    currentRecipe?.let { outputInv.addItem(SELF_UPDATE_REASON, it.result) }
                     currentRecipe = null
                 }
                 

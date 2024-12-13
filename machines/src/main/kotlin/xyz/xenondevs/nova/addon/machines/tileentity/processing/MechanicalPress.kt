@@ -69,11 +69,6 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
         NovaRecipe::id
     )
     
-    init {
-        if (currentRecipe == null)
-            timeLeft = 0
-    }
-    
     override fun handleTick() {
         if (energyHolder.energy >= energyPerTick) {
             if (timeLeft == 0)
@@ -83,7 +78,7 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
                 energyHolder.energy -= energyPerTick
                 
                 if (timeLeft == 0) {
-                    outputInv.putItem(SELF_UPDATE_REASON, 0, currentRecipe!!.result)
+                    currentRecipe?.let { outputInv.putItem(SELF_UPDATE_REASON, 0, it.result) }
                     currentRecipe = null
                 }
                 
