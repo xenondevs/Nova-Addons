@@ -121,7 +121,7 @@ object Blocks : BlockRegistry by Machines.registry {
     }
     
     // Normal blocks
-    val STAR_DUST_BLOCK = nonInteractiveBlock("star_dust_block") { behaviors(SAND, BlockSounds(SoundGroup.SAND)) }
+    val STAR_DUST_BLOCK = nonInteractiveBlock("star_dust_block") { behaviors(SAND, BlockSounds(SoundGroup.SAND), BlockDrops) }
     val BASIC_MACHINE_FRAME = machineFrame("basic")
     val ADVANCED_MACHINE_FRAME = machineFrame("advanced")
     val ELITE_MACHINE_FRAME = machineFrame("elite")
