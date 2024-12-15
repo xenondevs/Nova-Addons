@@ -70,7 +70,7 @@ open class FluidTank(
     @TileEntityMenuClass
     inner class FluidTankMenu : GlobalTileEntityMenu() {
         
-        private val SideConfigMenu = SideConfigMenu(
+        private val sideConfigMenu = SideConfigMenu(
             this@FluidTank,
             mapOf(fluidContainer to "container.nova.fluid_tank"),
             ::openWindow
@@ -83,7 +83,7 @@ open class FluidTank(
                 "| # # # f # # # |",
                 "| # # # f # # # |",
                 "3 - - - - - - - 4")
-            .addIngredient('s', OpenSideConfigItem(SideConfigMenu))
+            .addIngredient('s', OpenSideConfigItem(sideConfigMenu))
             .addIngredient('f', FluidBar(3, fluidHolder, fluidContainer))
             .build()
         

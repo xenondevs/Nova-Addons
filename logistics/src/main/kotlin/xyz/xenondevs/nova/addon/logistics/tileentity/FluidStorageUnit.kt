@@ -64,7 +64,7 @@ class FluidStorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : N
     @TileEntityMenuClass
     inner class FluidStorageUnitMenu : GlobalTileEntityMenu() {
         
-        private val SideConfigMenu = SideConfigMenu(
+        private val sideConfigMenu = SideConfigMenu(
             this@FluidStorageUnit,
             mapOf(fluidTank to "container.nova.fluid_tank"),
             ::openWindow
@@ -77,7 +77,7 @@ class FluidStorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : N
                 "| # # # d # # f |",
                 "| # # # # # # f |",
                 "3 - - - - - - - 4")
-            .addIngredient('s', OpenSideConfigItem(SideConfigMenu))
+            .addIngredient('s', OpenSideConfigItem(sideConfigMenu))
             .addIngredient('d', FluidStorageUnitDisplay())
             .addIngredient('f', FluidBar(3, fluidHolder, fluidTank))
             .build()

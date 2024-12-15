@@ -5,8 +5,8 @@ import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.cbf.entry
 import xyz.xenondevs.commons.collections.enumMap
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.commons.provider.orElseLazily
+import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks
 import xyz.xenondevs.nova.config.entry
@@ -43,7 +43,8 @@ abstract class AbstractPowerCell(pos: BlockPos, state: NovaBlockState, data: Com
     @TileEntityMenuClass
     inner class PowerCellMenu : GlobalTileEntityMenu() {
         
-        private val SideConfigMenu = SideConfigMenu(this@AbstractPowerCell, ::openWindow)
+        private val sideConfigMenu = SideConfigMenu(this@AbstractPowerCell, ::openWindow)
+        
         
         override val gui = Gui.normal()
             .setStructure(
@@ -52,7 +53,7 @@ abstract class AbstractPowerCell(pos: BlockPos, state: NovaBlockState, data: Com
                 "| # # # e # # # |",
                 "| # # # e # # # |",
                 "3 - - - - - - - 4")
-            .addIngredient('s', OpenSideConfigItem(SideConfigMenu))
+            .addIngredient('s', OpenSideConfigItem(sideConfigMenu))
             .addIngredient('e', energyBar)
             .build()
         
