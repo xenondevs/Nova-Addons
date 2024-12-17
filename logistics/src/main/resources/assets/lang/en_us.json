@@ -62,7 +62,12 @@
   "menu.logistics.item_filter.nbt.off": "NBT Data: Ignored",
   "menu.logistics.storage_unit.item_display_plural": "%s Items",
   "menu.logistics.storage_unit.item_display_singular": "%s Item",
-
+  "menu.logistics.power_cell.graph_mode.energy": "Graph: Total Energy",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graph: Energy In/Out",
+  "menu.logistics.power_cell.graph_enlarge": "Zoom in",
+  "menu.logistics.power_cell.graph_shrink": "Zoom out",
+  "menu.logistics.power_cell.graph_bar_duration": "One bar = %s",
+  
   "advancement.logistics.root.title": "Logistics",
   "advancement.logistics.basic_cable.title": "Basic Networking",
   "advancement.logistics.basic_cable.description": "Craft a Basic Cable",
