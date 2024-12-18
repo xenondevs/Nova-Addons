@@ -1,0 +1,8 @@
+{
+  "result": "minecraft:wind_charged",
+  "default_time": 3600,
+  "inputs": [
+    "minecraft:nether_wart",
+    "minecraft:breeze_rod"
+  ]
+}

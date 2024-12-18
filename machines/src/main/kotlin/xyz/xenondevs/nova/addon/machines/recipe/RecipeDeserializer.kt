@@ -2,10 +2,9 @@ package xyz.xenondevs.nova.addon.machines.recipe
 
 import com.google.gson.JsonObject
 import net.kyori.adventure.key.Key
-import org.bukkit.NamespacedKey
+import org.bukkit.Registry
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice
-import org.bukkit.potion.PotionEffectType
 import xyz.xenondevs.commons.gson.getDoubleOrNull
 import xyz.xenondevs.commons.gson.getInt
 import xyz.xenondevs.commons.gson.getIntOrNull
@@ -57,7 +56,7 @@ object ElectricBrewingStandRecipeDeserializer : RecipeDeserializer<ElectricBrewi
         require(inputs.all { it.getInputStacks().size == 1 })
         
         val resultName = json.getString("result")
-        val result = PotionEffectType.getByKey(NamespacedKey.fromString(resultName))
+        val result = Registry.EFFECT.get(Key.key(resultName))
             ?: throw IllegalArgumentException("Invalid result")
         
         val defaultTime = json.getIntOrNull("default_time") ?: 0
