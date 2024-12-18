@@ -63,7 +63,7 @@ class VacuumChest(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
         if (filter != null)
             filterInventory.setItem(SELF_UPDATE_REASON, 0, filter!!.toItemStack())
         
-        filterInventory.setPreUpdateHandler(::handleFilterInventoryUpdate)
+        filterInventory.addPreUpdateHandler(::handleFilterInventoryUpdate)
         filterInventory.guiPriority = 1
     }
     

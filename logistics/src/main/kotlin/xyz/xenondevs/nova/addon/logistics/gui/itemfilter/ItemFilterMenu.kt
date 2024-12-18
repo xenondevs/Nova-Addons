@@ -31,12 +31,12 @@ class ItemFilterMenu(
 ) {
     
     private val filterInventory = VirtualInventory(null, items.size, items, IntArray(items.size) {1}).apply { 
-        setPreUpdateHandler { event ->
+        addPreUpdateHandler { event ->
             event.isCancelled = true
             
             // disallow item filters in item filters
             if (event.newItem?.isItemFilter() == true)
-                return@setPreUpdateHandler
+                return@addPreUpdateHandler
                 
             if (event.isAdd || event.isSwap) {
                 putItem(UpdateReason.SUPPRESSED, event.slot, event.newItem!!.clone().apply { amount = 1} )

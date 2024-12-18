@@ -36,9 +36,9 @@ class ItemCableConfigMenu(
         updateValues()
         
         insertFilterInventory = VirtualInventory(null, 1, arrayOf(insertFilter), intArrayOf(1))
-        insertFilterInventory.setPreUpdateHandler(::validateIsItemFilter)
+        insertFilterInventory.addPreUpdateHandler(::validateIsItemFilter)
         extractFilterInventory = VirtualInventory(null, 1, arrayOf(extractFilter), intArrayOf(1))
-        extractFilterInventory.setPreUpdateHandler(::validateIsItemFilter)
+        extractFilterInventory.addPreUpdateHandler(::validateIsItemFilter)
         
         gui = Gui.normal()
             .setStructure(

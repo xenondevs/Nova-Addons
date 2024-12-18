@@ -34,7 +34,7 @@ private fun ItemStack.getUpgradeType(): UpgradeType<*>? =
 
 internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Player) -> Unit) {
     
-    private val input = VirtualInventory(null, 1).apply { setPreUpdateHandler(::handlePreInvUpdate); setPostUpdateHandler(::handlePostInvUpdate) }
+    private val input = VirtualInventory(null, 1).apply { addPreUpdateHandler(::handlePreInvUpdate); addPostUpdateHandler(::handlePostInvUpdate) }
     
     private val upgradeItems = ArrayList<Item>()
     

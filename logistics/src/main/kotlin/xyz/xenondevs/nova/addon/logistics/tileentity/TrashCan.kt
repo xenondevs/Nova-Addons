@@ -19,7 +19,7 @@ import java.util.*
 
 class TrashCan(pos: BlockPos, state: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, state, data) {
     
-    private val inventory = VirtualInventory(1).apply { setPostUpdateHandler { setItem(UpdateReason.SUPPRESSED, 0, null) } }
+    private val inventory = VirtualInventory(1).apply { addPostUpdateHandler { setItem(UpdateReason.SUPPRESSED, 0, null) } }
     private val itemHolder = storedItemHolder(inventory to NetworkConnectionType.INSERT)
     private val fluidHolder = storedFluidHolder(VoidingFluidContainer to NetworkConnectionType.INSERT)
     

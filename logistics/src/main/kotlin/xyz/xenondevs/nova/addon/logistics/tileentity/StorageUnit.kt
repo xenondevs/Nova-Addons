@@ -34,8 +34,8 @@ private val MAX_ITEMS by STORAGE_UNIT.config.entry<Int>("max_items")
 class StorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, state, data) {
     
     private val inventory = StorageUnitInventory(storedValue("type", true, ItemStack::empty), storedValue("amount", true) { 0 })
-    private val inputInventory = VirtualInventory(null, 1).apply { setPreUpdateHandler(::handleInputInventoryUpdate) }
-    private val outputInventory = VirtualInventory(null, 1).apply { setPreUpdateHandler(::handlePreOutputInventoryUpdate); setPostUpdateHandler(::handlePostOutputInventoryUpdate) }
+    private val inputInventory = VirtualInventory(null, 1).apply { addPreUpdateHandler(::handleInputInventoryUpdate) }
+    private val outputInventory = VirtualInventory(null, 1).apply { addPreUpdateHandler(::handlePreOutputInventoryUpdate); addPostUpdateHandler(::handlePostOutputInventoryUpdate) }
     
     init {
         storedItemHolder(inventory to NetworkConnectionType.BUFFER)
