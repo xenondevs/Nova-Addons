@@ -85,7 +85,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private var color by storedValue("potionColor") { Color(0, 0, 0) }
     private var potionType: Material by storedValue<String>("potionType").map({
         when (it) {
-            "NORMAL" -> Material.POTION
+            "NORMAL", null -> Material.POTION
             "SPLASH" -> Material.SPLASH_POTION
             "LINGERING" -> Material.LINGERING_POTION
             else -> throw IllegalArgumentException("Invalid potion type: $it")
@@ -216,12 +216,12 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
         if (requiredItems != null && requiredItemsStatus != null && outputInventory.isEmpty && requiredItemsStatus!!.values.all { it }) {
             nextPotion = ItemBuilder(potionType)
                 .setAmount(3)
-                .setName(Component.translatable("item.minecraft.potion"))
+                .setCustomName(Component.translatable("item.minecraft.potion"))
                 .set(
                     DataComponentTypes.POTION_CONTENTS,
                     potionContents().apply {
                         for (effect in potionEffects) addCustomEffect(effect.build())
-                        customColor(org.bukkit.Color.fromRGB(color.rgb))
+                        customColor(org.bukkit.Color.fromARGB(color.rgb))
                     }
                 ).get()
         } else {
@@ -297,15 +297,16 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
             .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.clientsideProvider))
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('U', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(4, energyHolder))
-            .addIngredient('f', FluidBar(4, fluidHolder, fluidTank))
+            .addIngredient('e', EnergyBar(4, energyHolder, DefaultGuiItems.TP_BAR_RED))
+            .addIngredient('f', FluidBar(4, fluidHolder, fluidTank, mapOf(null to DefaultGuiItems.TP_BAR_BLUE, FluidType.WATER to DefaultGuiItems.TP_BAR_BLUE, FluidType.LAVA to DefaultGuiItems.TP_BAR_RED)))
             .addIngredient('i', ingredientsDisplay)
             .addIngredient('p', configurePotionItem)
             .addIngredient('o', outputInventory, GuiItems.BOTTLE_PLACEHOLDER)
             .addIngredient('^', progressItem)
             .build()
         
-        private val configuratorWindow = PotionConfiguratorWindow(
+        private val configuratorWindow = PotionConfiguratorMenu(
+            menuContainer,
             potionEffects.map(PotionEffectBuilder::clone),
             potionType,
             color,
@@ -317,12 +318,12 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
             
             override fun getItemProvider(player: Player): ItemProvider {
                 return ItemBuilder(potionType)
-                    .setName(Component.translatable("menu.machines.electric_brewing_stand.configured_potion"))
+                    .setCustomName(Component.translatable("menu.machines.electric_brewing_stand.configured_potion"))
                     .set(
                         DataComponentTypes.POTION_CONTENTS,
                         potionContents()
                             .potion(PotionType.WATER)
-                            .customColor(org.bukkit.Color.fromRGB(color.rgb))
+                            .customColor(org.bukkit.Color.fromARGB(color.rgb))
                             .apply { for (effect in potionEffects) addCustomEffect(effect.build()) }
                     )
             }

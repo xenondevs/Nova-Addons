@@ -1,7 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.PotionContents
 import io.papermc.paper.datacomponent.item.PotionContents.potionContents
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -13,7 +12,6 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.commons.collections.after
 import xyz.xenondevs.commons.provider.mutableProvider
-import xyz.xenondevs.invui.ExperimentalReactiveApi
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.item.AbstractItem
@@ -28,21 +26,20 @@ import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing.ElectricBrewingStand.Companion.ALLOW_DURATION_AMPLIFIER_MIXING
 import xyz.xenondevs.nova.addon.machines.tileentity.processing.brewing.ElectricBrewingStand.Companion.AVAILABLE_POTION_EFFECTS
-import xyz.xenondevs.nova.ui.menu.ColorPickerWindow
-import xyz.xenondevs.nova.ui.menu.ColorPreviewItem
-import xyz.xenondevs.nova.ui.menu.OpenColorPickerWindowItem
 import xyz.xenondevs.nova.ui.menu.item.BackItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollDownItem
 import xyz.xenondevs.nova.ui.menu.item.ScrollUpItem
 import xyz.xenondevs.nova.ui.overlay.guitexture.DefaultGuiTextures
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.util.playItemPickupSound
+import xyz.xenondevs.nova.world.block.tileentity.menu.MenuContainer
 import xyz.xenondevs.nova.world.item.DefaultGuiItems
 import java.awt.Color
 
 val POTION_TYPES = listOf(Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION)
 
-class PotionConfiguratorWindow(
+class PotionConfiguratorMenu(
+    private val menuContainer: MenuContainer,
     effects: List<PotionEffectBuilder>,
     type: Material,
     color: Color,
@@ -56,23 +53,18 @@ class PotionConfiguratorWindow(
     private val potionTypeItem = Item.builder()
         .setItemProvider(this.potionMaterial) { type ->
             when (type) {
-                Material.POTION -> ItemBuilder(type).setName(Component.translatable("menu.machines.potion_configurator.potion_type.normal"))
-                Material.SPLASH_POTION -> ItemBuilder(type).setName(Component.translatable("menu.machines.potion_configurator.potion_type.splash"))
-                Material.LINGERING_POTION -> ItemBuilder(type).setName(Component.translatable("menu.machines.potion_configurator.potion_type.lingering"))
+                Material.POTION -> ItemBuilder(type).setCustomName(Component.translatable("menu.machines.potion_configurator.potion_type.normal"))
+                Material.SPLASH_POTION -> ItemBuilder(type).setCustomName(Component.translatable("menu.machines.potion_configurator.potion_type.splash"))
+                Material.LINGERING_POTION -> ItemBuilder(type).setCustomName(Component.translatable("menu.machines.potion_configurator.potion_type.lingering"))
                 else -> throw UnsupportedOperationException()
-            }
+            }.set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
         }.addClickHandler { _, click ->
             click.player.playItemPickupSound()
             this.potionMaterial.set(POTION_TYPES.after(this.potionMaterial.get()))
         }
         .build()
     
-    private val colorPickerWindow = ColorPickerWindow(
-        PotionColorPreviewItem(
-            ItemBuilder(Material.POTION)
-                .setName(Component.translatable("menu.machines.color_picker.current_color"))
-        ), color, ::openConfigurator)
-    
+    private val colorPicker = ColorPickerMenu(menuContainer, color, ::openConfigurator)
     private val gui = ScrollGui.guis()
         .setStructure(
             "< c t . . . . . s",
@@ -84,7 +76,7 @@ class PotionConfiguratorWindow(
         .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.clientsideProvider))
         .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.clientsideProvider))
         .addIngredient('<', BackItem(DefaultGuiItems.TP_ARROW_LEFT_ON.clientsideProvider, openPrevious))
-        .addIngredient('c', OpenColorPickerWindowItem(colorPickerWindow))
+        .addIngredient('c', colorPicker.openItem)
         .addIngredient('t', potionTypeItem)
         .build()
     
@@ -107,7 +99,7 @@ class PotionConfiguratorWindow(
     private fun updateEffectGuis() {
         val guis = effects.values.mapTo(ArrayList()) { it.gui }
         guis += createAddEffectGui()
-        gui.setContent(guis)
+        gui.content = guis
     }
     
     private fun createAddEffectGui(): Gui {
@@ -126,12 +118,16 @@ class PotionConfiguratorWindow(
     }
     
     fun openConfigurator(player: Player) {
-        Window.single { w ->
-            w.setViewer(player)
-            w.setTitle(GuiTextures.CONFIGURE_POTION.getTitle("menu.machines.electric_brewing_stand.configure_potion"))
-            w.setGui(gui)
-            w.addCloseHandler { updatePotionData(potionMaterial.get(), this.effects.keys.filter { it.type != null }, colorPickerWindow.color) }
-        }.open()
+        val window = Window.single()
+            .setViewer(player)
+            .setTitle(GuiTextures.CONFIGURE_POTION.getTitle("menu.machines.electric_brewing_stand.configure_potion"))
+            .setGui(gui)
+            .addCloseHandler { updatePotionData(potionMaterial.get(), this.effects.keys.filter { it.type != null }, colorPicker.color) }
+            .build()
+        
+        menuContainer.registerWindow(window)
+        
+        window.open()
     }
     
     private inner class PotionTypeGui(private val effect: PotionEffectBuilder) {
@@ -159,7 +155,7 @@ class PotionConfiguratorWindow(
             override fun getItemProvider(player: Player): ItemProvider {
                 return if (effect.type != null) {
                     ItemBuilder(Material.POTION)
-                        .setName(Component.translatable("menu.machines.potion_configurator.effect"))
+                        .setCustomName(Component.translatable("menu.machines.potion_configurator.effect"))
                         .set(
                             DataComponentTypes.POTION_CONTENTS,
                             potionContents()
@@ -171,7 +167,7 @@ class PotionConfiguratorWindow(
             }
             
             override fun handleClick(clickType: ClickType, player: Player, click: Click) {
-                PickPotionWindow(effect).openPicker(player)
+                PickPotionWindow(menuContainer, effect).openPicker(player)
             }
             
         }
@@ -270,7 +266,10 @@ class PotionConfiguratorWindow(
         
     }
     
-    private inner class PickPotionWindow(private val effect: PotionEffectBuilder) {
+    private inner class PickPotionWindow(
+        private val menuContainer: MenuContainer,
+        private val effect: PotionEffectBuilder
+    ) {
         
         private val potionItems = AVAILABLE_POTION_EFFECTS.keys
             .filter { availableEffect -> effects.keys.none { builder -> builder.type == availableEffect } }
@@ -289,11 +288,15 @@ class PotionConfiguratorWindow(
             .build()
         
         fun openPicker(player: Player) {
-            Window.single {
-                it.setViewer(player)
-                it.setTitle(DefaultGuiTextures.EMPTY_GUI.getTitle("menu.machines.electric_brewing_stand.pick_effect"))
-                it.setGui(gui)
-            }.open()
+            val window = Window.single()
+                .setViewer(player)
+                .setTitle(DefaultGuiTextures.EMPTY_GUI.getTitle("menu.machines.electric_brewing_stand.pick_effect"))
+                .setGui(gui)
+                .build()
+            
+            menuContainer.registerWindow(window)
+            
+            window.open()
         }
         
         private inner class ChooseEffectTypeItem(private val type: PotionEffectType) : AbstractItem() {
@@ -318,17 +321,5 @@ class PotionConfiguratorWindow(
         }
         
     }
-    
-}
-
-class PotionColorPreviewItem(builder: ItemBuilder, color: Color = Color(0, 0, 0)) : ColorPreviewItem(color) {
-    
-    private val builder = builder.clone()
-    
-    override fun getItemProvider(player: Player): ItemBuilder =
-        builder.set(
-            DataComponentTypes.POTION_CONTENTS,
-            potionContents().customColor(org.bukkit.Color.fromRGB(color.rgb))
-        )
     
 }

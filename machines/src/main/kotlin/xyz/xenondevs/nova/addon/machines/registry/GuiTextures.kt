@@ -8,6 +8,7 @@ import xyz.xenondevs.nova.initialize.InitStage
 @Init(stage = InitStage.PRE_PACK)
 object GuiTextures : GuiTextureRegistry by Machines.registry {
     
+    val COLOR_PICKER = guiTexture("color_picker") { path("gui/color_picker") }
     val CONFIGURE_POTION = guiTexture("configure_potion") { path("gui/configure_potion") }
     val ELECTRIC_BREWING_STAND = guiTexture("electric_brewing_stand") { path("gui/electric_brewing_stand") }
     val AUTO_CRAFTER_RECIPE = guiTexture("auto_crafter") { path("gui/auto_crafter/recipe") }

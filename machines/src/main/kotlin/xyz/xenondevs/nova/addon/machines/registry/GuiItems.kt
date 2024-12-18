@@ -29,8 +29,9 @@ object GuiItems : ItemRegistry by Machines.registry {
     val FLUID_RIGHT_LEFT_BTN = guiItem("btn/fluid_right_left", "menu.machines.fluid_infuser.mode.extract")
     val INVENTORY_BTN = guiItem("btn/inventory", "menu.machines.auto_crafter.inventory")
     
-    val TP_GREEN_PLUS = guiItem("green_plus")
-    val TP_RED_MINUS = guiItem("red_minus")
+    val TP_COLOR_PICKER = guiItem("color_picker")
+    val TP_GREEN_PLUS = tpGuiItem("green_plus")
+    val TP_RED_MINUS = tpGuiItem("red_minus")
     
     val AXE_PLACEHOLDER = tpGuiItem("placeholder/axe", null)
     val HOE_PLACEHOLDER = tpGuiItem("placeholder/hoe", null)
