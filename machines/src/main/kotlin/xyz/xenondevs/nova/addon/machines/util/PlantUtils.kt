@@ -6,7 +6,6 @@ import org.bukkit.block.Block
 import org.bukkit.block.data.Ageable
 import org.bukkit.block.data.type.CaveVinesPlant
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.commons.collections.enumMapOf
 import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
 import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
@@ -16,7 +15,9 @@ import xyz.xenondevs.nova.integration.customitems.CustomItemType
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.below
 import xyz.xenondevs.nova.util.item.soundGroup
+import xyz.xenondevs.nova.util.novaBlock
 import kotlin.random.Random
+import org.bukkit.block.data.type.MangrovePropagule as MangrovePropaguleData
 
 fun Material.isTillable(): Boolean {
     return this == Material.GRASS_BLOCK
@@ -28,109 +29,194 @@ fun Material.isLeaveLike(): Boolean {
     return Tag.LEAVES.isTagged(this) || Tag.WART_BLOCKS.isTagged(this)
 }
 
-fun Block.isFullyAged(): Boolean {
-    val blockData = blockData
-    return blockData is Ageable && blockData.age == blockData.maximumAge
-}
-
-fun Block.hasSameTypeBelow(): Boolean {
-    val below = below
-    return below.type == type
-}
-
-private fun Block.harvestSweetBerries(harvest: Boolean): List<ItemStack> {
-    if (harvest) {
-        val data = blockData as Ageable
-        data.age = 1
-        blockData = data
+private sealed interface HarvestAction {
+    
+    fun isHarvestable(block: Block): Boolean
+    
+    fun getDrops(ctx: Context<BlockBreak>): List<ItemStack> {
+        return BlockUtils.getDrops(ctx)
     }
     
-    return listOf(ItemStack(Material.SWEET_BERRIES, Random.nextInt(2, 3)))
-}
-
-private fun Block.canHarvestCaveVines(): Boolean {
-    val blockData = blockData
-    return blockData is CaveVinesPlant && blockData.isBerries
-}
-
-private fun Block.harvestCaveVines(harvest: Boolean): List<ItemStack> {
-    if (harvest) {
-        val data = blockData as CaveVinesPlant
-        data.isBerries = false
-        blockData = data
+    fun harvest(ctx: Context<BlockBreak>) {
+        BlockUtils.breakBlock(ctx)
     }
     
-    return listOf(ItemStack(Material.GLOW_BERRIES))
+    object Simple : HarvestAction {
+        override fun isHarvestable(block: Block) = true
+    }
+    
+    object FullyAged : HarvestAction {
+        
+        override fun isHarvestable(block: Block): Boolean {
+            val blockData = block.blockData
+            return blockData is Ageable && blockData.age >= blockData.maximumAge
+        }
+        
+    }
+    
+    object SameTypeBelow : HarvestAction {
+        
+        override fun isHarvestable(block: Block): Boolean {
+            return block.type == block.below.type
+        }
+        
+    }
+    
+    object SweetBerries : HarvestAction {
+        
+        override fun isHarvestable(block: Block): Boolean {
+            val blockData = block.blockData
+            return blockData is Ageable && blockData.age >= blockData.maximumAge
+        }
+        
+        override fun getDrops(ctx: Context<BlockBreak>): List<ItemStack> {
+            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            if (isHarvestable(block)) {
+                return listOf(ItemStack.of(Material.SWEET_BERRIES, Random.nextInt(1, 4)))
+            }
+            
+            return emptyList()
+        }
+        
+        override fun harvest(ctx: Context<BlockBreak>) {
+            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            if (isHarvestable(block)) {
+                val data = block.blockData as Ageable
+                data.age = 1
+                block.blockData = data
+            }
+        }
+        
+    }
+    
+    object CaveVines : HarvestAction {
+        
+        override fun isHarvestable(block: Block): Boolean {
+            val blockData = block.blockData
+            return blockData is CaveVinesPlant && blockData.isBerries
+        }
+        
+        override fun getDrops(ctx: Context<BlockBreak>): List<ItemStack> {
+            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            if (isHarvestable(block)) {
+                return listOf(ItemStack.of(Material.GLOW_BERRIES))
+            }
+            
+            return emptyList()
+        }
+        
+        override fun harvest(ctx: Context<BlockBreak>) {
+            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            if (isHarvestable(block)) {
+                val data = block.blockData as CaveVinesPlant
+                data.isBerries = false
+                block.blockData = data
+            }
+        }
+        
+    }
+    
+    object MangrovePropagule : HarvestAction {
+        
+        override fun isHarvestable(block: Block): Boolean {
+            val blockData = block.blockData
+            return blockData is MangrovePropaguleData && blockData.isHanging
+        }
+        
+    }
+    
 }
-
-private typealias HarvestableCheck = Block.() -> Boolean
-private typealias HarvestFunction = Block.(Boolean) -> List<ItemStack>
 
 object PlantUtils {
     
-    private val SEED_SOIL_BLOCKS: Map<Material, Set<Material>>
-    private val SEED_GROWTH_BLOCKS: Map<Material, Material>
-    private val HARVESTABLE_PLANTS: Map<Material, Pair<HarvestableCheck?, HarvestFunction?>?>
-    
-    init {
+    private val SEED_SOIL_BLOCKS: Map<Material, Set<Material>> = buildMap {
         val farmland = hashSetOf(Material.FARMLAND)
         val defaultDirt = hashSetOf(Material.FARMLAND, Material.GRASS_BLOCK, Material.DIRT, Material.COARSE_DIRT,
             Material.ROOTED_DIRT, Material.PODZOL, Material.MYCELIUM)
         
-        SEED_SOIL_BLOCKS = enumMapOf(
-            Material.WHEAT_SEEDS to farmland,
-            Material.BEETROOT_SEEDS to farmland,
-            Material.POTATO to farmland,
-            Material.CARROT to farmland,
-            Material.PUMPKIN_SEEDS to farmland,
-            Material.MELON_SEEDS to farmland,
-            Material.SWEET_BERRIES to defaultDirt,
-            Material.OAK_SAPLING to defaultDirt,
-            Material.SPRUCE_SAPLING to defaultDirt,
-            Material.BIRCH_SAPLING to defaultDirt,
-            Material.JUNGLE_SAPLING to defaultDirt,
-            Material.ACACIA_SAPLING to defaultDirt,
-            Material.DARK_OAK_SAPLING to defaultDirt,
-            Material.CRIMSON_FUNGUS to hashSetOf(Material.CRIMSON_NYLIUM),
-            Material.WARPED_FUNGUS to hashSetOf(Material.WARPED_NYLIUM),
-            Material.NETHER_WART to hashSetOf(Material.SOUL_SAND)
-        )
+        put(Material.WHEAT_SEEDS, farmland)
+        put(Material.BEETROOT_SEEDS, farmland)
+        put(Material.POTATO, farmland)
+        put(Material.CARROT, farmland)
+        put(Material.PUMPKIN_SEEDS, farmland)
+        put(Material.MELON_SEEDS, farmland)
+        put(Material.SWEET_BERRIES, defaultDirt)
+        put(Material.OAK_SAPLING, defaultDirt)
+        put(Material.SPRUCE_SAPLING, defaultDirt)
+        put(Material.BIRCH_SAPLING, defaultDirt)
+        put(Material.JUNGLE_SAPLING, defaultDirt)
+        put(Material.ACACIA_SAPLING, defaultDirt)
+        put(Material.DARK_OAK_SAPLING, defaultDirt)
+        put(Material.CRIMSON_FUNGUS, hashSetOf(Material.CRIMSON_NYLIUM))
+        put(Material.WARPED_FUNGUS, hashSetOf(Material.WARPED_NYLIUM))
+        put(Material.NETHER_WART, hashSetOf(Material.SOUL_SAND))
+    }
+    
+    private val SEED_GROWTH_BLOCKS: Map<Material, Material> = buildMap {
+        put(Material.WHEAT_SEEDS, Material.WHEAT)
+        put(Material.BEETROOT_SEEDS, Material.BEETROOTS)
+        put(Material.POTATO, Material.POTATOES)
+        put(Material.CARROT, Material.CARROTS)
+        put(Material.SWEET_BERRIES, Material.SWEET_BERRY_BUSH)
+        put(Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM)
+        put(Material.MELON_SEEDS, Material.MELON_STEM)
+    }
+    
+    private val HARVESTABLE_PLANTS: Map<Material, HarvestAction> = buildMap {
+        put(Material.SHORT_GRASS, HarvestAction.Simple)
+        put(Material.TALL_GRASS, HarvestAction.Simple)
+        put(Material.BEE_NEST, HarvestAction.Simple)
+        put(Material.PUMPKIN, HarvestAction.Simple)
+        put(Material.MELON, HarvestAction.Simple)
+        put(Material.SHROOMLIGHT, HarvestAction.Simple)
+        put(Material.WEEPING_VINES, HarvestAction.Simple)
+        put(Material.WEEPING_VINES_PLANT, HarvestAction.Simple)
+        put(Material.MUSHROOM_STEM, HarvestAction.Simple)
+        put(Material.RED_MUSHROOM_BLOCK, HarvestAction.Simple)
+        put(Material.BROWN_MUSHROOM_BLOCK, HarvestAction.Simple)
+        put(Material.VINE, HarvestAction.Simple)
+        put(Material.MANGROVE_ROOTS, HarvestAction.Simple)
+        put(Material.MUDDY_MANGROVE_ROOTS, HarvestAction.Simple)
+        put(Material.MOSS_CARPET, HarvestAction.Simple)
+        put(Material.PALE_MOSS_CARPET, HarvestAction.Simple)
+        put(Material.PALE_HANGING_MOSS, HarvestAction.Simple)
+        put(Material.CREAKING_HEART, HarvestAction.Simple)
         
-        SEED_GROWTH_BLOCKS = enumMapOf(
-            Material.WHEAT_SEEDS to Material.WHEAT,
-            Material.BEETROOT_SEEDS to Material.BEETROOTS,
-            Material.POTATO to Material.POTATOES,
-            Material.CARROT to Material.CARROTS,
-            Material.SWEET_BERRIES to Material.SWEET_BERRY_BUSH,
-            Material.PUMPKIN_SEEDS to Material.PUMPKIN_STEM,
-            Material.MELON_SEEDS to Material.MELON_STEM
-        )
+        put(Material.WHEAT, HarvestAction.FullyAged)
+        put(Material.BEETROOTS, HarvestAction.FullyAged)
+        put(Material.POTATOES, HarvestAction.FullyAged)
+        put(Material.CARROTS, HarvestAction.FullyAged)
         
-        HARVESTABLE_PLANTS = enumMapOf(
-            Material.SHORT_GRASS to null,
-            Material.TALL_GRASS to null,
-            Material.BEE_NEST to null,
-            Material.PUMPKIN to null,
-            Material.MELON to null,
-            Material.SHROOMLIGHT to null,
-            Material.WEEPING_VINES to null,
-            Material.WEEPING_VINES_PLANT to null,
-            Material.WHEAT to (Block::isFullyAged to null),
-            Material.BEETROOTS to (Block::isFullyAged to null),
-            Material.POTATOES to (Block::isFullyAged to null),
-            Material.CARROTS to (Block::isFullyAged to null),
-            Material.SWEET_BERRY_BUSH to (Block::isFullyAged to null),
-            Material.CACTUS to (Block::hasSameTypeBelow to null),
-            Material.SUGAR_CANE to (Block::hasSameTypeBelow to null),
-            Material.SWEET_BERRY_BUSH to (Block::isFullyAged to Block::harvestSweetBerries),
-            Material.CAVE_VINES to (Block::canHarvestCaveVines to Block::harvestCaveVines),
-            Material.CAVE_VINES_PLANT to (Block::canHarvestCaveVines to Block::harvestCaveVines)
-        ).also { map ->
-            fun addTags(vararg tags: Tag<Material>) =
-                tags.forEach { tag -> tag.values.forEach { material -> map[material] = null } }
-            
-            addTags(Tag.LEAVES, Tag.LOGS, Tag.FLOWERS, Tag.WART_BLOCKS)
+        put(Material.CACTUS, HarvestAction.SameTypeBelow)
+        put(Material.SUGAR_CANE, HarvestAction.SameTypeBelow)
+        
+        put(Material.SWEET_BERRY_BUSH, HarvestAction.SweetBerries)
+        
+        put(Material.CAVE_VINES, HarvestAction.CaveVines)
+        put(Material.CAVE_VINES_PLANT, HarvestAction.CaveVines)
+        
+        put(Material.MANGROVE_PROPAGULE, HarvestAction.MangrovePropagule)
+        
+        fun putTags(vararg tags: Tag<Material>) {
+            tags.asSequence()
+                .flatMap { it.values }
+                .filter { it !in this }
+                .forEach { put(it, HarvestAction.Simple) }
         }
+        
+        putTags(Tag.LEAVES, Tag.LOGS, Tag.FLOWERS, Tag.WART_BLOCKS)
+    }
+    
+    private val TREE_ATTACHMENTS: Set<Material> = buildSet {
+        add(Material.BEE_NEST)
+        add(Material.SHROOMLIGHT)
+        add(Material.WEEPING_VINES)
+        add(Material.WEEPING_VINES_PLANT)
+        add(Material.MANGROVE_PROPAGULE)
+        add(Material.VINE)
+        add(Material.MOSS_CARPET)
+        add(Material.PALE_MOSS_CARPET)
+        add(Material.PALE_HANGING_MOSS)
     }
     
     fun isSeed(item: ItemStack): Boolean =
@@ -148,7 +234,8 @@ object PlantUtils {
             || SEED_SOIL_BLOCKS[seed.type]?.contains(Material.FARMLAND) == true
     
     fun placeSeed(seed: ItemStack, block: Block, playEffects: Boolean) {
-        if (CustomItemServiceManager.placeBlock(seed, block.location, playEffects)) return
+        if (CustomItemServiceManager.placeBlock(seed, block.location, playEffects))
+            return
         
         val newType = SEED_GROWTH_BLOCKS[seed.type] ?: seed.type
         block.type = newType
@@ -162,54 +249,38 @@ object PlantUtils {
     }
     
     fun isHarvestable(block: Block): Boolean {
-        val type = block.type
-        return type in HARVESTABLE_PLANTS
-            && HARVESTABLE_PLANTS[block.type]?.first?.invoke(block) ?: true
+        // nova blocks using harvestable blocks as backing states are not harvestable,
+        // unless they are Nova's leave replacements
+        val novaBlock = block.novaBlock
+        if (novaBlock != null && (novaBlock.id.namespace() != "nova" || !Tag.LEAVES.isTagged(block.type)))
+            return false
+        
+        return HARVESTABLE_PLANTS[block.type]?.isHarvestable(block) == true
     }
     
     fun harvest(ctx: Context<BlockBreak>) {
         val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
-        val type = block.type
-        if (block.type !in HARVESTABLE_PLANTS) return
-        
-        val harvestFunction = HARVESTABLE_PLANTS[type]?.second
-        if (harvestFunction != null) {
-            harvestFunction(block, true)
-        } else {
-            BlockUtils.breakBlock(ctx)
-        }
+        HARVESTABLE_PLANTS[block.type]?.harvest(ctx)
     }
     
-    fun getHarvestDrops(ctx: Context<BlockBreak>): List<ItemStack>? {
+    fun getHarvestDrops(ctx: Context<BlockBreak>): List<ItemStack> {
         val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
-        val type = block.type
-        if (block.type !in HARVESTABLE_PLANTS)
-            return null
         
         val customBlockType = CustomItemServiceManager.getBlockType(block)
         if (customBlockType == CustomBlockType.NORMAL)
-            return null
+            return emptyList()
         
-        val drops: List<ItemStack>
+        val drops: List<ItemStack>?
         if (customBlockType != CustomBlockType.CROP) {
-            val harvestFunction = HARVESTABLE_PLANTS[type]?.second
-            if (harvestFunction != null) {
-                drops = harvestFunction(block, false)
-            } else {
-                drops = BlockUtils.getDrops(ctx)
-            }
+            drops = HARVESTABLE_PLANTS[block.type]?.getDrops(ctx)
         } else {
-            drops = CustomItemServiceManager.getDrops(block, null)!!
+            drops = CustomItemServiceManager.getDrops(block, null)
         }
         
-        return drops
+        return drops ?: emptyList()
     }
     
-    fun isTreeAttachment(material: Material): Boolean {
-        return material == Material.BEE_NEST
-            || material == Material.SHROOMLIGHT
-            || material == Material.WEEPING_VINES
-            || material == Material.WEEPING_VINES_PLANT
-    }
+    fun isTreeAttachment(material: Material): Boolean =
+        material in TREE_ATTACHMENTS
     
 }

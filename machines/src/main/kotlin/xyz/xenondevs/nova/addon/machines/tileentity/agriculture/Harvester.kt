@@ -145,7 +145,7 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                         .param(DefaultContextParamTypes.TOOL_ITEM_STACK, tool)
                         .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
                         .build()
-                    val drops = PlantUtils.getHarvestDrops(ctx)!!.toMutableList()
+                    val drops = PlantUtils.getHarvestDrops(ctx).toMutableList()
                     
                     // check that the drops will fit in the inventory or can be dropped on the ground
                     if (!GlobalValues.DROP_EXCESS_ON_GROUND && !inventory.canHold(drops)) {
@@ -244,7 +244,6 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
 
 private object HarvestPriorityComparator : Comparator<Block> {
     
-    @Suppress("LiftReturnOrAssignment")
     override fun compare(o1: Block, o2: Block): Int {
         val type1 = o1.type
         val type2 = o2.type
