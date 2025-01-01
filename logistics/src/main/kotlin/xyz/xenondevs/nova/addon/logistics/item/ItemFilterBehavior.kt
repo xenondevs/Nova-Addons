@@ -7,10 +7,12 @@ import org.bukkit.event.block.Action
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.collections.mapToArray
 import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterMenu
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.NbtItemFilter
+import xyz.xenondevs.nova.addon.logistics.item.itemfilter.TypeItemFilter
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.Key
@@ -26,27 +28,31 @@ import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
 import xyz.xenondevs.nova.world.item.behavior.ItemFilterContainer
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
-import org.bukkit.inventory.ItemStack as BukkitStack
 
 private val ITEM_FILTER_KEY = Key(Logistics, "item_filter")
 
 class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContainer<LogisticsItemFilter> {
     
-    val size by size
+    val size: Int by size
     
-    override fun getFilter(itemStack: ItemStack): LogisticsItemFilter? {
-        return itemStack.retrieveData(ITEM_FILTER_KEY)
-    }
+    private val defaultFilter: Provider<LogisticsItemFilter> = 
+        size.map { size -> TypeItemFilter(Array(size) { ItemStack.empty() }.asList(), true) }
+    
+    override val defaultCompound: Provider<NamespacedCompound> =
+        defaultFilter.map { defaultFilter -> NamespacedCompound().apply { set(ITEM_FILTER_KEY, defaultFilter) } }
+    
+    override fun getFilter(itemStack: ItemStack): LogisticsItemFilter =
+        itemStack.retrieveData(ITEM_FILTER_KEY) ?: defaultFilter.get()
     
     override fun setFilter(itemStack: ItemStack, filter: LogisticsItemFilter?) {
         if (filter != null) {
             itemStack.storeData(ITEM_FILTER_KEY, filter)
         } else {
-            itemStack.storeData(ITEM_FILTER_KEY, null)
+            itemStack.storeData(ITEM_FILTER_KEY, defaultFilter.get())
         }
     }
     
-    override fun handleInteract(player: Player, itemStack: BukkitStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
         if (wrappedEvent.actionPerformed)
             return
         
@@ -56,15 +62,15 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContaine
             wrappedEvent.actionPerformed = true
             
             val filter = getFilter(itemStack)
-            val filterItems = filter?.items?.mapToArray { it.takeUnlessEmpty() } ?: arrayOfNulls(size)
-            val whitelist = filter?.whitelist ?: true
+            val filterItems = filter.items.mapToArray { it.takeUnlessEmpty() }
+            val whitelist = filter.whitelist
             val nbt = filter is NbtItemFilter
             ItemFilterMenu(player, itemStack.novaItem!!.name!!, itemStack, filterItems, whitelist, nbt).open()
         }
     }
     
     override fun modifyClientSideStack(player: Player?, itemStack: ItemStack, data: NamespacedCompound): ItemStack {
-        val itemFilter = data.get<LogisticsItemFilter>(ITEM_FILTER_KEY) ?: return itemStack
+        val itemFilter = getFilter(itemStack)
         val whitelist = itemFilter.whitelist
         
         val lore = ArrayList<Component>()
