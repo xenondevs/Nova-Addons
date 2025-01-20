@@ -11,6 +11,10 @@ import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.behavior.Damageable
 import xyz.xenondevs.nova.world.item.behavior.Enchantable
 import xyz.xenondevs.nova.world.item.behavior.Equippable
+import xyz.xenondevs.nova.world.item.behavior.Extinguishing
+import xyz.xenondevs.nova.world.item.behavior.Flattening
+import xyz.xenondevs.nova.world.item.behavior.Stripping
+import xyz.xenondevs.nova.world.item.behavior.Tilling
 import xyz.xenondevs.nova.world.item.behavior.Tool
 
 @Init(stage = InitStage.PRE_PACK)
@@ -101,7 +105,7 @@ object Items : ItemRegistry by Machines.registry {
         maxStackSize(1)
     }
     val STAR_SHOVEL = item("star_shovel") {
-        behaviors(Tool(), Damageable(), Enchantable())
+        behaviors(Tool(), Damageable(), Enchantable(), Flattening, Extinguishing)
         maxStackSize(1)
     }
     val STAR_PICKAXE = item("star_pickaxe") {
@@ -109,11 +113,11 @@ object Items : ItemRegistry by Machines.registry {
         maxStackSize(1)
     }
     val STAR_AXE = item("star_axe") {
-        behaviors(Tool(), Damageable(), Enchantable())
+        behaviors(Tool(), Damageable(), Enchantable(), Stripping)
         maxStackSize(1)
     }
     val STAR_HOE = item("star_hoe") {
-        behaviors(Tool(), Damageable(), Enchantable())
+        behaviors(Tool(), Damageable(), Enchantable(), Tilling)
         maxStackSize(1)
     }
     
