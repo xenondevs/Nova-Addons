@@ -13,7 +13,7 @@ import xyz.xenondevs.nova.addon.machines.registry.Blocks.HARVESTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
 import xyz.xenondevs.nova.addon.machines.util.blockSequence
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.isLeaveLike
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
@@ -71,8 +71,8 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
         blockedSides = BLOCKED_SIDES
     )
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
-    private val energyPerBreak by efficiencyDividedValue(ENERGY_PER_BREAK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerBreak by energyConsumption(ENERGY_PER_BREAK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     private val region = storedRegion("region.default", MIN_RANGE, MAX_RANGE, DEFAULT_RANGE, upgradeHolder) {
         val size = 1 + it * 2

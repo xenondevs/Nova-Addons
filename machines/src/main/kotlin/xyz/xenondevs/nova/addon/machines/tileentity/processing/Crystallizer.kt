@@ -13,7 +13,7 @@ import xyz.xenondevs.nova.addon.machines.gui.ProgressBar
 import xyz.xenondevs.nova.addon.machines.recipe.CrystallizerRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -49,7 +49,7 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_FACES)
     private val itemHolder = storedItemHolder(inventory to BUFFER, blockedFaces = BLOCKED_FACES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val recipeProvider = mutableProvider { inventory.getItem(0)?.let { RecipeManager.getConversionRecipeFor(RecipeTypes.CRYSTALLIZER, it) } }
     private var recipe: CrystallizerRecipe? by recipeProvider
     private val progressPerTick by combinedProvider(

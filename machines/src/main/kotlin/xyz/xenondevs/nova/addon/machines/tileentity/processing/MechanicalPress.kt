@@ -16,7 +16,7 @@ import xyz.xenondevs.nova.addon.machines.gui.PressProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MECHANICAL_PRESS
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -58,7 +58,7 @@ class MechanicalPress(pos: BlockPos, blockState: NovaBlockState, data: Compound)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(inputInv to INSERT, outputInv to EXTRACT, blockedSides = BLOCKED_SIDES)
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val pressSpeed by speedMultipliedValue(PRESS_SPEED, upgradeHolder)
     
     private var type by storedValue("pressType") { PressType.PLATE }

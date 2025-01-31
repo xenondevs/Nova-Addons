@@ -14,7 +14,7 @@ import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.STAR_COLLECTOR
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.addon.machines.registry.Models
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -59,8 +59,8 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedFaces = BLOCKED_FACES)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_FACES)
     
-    private val idleEnergyPerTick by efficiencyDividedValue(IDLE_ENERGY_PER_TICK, upgradeHolder)
-    private val collectingEnergyPerTick by efficiencyDividedValue(COLLECTING_ENERGY_PER_TICK, upgradeHolder)
+    private val idleEnergyPerTick by energyConsumption(IDLE_ENERGY_PER_TICK, upgradeHolder)
+    private val collectingEnergyPerTick by energyConsumption(COLLECTING_ENERGY_PER_TICK, upgradeHolder)
     private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
     private val mxIdleTime by maxIdleTimeProvider
     private val maxCollectionTimeProvider = maxIdleTime(COLLECTION_TIME, upgradeHolder)

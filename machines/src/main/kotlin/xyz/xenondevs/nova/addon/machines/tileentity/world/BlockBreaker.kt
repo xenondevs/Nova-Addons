@@ -9,7 +9,7 @@ import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_BREAKER
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -55,7 +55,7 @@ class BlockBreaker(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val breakSpeed by speedMultipliedValue(BREAK_SPEED_MULTIPLIER, upgradeHolder)
     
     private val entityId = uuid.hashCode()

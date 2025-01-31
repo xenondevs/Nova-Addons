@@ -11,8 +11,8 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BREEDER
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
-import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -68,8 +68,8 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         Region.inFrontOf(this, size, size, 4, -1)
     }
     
-    private val energyPerTick by speedMultipliedValue(ENERGY_PER_TICK, upgradeHolder)
-    private val energyPerBreed by speedMultipliedValue(ENERGY_PER_BREED, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerBreed by energyConsumption(ENERGY_PER_BREED, upgradeHolder)
     private val maxIdleTimeProvider = maxIdleTime(IDLE_TIME, upgradeHolder)
     private val mxIdleTime by maxIdleTimeProvider
     

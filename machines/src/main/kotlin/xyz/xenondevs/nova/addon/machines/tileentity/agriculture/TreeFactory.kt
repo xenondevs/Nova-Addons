@@ -11,7 +11,7 @@ import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.TREE_FACTORY
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.Models
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
@@ -70,7 +70,7 @@ class TreeFactory(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(outputInventory to EXTRACT, inputInventory to INSERT, blockedSides = BLOCKED_SIDES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val progressPerTick by speedMultipliedValue(PROGRESS_PER_TICK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder) // TODO: idle time works backwards here
     

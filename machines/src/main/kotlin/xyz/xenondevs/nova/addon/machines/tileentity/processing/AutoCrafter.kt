@@ -16,7 +16,7 @@ import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.AUTO_CRAFTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -57,7 +57,7 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     private val itemHolder = storedItemHolder(inputInv to INSERT, outputInv to EXTRACT)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(CRAFTING_TIME, upgradeHolder)
     
     private var currentRecipe: Recipe? = null

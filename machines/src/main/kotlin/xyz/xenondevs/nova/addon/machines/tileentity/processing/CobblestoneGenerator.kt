@@ -19,7 +19,7 @@ import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.COBBLESTONE_GENERATOR
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.Models
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -72,7 +72,7 @@ class CobblestoneGenerator(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     private val fluidHolder = storedFluidHolder(waterTank to BUFFER, lavaTank to BUFFER, blockedSides = BLOCKED_SIDES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)
     
     private var mode by storedValue("mode") { Mode.COBBLESTONE }

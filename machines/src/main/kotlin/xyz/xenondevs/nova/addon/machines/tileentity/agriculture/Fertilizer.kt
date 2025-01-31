@@ -15,7 +15,7 @@ import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FERTILIZER
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.iterator
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
@@ -62,8 +62,8 @@ class Fertilizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
         Region.inFrontOf(this, size, size, 1, 0)
     }
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
-    private val energyPerFertilize by efficiencyDividedValue(ENERGY_PER_FERTILIZE, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerFertilize by energyConsumption(ENERGY_PER_FERTILIZE, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     private var timePassed = 0
     

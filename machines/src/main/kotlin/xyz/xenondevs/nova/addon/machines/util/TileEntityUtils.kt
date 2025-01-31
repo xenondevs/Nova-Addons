@@ -7,6 +7,15 @@ import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
+fun energyConsumption(
+    base: Provider<Long>,
+    upgradeHolder: UpgradeHolder
+): Provider<Long> = combinedProvider(
+    base,
+    upgradeHolder.getValueProvider(UpgradeTypes.SPEED),
+    upgradeHolder.getValueProvider(UpgradeTypes.EFFICIENCY)
+) { base, speed, efficiency -> (base * speed / efficiency).roundToLong() }
+
 fun efficiencyDividedValue(
     value: Provider<Long>,
     upgradeHolder: UpgradeHolder

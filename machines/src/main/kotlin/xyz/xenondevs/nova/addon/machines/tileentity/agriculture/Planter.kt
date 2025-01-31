@@ -17,7 +17,7 @@ import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
 import xyz.xenondevs.nova.addon.machines.util.blockSequence
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.isTillable
 import xyz.xenondevs.nova.addon.machines.util.iterator
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
@@ -64,8 +64,8 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(inputInventory to INSERT, hoesInventory to INSERT, blockedSides = BLOCKED_SIDES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
-    private val energyPerPlant by efficiencyDividedValue(ENERGY_PER_PLANT, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerPlant by energyConsumption(ENERGY_PER_PLANT, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     
     private lateinit var soilRegion: Region

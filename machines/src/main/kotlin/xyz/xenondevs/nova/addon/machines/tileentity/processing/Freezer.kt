@@ -14,7 +14,7 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FREEZER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -55,7 +55,7 @@ class Freezer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     private val itemHolder = storedItemHolder(inventory to EXTRACT, blockedSides = BLOCKED_SIDES)
     private val fluidHolder = storedFluidHolder(waterTank to INSERT, blockedSides = BLOCKED_SIDES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val mbPerTick by speedMultipliedValue(MB_PER_TICK, upgradeHolder)
     private var mbUsed = 0L
     private var mode by storedValue("mode") { Mode.ICE }

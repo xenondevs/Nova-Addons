@@ -19,7 +19,7 @@ import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems.FLUID_LEFT_RIGHT_BTN
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems.FLUID_RIGHT_LEFT_BTN
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
@@ -77,7 +77,7 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private val fluidHolder = storedFluidHolder(tank to BUFFER, blockedSides = BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(input to INSERT, output to EXTRACT, blockedSides = BLOCKED_SIDES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     
     private val _mode = storedValue("mode") { InfuserMode.INSERT }
     private var mode by _mode

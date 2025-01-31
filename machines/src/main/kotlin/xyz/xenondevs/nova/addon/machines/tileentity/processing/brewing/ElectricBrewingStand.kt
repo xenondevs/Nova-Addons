@@ -32,6 +32,7 @@ import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -78,7 +79,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
     private val itemHolder = storedItemHolder(ingredientsInventory to INSERT, outputInventory to EXTRACT, blockedFaces = BLOCKED_FACES)
     private val fluidHolder = storedFluidHolder(fluidTank to INSERT, blockedFaces = BLOCKED_FACES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val maxBrewTime by maxIdleTime(BREW_TIME, upgradeHolder)
     private var timePassed = 0
     

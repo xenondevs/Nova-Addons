@@ -18,7 +18,7 @@ import xyz.xenondevs.invui.inventory.event.PlayerUpdateReason
 import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
 import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.ELECTRIC_FURNACE
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -67,7 +67,7 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
     private var timeCooked: Int by storedValue("timeCooked") { 0 }
     private var experience: Float by storedValue("experience") { 0f }
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val cookSpeed by speedMultipliedValue(COOK_SPEED, upgradeHolder)
     
     private var active: Boolean = blockState.getOrThrow(BlockStateProperties.ACTIVE)

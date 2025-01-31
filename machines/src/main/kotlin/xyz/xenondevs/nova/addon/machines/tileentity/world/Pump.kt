@@ -15,7 +15,7 @@ import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PUMP
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
+import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.isSourceFluid
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.machines.util.sourceFluidType
@@ -65,7 +65,7 @@ class Pump(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Networke
     private val energyHolder = storedEnergyHolder(ENERGY_CAPACITY, upgradeHolder, NetworkConnectionType.INSERT, BLOCKED_FACES)
     private val fluidHolder = storedFluidHolder(fluidTank to NetworkConnectionType.EXTRACT, blockedFaces = BLOCKED_FACES)
     
-    private val energyPerTick by efficiencyDividedValue(ENERGY_PER_TICK, upgradeHolder)
+    private val energyPerTick by energyConsumption(ENERGY_PER_TICK, upgradeHolder)
     private val maxIdleTime by maxIdleTime(IDLE_TIME, upgradeHolder)
     
     private var mode by storedValue("mode") { PumpMode.REPLACE }
