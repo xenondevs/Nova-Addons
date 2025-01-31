@@ -17,6 +17,7 @@ import xyz.xenondevs.commons.gson.isString
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
 import xyz.xenondevs.invui.item.Click
@@ -64,7 +65,7 @@ private val NERF_MOBS by MOB_DUPLICATOR.config.entry<Boolean>("nerf_mobs")
 
 class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
-    private val inventory = storedInventory("inventory", 1, ::handleInventoryUpdate)
+    private val inventory = storedInventory("inventory", size = 1, persistent = false, maxStackSizes = intArrayOf(1), ::handlePreUpdate, ::handlePostUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT)
     private val itemHolder = storedItemHolder(inventory to BUFFER)
@@ -110,24 +111,21 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         }
     }
     
-    private fun handleInventoryUpdate(event: ItemPreUpdateEvent) {
-        if (event.newItem != null) {
-            event.isCancelled = !updateEntityData(event.newItem)
-        } else setEntityData(null, null)
-    }
-    
-    private fun updateEntityData(itemStack: ItemStack?): Boolean {
-        val catcher = itemStack?.novaItem?.getBehaviorOrNull<MobCatcherBehavior>()
-        if (catcher != null) {
-            setEntityData(catcher.getEntityType(itemStack), catcher.getEntityData(itemStack))
-            return true
+    private fun handlePreUpdate(event: ItemPreUpdateEvent) {
+        if (!event.isRemove) {
+            event.isCancelled = event.newItem?.novaItem?.hasBehavior<MobCatcherBehavior>() != true
         }
-        return false
     }
     
-    private fun setEntityData(type: EntityType?, data: ByteArray?) {
-        entityData = data
-        entityType = type
+    private fun handlePostUpdate(event: ItemPostUpdateEvent) {
+        updateEntityData(event.newItem)
+    }
+    
+    private fun updateEntityData(itemStack: ItemStack?) {
+        val catcher = itemStack?.novaItem?.getBehaviorOrNull<MobCatcherBehavior>()
+        
+        entityData = catcher?.getEntityData(itemStack)
+        entityType = catcher?.getEntityType(itemStack)
         timePassed = 0
     }
     
