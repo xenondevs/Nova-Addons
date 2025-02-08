@@ -25,7 +25,7 @@ class ItemFilterMenu(
     player: Player,
     title: Component,
     private val itemStack: ItemStack,
-    private val items: Array<ItemStack?>,
+    items: Array<ItemStack?>,
     private var whitelist: Boolean,
     private var nbt: Boolean,
 ) {
@@ -91,9 +91,9 @@ class ItemFilterMenu(
     
     private fun createItemFilter(): LogisticsItemFilter {
         if (nbt) {
-            return NbtItemFilter(items.map { it?.clone() ?: ItemStack.empty() }, whitelist)
+            return NbtItemFilter(filterInventory.items.map { it ?: ItemStack.empty() }, whitelist)
         } else {
-            return TypeItemFilter(items.map { it?.clone() ?: ItemStack.empty() }, whitelist)
+            return TypeItemFilter(filterInventory.items.map { it ?: ItemStack.empty() }, whitelist)
         }
     }
     
