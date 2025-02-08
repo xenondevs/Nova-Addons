@@ -1,4 +1,4 @@
-version = "0.2.10-alpha.5"
+version = "0.2.10-alpha.6"
 
 dependencies {
     implementation(project(":simple-upgrades"))
