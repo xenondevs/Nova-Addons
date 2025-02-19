@@ -172,7 +172,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     
     override fun handleEnable() {
         super.handleEnable()
-        updateBounds(false)
+        updateBounds(true)
         createScaffolding()
     }
     
