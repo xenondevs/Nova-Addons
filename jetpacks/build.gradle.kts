@@ -1,4 +1,4 @@
-version = "0.1.14-alpha.1"
+version = "0.1.14-RC.1"
 
 addon {
     name.set("Jetpacks")
