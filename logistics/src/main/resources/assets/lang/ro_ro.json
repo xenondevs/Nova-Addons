@@ -92,5 +92,10 @@
   "item.logistics.wrench.toggle_mode": "Mod: %s",
   "item.logistics.wrench.use": "A schimbat %s din %s în %s (%s)",
   "item.logistics.wrench": "Cheie",
-  "item.logistics.wrench.network.nova.item": "Articole"
+  "item.logistics.wrench.network.nova.item": "Articole",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafic: Energie totală",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafic: Energia In/Out",
+  "menu.logistics.power_cell.graph_enlarge": "Zoom in",
+  "menu.logistics.power_cell.graph_shrink": "Zoom out",
+  "menu.logistics.power_cell.graph_bar_duration": "O bară = %s"
 }

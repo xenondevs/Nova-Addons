@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Çıktı",
   "item.logistics.wrench.connection.buffer": "Giriş ve Çıkış",
   "item.logistics.wrench.toggle_mode": "Mod: %s",
-  "item.logistics.wrench.use": "s'nin %s'si %s (%s) olarak değiştirildi"
+  "item.logistics.wrench.use": "s'nin %s'si %s (%s) olarak değiştirildi",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafik: Toplam Enerji",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafik: Enerji Giriş/Çıkışı",
+  "menu.logistics.power_cell.graph_enlarge": "Yakınlaştır",
+  "menu.logistics.power_cell.graph_shrink": "Uzaklaştır",
+  "menu.logistics.power_cell.graph_bar_duration": "Bir çubuk = %s"
 }

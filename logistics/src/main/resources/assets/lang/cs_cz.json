@@ -92,5 +92,10 @@
   "item.logistics.wrench.network.nova.energy": "Energie",
   "item.logistics.wrench.network.nova.item": "Předměty",
   "item.logistics.wrench.network.nova.fluid": "Kapalina",
-  "item.logistics.wrench.face.north": "Severní-Strana"
+  "item.logistics.wrench.face.north": "Severní-Strana",
+  "menu.logistics.power_cell.graph_mode.energy": "Graf: Celková energie",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Příjem/výdej energie",
+  "menu.logistics.power_cell.graph_enlarge": "Přiblížení",
+  "menu.logistics.power_cell.graph_shrink": "Zvětšení",
+  "menu.logistics.power_cell.graph_bar_duration": "Jeden sloupec = %s"
 }

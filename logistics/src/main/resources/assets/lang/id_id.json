@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Keluaran",
   "item.logistics.wrench.connection.buffer": "Masukan & Keluaran",
   "item.logistics.wrench.use": "Mengubah %s dari %s menjadi %s (%s)",
-  "item.logistics.wrench.toggle_mode": "Mode: %s"
+  "item.logistics.wrench.toggle_mode": "Mode: %s",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafik: Energi Total",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafik: Energi Masuk/Keluar",
+  "menu.logistics.power_cell.graph_enlarge": "Memperbesar",
+  "menu.logistics.power_cell.graph_shrink": "Perkecil",
+  "menu.logistics.power_cell.graph_bar_duration": "Satu batang = %s"
 }

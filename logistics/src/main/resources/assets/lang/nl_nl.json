@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Uitgang",
   "item.logistics.wrench.connection.buffer": "Invoer en uitvoer",
   "item.logistics.wrench.toggle_mode": "Modus: %s",
-  "item.logistics.wrench.use": "Gewijzigd %s van %s in %s (%s)"
+  "item.logistics.wrench.use": "Gewijzigd %s van %s in %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafiek: Totale energie",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafiek: Energie in/uit",
+  "menu.logistics.power_cell.graph_enlarge": "Inzoomen",
+  "menu.logistics.power_cell.graph_shrink": "Uitzoomen",
+  "menu.logistics.power_cell.graph_bar_duration": "Eén balk = %s"
 }

@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Ausgabe",
   "item.logistics.wrench.connection.buffer": "Eingabe und Ausgabe",
   "item.logistics.wrench.toggle_mode": "Modus: %s",
-  "item.logistics.wrench.use": "Modus: %s"
+  "item.logistics.wrench.use": "Modus: %s",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafik: Energie insgesamt",
+  "menu.logistics.power_cell.graph_enlarge": "Vergrößern",
+  "menu.logistics.power_cell.graph_bar_duration": "Verkleinern",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafik: Energiezufuhr/-abfuhr",
+  "menu.logistics.power_cell.graph_shrink": "Verkleinern"
 }

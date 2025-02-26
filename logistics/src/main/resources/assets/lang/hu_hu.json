@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Kimenet",
   "item.logistics.wrench.connection.buffer": "Bemenet és kimenet",
   "item.logistics.wrench.toggle_mode": "Mód: %s",
-  "item.logistics.wrench.use": "A %s %s %s-t %s-re változtatta (%s)"
+  "item.logistics.wrench.use": "A %s %s %s-t %s-re változtatta (%s)",
+  "menu.logistics.power_cell.graph_enlarge": "Nagyítás",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafikon: Teljes energia",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafikon: Energia be/kiáramlás",
+  "menu.logistics.power_cell.graph_shrink": "Kicsinyítés",
+  "menu.logistics.power_cell.graph_bar_duration": "Egy sáv = %s"
 }

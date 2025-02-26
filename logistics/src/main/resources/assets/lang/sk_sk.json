@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Výstup",
   "item.logistics.wrench.connection.buffer": "Vstup a výstup",
   "item.logistics.wrench.toggle_mode": "Režim: %s",
-  "item.logistics.wrench.use": "Zmenené %s z %s na %s (%s)"
+  "item.logistics.wrench.use": "Zmenené %s z %s na %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Graf: Celková energia",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Príjem/výdaj energie",
+  "menu.logistics.power_cell.graph_enlarge": "Priblíženie",
+  "menu.logistics.power_cell.graph_shrink": "Zväčšenie",
+  "menu.logistics.power_cell.graph_bar_duration": "Jeden stĺpec = %s"
 }

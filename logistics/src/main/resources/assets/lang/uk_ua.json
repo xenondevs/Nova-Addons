@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Вихідні дані",
   "item.logistics.wrench.connection.buffer": "Вхід і вихід",
   "item.logistics.wrench.toggle_mode": "Режим: %s",
-  "item.logistics.wrench.use": "Змінено %s з %s на %s (%s)"
+  "item.logistics.wrench.use": "Змінено %s з %s на %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Графік: Загальна енергія",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Графік: Надходження/витрати енергії",
+  "menu.logistics.power_cell.graph_enlarge": "Збільшити",
+  "menu.logistics.power_cell.graph_shrink": "Зменшити",
+  "menu.logistics.power_cell.graph_bar_duration": "Один бар = %s"
 }

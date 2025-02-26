@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Išėjimas",
   "item.logistics.wrench.connection.buffer": "Įvestis ir išvestis",
   "item.logistics.wrench.toggle_mode": "Režimas: %s",
-  "item.logistics.wrench.use": "Pakeista %s iš %s į %s (%s)"
+  "item.logistics.wrench.use": "Pakeista %s iš %s į %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafikas: Bendra energija",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafikas: Įeinanti/išeinanti energija",
+  "menu.logistics.power_cell.graph_enlarge": "Priartinti vaizdą",
+  "menu.logistics.power_cell.graph_shrink": "Padidinti mastelį",
+  "menu.logistics.power_cell.graph_bar_duration": "Viena juosta = %s"
 }

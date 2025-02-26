@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Utgång",
   "item.logistics.wrench.connection.buffer": "Inmatning och utmatning",
   "item.logistics.wrench.toggle_mode": "Läge: %s",
-  "item.logistics.wrench.use": "Ändrade %s av %s till %s (%s)"
+  "item.logistics.wrench.use": "Ändrade %s av %s till %s (%s)",
+  "menu.logistics.power_cell.graph_bar_duration": "En bar = %s",
+  "menu.logistics.power_cell.graph_mode.energy": "Diagram: Total energi",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energi in/ut",
+  "menu.logistics.power_cell.graph_enlarge": "Zooma in",
+  "menu.logistics.power_cell.graph_shrink": "Zooma ut"
 }

@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Output",
   "item.logistics.wrench.connection.buffer": "Input og output",
   "item.logistics.wrench.toggle_mode": "Tilstand: %s",
-  "item.logistics.wrench.use": "Ændret %s af %s til %s (%s)"
+  "item.logistics.wrench.use": "Ændret %s af %s til %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Graf: Samlet energi",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energi ind/ud",
+  "menu.logistics.power_cell.graph_enlarge": "Zoom ind",
+  "menu.logistics.power_cell.graph_shrink": "Zoom ud",
+  "menu.logistics.power_cell.graph_bar_duration": "En bjælke = %s"
 }

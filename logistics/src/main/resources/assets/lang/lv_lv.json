@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Izvades",
   "item.logistics.wrench.connection.buffer": "Ievade un izvade",
   "item.logistics.wrench.toggle_mode": "Režīms: %s",
-  "item.logistics.wrench.use": "Mainīts %s no %s uz %s (%s)"
+  "item.logistics.wrench.use": "Mainīts %s no %s uz %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafiks: Kopējā enerģija",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafiks: Enerģijas ievade/izvade",
+  "menu.logistics.power_cell.graph_enlarge": "Pietuvināt",
+  "menu.logistics.power_cell.graph_shrink": "Palielināt",
+  "menu.logistics.power_cell.graph_bar_duration": "Viena josla = %s"
 }

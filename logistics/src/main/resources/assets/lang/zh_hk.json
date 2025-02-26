@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "输出",
   "item.logistics.wrench.connection.buffer": "输入和输出",
   "item.logistics.wrench.toggle_mode": "模式：%s",
-  "item.logistics.wrench.use": "将 %s 的 %s 更改为 %s (%s)"
+  "item.logistics.wrench.use": "将 %s 的 %s 更改为 %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "图表能源总量",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "图表能源输入/输出",
+  "menu.logistics.power_cell.graph_enlarge": "放大",
+  "menu.logistics.power_cell.graph_shrink": "放大",
+  "menu.logistics.power_cell.graph_bar_duration": "一条 = %s"
 }

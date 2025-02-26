@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Wyjście",
   "item.logistics.wrench.connection.buffer": "Wejście i wyjście",
   "item.logistics.wrench.toggle_mode": "Tryb: %s",
-  "item.logistics.wrench.use": "Zmieniono %s z %s na %s (%s)"
+  "item.logistics.wrench.use": "Zmieniono %s z %s na %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Wykres: Całkowita energia",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Wykres: Energia na wejściu/wyjściu",
+  "menu.logistics.power_cell.graph_enlarge": "Powiększenie",
+  "menu.logistics.power_cell.graph_shrink": "Powiększenie",
+  "menu.logistics.power_cell.graph_bar_duration": "Jeden pasek = %s"
 }

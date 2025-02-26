@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Έξοδος",
   "item.logistics.wrench.connection.buffer": "Είσοδος & Έξοδος",
   "item.logistics.wrench.toggle_mode": "Λειτουργία: %s",
-  "item.logistics.wrench.use": "Αλλαγή του %s του %s σε %s (%s)"
+  "item.logistics.wrench.use": "Αλλαγή του %s του %s σε %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Γράφημα: Συνολική ενέργεια",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Γράφημα: Ενέργεια In/Out",
+  "menu.logistics.power_cell.graph_enlarge": "Μεγέθυνση",
+  "menu.logistics.power_cell.graph_shrink": "Μεγέθυνση",
+  "menu.logistics.power_cell.graph_bar_duration": "Μία μπάρα = %s"
 }

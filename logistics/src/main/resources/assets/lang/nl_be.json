@@ -92,5 +92,10 @@
   "item.logistics.wrench.use": "Gewijzigd %s van %s in %s (%s)",
   "item.logistics.wrench": "Moersleutel",
   "item.logistics.wrench.network.nova.energy": "Energie",
-  "item.logistics.wrench.network.nova.item": "Items"
+  "item.logistics.wrench.network.nova.item": "Items",
+  "menu.logistics.power_cell.graph_mode.energy": "Grafiek: Totale energie",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafiek: Energie in/uit",
+  "menu.logistics.power_cell.graph_enlarge": "Inzoomen",
+  "menu.logistics.power_cell.graph_shrink": "Uitzoomen",
+  "menu.logistics.power_cell.graph_bar_duration": "Eén balk = %s"
 }

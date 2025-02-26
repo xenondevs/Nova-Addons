@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Izhod",
   "item.logistics.wrench.connection.buffer": "Vhod in izhod",
   "item.logistics.wrench.toggle_mode": "Način: %s",
-  "item.logistics.wrench.use": "Spremenjeno %s iz %s v %s (%s)"
+  "item.logistics.wrench.use": "Spremenjeno %s iz %s v %s (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Graf: Skupna energija",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energija vhod/izhod",
+  "menu.logistics.power_cell.graph_enlarge": "Povečanje prikaza",
+  "menu.logistics.power_cell.graph_shrink": "Pomanjšanje slike",
+  "menu.logistics.power_cell.graph_bar_duration": "Ena vrstica = %s"
 }

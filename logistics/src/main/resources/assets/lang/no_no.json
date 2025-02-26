@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Utgang",
   "item.logistics.wrench.connection.buffer": "Inngang og utgang",
   "item.logistics.wrench.toggle_mode": "Modus: %s",
-  "item.logistics.wrench.use": "Endret %s av %s til %s (%s)"
+  "item.logistics.wrench.use": "Endret %s av %s til %s (%s)",
+  "menu.logistics.power_cell.graph_shrink": "Zoom ut",
+  "menu.logistics.power_cell.graph_mode.energy": "Graf: Total energi",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energi inn/ut",
+  "menu.logistics.power_cell.graph_enlarge": "Zoom inn",
+  "menu.logistics.power_cell.graph_bar_duration": "Én strek = %s"
 }

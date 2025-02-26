@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Väljund",
   "item.logistics.wrench.connection.buffer": "Sisend ja väljund",
   "item.logistics.wrench.toggle_mode": "Režiim: %s",
-  "item.logistics.wrench.use": "Muutis %s %s-i %s-i (%s) %s-i (%s)"
+  "item.logistics.wrench.use": "Muutis %s %s-i %s-i (%s) %s-i (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Graafik: Energia kokku",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graafik: Energia sisse/välja",
+  "menu.logistics.power_cell.graph_enlarge": "Suurendage",
+  "menu.logistics.power_cell.graph_shrink": "Suurenda välja",
+  "menu.logistics.power_cell.graph_bar_duration": "Üks riba = %s"
 }

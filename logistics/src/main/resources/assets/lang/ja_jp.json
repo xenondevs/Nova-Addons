@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "出力",
   "item.logistics.wrench.connection.buffer": "入出力",
   "item.logistics.wrench.toggle_mode": "モード: %s",
-  "item.logistics.wrench.use": "s の %s を %s (%s) に変更しました。"
+  "item.logistics.wrench.use": "s の %s を %s (%s) に変更しました。",
+  "menu.logistics.power_cell.graph_mode.energy": "グラフ総エネルギー",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "グラフエネルギーの出入り",
+  "menu.logistics.power_cell.graph_enlarge": "ズームイン",
+  "menu.logistics.power_cell.graph_shrink": "ズームアウト",
+  "menu.logistics.power_cell.graph_bar_duration": "1本のバー = %s"
 }

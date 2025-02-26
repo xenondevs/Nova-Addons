@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "출력",
   "item.logistics.wrench.connection.buffer": "입력 및 출력",
   "item.logistics.wrench.toggle_mode": "모드: %s",
-  "item.logistics.wrench.use": "의 %s를 %s(%s)로 변경했습니다."
+  "item.logistics.wrench.use": "의 %s를 %s(%s)로 변경했습니다.",
+  "menu.logistics.power_cell.graph_mode.energy": "그래프: 총 에너지",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "그래프: 에너지 입력/출력",
+  "menu.logistics.power_cell.graph_enlarge": "확대",
+  "menu.logistics.power_cell.graph_shrink": "축소",
+  "menu.logistics.power_cell.graph_bar_duration": "하나의 막대 = %s"
 }

@@ -92,5 +92,10 @@
   "item.logistics.wrench.connection.extract": "Lähtö",
   "item.logistics.wrench.connection.buffer": "Tulo ja lähtö",
   "item.logistics.wrench.toggle_mode": "Tila: %s",
-  "item.logistics.wrench.use": "Muutettu %s %s:n %s:ksi (%s)"
+  "item.logistics.wrench.use": "Muutettu %s %s:n %s:ksi (%s)",
+  "menu.logistics.power_cell.graph_mode.energy": "Kuvio: Kokonaisenergia",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Kuvio: Energia sisään/ulos",
+  "menu.logistics.power_cell.graph_enlarge": "Suurenna",
+  "menu.logistics.power_cell.graph_shrink": "Pienennä",
+  "menu.logistics.power_cell.graph_bar_duration": "Yksi palkki = %s"
 }
