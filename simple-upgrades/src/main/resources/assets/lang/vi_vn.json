@@ -1,12 +1,13 @@
 {
-  "menu.simple_upgrades.upgrades.type.energy": "Nâng cấp năng lượng: %s/%s",
-  "item.simple_upgrades.speed_upgrade": "Nâng cấp tốc độ",
-  "item.simple_upgrades.efficiency_upgrade": "Nâng cấp hiệu quả",
-  "item.simple_upgrades.energy_upgrade": "Nâng cấp năng lượng",
-  "item.simple_upgrades.range_upgrade": "Nâng cấp phạm vi",
-  "item.simple_upgrades.fluid_upgrade": "Nâng cấp chất lỏng",
+  "menu.simple_upgrades.upgrades.type.energy": "Nâng cấp Năng lượng: %s/%s",
+  "item.simple_upgrades.speed_upgrade": "Nâng cấp Tốc độ",
+  "item.simple_upgrades.efficiency_upgrade": "Nâng cấp Hiệu năng",
+  "item.simple_upgrades.energy_upgrade": "Nâng cấp Năng lượng",
+  "item.simple_upgrades.range_upgrade": "Nâng cấp Phạm vi",
+  "item.simple_upgrades.fluid_upgrade": "Nâng cấp Chất lỏng",
   "menu.simple_upgrades.upgrades.type.speed": "Nâng cấp tốc độ: %s/%s",
-  "menu.simple_upgrades.upgrades.type.efficiency": "Nâng cấp hiệu quả: %s/%s",
-  "menu.simple_upgrades.upgrades.type.range": "Nâng cấp phạm vi: %s/%s",
-  "menu.simple_upgrades.upgrades.type.fluid": "Nâng cấp chất lỏng: %s / %s"
+  "menu.simple_upgrades.upgrades.type.efficiency": "Nâng cấp Hiệu năng: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Nâng cấp Phạm vi: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Nâng cấp Chất lỏng: %s / %s",
+  "menu.simple_upgrades.upgrades": "Các nâng cấp"
 }
