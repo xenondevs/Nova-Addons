@@ -93,9 +93,9 @@
   "item.logistics.wrench.connection.buffer": "Eingabe und Ausgabe",
   "item.logistics.wrench.toggle_mode": "Modus: %s",
   "item.logistics.wrench.use": "%s von %s auf %s (%s) geändert",
-  "menu.logistics.power_cell.graph_mode.energy": "Grafik: Energie insgesamt",
-  "menu.logistics.power_cell.graph_mode.energy_delta": "Grafik: Energiezufuhr/-abfuhr",
-  "menu.logistics.power_cell.graph_enlarge": "Vergrößern",
-  "menu.logistics.power_cell.graph_shrink": "Verkleinern",
+  "menu.logistics.power_cell.graph_mode.energy": "Graph: Energie insgesamt",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Graph: Energiezufuhr/-abfuhr",
+  "menu.logistics.power_cell.graph_enlarge": "Reinzoomen",
+  "menu.logistics.power_cell.graph_shrink": "Rauszoomen",
   "menu.logistics.power_cell.graph_bar_duration": "Ein Balken = %s"
 }
