@@ -1,4 +1,4 @@
-version = "1.5-RC.2"
+version = "1.5"
 
 plugins {
     `maven-publish`
