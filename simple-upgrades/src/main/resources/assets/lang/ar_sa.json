@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "ترقية السرعة",
+  "item.simple_upgrades.efficiency_upgrade": "ترقية الكفاءة",
+  "item.simple_upgrades.energy_upgrade": "ترقية الطاقة",
+  "item.simple_upgrades.range_upgrade": "ترقية النطاق",
+  "item.simple_upgrades.fluid_upgrade": "ترقية السوائل",
+  "menu.simple_upgrades.upgrades": "الترقيات",
+  "menu.simple_upgrades.upgrades.type.speed": "ترقيات السرعة: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "ترقيات الكفاءة: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "ترقيات الطاقة: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "ترقيات النطاق: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "ترقيات السوائل: %s/%s"
+}
