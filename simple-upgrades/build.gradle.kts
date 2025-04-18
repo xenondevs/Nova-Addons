@@ -1,6 +1,7 @@
 version = "1.5"
 
 plugins {
+    id("addons.common-conventions")
     `maven-publish`
 }
 
@@ -24,8 +25,7 @@ publishing {
     
     publications {
         create<MavenPublication>("maven") {
-            from(components.getByName("kotlin"))
-            artifact(tasks.getByName("sources"))
+            from(components["java"])
         }
     }
 }

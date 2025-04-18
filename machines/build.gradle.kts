@@ -1,3 +1,7 @@
+plugins {
+    id("addons.common-conventions")
+}
+
 version = "0.4.7"
 
 dependencies {

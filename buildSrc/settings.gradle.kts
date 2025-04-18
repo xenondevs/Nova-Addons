@@ -1,11 +1,3 @@
-rootProject.name = "Nova-Addons"
-
-include("jetpacks")
-include("logistics")
-include("machines")
-include("simple-upgrades")
-include("vanilla-hammers")
-
 dependencyResolutionManagement {
     repositories {
         mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }

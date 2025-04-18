@@ -1,3 +1,7 @@
+plugins {
+    id("addons.common-conventions")
+}
+
 version = "0.1.14"
 
 addon {

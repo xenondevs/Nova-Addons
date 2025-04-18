@@ -1,3 +1,7 @@
+plugins {
+    id("addons.common-conventions")
+}
+
 version = "1.6"
 
 addon {
