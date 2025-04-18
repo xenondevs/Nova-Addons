@@ -9,9 +9,17 @@ dependencies {
 }
 
 addon {
-    name.set("Logistics")
-    main.set("xyz.xenondevs.nova.addon.logistics.Logistics")
-    version.set(project.version.toString())
-    authors.addAll("StudioCode", "ByteZ", "Javahase")
+    name = "Logistics"
+    main = "xyz.xenondevs.nova.addon.logistics.Logistics"
+    version = project.version.toString()
+    authors = listOf("StudioCode", "ByteZ", "Javahase")
     dependency("Simple_Upgrades")
+}
+
+pluginPublish {
+    hangar("Logistics") {
+        gameVersions(libs.versions.minecraft.get())
+        requiredDependency("Nova")
+        requiredDependency("Simple-Upgrades")
+    }
 }

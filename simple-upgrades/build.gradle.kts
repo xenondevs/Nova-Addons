@@ -6,10 +6,17 @@ plugins {
 }
 
 addon {
-    main.set("xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades")
-    name.set("Simple_Upgrades")
-    version.set(project.version.toString())
-    authors.addAll("StudioCode")
+    main = "xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades"
+    name = "Simple_Upgrades"
+    version = project.version.toString()
+    authors = listOf("StudioCode")
+}
+
+pluginPublish {
+    hangar("Simple-Upgrades") {
+        gameVersions(libs.versions.minecraft.get())
+        requiredDependency("Nova")
+    }
 }
 
 publishing {

@@ -1,4 +1,6 @@
+
 import org.gradle.accessors.dm.LibrariesForLibs
+import xyz.xenondevs.novagradle.task.AddonJarTask
 
 group = "xyz.xenondevs.nova.addon"
 
@@ -7,6 +9,7 @@ plugins {
     kotlin("jvm")
     id("io.papermc.paperweight.userdev")
     id("xyz.xenondevs.nova.nova-gradle-plugin")
+    id("xyz.xenondevs.publish.plugin-publish")
 }
 
 val libs = the<LibrariesForLibs>()
@@ -34,15 +37,19 @@ java {
     withSourcesJar()
 }
 
+tasks {
+    jar {
+        archiveClassifier = "intermediate"
+    }
+}
+
 addon {
     val outDir = project.findProperty("outDir")
     if (outDir is String)
-        destination.set(File(outDir))
+        destination = File(outDir)
 }
 
-afterEvaluate {
-    // remove "dev" classifier set by paperweight-userdev
-    tasks.getByName<Jar>("jar") {
-        archiveClassifier = ""
-    }
+pluginPublish {
+    file = tasks.named<AddonJarTask>("addonJar").flatMap { it.output }
+    githubRepository = "xenondevs/Nova-Addons"
 }
