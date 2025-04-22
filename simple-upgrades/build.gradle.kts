@@ -1,4 +1,4 @@
-version = "1.5"
+version = "1.6-alpha.1"
 
 plugins {
     id("addons.common-conventions")
