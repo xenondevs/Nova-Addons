@@ -58,7 +58,7 @@ class LightningExchanger(pos: BlockPos, blockState: NovaBlockState, data: Compou
     @TileEntityMenuClass
     inner class LightningExchangerMenu : GlobalTileEntityMenu() {
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| u # # e # # # |",

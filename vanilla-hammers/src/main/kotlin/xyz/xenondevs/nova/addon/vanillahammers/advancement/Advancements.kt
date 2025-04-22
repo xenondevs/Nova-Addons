@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.core.ClientAsset
 import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Items
@@ -22,7 +23,7 @@ private val ROOT = advancement(VanillaHammers, "root") {
         Items.WOODEN_HAMMER.clientsideProvider.get().unwrap().copy(),
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
-        Optional.of(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/tuff.png")),
+        Optional.of(ClientAsset(ResourceLocation.withDefaultNamespace("block/tuff"))),
         AdvancementType.TASK,
         false, false, false
     ))

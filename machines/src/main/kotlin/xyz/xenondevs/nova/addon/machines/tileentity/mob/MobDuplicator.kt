@@ -20,7 +20,7 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Click
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.ItemBuilder
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
@@ -165,7 +165,7 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s # # # # p e |",

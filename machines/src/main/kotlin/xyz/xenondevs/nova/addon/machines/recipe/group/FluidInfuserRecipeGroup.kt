@@ -39,7 +39,7 @@ object FluidInfuserRecipeGroup : RecipeGroup<FluidInfuserRecipe>() {
             Component.translatable(recipe.fluidType.localizedName)
         ))
         
-        return Gui.normal()
+        return Gui.builder()
             .setStructure(
                 ". f . t . . . . .",
                 ". f p i . . . r .",

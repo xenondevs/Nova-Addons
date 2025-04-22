@@ -4,12 +4,12 @@ import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.window.Window
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter
@@ -47,11 +47,11 @@ class ItemFilterMenu(
     }
     
     private val window: Window =
-        Window.single {
-            it.setGui {
+        Window.builder()
+            .setUpperGui {
                 val rows = ceil(items.size / 7.0).toInt()
                 if (rows > 3) {
-                    return@setGui ScrollGui.inventories()
+                    return@setUpperGui ScrollGui.inventoriesBuilder()
                         .setStructure(
                             "1 - - - - - - - 2",
                             "| # # m # n # # |",
@@ -62,10 +62,10 @@ class ItemFilterMenu(
                         )
                         .addIngredient('m', SwitchModeItem())
                         .addIngredient('n', SwitchNBTItem())
-                        .addContent(filterInventory)
+                        .setContent(listOf(filterInventory))
                         .build()
                 } else {
-                    val gui = Gui.normal()
+                    val gui = Gui.builder()
                         .setStructure(
                             9, 3 + rows,
                             "1 - - - - - - - 2" +
@@ -76,14 +76,12 @@ class ItemFilterMenu(
                         .addIngredient('n', SwitchNBTItem())
                         .build()
                     gui.fillRectangle(1, 2, 7, filterInventory, true)
-                    return@setGui gui
+                    return@setUpperGui gui
                 }
             }
-            
-            it.setViewer(player)
-            it.setTitle(title)
-            it.addCloseHandler { itemStack.setItemFilter(createItemFilter()) }
-        }
+            .setTitle(title)
+            .addCloseHandler { itemStack.setItemFilter(createItemFilter()) }
+            .build(player)
     
     fun open() {
         window.open()

@@ -35,7 +35,7 @@ class CableConfigMenu(
     init {
         require(itemConfigGui != null || fluidConfigGui != null)
         
-        gui = TabGui.normal()
+        gui = TabGui.builder()
             .setStructure(
                 "# # # i # f # # #",
                 "- - - - - - - - -",
@@ -64,12 +64,11 @@ class CableConfigMenu(
     }
     
     fun openWindow(player: Player) {
-        Window.single {
-            it.setViewer(player)
-            it.setTitle(Component.translatable("menu.logistics.cable_config"))
-            it.setGui(gui)
-            it.addCloseHandler(::queueWriteChanges)
-        }.open()
+        Window.builder()
+            .setTitle(Component.translatable("menu.logistics.cable_config"))
+            .setUpperGui(gui)
+            .addCloseHandler { queueWriteChanges() }
+            .open(player)
     }
     
     /**

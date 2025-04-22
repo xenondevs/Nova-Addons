@@ -88,7 +88,7 @@ class ChunkLoader(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         
         private val rangeItems = ArrayList<Item>()
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - 2 e",
                 "| u # m n p # | e",

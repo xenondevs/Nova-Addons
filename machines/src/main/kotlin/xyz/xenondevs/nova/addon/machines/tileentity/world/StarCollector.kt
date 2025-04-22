@@ -194,7 +194,7 @@ class StarCollector(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s # # # c p e |",

@@ -22,7 +22,7 @@ object CobblestoneGeneratorRecipeGroup : RecipeGroup<CobblestoneGeneratorRecipe>
             .createClientsideItemBuilder()
             .setName(Component.translatable("menu.machines.recipe.cobblestone_generator.${recipe.mode.name.lowercase()}"))
         
-        return Gui.normal()
+        return Gui.builder()
             .setStructure(
                 ". w l . . . . . .",
                 ". w l . > . r . .",

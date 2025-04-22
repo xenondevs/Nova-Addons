@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.Markers
 import xyz.xenondevs.invui.gui.ScrollGui
@@ -12,7 +13,6 @@ import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.window.Window
@@ -38,7 +38,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
     
     private val upgradeItems = ArrayList<Item>()
     
-    private val upgradeScrollGui = ScrollGui.items()
+    private val upgradeScrollGui = ScrollGui.itemsBuilder()
         .setStructure(
             "x x x x x",
             "x x x x x",
@@ -51,7 +51,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
         .setContent(createUpgradeItemList())
         .build()
     
-    val gui: Gui = Gui.normal()
+    val gui: Gui = Gui.builder()
         .setStructure(
             "b - - - - - - - 2",
             "| i # . . . . . |",
@@ -73,11 +73,11 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
     }
     
     fun openWindow(player: Player) {
-        val window = Window.single {
-            it.setViewer(player)
-            it.setTitle(Component.translatable("menu.simple_upgrades.upgrades"))
-            it.setGui(gui)
-        }
+        val window = Window.builder()
+            .setViewer(player)
+            .setTitle(Component.translatable("menu.simple_upgrades.upgrades"))
+            .setUpperGui(gui)
+            .build()
         
         upgradeHolder.tileEntity.menuContainer.registerWindow(window)
         window.open()

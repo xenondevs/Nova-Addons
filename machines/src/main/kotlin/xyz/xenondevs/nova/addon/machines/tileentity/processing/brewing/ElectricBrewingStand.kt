@@ -17,12 +17,12 @@ import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.map
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Click
 import xyz.xenondevs.invui.item.ItemBuilder
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.gui.BrewProgressItem
@@ -31,7 +31,6 @@ import xyz.xenondevs.nova.addon.machines.registry.Blocks.ELECTRIC_BREWING_STAND
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
-import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
@@ -285,7 +284,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
         val progressItem = BrewProgressItem()
         val ingredientsDisplay = IngredientsDisplay()
         
-        override val gui = ScrollGui.inventories()
+        override val gui = ScrollGui.inventoriesBuilder()
             .setStructure(
                 ". x x x u i . U s",
                 ". x x x . p . . .",
@@ -293,7 +292,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
                 ". ^ . ^ . . . f e",
                 ". o . o . . . f e",
                 ". . o . . . . f e")
-            .addContent(ingredientsInventory)
+            .setContent(listOf(ingredientsInventory))
             .addIngredient('u', ScrollUpItem(DefaultGuiItems.TP_ARROW_UP_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_UP_OFF.clientsideProvider))
             .addIngredient('d', ScrollDownItem(DefaultGuiItems.TP_ARROW_DOWN_ON.clientsideProvider, DefaultGuiItems.TP_ARROW_DOWN_OFF.clientsideProvider))
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))

@@ -105,7 +105,7 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s # i i i # e |",

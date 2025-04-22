@@ -33,7 +33,7 @@ object GuiItems : ItemRegistry by Logistics.registry {
             hidden(true)
             modelDefinition { 
                 model = buildModel { 
-                    val display = offset?.let { Model.Display(translation = offset) }
+                    val display = offset?.let { Model.Display.Entry(translation = offset) }
                     createGuiModel(background = false, stretched = false, "item/$name", display = display)
                 } 
             }

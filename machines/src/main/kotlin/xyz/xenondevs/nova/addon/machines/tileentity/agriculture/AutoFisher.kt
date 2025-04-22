@@ -130,7 +130,7 @@ class AutoFisher(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s u # # f p e |",

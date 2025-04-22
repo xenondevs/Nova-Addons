@@ -103,7 +103,7 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     @TileEntityMenuClass
     inner class WindTurbineMenu : GlobalTileEntityMenu() {
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| u # # e # # # |",

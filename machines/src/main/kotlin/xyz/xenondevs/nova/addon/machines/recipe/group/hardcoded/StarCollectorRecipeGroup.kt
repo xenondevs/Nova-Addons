@@ -15,7 +15,7 @@ object StarCollectorRecipeGroup : RecipeGroup<StarCollectorRecipe>() {
     override val icon = ItemWrapper(ItemStack(Material.AIR))//Items.STAR_COLLECTOR.model.basicClientsideProvider
     
     override fun createGui(recipe: StarCollectorRecipe): Gui {
-        return Gui.normal()
+        return Gui.builder()
             .setStructure(
                 ". . . . . . . . .",
                 ". . . . . . . r .",

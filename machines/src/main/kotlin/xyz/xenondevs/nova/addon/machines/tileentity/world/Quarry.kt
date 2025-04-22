@@ -25,7 +25,7 @@ import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Click
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.QUARRY
@@ -685,7 +685,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         private val sizeItems = ArrayList<Item>()
         private val depthItems = ArrayList<Item>()
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s u # # # # e |",

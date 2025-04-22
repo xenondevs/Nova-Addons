@@ -20,7 +20,7 @@ class FluidCableConfigMenu(
     init {
         updateValues()
         
-        gui = Gui.normal()
+        gui = Gui.builder()
             .setStructure(
                 "# p # # # # # P #",
                 "# d # e c i # D #",

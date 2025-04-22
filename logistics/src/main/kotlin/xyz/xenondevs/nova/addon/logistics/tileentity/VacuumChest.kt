@@ -114,7 +114,7 @@ class VacuumChest(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s u # i i i p |",

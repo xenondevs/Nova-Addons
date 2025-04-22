@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.core.ClientAsset
 import net.minecraft.resources.ResourceLocation
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.registry.Items
@@ -25,7 +26,7 @@ object Advancements {
             Items.ULTIMATE_CABLE.clientsideProvider.get().unwrap(),
             Component.translatable("advancement.logistics.root.title").toNMSComponent(),
             Component.empty().toNMSComponent(),
-            Optional.of(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/tuff.png")),
+            Optional.of(ClientAsset(ResourceLocation.withDefaultNamespace("block/tuff"))),
             AdvancementType.TASK,
             false, false, false
         ))

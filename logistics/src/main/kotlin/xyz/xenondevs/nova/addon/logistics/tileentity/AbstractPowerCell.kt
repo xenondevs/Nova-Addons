@@ -129,7 +129,7 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
             
         }
         
-        override val gui: Gui = Gui.normal()
+        override val gui: Gui = Gui.builder()
             .setStructure(
                 ". . . . . . . . .",
                 "s . m c c c . e .",
@@ -252,7 +252,7 @@ class CreativePowerCell(pos: BlockPos, state: NovaBlockState, data: Compound) : 
         
         private val sideConfigMenu = SideConfigMenu(this@CreativePowerCell, ::openWindow)
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s # # e # # # |",

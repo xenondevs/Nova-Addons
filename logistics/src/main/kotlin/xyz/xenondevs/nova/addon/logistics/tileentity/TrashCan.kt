@@ -35,7 +35,7 @@ class TrashCan(pos: BlockPos, state: NovaBlockState, data: Compound) : Networked
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s # # i # # # |",

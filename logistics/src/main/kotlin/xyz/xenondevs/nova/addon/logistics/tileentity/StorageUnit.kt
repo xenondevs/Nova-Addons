@@ -13,7 +13,7 @@ import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Click
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.ItemBuilder
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.logistics.registry.Blocks.STORAGE_UNIT
@@ -94,7 +94,7 @@ class StorageUnit(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
         
         private val storageUnitDisplay = StorageUnitDisplay()
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| # i # c # o s |",

@@ -6,6 +6,7 @@ import xyz.xenondevs.commons.collections.putOrRemove
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.nova.addon.logistics.registry.GuiItems
 import xyz.xenondevs.nova.addon.logistics.util.getItemFilter
 import xyz.xenondevs.nova.addon.logistics.util.isItemFilter
@@ -40,7 +41,7 @@ class ItemCableConfigMenu(
         extractFilterInventory = VirtualInventory(null, 1, arrayOf(extractFilter), intArrayOf(1))
         extractFilterInventory.addPreUpdateHandler(::validateIsItemFilter)
         
-        gui = Gui.normal()
+        gui = Gui.builder()
             .setStructure(
                 "# p # # c # # P #",
                 "# d # e # i # D #",
@@ -66,8 +67,8 @@ class ItemCableConfigMenu(
         extractFilter = holder.extractFilters[face]?.toItemStack()
         
         runTask {
-            insertFilterInventory.setItemSilently(0, insertFilter)
-            extractFilterInventory.setItemSilently(0, extractFilter)
+            insertFilterInventory.setItem(UpdateReason.SUPPRESSED, 0, insertFilter)
+            extractFilterInventory.setItem(UpdateReason.SUPPRESSED, 0, extractFilter)
         }
     }
     

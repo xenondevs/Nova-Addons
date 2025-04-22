@@ -181,7 +181,7 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 ". . . . . . . . .",
                 "s r r r . . . . e",
@@ -197,7 +197,7 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             .addIngredient('e', EnergyBar(3, energyHolder))
             .build()
         
-        private val autoCrafterInventoryGui = Gui.normal()
+        private val autoCrafterInventoryGui = Gui.builder()
             .setStructure(
                 "< . . . . . . . .",
                 ". i i i . o o o .",
@@ -210,8 +210,8 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             .addIngredient('<', BackItem(DefaultGuiItems.TP_ARROW_LEFT_ON.clientsideProvider) { openWindow(it) })
             .build()
         
-        private val inventoryWindow = Window.single()
-            .setGui(autoCrafterInventoryGui)
+        private val inventoryWindow = Window.builder()
+            .setUpperGui(autoCrafterInventoryGui)
             .setTitle(GuiTextures.AUTO_CRAFTER_INVENTORY.getTitle("block.machines.auto_crafter.inv_window.title"))
         
     }

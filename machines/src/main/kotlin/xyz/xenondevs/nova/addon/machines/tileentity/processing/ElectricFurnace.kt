@@ -91,7 +91,7 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
         
         if (event.isRemove) {
             if (updateReason is PlayerUpdateReason) {
-                val player = updateReason.player
+                val player = updateReason.player()
                 if (event.newItem == null) { // took all items
                     experience -= pos.block.spawnExpOrb(experience.toInt(), player.location)
                 } else {
@@ -153,7 +153,7 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s u # # # # e |",

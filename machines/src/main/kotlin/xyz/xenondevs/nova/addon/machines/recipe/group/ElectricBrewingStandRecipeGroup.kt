@@ -36,7 +36,7 @@ object ElectricBrewingStandRecipeGroup : RecipeGroup<ElectricBrewingStandRecipe>
         val amplifierItem = ItemBuilder(Material.GLOWSTONE_DUST)
             .setName("Max amplifier level: ${recipe.maxAmplifierLevel}\nAmplifier multiplier: ${recipe.glowstoneMultiplier}")
         
-        return ScrollGui.items()
+        return ScrollGui.itemsBuilder()
             .setStructure(
                 "< x x x x x x x >",
                 ". . . . t . . . .",

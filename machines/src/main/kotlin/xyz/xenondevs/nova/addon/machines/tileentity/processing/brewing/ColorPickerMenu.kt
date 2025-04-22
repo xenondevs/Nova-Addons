@@ -43,7 +43,7 @@ class ColorPickerMenu(
     private val green = mutableProvider(color.green)
     private val blue = mutableProvider(color.blue)
     
-    private val gui = Gui.normal()
+    private val gui = Gui.builder()
         .setStructure(
             "< . . . p . . . .",
             ". . . . . . . . .",
@@ -66,10 +66,10 @@ class ColorPickerMenu(
         .build()
     
     fun openWindow(player: Player) {
-        val window = Window.single()
+        val window = Window.builder()
             .setViewer(player)
             .setTitle(GuiTextures.COLOR_PICKER.getTitle("menu.nova.color_picker"))
-            .setGui(gui)
+            .setUpperGui(gui)
             .build()
         
         menuContainer.registerWindow(window)

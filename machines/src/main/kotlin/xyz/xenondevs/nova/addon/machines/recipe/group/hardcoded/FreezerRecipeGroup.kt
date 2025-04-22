@@ -15,7 +15,7 @@ object FreezerRecipeGroup : RecipeGroup<FreezerRecipe>() {
     override val icon = Items.FREEZER.clientsideProvider
     
     override fun createGui(recipe: FreezerRecipe): Gui {
-        return Gui.normal()
+        return Gui.builder()
             .setStructure(
                 ". w . . . . . . .",
                 ". w . . . . r . .",

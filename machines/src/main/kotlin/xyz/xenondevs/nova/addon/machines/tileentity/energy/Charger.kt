@@ -73,7 +73,7 @@ class Charger(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             ::openWindow
         )
         
-        override val gui = Gui.normal()
+        override val gui = Gui.builder()
             .setStructure(
                 "1 - - - - - - - 2",
                 "| s # # # # # e |",
