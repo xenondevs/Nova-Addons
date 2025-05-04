@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "الحقيبة النفاثة الأساسية",
+  "item.jetpacks.advanced_jetpack": "الحقيبة النفاثة المتقدمة",
+  "item.jetpacks.elite_jetpack": "حقيبة النخبة النفاثة",
+  "item.jetpacks.ultimate_jetpack": "الحقيبة النفاثة المطلقة",
+  "item.jetpacks.armored_basic_jetpack": "الحقيبة النفاثة الأساسية المدرعة",
+  "item.jetpacks.armored_advanced_jetpack": "الحقيبة النفاثة المتقدمة المدرعة",
+  "item.jetpacks.armored_elite_jetpack": "حقيبة النخبة المدرعة النفاثة",
+  "item.jetpacks.armored_ultimate_jetpack": "الحقيبة النفاثة المصفحة المطلقة المصفحة",
+  "menu.jetpacks.items.category.jetpacks": "الحقائب النفاثة"
+}
