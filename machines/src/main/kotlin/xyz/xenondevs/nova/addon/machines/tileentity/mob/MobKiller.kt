@@ -13,6 +13,7 @@ import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_KILLER
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
+import xyz.xenondevs.nova.addon.machines.util.markAsHurtByPlayer
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
 import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
@@ -83,6 +84,7 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                     .forEach { entity ->
                         // TODO: custom damage type
                         val damageType = Registries.DAMAGE_TYPE.getOrThrow(DamageTypes.MOB_ATTACK)
+                        entity.markAsHurtByPlayer()
                         entity.nmsEntity.hurtServer(entity.world.serverLevel, DamageSource(damageType, pos.location.toVec3()), DAMAGE)
                     }
             }
