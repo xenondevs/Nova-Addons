@@ -28,6 +28,7 @@ import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
+import xyz.xenondevs.nova.world.player.swingHandEventless
 
 private val DATA_KEY = Key(Machines, "entitydata")
 private val TYPE_KEY = Key(Machines, "entitytype")
@@ -49,7 +50,7 @@ object MobCatcherBehavior : ItemBehavior {
             player.inventory.getItem(event.hand).amount -= 1
             player.inventory.addPrioritized(event.hand, newCatcher)
             
-            if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
+            player.swingHandEventless(event.hand)
             
             event.isCancelled = true
         }
@@ -72,9 +73,8 @@ object MobCatcherBehavior : ItemBehavior {
                     player.inventory.getItem(event.hand!!).amount -= 1
                     player.inventory.addPrioritized(event.hand!!, Items.MOB_CATCHER.createItemStack())
                     
-                    
                     EntityUtils.deserializeAndSpawn(data, location)
-                    if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
+                    player.swingHandEventless(event.hand ?: EquipmentSlot.HAND)
                     
                     event.isCancelled = true
                 }
