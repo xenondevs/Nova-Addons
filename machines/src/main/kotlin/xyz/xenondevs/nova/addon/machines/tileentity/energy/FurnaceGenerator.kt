@@ -6,7 +6,6 @@ import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.MutableProvider
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.combinedProvider
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.nova.addon.machines.gui.EnergyProgressItem
@@ -66,7 +65,7 @@ class FurnaceGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound
         particle(ParticleTypes.SMOKE) {
             val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
             location(pos.location.add(.5, .0, .5).advance(facing, 0.6).apply { y += 0.8 })
-            offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
+            offset(BlockSide.RIGHT.getBlockFace(facing).axis!!, 0.15f)
             offsetY(0.1f)
             speed(0f)
             amount(5)

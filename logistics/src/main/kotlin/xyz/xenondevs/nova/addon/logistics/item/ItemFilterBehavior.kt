@@ -7,7 +7,6 @@ import org.bukkit.event.block.Action
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.collections.mapToArray
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.gui.itemfilter.ItemFilterMenu
 import xyz.xenondevs.nova.addon.logistics.item.itemfilter.LogisticsItemFilter

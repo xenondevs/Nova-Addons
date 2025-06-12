@@ -16,7 +16,6 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent

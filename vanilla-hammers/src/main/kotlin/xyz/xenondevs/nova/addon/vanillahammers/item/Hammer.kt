@@ -67,7 +67,7 @@ class Hammer(
         
         val blocks = ArrayList<Block>()
         
-        val axisA = nextAxis(face.axis)
+        val axisA = nextAxis(face.axis!!)
         val axisB = nextAxis(axisA)
         
         var range = range

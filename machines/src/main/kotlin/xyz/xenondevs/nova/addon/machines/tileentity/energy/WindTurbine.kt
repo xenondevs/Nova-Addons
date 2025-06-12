@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 import org.joml.Quaternionf
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.Models

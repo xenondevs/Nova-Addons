@@ -14,7 +14,6 @@ import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
 import xyz.xenondevs.commons.collections.toEnumSet
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.combinedProvider
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.addon.logistics.gui.cable.CableConfigMenu
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties
