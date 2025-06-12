@@ -2,9 +2,8 @@ package xyz.xenondevs.nova.addon.jetpacks.registry
 
 import org.bukkit.inventory.EquipmentSlot
 import xyz.xenondevs.nova.addon.jetpacks.JetpackTier
-import xyz.xenondevs.nova.addon.jetpacks.Jetpacks
+import xyz.xenondevs.nova.addon.jetpacks.Jetpacks.item
 import xyz.xenondevs.nova.addon.jetpacks.item.JetpackBehavior
-import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.Equipment
@@ -12,7 +11,7 @@ import xyz.xenondevs.nova.world.item.behavior.Chargeable
 import xyz.xenondevs.nova.world.item.behavior.Equippable
 
 @Init(stage = InitStage.PRE_PACK)
-object Items : ItemRegistry by Jetpacks.registry {
+object Items {
     
     val BASIC_JETPACK = item("basic_jetpack") {
         behaviors(Chargeable(), Equippable(null, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.BASIC))

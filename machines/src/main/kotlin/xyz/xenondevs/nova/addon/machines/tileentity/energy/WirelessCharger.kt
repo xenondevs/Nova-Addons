@@ -104,7 +104,7 @@ class WirelessCharger(pos: BlockPos, blockState: NovaBlockState, data: Compound)
                 "| u # # e # # m |",
                 "3 - - - - - - - 4")
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('v', region.createVisualizeRegionItem(player))
+            .addIngredient('v', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)

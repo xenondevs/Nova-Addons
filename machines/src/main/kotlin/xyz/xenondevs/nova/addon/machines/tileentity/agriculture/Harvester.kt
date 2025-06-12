@@ -230,7 +230,7 @@ class Harvester(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
             .addIngredient('s', shearInventory, GuiItems.SHEARS_PLACEHOLDER)
             .addIngredient('a', axeInventory, GuiItems.AXE_PLACEHOLDER)
             .addIngredient('h', hoeInventory, GuiItems.HOE_PLACEHOLDER)
-            .addIngredient('v', region.createVisualizeRegionItem(player))
+            .addIngredient('v', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)

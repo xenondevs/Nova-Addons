@@ -88,7 +88,7 @@ class Sprinkler(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                 "3 - - - - - - - 4")
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('v', region.createVisualizeRegionItem(player))
+            .addIngredient('v', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('d', region.displaySizeItem)

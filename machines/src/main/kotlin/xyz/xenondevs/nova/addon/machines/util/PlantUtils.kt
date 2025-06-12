@@ -93,7 +93,7 @@ private sealed interface HarvestAction {
         
         override fun isHarvestable(block: Block): Boolean {
             val blockData = block.blockData
-            return blockData is CaveVinesPlant && blockData.isBerries
+            return blockData is CaveVinesPlant && blockData.hasBerries()
         }
         
         override fun getDrops(ctx: Context<BlockBreak>): List<ItemStack> {

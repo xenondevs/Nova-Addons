@@ -134,7 +134,7 @@ class Fertilizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('v', region.createVisualizeRegionItem(player))
+            .addIngredient('v', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)

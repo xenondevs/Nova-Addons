@@ -2,8 +2,7 @@ package xyz.xenondevs.nova.addon.logistics.registry
 
 import org.joml.Vector3d
 import org.joml.Vector3dc
-import xyz.xenondevs.nova.addon.logistics.Logistics
-import xyz.xenondevs.nova.addon.registry.ItemRegistry
+import xyz.xenondevs.nova.addon.logistics.Logistics.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.resources.builder.model.Model
@@ -12,7 +11,7 @@ import xyz.xenondevs.nova.world.item.NovaItem
 private val PLOT_BUTTON_OFFSET = Vector3d(-5.0, 0.0, 0.0)
 
 @Init(stage = InitStage.PRE_PACK)
-object GuiItems : ItemRegistry by Logistics.registry {
+object GuiItems {
     
     val ITEM_FILTER_PLACEHOLDER = tpGuiItem("gui/placeholder/item_filter", null)
     val TRASH_CAN_PLACEHOLDER = tpGuiItem("gui/placeholder/trash_can", null)
@@ -31,11 +30,11 @@ object GuiItems : ItemRegistry by Logistics.registry {
         item(name) {
             if (localizedName == null) name(null) else localizedName(localizedName)
             hidden(true)
-            modelDefinition { 
-                model = buildModel { 
+            modelDefinition {
+                model = buildModel {
                     val display = offset?.let { Model.Display.Entry(translation = offset) }
                     createGuiModel(background = false, stretched = false, "item/$name", display = display)
-                } 
+                }
             }
         }
     

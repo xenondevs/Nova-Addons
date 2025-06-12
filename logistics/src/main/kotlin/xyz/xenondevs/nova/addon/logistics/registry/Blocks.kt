@@ -5,7 +5,7 @@ package xyz.xenondevs.nova.addon.logistics.registry
 import net.minecraft.core.Direction.Axis
 import net.minecraft.world.level.block.Blocks
 import org.bukkit.Material
-import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.addon.logistics.Logistics.tileEntity
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedFluidTank
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedPowerCell
@@ -26,7 +26,6 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.UltimateFluidTank
 import xyz.xenondevs.nova.addon.logistics.tileentity.UltimatePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.VacuumChest
 import xyz.xenondevs.nova.addon.logistics.util.MathUtils
-import xyz.xenondevs.nova.addon.registry.BlockRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.resources.builder.layout.block.BackingStateCategory
@@ -46,7 +45,7 @@ import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 import net.minecraft.world.level.block.state.properties.BlockStateProperties as MojangBlockStateProperties
 
 @Init(stage = InitStage.PRE_PACK)
-object Blocks : BlockRegistry by Logistics.registry {
+object Blocks {
     
     private val CABLE = Breakable(0.0, requiresToolForDrops = false)
     private val POWER_CELL = Breakable(4.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.IRON_BLOCK)

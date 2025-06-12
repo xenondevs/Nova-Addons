@@ -1,14 +1,13 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
 import org.joml.Vector3d
-import xyz.xenondevs.nova.addon.machines.Machines
-import xyz.xenondevs.nova.addon.registry.ItemRegistry
+import xyz.xenondevs.nova.addon.machines.Machines.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
-object Models : ItemRegistry by Machines.registry {
+object Models {
     
     // Tree Miniatures
     val OAK_TREE_MINIATURE = modelItem("tree_miniature/oak")
