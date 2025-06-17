@@ -1,4 +1,4 @@
-version = "1.6-RC.1"
+version = "1.6"
 
 plugins {
     id("addons.common-conventions")

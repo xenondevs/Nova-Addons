@@ -2,7 +2,7 @@ plugins {
     id("addons.common-conventions")
 }
 
-version = "1.7-RC.1"
+version = "1.7"
 
 addon {
     main = "xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers"
