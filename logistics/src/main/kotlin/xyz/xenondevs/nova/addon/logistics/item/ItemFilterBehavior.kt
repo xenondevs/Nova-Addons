@@ -68,8 +68,8 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContaine
         }
     }
     
-    override fun modifyClientSideStack(player: Player?, itemStack: ItemStack, data: NamespacedCompound): ItemStack {
-        val itemFilter = getFilter(itemStack)
+    override fun modifyClientSideStack(player: Player?, server: ItemStack, client: ItemStack): ItemStack {
+        val itemFilter = getFilter(server)
         val whitelist = itemFilter.whitelist
         
         val lore = ArrayList<Component>()
@@ -105,9 +105,9 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContaine
             .filter { !it.isEmpty }
             .forEach { lore += Component.text("- ", NamedTextColor.GRAY).append(ItemUtils.getName(it)) }
         
-        itemStack.lore((itemStack.lore() ?: emptyList()) + lore.map(Component::withoutPreFormatting))
+        client.lore((client.lore() ?: emptyList()) + lore.map(Component::withoutPreFormatting))
         
-        return itemStack
+        return client
     }
     
     companion object : ItemBehaviorFactory<ItemFilterBehavior> {

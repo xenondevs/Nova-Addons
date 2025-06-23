@@ -34,7 +34,6 @@ import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.world.player.swingHandEventless
 import xyz.xenondevs.nova.world.pos
-import kotlin.collections.set
 
 internal object WrenchBehavior : ItemBehavior {
     
