@@ -3,6 +3,7 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.bukkit.Tag
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
@@ -23,7 +24,6 @@ import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.BlockSide
 import xyz.xenondevs.nova.util.BlockUtils
-import xyz.xenondevs.nova.util.item.isReplaceable
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
@@ -55,7 +55,7 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     override fun handleTick() {
         if (energyHolder.energy >= energyPerPlace
             && !inventory.isEmpty
-            && placeBlock.type.isReplaceable()
+            && Tag.REPLACEABLE.isTagged(placeBlock.type)
             && WorldDataManager.getBlockState(placePos) == null
         ) {
             if (placeBlock())

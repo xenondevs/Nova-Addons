@@ -14,7 +14,6 @@ import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
 import xyz.xenondevs.commons.collections.toEnumSet
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.combinedProvider
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.addon.logistics.gui.cable.CableConfigMenu
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties
@@ -60,8 +59,6 @@ import xyz.xenondevs.nova.world.format.NetworkState
 import xyz.xenondevs.nova.world.model.FixedMultiModel
 import xyz.xenondevs.nova.world.model.Model
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
@@ -239,8 +236,8 @@ open class Cable(
         val (from, to) = createHitboxPoints(pointA, pointB, face)
         
         return VirtualHitbox(from, to).apply {
-            setQualifier { it.item?.novaItem == Items.WRENCH }
-            addRightClickHandler { _, _, _ -> cycleBridgeFaces(face) }
+            setQualifier { player, _ -> player.inventory.itemInMainHand.novaItem == Items.WRENCH }
+            addRightClickHandler { _, _ -> cycleBridgeFaces(face) }
         }
     }
     
@@ -250,7 +247,7 @@ open class Cable(
         val (from, to) = createHitboxPoints(pointA, pointB, face)
         
         return VirtualHitbox(from, to).apply {
-            addLeftClickHandler { player, _, _ ->
+            addLeftClickHandler { player, _ ->
                 val ctx = Context.intention(BlockBreak)
                     .param(DefaultContextParamTypes.BLOCK_POS, pos)
                     .param(DefaultContextParamTypes.SOURCE_PLAYER, player)
@@ -266,7 +263,7 @@ open class Cable(
         val (from, to) = createHitboxPoints(pointA, pointB, face)
         
         return VirtualHitbox(from, to).apply {
-            addRightClickHandler { player, _, _ -> openAttachmentWindow(player, face) }
+            addRightClickHandler { player, _ -> openAttachmentWindow(player, face) }
         }
     }
     

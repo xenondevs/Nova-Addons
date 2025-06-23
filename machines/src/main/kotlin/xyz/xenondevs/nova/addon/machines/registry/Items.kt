@@ -3,9 +3,9 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
 import org.bukkit.inventory.EquipmentSlot
-import xyz.xenondevs.nova.addon.machines.Machines
+import xyz.xenondevs.nova.addon.machines.Machines.item
+import xyz.xenondevs.nova.addon.machines.Machines.registerItem
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
-import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.behavior.Damageable
@@ -18,7 +18,7 @@ import xyz.xenondevs.nova.world.item.behavior.Tilling
 import xyz.xenondevs.nova.world.item.behavior.Tool
 
 @Init(stage = InitStage.PRE_PACK)
-object Items : ItemRegistry by Machines.registry {
+object Items {
     
     val WIND_TURBINE = item(Blocks.WIND_TURBINE) { modelDefinition { model = buildModel { getModel("item/wind_turbine") } } }
     val SOLAR_PANEL = registerItem(Blocks.SOLAR_PANEL)

@@ -9,9 +9,9 @@ import org.bukkit.event.inventory.ClickType
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.collections.rotateRight
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PUMP
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
@@ -204,7 +204,7 @@ class Pump(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Networke
                 "3 - - - - - - - 4")
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('v', region.createVisualizeRegionItem(player))
+            .addIngredient('v', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('n', region.displaySizeItem)
             .addIngredient('m', region.decreaseSizeItem)

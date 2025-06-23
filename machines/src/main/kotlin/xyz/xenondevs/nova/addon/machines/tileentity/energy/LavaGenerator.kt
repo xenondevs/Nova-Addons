@@ -71,7 +71,7 @@ class LavaGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             particle(ParticleTypes.SMOKE) {
                 val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
                 location(pos.location.add(0.5, 0.6, 0.5).advance(facing, 0.6))
-                offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
+                offset(BlockSide.RIGHT.getBlockFace(facing).axis!!, 0.15f)
                 offsetY(0.1f)
                 speed(0f)
                 amount(1)
@@ -86,7 +86,7 @@ class LavaGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             particle(ParticleTypes.LAVA) {
                 val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
                 location(pos.location.advance(facing, 0.6).apply { y += 0.6 })
-                offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
+                offset(BlockSide.RIGHT.getBlockFace(facing).axis!!, 0.15f)
                 offsetY(0.1f)
             }
         ),

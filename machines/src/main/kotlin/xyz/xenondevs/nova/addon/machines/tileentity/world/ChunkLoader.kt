@@ -2,7 +2,6 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.provider.combinedProvider
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.notifyWindows

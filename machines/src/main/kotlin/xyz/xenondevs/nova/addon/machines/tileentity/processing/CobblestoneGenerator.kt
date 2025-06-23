@@ -10,10 +10,10 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.gui.LeftRightFluidProgressItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.COBBLESTONE_GENERATOR
@@ -95,7 +95,7 @@ class CobblestoneGenerator(pos: BlockPos, blockState: NovaBlockState, data: Comp
         
         particleEffect = particle(ParticleTypes.LARGE_SMOKE) {
             location(pos.location.add(0.5, 0.0, 0.5).advance(facing, 0.6).apply { y += 0.6 })
-            offset(BlockSide.RIGHT.getBlockFace(facing).axis, 0.15f)
+            offset(BlockSide.RIGHT.getBlockFace(facing).axis!!, 0.15f)
             amount(5)
             speed(0.03f)
         }

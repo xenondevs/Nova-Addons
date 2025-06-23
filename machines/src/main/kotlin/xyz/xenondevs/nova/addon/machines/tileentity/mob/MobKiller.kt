@@ -108,7 +108,7 @@ class MobKiller(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Net
                 "3 - - - - - - - 4")
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('r', region.createVisualizeRegionItem(player))
+            .addIngredient('r', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('n', region.displaySizeItem)

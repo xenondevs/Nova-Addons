@@ -2,7 +2,8 @@ package xyz.xenondevs.nova.addon.machines.registry
 
 import net.minecraft.world.level.block.Blocks
 import org.bukkit.Material
-import xyz.xenondevs.nova.addon.machines.Machines
+import xyz.xenondevs.nova.addon.machines.Machines.block
+import xyz.xenondevs.nova.addon.machines.Machines.tileEntity
 import xyz.xenondevs.nova.addon.machines.block.StarShardsOre
 import xyz.xenondevs.nova.addon.machines.block.WindTurbineBehavior
 import xyz.xenondevs.nova.addon.machines.block.WindTurbineSectionBehavior
@@ -38,7 +39,6 @@ import xyz.xenondevs.nova.addon.machines.tileentity.world.Pump
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Quarry
 import xyz.xenondevs.nova.addon.machines.tileentity.world.Sprinkler
 import xyz.xenondevs.nova.addon.machines.tileentity.world.StarCollector
-import xyz.xenondevs.nova.addon.registry.BlockRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.resources.builder.layout.block.BackingStateCategory
@@ -62,7 +62,7 @@ import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 
 @Init(stage = InitStage.PRE_PACK)
-object Blocks : BlockRegistry by Machines.registry {
+object Blocks {
     
     private val SAND = Breakable(0.5, setOf(VanillaToolCategories.SHOVEL), VanillaToolTiers.WOOD, false, Material.PURPLE_CONCRETE_POWDER)
     private val SANDSTONE = Breakable(0.8, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.WOOD, true, Material.SANDSTONE)

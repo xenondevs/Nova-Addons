@@ -2,17 +2,17 @@
 
 package xyz.xenondevs.nova.addon.logistics.registry
 
-import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.addon.logistics.Logistics.item
+import xyz.xenondevs.nova.addon.logistics.Logistics.registerItem
 import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
 import xyz.xenondevs.nova.addon.logistics.item.StorageUnitItemBehavior
 import xyz.xenondevs.nova.addon.logistics.item.WrenchBehavior
-import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.block.NovaBlock
 
 @Init(stage = InitStage.PRE_PACK)
-object Items : ItemRegistry by Logistics.registry {
+object Items {
     
     val BASIC_CABLE = cable(Blocks.BASIC_CABLE, "basic")
     val ADVANCED_CABLE = cable(Blocks.ADVANCED_CABLE, "advanced")

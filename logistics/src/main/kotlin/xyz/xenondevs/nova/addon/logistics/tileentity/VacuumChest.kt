@@ -125,7 +125,7 @@ class VacuumChest(pos: BlockPos, state: NovaBlockState, data: Compound) : Networ
             .addIngredient('f', filterInventory, GuiItems.ITEM_FILTER_PLACEHOLDER)
             .addIngredient('s', OpenSideConfigItem(sideConfigMenu))
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('r', region.createVisualizeRegionItem(player))
+            .addIngredient('r', region.visualizeRegionItem)
             .addIngredient('p', region.increaseSizeItem)
             .addIngredient('m', region.decreaseSizeItem)
             .addIngredient('d', region.displaySizeItem)

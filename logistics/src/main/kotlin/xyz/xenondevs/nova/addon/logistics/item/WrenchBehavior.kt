@@ -32,8 +32,8 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHo
 import xyz.xenondevs.nova.world.format.NetworkState
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
+import xyz.xenondevs.nova.world.player.swingHandEventless
 import xyz.xenondevs.nova.world.pos
-import kotlin.collections.set
 
 internal object WrenchBehavior : ItemBehavior {
     
@@ -68,7 +68,7 @@ internal object WrenchBehavior : ItemBehavior {
         val newMode = NETWORK_TYPES[(NETWORK_TYPES.indexOf(currentMode) + 1) % NETWORK_TYPES.size]
         itemStack.wrenchMode = newMode
         
-        player.swingHand(event.event.hand!!)
+        player.swingHandEventless(event.event.hand!!)
         player.sendActionBar(
             Component.translatable(
                 "item.logistics.wrench.toggle_mode",

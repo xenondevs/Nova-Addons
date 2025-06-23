@@ -1,5 +1,6 @@
 package xyz.xenondevs.nova.addon.machines.block
 
+import org.bukkit.Tag
 import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.ContextParamTypes
@@ -9,7 +10,6 @@ import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockPlace
 import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.util.BlockUtils
-import xyz.xenondevs.nova.util.item.isReplaceable
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.behavior.BlockBehavior
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -21,7 +21,7 @@ object WindTurbineBehavior : BlockBehavior {
         for (i in 0..3) {
             val sectionPos = pos.add(0, i, 0)
             
-            if (!sectionPos.block.type.isReplaceable() || WorldDataManager.getBlockState(sectionPos) != null)
+            if (!Tag.REPLACEABLE.isTagged(sectionPos.block.type) || WorldDataManager.getBlockState(sectionPos) != null)
                 return false
             
             if (!ProtectionManager.canPlace(ctx))

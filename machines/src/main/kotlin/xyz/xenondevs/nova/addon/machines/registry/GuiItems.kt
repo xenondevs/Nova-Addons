@@ -1,13 +1,12 @@
 package xyz.xenondevs.nova.addon.machines.registry
 
-import xyz.xenondevs.nova.addon.machines.Machines
-import xyz.xenondevs.nova.addon.registry.ItemRegistry
+import xyz.xenondevs.nova.addon.machines.Machines.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
-object GuiItems : ItemRegistry by Machines.registry {
+object GuiItems {
     
     val GEAR_BTN_OFF = guiItem("btn/gear_off", "menu.machines.mechanical_press.press_gears")
     val GEAR_BTN_ON = guiItem("btn/gear_on", "menu.machines.mechanical_press.press_gears")
@@ -46,7 +45,7 @@ object GuiItems : ItemRegistry by Machines.registry {
     val PULVERIZER_PROGRESS = progressItem("progress/pulverizer", 15)
     val PRESS_PROGRESS = progressItem("progress/press", 9)
     val TP_BREW_PROGRESS = progressItem("progress/brew", 17)
-    val FLUID_PROGRESS_LEFT_RIGHT = progressItem("progress/fluid/left_right",17)
+    val FLUID_PROGRESS_LEFT_RIGHT = progressItem("progress/fluid/left_right", 17)
     val FLUID_PROGRESS_RIGHT_LEFT = progressItem("progress/fluid/right_left", 17)
     val TP_FLUID_PROGRESS_LEFT_RIGHT = tpProgressItem("progress/fluid/left_right", 17)
     val TP_FLUID_PROGRESS_RIGHT_LEFT = tpProgressItem("progress/fluid/right_left", 17)

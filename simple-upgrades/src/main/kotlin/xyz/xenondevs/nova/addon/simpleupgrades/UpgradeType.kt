@@ -3,7 +3,6 @@ package xyz.xenondevs.nova.addon.simpleupgrades
 import net.minecraft.resources.ResourceLocation
 import org.spongepowered.configurate.ConfigurationNode
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.map
 import xyz.xenondevs.commons.provider.orElse
 import xyz.xenondevs.commons.provider.requireNotNull
 import xyz.xenondevs.commons.reflection.createType

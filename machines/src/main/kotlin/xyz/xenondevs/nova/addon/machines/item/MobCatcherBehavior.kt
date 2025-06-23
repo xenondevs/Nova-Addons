@@ -18,7 +18,6 @@ import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.Key
 import xyz.xenondevs.nova.util.addPrioritized
@@ -28,6 +27,7 @@ import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
+import xyz.xenondevs.nova.world.player.swingHandEventless
 
 private val DATA_KEY = Key(Machines, "entitydata")
 private val TYPE_KEY = Key(Machines, "entitytype")
@@ -49,7 +49,7 @@ object MobCatcherBehavior : ItemBehavior {
             player.inventory.getItem(event.hand).amount -= 1
             player.inventory.addPrioritized(event.hand, newCatcher)
             
-            if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
+            player.swingHandEventless(event.hand)
             
             event.isCancelled = true
         }
@@ -72,9 +72,8 @@ object MobCatcherBehavior : ItemBehavior {
                     player.inventory.getItem(event.hand!!).amount -= 1
                     player.inventory.addPrioritized(event.hand!!, Items.MOB_CATCHER.createItemStack())
                     
-                    
                     EntityUtils.deserializeAndSpawn(data, location)
-                    if (event.hand == EquipmentSlot.HAND) player.swingMainHand() else player.swingOffHand()
+                    player.swingHandEventless(event.hand ?: EquipmentSlot.HAND)
                     
                     event.isCancelled = true
                 }
@@ -84,11 +83,7 @@ object MobCatcherBehavior : ItemBehavior {
     
     fun getEntityData(itemStack: ItemStack): ByteArray? = itemStack.retrieveData(DATA_KEY)
     
-    fun getEntityData(compound: NamespacedCompound): ByteArray? = compound[DATA_KEY]
-    
     fun getEntityType(itemStack: ItemStack): EntityType? = itemStack.retrieveData(TYPE_KEY)
-    
-    fun getEntityType(compound: NamespacedCompound): EntityType? = compound[TYPE_KEY]
     
     private fun setEntityData(itemStack: ItemStack, type: EntityType, data: ByteArray) {
         itemStack.storeData(DATA_KEY, data)
@@ -101,19 +96,19 @@ object MobCatcherBehavior : ItemBehavior {
         setEntityData(itemStack, entity.type, data)
     }
     
-    override fun modifyClientSideStack(player: Player?, itemStack: ItemStack, data: NamespacedCompound): ItemStack {
-        val type = getEntityType(data) ?: return itemStack
+    override fun modifyClientSideStack(player: Player?, server: ItemStack, client: ItemStack): ItemStack {
+        val type = getEntityType(server) ?: return client
         val nmsType = BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", type.key.key))
         
-        val lore = itemStack.lore() ?: mutableListOf()
+        val lore = client.lore() ?: mutableListOf()
         lore += Component.translatable(
             "item.machines.mob_catcher.type",
             NamedTextColor.DARK_GRAY,
             Component.translatable(nmsType.descriptionId, NamedTextColor.YELLOW)
         ).withoutPreFormatting()
-        itemStack.lore(lore)
+        client.lore(lore)
         
-        return itemStack
+        return client
     }
     
 }

@@ -20,18 +20,18 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import java.io.File
 
 object PulverizerRecipeDeserializer : ConversionRecipeDeserializer<PulverizerRecipe>() {
-    override fun createRecipe(json: JsonObject, id: Key, input: RecipeChoice, result: ItemStack, time: Int) =
-        PulverizerRecipe(id, input, result, time)
+    override fun createRecipe(json: JsonObject, key: Key, input: RecipeChoice, result: ItemStack, time: Int) =
+        PulverizerRecipe(key, input, result, time)
 }
 
 object PlatePressRecipeDeserializer : ConversionRecipeDeserializer<PlatePressRecipe>() {
-    override fun createRecipe(json: JsonObject, id: Key, input: RecipeChoice, result: ItemStack, time: Int) =
-        PlatePressRecipe(id, input, result, time)
+    override fun createRecipe(json: JsonObject, key: Key, input: RecipeChoice, result: ItemStack, time: Int) =
+        PlatePressRecipe(key, input, result, time)
 }
 
 object GearPressRecipeDeserializer : ConversionRecipeDeserializer<GearPressRecipe>() {
-    override fun createRecipe(json: JsonObject, id: Key, input: RecipeChoice, result: ItemStack, time: Int) =
-        GearPressRecipe(id, input, result, time)
+    override fun createRecipe(json: JsonObject, key: Key, input: RecipeChoice, result: ItemStack, time: Int) =
+        GearPressRecipe(key, input, result, time)
 }
 
 object FluidInfuserRecipeDeserializer : RecipeDeserializer<FluidInfuserRecipe> {
@@ -78,8 +78,8 @@ object ElectricBrewingStandRecipeDeserializer : RecipeDeserializer<ElectricBrewi
 
 object CrystallizerRecipeDeserializer : ConversionRecipeDeserializer<CrystallizerRecipe>() {
     
-    override fun createRecipe(json: JsonObject, id: Key, input: RecipeChoice, result: ItemStack, time: Int): CrystallizerRecipe {
-        return CrystallizerRecipe(id, input, result, time)
+    override fun createRecipe(json: JsonObject, key: Key, input: RecipeChoice, result: ItemStack, time: Int): CrystallizerRecipe {
+        return CrystallizerRecipe(key, input, result, time)
     }
     
 }

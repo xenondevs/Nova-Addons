@@ -9,10 +9,10 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.Click
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
@@ -210,7 +210,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('f', AutoTillingItem())
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('v', plantRegion.createVisualizeRegionItem(player))
+            .addIngredient('v', plantRegion.visualizeRegionItem)
             .addIngredient('p', plantRegion.increaseSizeItem)
             .addIngredient('m', plantRegion.decreaseSizeItem)
             .addIngredient('n', plantRegion.displaySizeItem)
