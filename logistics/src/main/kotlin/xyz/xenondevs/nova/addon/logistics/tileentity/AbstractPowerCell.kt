@@ -68,9 +68,6 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
     
     final override val energyHolder = storedEnergyHolder(capacity, NetworkConnectionType.BUFFER)
     
-    private val _duration = mutableProvider(BarDuration.SECOND)
-    private var duration by _duration
-    
     private val entriesUntilRollover = enumMap<BarDuration, Int> { it.numOfPrevious }
     private val averagedEnergyValues = enumMap<BarDuration, LongRingBuffer> { LongRingBuffer(PLOT_SIZE) }
     private val averagedEnergyPlusValues = enumMap<BarDuration, LongRingBuffer> { LongRingBuffer(PLOT_SIZE) }
@@ -117,6 +114,8 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
         
         private val sideConfigMenu = SideConfigMenu(this@PowerCell, ::openWindow)
         
+        private val _duration = mutableProvider(BarDuration.SECOND)
+        private var duration by _duration
         private var plotMode = PlotMode.ENERGY_DELTA
         private val graph = BufferedImage(PLOT_SIZE, PLOT_SIZE, BufferedImage.TYPE_INT_ARGB)
         private val graphics = graph.createGraphics()
@@ -132,9 +131,9 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
         override val gui: Gui = Gui.builder()
             .setStructure(
                 ". . . . . . . . .",
-                "s . m c c c . e .",
-                ". . + c c c . e .",
-                ". . - c c c . e .",
+                "s . m . c c c . e",
+                ". . + . c c c . e",
+                ". . - . c c c . e",
                 ". . . . . . . . .")
             .addIngredient('#', Item.simple(ItemStack(Material.AIR)))
             .addIngredient('s', OpenSideConfigItem(sideConfigMenu))
@@ -212,7 +211,7 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
         private fun Graphics2D.drawBars(buffer: LongRingBuffer, plotHeight: Long) {
             buffer.forEach { index, value ->
                 val barHeight = ((value.toDouble() / plotHeight.toDouble()) * PLOT_SIZE).toInt()
-                graphics.fillRect(index, PLOT_SIZE - barHeight, 1, barHeight)
+                fillRect(index, PLOT_SIZE - barHeight, 1, barHeight)
             }
         }
         
