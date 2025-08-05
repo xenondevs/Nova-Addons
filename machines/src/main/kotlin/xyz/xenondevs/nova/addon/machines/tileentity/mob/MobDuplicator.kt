@@ -141,10 +141,6 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         val nmsEntity = entity.nmsEntity
         if (NERF_MOBS && nmsEntity is Mob)
             nmsEntity.aware = false
-        
-        if (patreonSkulls.isNotEmpty() && entity is LivingEntity && Random.nextInt(1..1000) == 1) {
-            entity.equipment?.setHelmet(patreonSkulls.random().get(), true)
-        }
     }
     
     private fun countSurroundingEntities(): Int =
@@ -195,30 +191,6 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
                 player.playClickSound()
             }
             
-        }
-        
-    }
-    
-    private companion object PatronSkulls {
-        
-        private const val PATRON_SKULLS_URL = "https://xenondevs.xyz/nova/patron_skulls.json"
-        val patreonSkulls = ArrayList<ItemBuilder>()
-        
-        init {
-            runAsyncTask {
-                val url = URI(PATRON_SKULLS_URL).toURL()
-                val array = url.openConnection().getInputStream().bufferedReader().use(JsonParser::parseReader)
-                if (array is JsonArray) {
-                    array.asSequence()
-                        .filter(JsonElement::isString)
-                        .forEach {
-                            patreonSkulls += ItemBuilder(Material.PLAYER_HEAD).set(
-                                DataComponentTypes.PROFILE,
-                                ResolvableProfile.resolvableProfile().name(it.asString)
-                            )
-                        }
-                }
-            }
         }
         
     }
