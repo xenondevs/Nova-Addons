@@ -1,29 +1,22 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonParser
-import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.ResolvableProfile
 import net.minecraft.world.entity.Mob
-import org.bukkit.Material
+import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.gson.isString
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.mutableProvider
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.Click
-import xyz.xenondevs.invui.item.ItemBuilder
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.gui.IdleBar
+import xyz.xenondevs.nova.addon.machines.item.DISALLOWED_ENTITY_TYPES
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_DUPLICATOR
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
@@ -43,17 +36,13 @@ import xyz.xenondevs.nova.util.isBetweenXZ
 import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.nmsEntity
 import xyz.xenondevs.nova.util.playClickSound
-import xyz.xenondevs.nova.util.runAsyncTask
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.BUFFER
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
-import java.net.URI
 import kotlin.math.roundToInt
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 private val MAX_ENERGY = MOB_DUPLICATOR.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = MOB_DUPLICATOR.config.entry<Long>("energy_per_tick")
@@ -134,9 +123,26 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             return
         
         val spawnLocation = pos.location.add(0.5, 1.0, 0.5)
-        val entity = if (keepNbt) {
-            EntityUtils.deserializeAndSpawn(entityData!!, spawnLocation, nbtModifier = NBTUtils::removeItemData).bukkitEntity
-        } else spawnLocation.world!!.spawnEntity(spawnLocation, entityType!!)
+        
+        val entityType = entityType
+        val entityData = entityData
+        
+        var entity: Entity? = null
+        if (entityType != null && entityData != null && entityType !in DISALLOWED_ENTITY_TYPES) {
+            if (keepNbt) {
+                entity = EntityUtils.deserializeAndSpawn(
+                    entityData,
+                    spawnLocation,
+                    disallowedEntityTypes = DISALLOWED_ENTITY_TYPES,
+                    nbtModifier = NBTUtils::removeItemData
+                )?.bukkitEntity
+            } else {
+                entity = spawnLocation.world?.spawnEntity(spawnLocation, entityType)
+            }
+        }
+        
+        if (entity == null)
+            return
         
         val nmsEntity = entity.nmsEntity
         if (NERF_MOBS && nmsEntity is Mob)

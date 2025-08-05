@@ -2,6 +2,7 @@
 
 package xyz.xenondevs.nova.addon.machines.item
 
+import com.google.common.collect.Sets
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.registries.BuiltInRegistries
@@ -14,6 +15,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.config.entry
@@ -28,18 +30,26 @@ import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import xyz.xenondevs.nova.world.player.swingHandEventless
+import kotlin.reflect.full.isSubclassOf
 
 private val DATA_KEY = Key(Machines, "entitydata")
 private val TYPE_KEY = Key(Machines, "entitytype")
 private val TIME_KEY = Key(Machines, "filltime")
 
-private val BLACKLISTED_ENTITY_TYPES by Items.MOB_CATCHER.config.entry<Set<EntityType>>("entity_blacklist")
+private val MOB_ENTITY_TYPES: Set<EntityType> = EntityType.entries.filterTo(HashSet()) { it.entityClass?.kotlin?.isSubclassOf(Mob::class) == true }
+private val WHITELISTED_ENTITY_TYPES: Provider<Set<EntityType>> = Items.MOB_CATCHER.config.entry<Set<EntityType>>("entity_whitelist")
+val DISALLOWED_ENTITY_TYPES: Set<EntityType> by WHITELISTED_ENTITY_TYPES.map { whitelistedEntities ->
+    // disallowed are all entities that are not mobs and are not whitelisted
+    val whitelistedMobs = Sets.intersection(MOB_ENTITY_TYPES, whitelistedEntities)
+    val blacklistedEntities = Sets.difference(EntityType.entries.toSet(), whitelistedMobs)
+    return@map blacklistedEntities
+}
 
 object MobCatcherBehavior : ItemBehavior {
     
     override fun handleEntityInteract(player: Player, itemStack: ItemStack, clicked: Entity, event: PlayerInteractAtEntityEvent) {
-        if (clicked is Mob
-            && clicked.type !in BLACKLISTED_ENTITY_TYPES
+        if (
+            clicked.type !in DISALLOWED_ENTITY_TYPES
             && ProtectionManager.canInteractWithEntity(player, clicked, itemStack)
             && getEntityData(itemStack) == null
         ) {
@@ -72,7 +82,7 @@ object MobCatcherBehavior : ItemBehavior {
                     player.inventory.getItem(event.hand!!).amount -= 1
                     player.inventory.addPrioritized(event.hand!!, Items.MOB_CATCHER.createItemStack())
                     
-                    EntityUtils.deserializeAndSpawn(data, location)
+                    EntityUtils.deserializeAndSpawn(data, location, disallowedEntityTypes = DISALLOWED_ENTITY_TYPES)
                     player.swingHandEventless(event.hand ?: EquipmentSlot.HAND)
                     
                     event.isCancelled = true
