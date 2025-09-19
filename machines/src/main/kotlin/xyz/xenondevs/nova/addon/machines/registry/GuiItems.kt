@@ -3,10 +3,14 @@ package xyz.xenondevs.nova.addon.machines.registry
 import xyz.xenondevs.nova.addon.machines.Machines.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
+import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.world.item.DefaultGuiItems
 import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
 object GuiItems {
+    
+    val TP_FLUID_BAR_ITEMS = mapOf(null to DefaultGuiItems.TP_BAR_BLUE, FluidType.WATER to DefaultGuiItems.TP_BAR_BLUE, FluidType.LAVA to DefaultGuiItems.TP_BAR_RED)
     
     val GEAR_BTN_OFF = guiItem("btn/gear_off", "menu.machines.mechanical_press.press_gears")
     val GEAR_BTN_ON = guiItem("btn/gear_on", "menu.machines.mechanical_press.press_gears")
@@ -50,7 +54,7 @@ object GuiItems {
     val TP_FLUID_PROGRESS_LEFT_RIGHT = tpProgressItem("progress/fluid/left_right", 17)
     val TP_FLUID_PROGRESS_RIGHT_LEFT = tpProgressItem("progress/fluid/right_left", 17)
     
-    private fun guiItem(name: String, localizedName: String? = ""): NovaItem = item("gui/opaque/$name") {
+    private fun guiItem(name: String, localizedName: String? = null): NovaItem = item("gui/opaque/$name") {
         if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         
@@ -61,7 +65,7 @@ object GuiItems {
         }
     }
     
-    private fun tpGuiItem(name: String, localizedName: String? = ""): NovaItem = item("gui/transparent/$name") {
+    private fun tpGuiItem(name: String, localizedName: String? = null): NovaItem = item("gui/transparent/$name") {
         if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         

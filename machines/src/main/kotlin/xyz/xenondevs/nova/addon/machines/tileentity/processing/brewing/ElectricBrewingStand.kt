@@ -297,7 +297,7 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('U', OpenUpgradesItem(upgradeHolder))
             .addIngredient('e', EnergyBar(4, energyHolder, DefaultGuiItems.TP_BAR_RED))
-            .addIngredient('f', FluidBar(4, fluidHolder, fluidTank, mapOf(null to DefaultGuiItems.TP_BAR_BLUE, FluidType.WATER to DefaultGuiItems.TP_BAR_BLUE, FluidType.LAVA to DefaultGuiItems.TP_BAR_RED)))
+            .addIngredient('f', FluidBar(4, fluidHolder, fluidTank, GuiItems.TP_FLUID_BAR_ITEMS))
             .addIngredient('i', ingredientsDisplay)
             .addIngredient('p', configurePotionItem)
             .addIngredient('o', outputInventory, GuiItems.BOTTLE_PLACEHOLDER)

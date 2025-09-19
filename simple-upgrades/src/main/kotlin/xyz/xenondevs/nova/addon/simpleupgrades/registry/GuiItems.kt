@@ -16,8 +16,8 @@ object GuiItems {
     
     val UPGRADES_BTN = guiItem("btn/upgrades", "menu.simple_upgrades.upgrades")
     
-    private fun guiItem(name: String, localizedName: String = ""): NovaItem = item("gui/$name") {
-        localizedName(localizedName)
+    private fun guiItem(name: String, localizedName: String? = null): NovaItem = item("gui/$name") {
+        if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         modelDefinition {
             model = buildModel { createGuiModel(background = true, stretched = false, "item/$name") }

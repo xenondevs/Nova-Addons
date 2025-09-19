@@ -21,14 +21,14 @@ object GuiItems {
     val PLOT_SHRINK_HORIZONTALLY_ON = tpGuiItem("gui/btn/shrink_horizontally_on", "menu.logistics.power_cell.graph_shrink")
     val PLOT_SHRINK_HORIZONTALLY_OFF = tpGuiItem("gui/btn/shrink_horizontally_off", null)
     
-    private fun tpGuiItem(name: String, localizedName: String? = ""): NovaItem =
+    private fun tpGuiItem(name: String, localizedName: String? = null): NovaItem =
         item(name) {
             if (localizedName == null) name(null) else localizedName(localizedName)
             hidden(true)
             modelDefinition { model = buildModel { createGuiModel(background = false, stretched = false, "item/$name") } }
         }
     
-    private fun guiItem(name: String, localizedName: String? = ""): NovaItem =
+    private fun guiItem(name: String, localizedName: String? = null): NovaItem =
         item(name) {
             if (localizedName == null) name(null) else localizedName(localizedName)
             hidden(true)

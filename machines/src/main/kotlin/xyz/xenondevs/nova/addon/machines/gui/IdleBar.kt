@@ -5,6 +5,7 @@ package xyz.xenondevs.nova.addon.machines.gui
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.invui.ExperimentalReactiveApi
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.setItemProvider
@@ -20,7 +21,7 @@ class IdleBar(
     
     override fun createBarItem(section: Int): Item =
         Item.builder()
-            .setItemProvider(timePassed, maxIdleTime) { timePassed, maxIdleTime ->
+            .setItemProvider(combinedProvider(timePassed, maxIdleTime) { timePassed, maxIdleTime ->
                 createItemBuilder(
                     DefaultGuiItems.BAR_GREEN,
                     section,
@@ -30,7 +31,7 @@ class IdleBar(
                     NamedTextColor.GRAY,
                     Component.text(maxIdleTime - timePassed)
                 ))
-            }.build()
+            }).build()
     
 }
 

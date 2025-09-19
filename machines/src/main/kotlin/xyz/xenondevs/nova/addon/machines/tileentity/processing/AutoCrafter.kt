@@ -194,7 +194,7 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             .addIngredient('u', OpenUpgradesItem(upgradeHolder))
             .addIngredient('s', OpenSideConfigItem(sideConfigGui))
             .addIngredient('>', ProgressArrowItem())
-            .addIngredient('e', EnergyBar(3, energyHolder))
+            .addIngredient('e', EnergyBar(3, energyHolder, DefaultGuiItems.TP_BAR_RED))
             .build()
         
         private val autoCrafterInventoryGui = Gui.builder()

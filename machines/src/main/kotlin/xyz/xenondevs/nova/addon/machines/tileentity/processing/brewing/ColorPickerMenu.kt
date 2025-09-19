@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
+import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.mutableProvider
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.Item
@@ -50,25 +51,25 @@ class ColorPickerMenu(
             ". . r . g . b . ."
         )
         .addIngredient('p', Item.builder()
-            .setItemProvider(red, green, blue) { red, green, blue ->
+            .setItemProvider(combinedProvider(red, green, blue) { red, green, blue ->
                 ItemBuilder(Material.POTION)
                     .setCustomName(Component.translatable("menu.machines.color_picker.current_color"))
                     .set(
                         DataComponentTypes.POTION_CONTENTS,
                         potionContents().customColor(org.bukkit.Color.fromRGB(red, green, blue))
                     )
-            }
+            })
         )
-        .addIngredient('r', ChangeColorItem(red::get, red::set, "menu.nova.color_picker.red", ItemBuilder(Material.RED_DYE)))
-        .addIngredient('g', ChangeColorItem(green::get, green::set, "menu.nova.color_picker.green", ItemBuilder(Material.LIME_DYE)))
-        .addIngredient('b', ChangeColorItem(blue::get, blue::set, "menu.nova.color_picker.blue", ItemBuilder(Material.BLUE_DYE)))
+        .addIngredient('r', ChangeColorItem(red::get, red::set, "menu.machines.color_picker.red", ItemBuilder(Material.RED_DYE)))
+        .addIngredient('g', ChangeColorItem(green::get, green::set, "menu.machines.color_picker.green", ItemBuilder(Material.LIME_DYE)))
+        .addIngredient('b', ChangeColorItem(blue::get, blue::set, "menu.machines.color_picker.blue", ItemBuilder(Material.BLUE_DYE)))
         .addIngredient('<', BackItem(openPrevious = openPrevious))
         .build()
     
     fun openWindow(player: Player) {
         val window = Window.builder()
             .setViewer(player)
-            .setTitle(GuiTextures.COLOR_PICKER.getTitle("menu.nova.color_picker"))
+            .setTitle(GuiTextures.COLOR_PICKER.getTitle("menu.machines.color_picker"))
             .setUpperGui(gui)
             .build()
         

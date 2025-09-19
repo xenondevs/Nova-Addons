@@ -41,14 +41,14 @@ object FluidInfuserRecipeGroup : RecipeGroup<FluidInfuserRecipe>() {
         
         return Gui.builder()
             .setStructure(
-                ". f . t . . . . .",
-                ". f p i . . . r .",
+                ". f . . . . . . .",
+                ". f p i . t . r .",
                 ". f . . . . . . .")
             .addIngredient('i', createRecipeChoiceItem(recipe.input))
             .addIngredient('r', createRecipeChoiceItem(listOf(recipe.result)))
             .addIngredient('p', progressItem)
-            .addIngredient('f', StaticFluidBar(3, FLUID_CAPACITY, recipe.fluidType, recipe.fluidAmount))
-            .addIngredient('t', DefaultGuiItems.TP_STOPWATCH
+            .addIngredient('f', StaticFluidBar(3, FLUID_CAPACITY, recipe.fluidType, recipe.fluidAmount, GuiItems.TP_FLUID_BAR_ITEMS))
+            .addIngredient('t', DefaultGuiItems.INVISIBLE_ITEM
                 .createClientsideItemBuilder()
                 .setName(Component.translatable("menu.nova.recipe.time", Component.text(recipe.time / 20.0)))
             ).build()

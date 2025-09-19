@@ -1,6 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded
 
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.nova.addon.machines.registry.GuiItems
 import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.ui.menu.StaticFluidBar
@@ -21,7 +22,7 @@ object FreezerRecipeGroup : RecipeGroup<FreezerRecipe>() {
                 ". w . . . . r . .",
                 ". w . . . . . . .")
             .addIngredient('r', createRecipeChoiceItem(listOf(recipe.result)))
-            .addIngredient('w', StaticFluidBar(3, 100_000, FluidType.WATER, 1000L * recipe.mode.maxCostMultiplier))
+            .addIngredient('w', StaticFluidBar(3, 100_000, FluidType.WATER, 1000L * recipe.mode.maxCostMultiplier, GuiItems.TP_FLUID_BAR_ITEMS))
             .build()
     }
     
