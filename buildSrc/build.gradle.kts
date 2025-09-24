@@ -13,7 +13,7 @@ repositories {
 dependencies {
     implementation(libs.kotlin.plugin)
     implementation(libs.nova.plugin)
-    implementation(libs.paperweight.userdev.plugin)
+    implementation(libs.origami.plugin)
     implementation("xyz.xenondevs.publish:plugin-publish:1.0.0")
     
     // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192

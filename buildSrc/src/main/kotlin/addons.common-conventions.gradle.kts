@@ -7,7 +7,6 @@ group = "xyz.xenondevs.nova.addon"
 plugins {
     `java-library`
     kotlin("jvm")
-    id("io.papermc.paperweight.userdev")
     id("xyz.xenondevs.nova.nova-gradle-plugin")
     id("xyz.xenondevs.publish.plugin-publish")
 }
@@ -23,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.paper.get())
+    compileOnly(origami.patchedPaperServer())
     implementation(libs.nova)
 }
 
