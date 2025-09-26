@@ -17,7 +17,7 @@ object StarShardsOre : BlockBehavior {
         if (!ctx[DefaultContextParamTypes.BLOCK_DROPS])
             return emptyList()
         
-        if (ctx[DefaultContextParamTypes.TOOL_ITEM_STACK]?.getEnchantmentLevel(Enchantment.SILK_TOUCH) != 0)
+        if (ctx[DefaultContextParamTypes.TOOL_ITEM_STACK]?.getEnchantmentLevel(Enchantment.SILK_TOUCH) == 1)
             return listOf(state.block.item!!.createItemStack())
         
         return listOf(Items.STAR_SHARDS.createItemStack(Random.nextInt(1, 4)))
