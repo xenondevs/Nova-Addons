@@ -22,9 +22,9 @@ import org.joml.Vector3f
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.combinedProvider
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.QUARRY
@@ -314,6 +314,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             val ctx = Context.intention(DefaultContextIntentions.BlockBreak)
                 .param(DefaultContextParamTypes.BLOCK_POS, block.pos)
                 .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
+                .param(DefaultContextParamTypes.BLOCK_DROPS, true)
                 .build()
             val drops = BlockUtils.getDrops(ctx).toMutableList()
             NovaEventFactory.callTileEntityBlockBreakEvent(this, block, drops)
