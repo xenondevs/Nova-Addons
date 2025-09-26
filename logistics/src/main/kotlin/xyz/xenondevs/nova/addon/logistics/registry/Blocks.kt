@@ -101,13 +101,13 @@ object Blocks {
                 val down = getPropertyValueOrThrow(BlockStateProperties.DOWN)
                 
                 when {
-                    east && west -> Blocks.CHAIN.defaultBlockState()
+                    east && west -> Blocks.IRON_CHAIN.defaultBlockState()
                         .setValue(MojangBlockStateProperties.AXIS, Axis.X)
                     
-                    north && south -> Blocks.CHAIN.defaultBlockState()
+                    north && south -> Blocks.IRON_CHAIN.defaultBlockState()
                         .setValue(MojangBlockStateProperties.AXIS, Axis.Z)
                     
-                    up && down -> Blocks.CHAIN.defaultBlockState()
+                    up && down -> Blocks.IRON_CHAIN.defaultBlockState()
                         .setValue(MojangBlockStateProperties.AXIS, Axis.Y)
                     
                     else -> Blocks.STRUCTURE_VOID.defaultBlockState()

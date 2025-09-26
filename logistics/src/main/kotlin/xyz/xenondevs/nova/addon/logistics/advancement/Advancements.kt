@@ -26,7 +26,7 @@ object Advancements {
             Items.ULTIMATE_CABLE.clientsideProvider.get().unwrap(),
             Component.translatable("advancement.logistics.root.title").toNMSComponent(),
             Component.empty().toNMSComponent(),
-            Optional.of(ClientAsset(ResourceLocation.withDefaultNamespace("block/tuff"))),
+            Optional.of(ClientAsset.ResourceTexture(ResourceLocation.withDefaultNamespace("block/tuff"))),
             AdvancementType.TASK,
             false, false, false
         ))

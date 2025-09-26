@@ -24,7 +24,7 @@ private val ROOT = advancement(Machines, "root") {
         Items.QUARRY.clientsideProvider.get().unwrap(),
         Component.translatable("advancement.machines.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
-        Optional.of(ClientAsset(ResourceLocation.withDefaultNamespace("block/tuff"))),
+        Optional.of(ClientAsset.ResourceTexture(ResourceLocation.withDefaultNamespace("block/tuff"))),
         AdvancementType.TASK,
         false, false, false
     ))

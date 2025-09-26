@@ -23,7 +23,7 @@ private val ROOT = advancement(VanillaHammers, "root") {
         Items.WOODEN_HAMMER.clientsideProvider.get().unwrap().copy(),
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
-        Optional.of(ClientAsset(ResourceLocation.withDefaultNamespace("block/tuff"))),
+        Optional.of(ClientAsset.ResourceTexture(ResourceLocation.withDefaultNamespace("block/tuff"))),
         AdvancementType.TASK,
         false, false, false
     ))
