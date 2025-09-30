@@ -226,5 +226,13 @@
   "menu.machines.items.category.resources": "Ресурсы",
   "block.machines.auto_crafter": "Автоматический Верстак",
   "block.machines.auto_crafter.inv_window.title": "Внутренний инвентарь",
-  "menu.machines.auto_crafter.inventory": "Инвентарь"
+  "menu.machines.auto_crafter.inventory": "Инвентарь",
+  "menu.machines.color_picker.blue": "Синий: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимальный уровень продолжительности: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимальный уровень усиления: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множитель продолжительности: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множитель усилителя: %s",
+  "menu.machines.color_picker": "Выберите цвет...",
+  "menu.machines.color_picker.red": "Красный: %s",
+  "menu.machines.color_picker.green": "Зеленый: %s"
 }

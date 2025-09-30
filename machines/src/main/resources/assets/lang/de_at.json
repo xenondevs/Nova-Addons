@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Einen Kristallisator basteln",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Alle fünf Star Tools herstellen",
-  "subtitles.machines.item.armor.equip_star": "Sternenpanzer klirrt"
+  "subtitles.machines.item.armor.equip_star": "Sternenpanzer klirrt",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximale Dauer Stufe: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximale Verstärkerstufe: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Dauer-Multiplikator: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Verstärker-Multiplikator: %s",
+  "menu.machines.color_picker": "Wähle eine Farbe...",
+  "menu.machines.color_picker.red": "Rot: %s",
+  "menu.machines.color_picker.green": "Grün: %s",
+  "menu.machines.color_picker.blue": "Blau: %s"
 }

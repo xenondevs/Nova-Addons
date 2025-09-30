@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "制作结晶器",
   "advancement.machines.all_star_tools.title": "星形工具",
   "advancement.machines.all_star_tools.description": "制作所有五种星级工具",
-  "subtitles.machines.item.armor.equip_star": "星甲叮当作响"
+  "subtitles.machines.item.armor.equip_star": "星甲叮当作响",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "最大持续时间级别： %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "最大放大器级别： %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "持续时间乘数： %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "放大器乘数： %s",
+  "menu.machines.color_picker": "选择颜色...",
+  "menu.machines.color_picker.red": "红色: %s",
+  "menu.machines.color_picker.green": "绿色: %s",
+  "menu.machines.color_picker.blue": "蓝色: %s"
 }

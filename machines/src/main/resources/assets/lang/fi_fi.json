@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Crystallizerin valmistaminen",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Craft kaikki viisi Star Tools",
-  "subtitles.machines.item.armor.equip_star": "Tähtihaarniskat kilisevät"
+  "subtitles.machines.item.armor.equip_star": "Tähtihaarniskat kilisevät",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksimikesto: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksimivahvistustaso: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Keston kerroin: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Vahvistimen kerroin: %s",
+  "menu.machines.color_picker": "Valitse väri...",
+  "menu.machines.color_picker.red": "Punainen: %s",
+  "menu.machines.color_picker.green": "Vihreä: %s",
+  "menu.machines.color_picker.blue": "Sininen: %s"
 }

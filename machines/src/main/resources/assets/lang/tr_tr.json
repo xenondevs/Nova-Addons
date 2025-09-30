@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Bir Kristalleştirici Üretin",
   "advancement.machines.all_star_tools.title": "Yıldız Araçları",
   "advancement.machines.all_star_tools.description": "Beş Yıldız Aletinin hepsini üretin",
-  "subtitles.machines.item.armor.equip_star": "Yıldız zırhı şıngırdıyor"
+  "subtitles.machines.item.armor.equip_star": "Yıldız zırhı şıngırdıyor",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksimum süre seviyesi: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksimum amplifikatör seviyesi: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Süre çarpanı: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Amplifikatör çarpanı: %s",
+  "menu.machines.color_picker": "Bir renk seçin...",
+  "menu.machines.color_picker.red": "Kırmızı: %s",
+  "menu.machines.color_picker.green": "Yeşil: %s",
+  "menu.machines.color_picker.blue": "Mavi: %s"
 }

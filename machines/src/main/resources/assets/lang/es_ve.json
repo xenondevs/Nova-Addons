@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Crear un cristalizador",
   "advancement.machines.all_star_tools.title": "Herramientas estrella",
   "advancement.machines.all_star_tools.description": "Crea las cinco herramientas estrella",
-  "subtitles.machines.item.armor.equip_star": "La armadura de estrella tintinea"
+  "subtitles.machines.item.armor.equip_star": "La armadura de estrella tintinea",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Duración máxima nivel: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Nivel máximo de amplificador: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Multiplicador de duración: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Amplificador multiplicador: %s",
+  "menu.machines.color_picker": "Elige un color...",
+  "menu.machines.color_picker.green": "Verde: %s",
+  "menu.machines.color_picker.blue": "Azul: %s",
+  "menu.machines.color_picker.red": "Rojo: %s"
 }

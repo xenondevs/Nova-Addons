@@ -226,5 +226,13 @@
   "subtitles.machines.item.armor.equip_star": "Hvězdné brnění cinká",
   "block.machines.auto_crafter": "Automatický Crafter",
   "block.machines.auto_crafter.inv_window.title": "Interní Inventář",
-  "menu.machines.auto_crafter.inventory": "Inventář"
+  "menu.machines.auto_crafter.inventory": "Inventář",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximální úroveň trvání: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximální úroveň zesilovače: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Násobitel doby trvání: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Násobitel zesilovače: %s",
+  "menu.machines.color_picker": "Vyberte si barvu...",
+  "menu.machines.color_picker.red": "Červená: %s",
+  "menu.machines.color_picker.green": "Zelená: %s",
+  "menu.machines.color_picker.blue": "Modrá: %s"
 }

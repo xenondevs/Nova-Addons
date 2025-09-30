@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Membuat Kristalisasi",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Membuat semua lima Alat Bintang",
-  "subtitles.machines.item.armor.equip_star": "Bintang armor denting"
+  "subtitles.machines.item.armor.equip_star": "Bintang armor denting",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Tingkat durasi maksimum: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Tingkat penguat maksimum: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Pengganda durasi: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Pengganda amplifier: %s",
+  "menu.machines.color_picker": "Pilih warna...",
+  "menu.machines.color_picker.red": "Merah: %s",
+  "menu.machines.color_picker.green": "Hijau: %s",
+  "menu.machines.color_picker.blue": "Biru: %s"
 }

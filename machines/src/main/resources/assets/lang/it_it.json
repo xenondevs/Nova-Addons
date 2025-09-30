@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Realizzare un cristallizzatore",
   "advancement.machines.all_star_tools.title": "Strumenti Star",
   "advancement.machines.all_star_tools.description": "Realizzare tutti e cinque gli strumenti Star",
-  "subtitles.machines.item.armor.equip_star": "L'armatura stellare tintinna"
+  "subtitles.machines.item.armor.equip_star": "L'armatura stellare tintinna",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Livello di durata massima: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Livello massimo dell'amplificatore: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Moltiplicatore di durata: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Moltiplicatore amplificatore: %s",
+  "menu.machines.color_picker": "Scegliere un colore...",
+  "menu.machines.color_picker.red": "Rosso: %s",
+  "menu.machines.color_picker.green": "Verde: %s",
+  "menu.machines.color_picker.blue": "Blu: %s"
 }

@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Κατασκευάστε ένα Crystallizer",
   "advancement.machines.all_star_tools.title": "Εργαλεία Star",
   "advancement.machines.all_star_tools.description": "Κατασκευάστε και τα πέντε Εργαλεία Αστέρων",
-  "subtitles.machines.item.armor.equip_star": "Η αστρική πανοπλία κτυπάει"
+  "subtitles.machines.item.armor.equip_star": "Η αστρική πανοπλία κτυπάει",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Μέγιστο επίπεδο διάρκειας: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Μέγιστο επίπεδο ενισχυτή: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Πολλαπλασιαστής διάρκειας: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Πολλαπλασιαστής ενισχυτή: %s",
+  "menu.machines.color_picker": "Επιλέξτε ένα χρώμα...",
+  "menu.machines.color_picker.red": "Κόκκινο: %s",
+  "menu.machines.color_picker.green": "Πράσινο: %s",
+  "menu.machines.color_picker.blue": "Μπλε: %s"
 }

@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Craft egy kristályosító",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Craft mind az öt Star Tools",
-  "subtitles.machines.item.armor.equip_star": "Csillag páncélok csattognak"
+  "subtitles.machines.item.armor.equip_star": "Csillag páncélok csattognak",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximális erősítő szint: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Időtartam szorzó: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Erősítő szorzó: %s",
+  "menu.machines.color_picker": "Válassz egy színt...",
+  "menu.machines.color_picker.red": "Piros: %s",
+  "menu.machines.color_picker.green": "Zöld: %s",
+  "menu.machines.color_picker.blue": "Kék: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximális időtartam szint: %s"
 }

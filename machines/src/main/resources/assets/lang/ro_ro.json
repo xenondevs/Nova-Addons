@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Creați un cristalizator",
   "advancement.machines.all_star_tools.title": "Unelte Star Tools",
   "advancement.machines.all_star_tools.description": "Meșterește toate cele cinci unelte Star Tools",
-  "subtitles.machines.item.armor.equip_star": "Armura stelară se ciocnește"
+  "subtitles.machines.item.armor.equip_star": "Armura stelară se ciocnește",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Nivelul maxim de durată: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Nivelul maxim de amplificare: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Multiplicator de durată: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Multiplicator amplificator: %s",
+  "menu.machines.color_picker": "Alege o culoare...",
+  "menu.machines.color_picker.red": "Roșu: %s",
+  "menu.machines.color_picker.green": "Verde: %s",
+  "menu.machines.color_picker.blue": "Albastru: %s"
 }

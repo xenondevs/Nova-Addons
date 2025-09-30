@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Lav en krystallisator",
   "advancement.machines.all_star_tools.title": "Stjerneværktøj",
   "advancement.machines.all_star_tools.description": "Lav alle fem stjerneværktøjer",
-  "subtitles.machines.item.armor.equip_star": "Stjerne rustning klirrer"
+  "subtitles.machines.item.armor.equip_star": "Stjerne rustning klirrer",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Max varighed niveau: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maks. forstærkerniveau: %s",
+  "menu.machines.color_picker.red": "Rød: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Varighedsmultiplikator: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Forstærkerens multiplikator: %s",
+  "menu.machines.color_picker": "Vælg en farve...",
+  "menu.machines.color_picker.green": "Grøn: %s",
+  "menu.machines.color_picker.blue": "Blå: %s"
 }

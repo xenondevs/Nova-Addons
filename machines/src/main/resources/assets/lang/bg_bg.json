@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Изработване на кристализатор",
   "advancement.machines.all_star_tools.title": "Инструменти Star",
   "advancement.machines.all_star_tools.description": "Изработване на всички пет звездни инструмента",
-  "subtitles.machines.item.armor.equip_star": "Звездната броня забива"
+  "subtitles.machines.item.armor.equip_star": "Звездната броня забива",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимално ниво на продължителност: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимално ниво на усилвателя: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множител на продължителността: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множител на усилвателя: %s",
+  "menu.machines.color_picker": "Изберете цвят...",
+  "menu.machines.color_picker.red": "Червено: %s",
+  "menu.machines.color_picker.green": "Зелено: %s",
+  "menu.machines.color_picker.blue": "Синьо: %s"
 }

@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Vyrobte si kryštalizátor",
   "advancement.machines.all_star_tools.title": "Hviezdne nástroje",
   "advancement.machines.all_star_tools.description": "Vyrobte si všetkých päť hviezdnych nástrojov",
-  "subtitles.machines.item.armor.equip_star": "Hviezdne brnenie zapraská"
+  "subtitles.machines.item.armor.equip_star": "Hviezdne brnenie zapraská",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximálna úroveň trvania: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximálna úroveň zosilňovača: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Násobiteľ trvania: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Násobiteľ zosilňovača: %s",
+  "menu.machines.color_picker": "Vyberte si farbu...",
+  "menu.machines.color_picker.red": "Červená: %s",
+  "menu.machines.color_picker.green": "Zelená: %s",
+  "menu.machines.color_picker.blue": "Modrá: %s"
 }

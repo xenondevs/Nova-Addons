@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "결정화기 제작",
   "advancement.machines.all_star_tools.title": "스타 도구",
   "advancement.machines.all_star_tools.description": "다섯 가지 별 도구를 모두 제작하세요",
-  "subtitles.machines.item.armor.equip_star": "별 갑옷 찰칵"
+  "subtitles.machines.item.armor.equip_star": "별 갑옷 찰칵",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "최대 지속 시간 수준: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "최대 증폭기 레벨: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "지속 시간 승수: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "증폭기 승수: %s",
+  "menu.machines.color_picker.red": "빨간색: %s",
+  "menu.machines.color_picker.green": "녹색: %s",
+  "menu.machines.color_picker.blue": "파란색: %s",
+  "menu.machines.color_picker": "색상을 선택하세요..."
 }

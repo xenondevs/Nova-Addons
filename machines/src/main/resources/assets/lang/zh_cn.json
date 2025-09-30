@@ -226,5 +226,13 @@
   "menu.machines.items.category.equipment": "装备",
   "block.machines.auto_crafter": "自动合成器",
   "block.machines.auto_crafter.inv_window.title": "内部库存",
-  "menu.machines.auto_crafter.inventory": "库存"
+  "menu.machines.auto_crafter.inventory": "库存",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "最大持续时间级别： %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "最大放大器级别： %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "持续时间乘数： %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "放大器乘数： %s",
+  "menu.machines.color_picker": "选择颜色...",
+  "menu.machines.color_picker.red": "红色: %s",
+  "menu.machines.color_picker.green": "绿色: %s",
+  "menu.machines.color_picker.blue": "蓝色: %s"
 }

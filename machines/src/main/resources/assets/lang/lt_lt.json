@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Sukurkite kristalizatorių",
   "advancement.machines.all_star_tools.title": "Žvaigždžių įrankiai",
   "advancement.machines.all_star_tools.description": "Susikurkite visus penkis žvaigždžių įrankius",
-  "subtitles.machines.item.armor.equip_star": "Žvaigždžių šarvai suskamba"
+  "subtitles.machines.item.armor.equip_star": "Žvaigždžių šarvai suskamba",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksimalus trukmės lygis: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksimalus stiprintuvo lygis: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Trukmės daugiklis: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Stiprintuvo daugiklis: %s",
+  "menu.machines.color_picker": "Pasirinkite spalvą...",
+  "menu.machines.color_picker.red": "Raudona: %s",
+  "menu.machines.color_picker.green": "Žalia spalva: %s",
+  "menu.machines.color_picker.blue": "Mėlyna: %s"
 }

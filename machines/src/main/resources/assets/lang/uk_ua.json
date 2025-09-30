@@ -226,5 +226,13 @@
   "menu.machines.potion_configurator.potion_type.lingering": "Тип зілля: Затягуюче",
   "menu.machines.auto_crafter.inventory": "Інвентаризація",
   "advancement.machines.mob_catcher.description": "Ловіть мобів за допомогою Ловця мобів",
-  "advancement.machines.star_collector.description": "Створіть колекціонер зірок"
+  "advancement.machines.star_collector.description": "Створіть колекціонер зірок",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимальний рівень тривалості: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимальний рівень підсилювача: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множник тривалості: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множник підсилювача: %s",
+  "menu.machines.color_picker": "Виберіть колір...",
+  "menu.machines.color_picker.red": "Червоний: %s",
+  "menu.machines.color_picker.green": "Зелений: %s",
+  "menu.machines.color_picker.blue": "Синій: %s"
 }

@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Skapa en kristallisator",
   "advancement.machines.all_star_tools.title": "Verktyg för stjärnor",
   "advancement.machines.all_star_tools.description": "Skapa alla fem stjärnverktyg",
-  "subtitles.machines.item.armor.equip_star": "Stjärnpansar klirrar"
+  "subtitles.machines.item.armor.equip_star": "Stjärnpansar klirrar",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Max varaktighet nivå: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Max förstärkningsnivå: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Varaktighetsmultiplikator: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Förstärkningsmultiplikator: %s",
+  "menu.machines.color_picker": "Välj en färg...",
+  "menu.machines.color_picker.red": "Röd: %s",
+  "menu.machines.color_picker.green": "Grön: %s",
+  "menu.machines.color_picker.blue": "Blå: %s"
 }

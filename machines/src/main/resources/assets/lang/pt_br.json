@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Criar um cristalizador",
   "advancement.machines.all_star_tools.title": "Ferramentas Star",
   "advancement.machines.all_star_tools.description": "Criar as cinco Ferramentas Estrela",
-  "subtitles.machines.item.armor.equip_star": "A armadura de estrela faz barulho"
+  "subtitles.machines.item.armor.equip_star": "A armadura de estrela faz barulho",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Nível de duração máxima: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Nível máximo do amplificador: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Multiplicador de duração: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Multiplicador do amplificador: %s",
+  "menu.machines.color_picker": "Escolha uma cor...",
+  "menu.machines.color_picker.red": "Vermelho: %s",
+  "menu.machines.color_picker.green": "Verde: %s",
+  "menu.machines.color_picker.blue": "Azul: %s"
 }

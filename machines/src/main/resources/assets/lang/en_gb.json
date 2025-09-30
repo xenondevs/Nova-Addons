@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Craft a Crystallizer",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Craft all five Star Tools",
-  "subtitles.machines.item.armor.equip_star": "Star armor clinks"
+  "subtitles.machines.item.armor.equip_star": "Star armor clinks",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Max duration level: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Max amplifier level: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Duration multiplier: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Amplifier multiplier: %s",
+  "menu.machines.color_picker": "Choose a color...",
+  "menu.machines.color_picker.red": "Red: %s",
+  "menu.machines.color_picker.green": "Green: %s",
+  "menu.machines.color_picker.blue": "Blue: %s"
 }

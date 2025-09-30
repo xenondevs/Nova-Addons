@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Stwórz krystalizator",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Stwórz wszystkie pięć gwiezdnych narzędzi",
-  "subtitles.machines.item.armor.equip_star": "Gwiezdna zbroja brzęczy"
+  "subtitles.machines.item.armor.equip_star": "Gwiezdna zbroja brzęczy",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksymalny poziom trwania: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksymalny poziom wzmacniacza: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Mnożnik czasu trwania: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Mnożnik wzmacniacza: %s",
+  "menu.machines.color_picker": "Wybierz kolor...",
+  "menu.machines.color_picker.red": "Czerwony: %s",
+  "menu.machines.color_picker.green": "Zielony: %s",
+  "menu.machines.color_picker.blue": "Niebieski: %s"
 }

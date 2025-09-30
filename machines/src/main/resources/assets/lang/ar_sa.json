@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "صُنع بلورة الكريستال",
   "advancement.machines.all_star_tools.title": "أدوات النجوم",
   "advancement.machines.all_star_tools.description": "اصنع كل أدوات النجوم الخمسة",
-  "subtitles.machines.item.armor.equip_star": "قرقعة درع نجمي"
+  "subtitles.machines.item.armor.equip_star": "قرقعة درع نجمي",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "الحد الأقصى للمدة القصوى: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "الحد الأقصى لمستوى المضخم: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "مضاعف المدة: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "مضاعف المضخم: %s",
+  "menu.machines.color_picker": "اختر لونًا...",
+  "menu.machines.color_picker.red": "الأحمر: %s",
+  "menu.machines.color_picker.green": "أخضر: %s",
+  "menu.machines.color_picker.blue": "أزرق: %s"
 }

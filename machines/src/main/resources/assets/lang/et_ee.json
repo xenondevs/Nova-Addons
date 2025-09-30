@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Craft kristalliseerija",
   "advancement.machines.all_star_tools.title": "Star Tools",
   "advancement.machines.all_star_tools.description": "Craft kõik viis Star Tools",
-  "subtitles.machines.item.armor.equip_star": "Tähtede soomus klapib"
+  "subtitles.machines.item.armor.equip_star": "Tähtede soomus klapib",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksimaalne kestuse tase: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksimaalne võimendi tase: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Kestuse kordaja: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Võimendi kordaja: %s",
+  "menu.machines.color_picker": "Vali värv...",
+  "menu.machines.color_picker.red": "Punane: %s",
+  "menu.machines.color_picker.green": "Roheline: %s",
+  "menu.machines.color_picker.blue": "Sinine: %s"
 }

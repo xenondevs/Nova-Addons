@@ -226,5 +226,13 @@
   "advancement.machines.crystallizer.description": "Izdelajte kristalizator",
   "advancement.machines.all_star_tools.title": "Orodja Star",
   "advancement.machines.all_star_tools.description": "Izdelajte vseh pet orodij z zvezdicami",
-  "subtitles.machines.item.armor.equip_star": "Zvezdasti oklep zacvrči"
+  "subtitles.machines.item.armor.equip_star": "Zvezdasti oklep zacvrči",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Največja stopnja trajanja: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Največja raven ojačevalnika: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Multiplikator trajanja: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Multiplikator ojačevalnika: %s",
+  "menu.machines.color_picker": "Izberite barvo...",
+  "menu.machines.color_picker.red": "Rdeča: %s",
+  "menu.machines.color_picker.green": "Zelena barva: %s",
+  "menu.machines.color_picker.blue": "Modra: %s"
 }

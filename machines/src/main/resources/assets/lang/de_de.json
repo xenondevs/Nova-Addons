@@ -226,5 +226,13 @@
   "menu.machines.items.category.resources": "Ressourcen",
   "block.machines.auto_crafter": "Auto Crafter",
   "block.machines.auto_crafter.inv_window.title": "Internes Inventar",
-  "menu.machines.auto_crafter.inventory": "Bestandsaufnahme"
+  "menu.machines.auto_crafter.inventory": "Bestandsaufnahme",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximale Dauer Stufe: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximale Verstärkerstufe: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Dauer-Multiplikator: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Verstärker-Multiplikator: %s",
+  "menu.machines.color_picker": "Wähle eine Farbe...",
+  "menu.machines.color_picker.red": "Rot: %s",
+  "menu.machines.color_picker.green": "Grün: %s",
+  "menu.machines.color_picker.blue": "Blau: %s"
 }
