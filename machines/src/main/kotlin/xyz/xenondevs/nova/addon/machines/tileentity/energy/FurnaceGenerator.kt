@@ -25,6 +25,7 @@ import xyz.xenondevs.nova.util.PacketTask
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.item.craftingRemainingItem
+import xyz.xenondevs.nova.util.item.isNotNullOrEmpty
 import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -121,12 +122,12 @@ class FurnaceGenerator(pos: BlockPos, blockState: NovaBlockState, data: Compound
         val fuelStack = inventory.getItem(0)
         if (energyHolder.energy < energyHolder.maxEnergy && fuelStack != null) {
             val itemBurnTime = Fuel.getBurnTime(fuelStack)
-            if (itemBurnTime != null) {
+            if (itemBurnTime > 0) {
                 rawBurnTime.set(itemBurnTime)
                 currentBurnTime = 0
                 
                 val remains = fuelStack.craftingRemainingItem
-                if (remains != null) {
+                if (remains.isNotNullOrEmpty()) {
                     inventory.setItem(null, 0, remains)
                 } else inventory.addItemAmount(null, 0, -1)
             }

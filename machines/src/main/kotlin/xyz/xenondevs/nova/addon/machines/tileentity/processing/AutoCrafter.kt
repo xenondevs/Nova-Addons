@@ -28,6 +28,7 @@ import xyz.xenondevs.nova.ui.menu.item.BackItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
 import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
 import xyz.xenondevs.nova.util.item.craftingRemainingItem
+import xyz.xenondevs.nova.util.item.isNotNullOrEmpty
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
@@ -148,8 +149,8 @@ class AutoCrafter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         val resultItems = ArrayList<ItemStack>()
         for (i in 0..<9) {
             val remaining = inputInv.getItem(i)?.craftingRemainingItem
-            if (remaining != null)
-                resultItems += remaining
+            if (remaining.isNotNullOrEmpty())
+                resultItems += remaining!!
         }
         return resultItems
     }
