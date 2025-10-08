@@ -59,6 +59,7 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHo
 import xyz.xenondevs.nova.world.format.NetworkState
 import xyz.xenondevs.nova.world.model.FixedMultiModel
 import xyz.xenondevs.nova.world.model.Model
+import xyz.xenondevs.nova.world.player.swingMainHandEventless
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -238,7 +239,10 @@ open class Cable(
         
         return VirtualHitbox(from, to).apply {
             setQualifier { player, _ -> player.inventory.itemInMainHand.novaItem == Items.WRENCH }
-            addRightClickHandler { _, _ -> cycleBridgeFaces(face) }
+            addRightClickHandler { player, _ -> 
+                cycleBridgeFaces(face)
+                player.swingMainHandEventless()
+            }
         }
     }
     
