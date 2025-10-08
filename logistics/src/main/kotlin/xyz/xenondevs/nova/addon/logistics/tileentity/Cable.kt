@@ -1,6 +1,7 @@
 package xyz.xenondevs.nova.addon.logistics.tileentity
 
 import com.google.common.collect.Table
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
@@ -247,6 +248,7 @@ open class Cable(
         val (from, to) = createHitboxPoints(pointA, pointB, face)
         
         return VirtualHitbox(from, to).apply {
+            setQualifier { player, _ -> player.gameMode != GameMode.ADVENTURE }
             addLeftClickHandler { player, _ ->
                 val ctx = Context.intention(BlockBreak)
                     .param(DefaultContextParamTypes.BLOCK_POS, pos)
