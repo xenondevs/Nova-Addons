@@ -3,3 +3,11 @@ energy_per_tick: 500
 fly_speed: 0.1
 armor: 8.0
 armor_toughness: 3.0
+
+enchantment_value: 15
+supported_enchantments:
+  - minecraft:protection
+  - minecraft:fire_protection
+  - minecraft:blast_protection
+  - minecraft:projectile_protection
+  - minecraft:thorns

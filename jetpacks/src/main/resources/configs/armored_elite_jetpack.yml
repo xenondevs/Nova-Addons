@@ -2,3 +2,11 @@ max_energy: 5000000
 energy_per_tick: 300
 fly_speed: 0.07
 armor: 8.0
+
+enchantment_value: 10
+supported_enchantments:
+  - minecraft:protection
+  - minecraft:fire_protection
+  - minecraft:blast_protection
+  - minecraft:projectile_protection
+  - minecraft:thorns

@@ -8,6 +8,7 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.Equipment
 import xyz.xenondevs.nova.world.item.behavior.Chargeable
+import xyz.xenondevs.nova.world.item.behavior.Enchantable
 import xyz.xenondevs.nova.world.item.behavior.Equippable
 
 @Init(stage = InitStage.PRE_PACK)
@@ -34,19 +35,19 @@ object Items {
         maxStackSize(1)
     }
     val ARMORED_BASIC_JETPACK = item("armored_basic_jetpack") {
-        behaviors(Chargeable(), Equippable(Equipment.LEATHER, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.BASIC))
+        behaviors(Chargeable(), Enchantable(), Equippable(Equipment.LEATHER, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.BASIC))
         maxStackSize(1)
     }
     val ARMORED_ADVANCED_JETPACK = item("armored_advanced_jetpack") {
-        behaviors(Chargeable(), Equippable(Equipment.IRON, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.ADVANCED))
+        behaviors(Chargeable(), Enchantable(), Equippable(Equipment.IRON, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.ADVANCED))
         maxStackSize(1)
     }
     val ARMORED_ELITE_JETPACK = item("armored_elite_jetpack") {
-        behaviors(Chargeable(), Equippable(Equipment.DIAMOND, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.ELITE))
+        behaviors(Chargeable(), Enchantable(), Equippable(Equipment.DIAMOND, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.ELITE))
         maxStackSize(1)
     }
     val ARMORED_ULTIMATE_JETPACK = item("armored_ultimate_jetpack") {
-        behaviors(Chargeable(), Equippable(Equipment.NETHERITE, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.ULTIMATE))
+        behaviors(Chargeable(), Enchantable(), Equippable(Equipment.NETHERITE, EquipmentSlot.CHEST), JetpackBehavior(JetpackTier.ULTIMATE))
         maxStackSize(1)
     }
     
