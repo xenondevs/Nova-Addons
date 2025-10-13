@@ -1,6 +1,5 @@
 
 import org.gradle.accessors.dm.LibrariesForLibs
-import xyz.xenondevs.novagradle.task.AddonJarTask
 
 group = "xyz.xenondevs.nova.addon"
 
@@ -35,12 +34,6 @@ java {
     withSourcesJar()
 }
 
-tasks {
-    jar {
-        archiveClassifier = "intermediate"
-    }
-}
-
 addon {
     val outDir = project.findProperty("outDir")
     if (outDir is String)
@@ -48,6 +41,6 @@ addon {
 }
 
 pluginPublish {
-    file = tasks.named<AddonJarTask>("addonJar").flatMap { it.output }
+    file = tasks.named<Jar>("addonJar").flatMap { it.archiveFile }
     githubRepository = "xenondevs/Nova-Addons"
 }
