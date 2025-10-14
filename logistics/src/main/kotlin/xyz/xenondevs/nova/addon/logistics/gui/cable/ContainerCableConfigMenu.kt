@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import xyz.xenondevs.invui.item.AbstractItem
 import xyz.xenondevs.invui.Click
+import xyz.xenondevs.invui.item.AbstractItem
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.notifyWindows
@@ -25,13 +25,25 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
     
     protected val updatableItems = ArrayList<Item>()
     
+    @Volatile
     protected var allowsExtract = false
+    
+    @Volatile
     protected var allowsInsert = false
     
+    @Volatile
     protected var insertPriority = -1
+    
+    @Volatile
     protected var extractPriority = -1
+    
+    @Volatile
     protected var insertState = false
+    
+    @Volatile
     protected var extractState = false
+    
+    @Volatile
     protected var channel = -1
     
     /**
@@ -55,7 +67,7 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
      *
      * Should only be called from the main thread.
      */
-    fun updateGui() {
+    open fun updateGui() {
         updatableItems.notifyWindows()
     }
     

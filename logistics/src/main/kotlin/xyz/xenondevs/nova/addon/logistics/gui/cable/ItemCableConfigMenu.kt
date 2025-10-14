@@ -14,7 +14,6 @@ import xyz.xenondevs.nova.ui.menu.addIngredient
 import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
 import xyz.xenondevs.nova.ui.menu.item.DisplayNumberItem
 import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem
-import xyz.xenondevs.nova.util.runTask
 import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemNetwork
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
@@ -27,7 +26,10 @@ class ItemCableConfigMenu(
     
     val gui: Gui
     
+    @Volatile
     private var insertFilter: ItemStack? = null
+    
+    @Volatile
     private var extractFilter: ItemStack? = null
     
     private val insertFilterInventory: VirtualInventory
@@ -38,8 +40,10 @@ class ItemCableConfigMenu(
         
         insertFilterInventory = VirtualInventory(null, 1, arrayOf(insertFilter), intArrayOf(1))
         insertFilterInventory.addPreUpdateHandler(::validateIsItemFilter)
+        insertFilterInventory.addPostUpdateHandler { insertFilter = it.newItem }
         extractFilterInventory = VirtualInventory(null, 1, arrayOf(extractFilter), intArrayOf(1))
         extractFilterInventory.addPreUpdateHandler(::validateIsItemFilter)
+        extractFilterInventory.addPostUpdateHandler { extractFilter = it.newItem }
         
         gui = Gui.builder()
             .setStructure(
@@ -65,11 +69,13 @@ class ItemCableConfigMenu(
         
         insertFilter = holder.insertFilters[face]?.toItemStack()
         extractFilter = holder.extractFilters[face]?.toItemStack()
+    }
+    
+    override fun updateGui() {
+        super.updateGui()
         
-        runTask {
-            insertFilterInventory.setItem(UpdateReason.SUPPRESSED, 0, insertFilter)
-            extractFilterInventory.setItem(UpdateReason.SUPPRESSED, 0, extractFilter)
-        }
+        insertFilterInventory.setItem(UpdateReason.SUPPRESSED, 0, insertFilter)
+        extractFilterInventory.setItem(UpdateReason.SUPPRESSED, 0, extractFilter)
     }
     
     override fun writeChanges(): Boolean {
