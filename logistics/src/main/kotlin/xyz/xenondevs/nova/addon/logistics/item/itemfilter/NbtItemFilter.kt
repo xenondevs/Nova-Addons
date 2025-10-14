@@ -26,4 +26,8 @@ class NbtItemFilter(
     
     companion object : LogisticsItemFilterSerializer(::NbtItemFilter)
     
+    override fun toString(): String {
+        return "NbtItemFilter(items=$items, whitelist=$whitelist)"
+    }
+    
 }

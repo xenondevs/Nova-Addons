@@ -20,6 +20,10 @@ class TypeItemFilter(
         return (itemStack.type in vanillaTypes) == whitelist
     }
     
+    override fun toString(): String {
+        return "TypeItemFilter(whitelist=$whitelist, items=$items)"
+    }
+    
     companion object : LogisticsItemFilterSerializer(::TypeItemFilter)
     
 }
