@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Jetpack cơ bản",
+  "item.jetpacks.advanced_jetpack": "Jetpack Nâng cao",
+  "item.jetpacks.elite_jetpack": "Jetpack cao cấp",
+  "item.jetpacks.ultimate_jetpack": "Jetpack Tối Ưu",
+  "item.jetpacks.armored_basic_jetpack": "Bộ giáp cơ bản cho bộ phun phản lực",
+  "item.jetpacks.armored_advanced_jetpack": "Bộ giáp nâng cao Jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Bộ giáp tinh nhuệ Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Bộ giáp tối thượng Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpack"
+}

@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "เจ็ตแพ็คพื้นฐาน",
+  "item.jetpacks.advanced_jetpack": "เจ็ตแพ็คขั้นสูง",
+  "item.jetpacks.elite_jetpack": "เอลิต เจ็ตแพ็ก",
+  "item.jetpacks.ultimate_jetpack": "อัลติเมทเจ็ตแพ็ค",
+  "item.jetpacks.armored_basic_jetpack": "เจ็ตแพ็คพื้นฐานแบบหุ้มเกราะ",
+  "item.jetpacks.armored_advanced_jetpack": "เจ็ตแพ็คขั้นสูงแบบหุ้มเกราะ",
+  "item.jetpacks.armored_elite_jetpack": "อาร์เมอร์ เอลิต เจ็ทแพ็ก",
+  "item.jetpacks.armored_ultimate_jetpack": "อาร์เมอร์ อัลติเมท เจ็ทแพ็ก",
+  "menu.jetpacks.items.category.jetpacks": "เจ็ตแพ็ก"
+}
