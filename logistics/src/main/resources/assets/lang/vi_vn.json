@@ -92,5 +92,10 @@
   "menu.logistics.item_filter.nbt.off": "Dữ liệu NBT: Có Tính",
   "menu.logistics.storage_unit.item_display_plural": "%s vật phẩm",
   "menu.logistics.storage_unit.item_display_singular": "%s vật phẩm",
-  "advancement.logistics.root.title": "Vận chuyển"
+  "advancement.logistics.root.title": "Vận chuyển",
+  "menu.logistics.power_cell.graph_mode.energy": "Biểu đồ: Tổng năng lượng",
+  "menu.logistics.power_cell.graph_mode.energy_delta": "Biểu đồ: Năng lượng vào/ra",
+  "menu.logistics.power_cell.graph_enlarge": "Zoom vào",
+  "menu.logistics.power_cell.graph_shrink": "Zoom ra",
+  "menu.logistics.power_cell.graph_bar_duration": "Một thanh = %s"
 }
