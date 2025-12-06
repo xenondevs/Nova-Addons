@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "שדרוג מהירות",
+  "item.simple_upgrades.efficiency_upgrade": "שדרוג יעילות",
+  "item.simple_upgrades.energy_upgrade": "שדרוג אנרגיה",
+  "item.simple_upgrades.range_upgrade": "שדרוג טווח",
+  "item.simple_upgrades.fluid_upgrade": "שדרוג נוזלים",
+  "menu.simple_upgrades.upgrades": "שדרוגים",
+  "menu.simple_upgrades.upgrades.type.speed": "שדרוגי מהירות: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "שדרוגי יעילות: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "שדרוגי אנרגיה: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "שדרוגי טווח: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "שדרוגי נוזלים: %s/%s"
+}

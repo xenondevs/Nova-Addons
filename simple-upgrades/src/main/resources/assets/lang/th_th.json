@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "การอัปเกรดความเร็ว",
+  "item.simple_upgrades.efficiency_upgrade": "การยกระดับประสิทธิภาพ",
+  "item.simple_upgrades.energy_upgrade": "การยกระดับพลังงาน",
+  "item.simple_upgrades.range_upgrade": "การอัปเกรดระยะ",
+  "item.simple_upgrades.fluid_upgrade": "การอัปเกรดของเหลว",
+  "menu.simple_upgrades.upgrades": "การอัปเกรด",
+  "menu.simple_upgrades.upgrades.type.speed": "การอัปเกรดความเร็ว: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "การปรับปรุงประสิทธิภาพ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "การปรับปรุงพลังงาน: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "การอัปเกรดระยะ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "การอัปเกรดของเหลว: %s/%s"
+}
