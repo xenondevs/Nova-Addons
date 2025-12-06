@@ -221,5 +221,18 @@
   "advancement.machines.sprinkler.description": "Chế tạo một Vòi phun nước",
   "advancement.machines.crystallizer.title": "Sự kết tinh",
   "advancement.machines.crystallizer.description": "Chế tạo một Máy kết tinh",
-  "advancement.machines.all_star_tools.title": "Công cụ từ ngôi sao"
+  "advancement.machines.all_star_tools.title": "Công cụ từ ngôi sao",
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Thời gian tối đa: %s",
+  "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Mức độ khuếch đại tối đa: %s",
+  "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Hệ số nhân thời gian: %s",
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Hệ số nhân của bộ khuếch đại: %s",
+  "menu.machines.color_picker": "Chọn một màu...",
+  "menu.machines.color_picker.red": "Đỏ: %s",
+  "menu.machines.color_picker.green": "Xanh lục: %s",
+  "menu.machines.color_picker.blue": "Xanh dương: %s",
+  "menu.machines.potion_configurator.potion_type.normal": "Loại thuốc: Bình thường",
+  "menu.machines.potion_configurator.potion_type.splash": "Loại thuốc: Tưới",
+  "menu.machines.potion_configurator.potion_type.lingering": "Loại thuốc: Lưu lại",
+  "advancement.machines.fluid_infuser.description": "Tạo ra một thiết bị truyền chất lỏng",
+  "subtitles.machines.item.armor.equip_star": "Giáp sao kêu lách cách"
 }
