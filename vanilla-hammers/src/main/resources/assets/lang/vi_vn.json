@@ -25,5 +25,22 @@
   "advancement.vanilla_hammers.quartz_hammer.title": "Sự khởi đầu của lửa",
   "advancement.vanilla_hammers.golden_hammer.title": "Giải pháp của người giàu",
   "advancement.vanilla_hammers.netherite_hammer.title": "Sự trỗi dạy của ngọn lửa",
-  "advancement.vanilla_hammers.emerald_hammer.title": "Cây búa của những buôn lái"
+  "advancement.vanilla_hammers.emerald_hammer.title": "Cây búa của những buôn lái",
+  "advancement.vanilla_hammers.fiery_hammer.title": "Kết thúc bùng cháy",
+  "advancement.vanilla_hammers.obsidian_hammer.title": "Búa Thật Sự Vững Chắc",
+  "advancement.vanilla_hammers.ender_hammer.title": "Búa trên tất cả",
+  "advancement.vanilla_hammers.root.description": "Thế còn một cái búa thì sao?",
+  "advancement.vanilla_hammers.stone_hammer.description": "Bắt đầu với những thứ cơ bản và chế tạo một Cây búa đá.",
+  "advancement.vanilla_hammers.slime_hammer.description": "Tạo ra một cây búa Slime... sao không thử dùng nó để đập vào thứ gì đó?",
+  "advancement.vanilla_hammers.lapis_hammer.description": "Đó là Búa Kim Cương, không phải Búa Lapis!",
+  "advancement.vanilla_hammers.iron_hammer.description": "Tạo ra một cái búa sắt.",
+  "advancement.vanilla_hammers.prismarine_hammer.description": "Tạo ra một chiếc búa Prismarine bằng nguyên liệu từ biển.",
+  "advancement.vanilla_hammers.quartz_hammer.description": "Bắt đầu cuộc chinh phục đầy lửa của bạn với một chiếc búa thạch anh.",
+  "advancement.vanilla_hammers.golden_hammer.description": "Cây búa vàng không hoạt động tốt, nhưng trông nó thật sự rất ngầu!",
+  "advancement.vanilla_hammers.diamond_hammer.description": "Tạo ra một chiếc búa kim cương.",
+  "advancement.vanilla_hammers.netherite_hammer.description": "Tạo ra một chiếc búa Netherite, được rèn từ những viên đá quý cổ xưa từ một thời kỳ chưa được biết đến.",
+  "advancement.vanilla_hammers.emerald_hammer.description": "Thể hiện sự độc đáo của bạn với một chiếc búa ngọc lục bảo.",
+  "advancement.vanilla_hammers.fiery_hammer.description": "Hoàn tất cuộc hành trình của bạn với Búa Lửa.",
+  "advancement.vanilla_hammers.obsidian_hammer.description": "Tạo ra một chiếc búa Obsidian và đi khai thác trong 17 giờ liên tục mà không dừng lại.",
+  "advancement.vanilla_hammers.ender_hammer.description": "Tạo ra Ender Hammer để giải quyết vấn đề khai thác của bạn."
 }
