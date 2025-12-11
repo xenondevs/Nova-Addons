@@ -6,7 +6,7 @@ import com.google.common.collect.Sets
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
@@ -108,7 +108,7 @@ object MobCatcherBehavior : ItemBehavior {
     
     override fun modifyClientSideStack(player: Player?, server: ItemStack, client: ItemStack): ItemStack {
         val type = getEntityType(server) ?: return client
-        val nmsType = BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", type.key.key))
+        val nmsType = BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.fromNamespaceAndPath("minecraft", type.key.key))
         
         val lore = client.lore() ?: mutableListOf()
         lore += Component.translatable(

@@ -1,6 +1,6 @@
 package xyz.xenondevs.nova.addon.simpleupgrades
 
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import org.spongepowered.configurate.ConfigurationNode
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.orElse
@@ -15,13 +15,13 @@ import kotlin.reflect.KType
 /**
  * An upgrade type.
  *
- * @param id The [ResourceLocation] of this upgrade type.
+ * @param id The [Identifier] of this upgrade type.
  * @param item The [NovaItem] that represents this upgrade type.
  * @param icon The [NovaItem] that represents the icon of this upgrade type.
  * @param valueType The type of the upgrade values.
  */
 class UpgradeType<T> internal constructor(
-    val id: ResourceLocation,
+    val id: Identifier,
     val item: NovaItem,
     val icon: NovaItem,
     valueType: KType

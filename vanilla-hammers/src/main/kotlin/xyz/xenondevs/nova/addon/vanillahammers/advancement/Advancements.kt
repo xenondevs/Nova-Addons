@@ -3,9 +3,9 @@ package xyz.xenondevs.nova.addon.vanillahammers.advancement
 import net.kyori.adventure.text.Component
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
-import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.advancements.criterion.PlayerTrigger
 import net.minecraft.core.ClientAsset
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import xyz.xenondevs.nova.addon.vanillahammers.VanillaHammers
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Items
 import xyz.xenondevs.nova.initialize.Init
@@ -23,7 +23,7 @@ private val ROOT = advancement(VanillaHammers, "root") {
         Items.WOODEN_HAMMER.clientsideProvider.get().unwrap().copy(),
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
-        Optional.of(ClientAsset.ResourceTexture(ResourceLocation.withDefaultNamespace("block/tuff"))),
+        Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),
         AdvancementType.TASK,
         false, false, false
     ))

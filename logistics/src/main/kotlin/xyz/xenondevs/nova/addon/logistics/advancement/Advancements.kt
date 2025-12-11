@@ -3,9 +3,9 @@ package xyz.xenondevs.nova.addon.logistics.advancement
 import net.kyori.adventure.text.Component
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
-import net.minecraft.advancements.critereon.PlayerTrigger
+import net.minecraft.advancements.criterion.PlayerTrigger
 import net.minecraft.core.ClientAsset
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.addon.logistics.registry.Items
 import xyz.xenondevs.nova.initialize.Init
@@ -26,7 +26,7 @@ object Advancements {
             Items.ULTIMATE_CABLE.clientsideProvider.get().unwrap(),
             Component.translatable("advancement.logistics.root.title").toNMSComponent(),
             Component.empty().toNMSComponent(),
-            Optional.of(ClientAsset.ResourceTexture(ResourceLocation.withDefaultNamespace("block/tuff"))),
+            Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),
             AdvancementType.TASK,
             false, false, false
         ))

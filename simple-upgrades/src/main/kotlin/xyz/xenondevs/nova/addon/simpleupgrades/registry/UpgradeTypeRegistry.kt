@@ -4,7 +4,7 @@ import xyz.xenondevs.nova.addon.Addon
 import xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades
 import xyz.xenondevs.nova.addon.simpleupgrades.UpgradeType
 import xyz.xenondevs.nova.registry.NovaRegistryAccess
-import xyz.xenondevs.nova.util.ResourceLocation
+import xyz.xenondevs.nova.util.Identifier
 import xyz.xenondevs.nova.util.set
 import xyz.xenondevs.nova.world.item.NovaItem
 import kotlin.reflect.KType
@@ -26,7 +26,7 @@ object UpgradeTypeRegistry {
     }
     
     fun <T> registerUpgradeType(addon: Addon, name: String, item: NovaItem, icon: NovaItem, valueType: KType): UpgradeType<T> {
-        val id = ResourceLocation(addon, name)
+        val id = Identifier(addon, name)
         val upgradeType = UpgradeType<T>(id, item, icon, valueType)
         
         REGISTRY[id] = upgradeType
