@@ -8,5 +8,6 @@
   "item.simple_upgrades.efficiency_upgrade": "效率升級",
   "item.simple_upgrades.energy_upgrade": "能量升級",
   "item.simple_upgrades.range_upgrade": "範圍升級",
-  "item.simple_upgrades.fluid_upgrade": "流體升級"
+  "item.simple_upgrades.fluid_upgrade": "流體升級",
+  "menu.simple_upgrades.upgrades": "升級"
 }
