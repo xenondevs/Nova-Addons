@@ -2,7 +2,7 @@ plugins {
     id("addons.common-conventions")
 }
 
-version = "0.8.0-alpha.1"
+version = "0.8.0"
 
 dependencies {
     implementation(project(":simple-upgrades"))
