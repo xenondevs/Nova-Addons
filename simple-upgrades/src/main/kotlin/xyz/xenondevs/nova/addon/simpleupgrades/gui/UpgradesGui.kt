@@ -12,6 +12,7 @@ import xyz.xenondevs.invui.gui.ScrollGui
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.AbstractItem
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
@@ -120,7 +121,7 @@ internal class UpgradesGui(val upgradeHolder: UpgradeHolder, openPrevious: (Play
             val amountLeft = upgradeHolder.addUpgrade(upgradeType, item.amount)
             if (amountLeft == 0) item = null
             else item.amount = amountLeft
-            input.setItem(TileEntity.SELF_UPDATE_REASON, 0, item)
+            input.setItem(UpdateReason.SUPPRESSED, 0, item)
         }
     }
     
