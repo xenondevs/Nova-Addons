@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "בסיסישער דזשעטפּאַק",
+  "item.jetpacks.advanced_jetpack": "אַוואַנסירטער דזשעטפּאַק",
+  "item.jetpacks.elite_jetpack": "עליט דזשעטפּאַק",
+  "item.jetpacks.ultimate_jetpack": "אולטימאַטער דזשעטפּאַק",
+  "item.jetpacks.armored_basic_jetpack": "געפּאַנצערטער גרונט־דזשעטפּאַק",
+  "item.jetpacks.armored_advanced_jetpack": "געפּאַנצערטער אַוואַנסירטער דזשעטפּאַק",
+  "item.jetpacks.armored_elite_jetpack": "געפּאַנצערטע עליטע דזשעטפּאַק",
+  "item.jetpacks.armored_ultimate_jetpack": "געפּאַנצערטער אולטימאַטיווער דזשעטפּאַק",
+  "menu.jetpacks.items.category.jetpacks": "דזשעטפּאַקס"
+}

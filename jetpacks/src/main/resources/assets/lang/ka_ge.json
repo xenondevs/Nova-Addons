@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "საბაზისო ჯეტპეკი",
+  "item.jetpacks.advanced_jetpack": "გაუმჯობესებული ჯეტპეკი",
+  "item.jetpacks.elite_jetpack": "ელიტური ჯეტპეკი",
+  "item.jetpacks.ultimate_jetpack": "საბოლოო ჯეტპეკი",
+  "item.jetpacks.armored_basic_jetpack": "ჯავშანმოსილი საბაზისო ჯეტპაკი",
+  "item.jetpacks.armored_advanced_jetpack": "ჯავშანმოსილი გაუმჯობესებული ჯეტპაკი",
+  "item.jetpacks.armored_elite_jetpack": "ჯავშანშემოსილი ელიტური ჯეტპაკი",
+  "item.jetpacks.armored_ultimate_jetpack": "ჯავშანული ულტიმატური ჯეტპაკი",
+  "menu.jetpacks.items.category.jetpacks": "ჯეტპეკები"
+}

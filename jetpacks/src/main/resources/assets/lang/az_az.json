@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Əsas Jetpack",
+  "item.jetpacks.advanced_jetpack": "Gelişmiş Jetpack",
+  "item.jetpacks.elite_jetpack": "Elit Jetpak",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Zirehli Əsas Jetpak",
+  "item.jetpacks.armored_advanced_jetpack": "Zirehli Təkmilləşdirilmiş Jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Zirehli Elit Jetpak",
+  "item.jetpacks.armored_ultimate_jetpack": "Zirehli Ultimate Jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacklər"
+}

@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "बेसिक जेटपैक",
+  "item.jetpacks.advanced_jetpack": "उन्नत जेटपैक",
+  "item.jetpacks.elite_jetpack": "एलिट जेटपैक",
+  "item.jetpacks.ultimate_jetpack": "अल्टीमेट जेटपैक",
+  "item.jetpacks.armored_basic_jetpack": "बख्तरबंद बेसिक जेटपैक",
+  "item.jetpacks.armored_advanced_jetpack": "बख्तरबंद उन्नत जेटपैक",
+  "item.jetpacks.armored_elite_jetpack": "बख्तरबंद एलीट जेटपैक",
+  "item.jetpacks.armored_ultimate_jetpack": "आर्मर्ड अल्टीमेट जेटपैक",
+  "menu.jetpacks.items.category.jetpacks": "जेटपैक"
+}

@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Jetpack Sylfaenol",
+  "item.jetpacks.advanced_jetpack": "Jetpack Uwch",
+  "item.jetpacks.elite_jetpack": "Jetpack Elît",
+  "item.jetpacks.ultimate_jetpack": "Jetpack Uwch",
+  "item.jetpacks.armored_basic_jetpack": "Pecyn-siâp Sylfaenol Arfog",
+  "item.jetpacks.armored_advanced_jetpack": "Jetpack Arfog Uwch",
+  "item.jetpacks.armored_elite_jetpack": "Pecyn-siaced Jetelit Arfog",
+  "item.jetpacks.armored_ultimate_jetpack": "Pecyn Jet Arfog Uwch",
+  "menu.jetpacks.items.category.jetpacks": "Jetpaciau"
+}

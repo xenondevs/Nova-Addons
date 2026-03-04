@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Базавы Джэтпак",
+  "item.jetpacks.advanced_jetpack": "Прасунуты Джэтпак",
+  "item.jetpacks.elite_jetpack": "Элітны Джэтпак",
+  "item.jetpacks.ultimate_jetpack": "Ультыматыўны джэтпак",
+  "item.jetpacks.armored_basic_jetpack": "Бранёвы базавы ракетны ранец",
+  "item.jetpacks.armored_advanced_jetpack": "Бранёвы пашыраны ракетны ранец",
+  "item.jetpacks.armored_elite_jetpack": "Бранёвы элітны джэтпак",
+  "item.jetpacks.armored_ultimate_jetpack": "Бранёвы Ультыматыўны Джэтпэк",
+  "menu.jetpacks.items.category.jetpacks": "Джэтпакі"
+}

@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Энгийн Жетпак",
+  "item.jetpacks.advanced_jetpack": "Дэвшилтэт Жетпак",
+  "item.jetpacks.elite_jetpack": "Элит Жетпак",
+  "item.jetpacks.ultimate_jetpack": "Дээд зэрэглэлийн Жетпак",
+  "item.jetpacks.armored_basic_jetpack": "Хаалттай үндсэн жэтпак",
+  "item.jetpacks.armored_advanced_jetpack": "Хатуулагдсан Дэвшилтэт Жетпак",
+  "item.jetpacks.armored_elite_jetpack": "Хаалттай Элит Жетпак",
+  "item.jetpacks.armored_ultimate_jetpack": "Хавтант Дээд зэрэглэлийн Жетпак",
+  "menu.jetpacks.items.category.jetpacks": "Жетпак"
+}

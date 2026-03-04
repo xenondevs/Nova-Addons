@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Baza ĵetpako",
+  "item.jetpacks.advanced_jetpack": "Altnivela Jetpako",
+  "item.jetpacks.elite_jetpack": "Elita Jetpako",
+  "item.jetpacks.ultimate_jetpack": "Ultimata Jetpako",
+  "item.jetpacks.armored_basic_jetpack": "Kirasa Baza Jetpako",
+  "item.jetpacks.armored_advanced_jetpack": "Kirasa Altnivela Jetpako",
+  "item.jetpacks.armored_elite_jetpack": "Kirasa Elita Jetpako",
+  "item.jetpacks.armored_ultimate_jetpack": "Kirasa Supera Jetpako",
+  "menu.jetpacks.items.category.jetpacks": "Jetpakoj"
+}

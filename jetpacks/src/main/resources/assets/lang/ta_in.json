@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "அடிப்படை ஜெட்பேக்",
+  "item.jetpacks.advanced_jetpack": "மேம்பட்ட ஜெட்பேக்",
+  "item.jetpacks.elite_jetpack": "எலைட் ஜெட்பேக்",
+  "item.jetpacks.ultimate_jetpack": "அல்டிமேட் ஜெட்பேக்",
+  "item.jetpacks.armored_basic_jetpack": "கவசமிடப்பட்ட அடிப்படை ஜெட்பேக்",
+  "item.jetpacks.armored_advanced_jetpack": "கவசமிடப்பட்ட மேம்பட்ட ஜெட்பேக்",
+  "item.jetpacks.armored_elite_jetpack": "கவசமிடப்பட்ட எலைட் ஜெட்பேக்",
+  "item.jetpacks.armored_ultimate_jetpack": "கவசமிடப்பட்ட உச்சகட்ட ஜெட்பேக்",
+  "menu.jetpacks.items.category.jetpacks": "ஜெட்பேக்குகள்"
+}

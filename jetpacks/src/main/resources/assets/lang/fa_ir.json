@@ -1,2 +1,11 @@
 {
+  "item.jetpacks.basic_jetpack": "جت‌پک پایه",
+  "item.jetpacks.advanced_jetpack": "جت‌پک پیشرفته",
+  "item.jetpacks.elite_jetpack": "جت‌پک ممتاز",
+  "item.jetpacks.ultimate_jetpack": "جت‌پک نهایی",
+  "item.jetpacks.armored_basic_jetpack": "جت‌پک پایه زرهی",
+  "item.jetpacks.armored_advanced_jetpack": "جت‌پک پیشرفته زرهی",
+  "item.jetpacks.armored_elite_jetpack": "پرتابگر جت نخبه زرهی",
+  "item.jetpacks.armored_ultimate_jetpack": "جت‌پک نهایی زرهی",
+  "menu.jetpacks.items.category.jetpacks": "جت‌پک‌ها"
 }

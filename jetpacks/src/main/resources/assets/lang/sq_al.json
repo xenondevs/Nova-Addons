@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Jetpack themelor",
+  "item.jetpacks.advanced_jetpack": "Jetpack i Avancuar",
+  "item.jetpacks.elite_jetpack": "Jetpack Elitar",
+  "item.jetpacks.ultimate_jetpack": "Jetpack-u Përfundimtar",
+  "item.jetpacks.armored_basic_jetpack": "Jetpack i thjeshtë i blinduar",
+  "item.jetpacks.armored_advanced_jetpack": "Jetpack i Avancuar i Armatosur",
+  "item.jetpacks.armored_elite_jetpack": "Jetpack-u Elitar i Armatosur",
+  "item.jetpacks.armored_ultimate_jetpack": "Jetpack-u i Armatosur Përfundimtar",
+  "menu.jetpacks.items.category.jetpacks": "Jetpack-et"
+}

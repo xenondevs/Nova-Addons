@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Jetpack Bażiku",
+  "item.jetpacks.advanced_jetpack": "Jetpack Avvanzat",
+  "item.jetpacks.elite_jetpack": "Jetpack Elite",
+  "item.jetpacks.ultimate_jetpack": "Jetpack Ultimattiv",
+  "item.jetpacks.armored_basic_jetpack": "Jetpack Bażiku Armaturjat",
+  "item.jetpacks.armored_advanced_jetpack": "Jetpack Avvanzat Armaturjat",
+  "item.jetpacks.armored_elite_jetpack": "Jetpack Elite Armaturjat",
+  "item.jetpacks.armored_ultimate_jetpack": "Jetpack Armaturjat Ultimu",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}

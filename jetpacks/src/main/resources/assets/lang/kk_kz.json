@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Негізгі реактивті рюкзак",
+  "item.jetpacks.advanced_jetpack": "Advanced Jetpack",
+  "item.jetpacks.elite_jetpack": "Элиталық жеке реактивті рюкзак",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Қорғаныспен жабдықталған қарапайым реактивті рюкзак",
+  "item.jetpacks.armored_advanced_jetpack": "Қорғаныс жабдығымен жақсартылған жеткізгіш",
+  "item.jetpacks.armored_elite_jetpack": "Бронды элиталық реактивті рюкзак",
+  "item.jetpacks.armored_ultimate_jetpack": "Қорғаныспен жарақталған ең үздік реактивті рюкзак",
+  "menu.jetpacks.items.category.jetpacks": "Жетпактар"
+}

@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Grunn Jetpack",
+  "item.jetpacks.advanced_jetpack": "Framþróaður Jetpack",
+  "item.jetpacks.elite_jetpack": "Elite Jetpack",
+  "item.jetpacks.ultimate_jetpack": "Ultimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Brynjað grunn-jetpack",
+  "item.jetpacks.armored_advanced_jetpack": "Brynjað háþróað jetpack",
+  "item.jetpacks.armored_elite_jetpack": "Brynjað Elite Jetpack",
+  "item.jetpacks.armored_ultimate_jetpack": "Brynjað fullkomið jetpack",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}

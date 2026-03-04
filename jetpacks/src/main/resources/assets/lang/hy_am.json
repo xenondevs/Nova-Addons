@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Հիմնական ջեթփեք",
+  "item.jetpacks.advanced_jetpack": "Զարգացված ջեթփեք",
+  "item.jetpacks.elite_jetpack": "Էլիտար ջեթփաք",
+  "item.jetpacks.ultimate_jetpack": "Վերջնական ջեթփեք",
+  "item.jetpacks.armored_basic_jetpack": "Պաշտպանված Հիմնական Ջեթփեք",
+  "item.jetpacks.armored_advanced_jetpack": "Պաշտպանված առաջադեմ ջեթփեք",
+  "item.jetpacks.armored_elite_jetpack": "Պատված էլիտար ջեթփեք",
+  "item.jetpacks.armored_ultimate_jetpack": "Պատված վերջնական ջեթփեք",
+  "menu.jetpacks.items.category.jetpacks": "Ջեթփեքեր"
+}

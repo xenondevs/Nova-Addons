@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Buntéadán",
+  "item.jetpacks.advanced_jetpack": "Jetpack Ardleibhéil",
+  "item.jetpacks.elite_jetpack": "Jetpack den Scoth",
+  "item.jetpacks.ultimate_jetpack": "An tUltimate Jetpack",
+  "item.jetpacks.armored_basic_jetpack": "Paca-scaird Armúrtha Bunúsach",
+  "item.jetpacks.armored_advanced_jetpack": "Paca-scaird Armúrtha Ardleibhéil",
+  "item.jetpacks.armored_elite_jetpack": "Paicéad Sceite Armúrtha den Scoth",
+  "item.jetpacks.armored_ultimate_jetpack": "Paicéad Sceite Armúrtha Uachtarach",
+  "menu.jetpacks.items.category.jetpacks": "Móidéil Jetpack"
+}

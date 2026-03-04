@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Jetpack Diazez",
+  "item.jetpacks.advanced_jetpack": "Jetpack araokaet",
+  "item.jetpacks.elite_jetpack": "Jetpack Elite",
+  "item.jetpacks.ultimate_jetpack": "Jetpack Meur",
+  "item.jetpacks.armored_basic_jetpack": "Jetpack Diazez Harzet",
+  "item.jetpacks.armored_advanced_jetpack": "Jetpack Harpet Araokaet",
+  "item.jetpacks.armored_elite_jetpack": "Jetpack Blinket Armet",
+  "item.jetpacks.armored_ultimate_jetpack": "Jetpack Diwezhañ Armet",
+  "menu.jetpacks.items.category.jetpacks": "Jetpacks"
+}

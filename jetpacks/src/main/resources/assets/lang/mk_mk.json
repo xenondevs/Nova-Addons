@@ -1,1 +1,11 @@
-{}
+{
+  "item.jetpacks.basic_jetpack": "Основен џетпак",
+  "item.jetpacks.advanced_jetpack": "Напреден џетпак",
+  "item.jetpacks.elite_jetpack": "Елит Џетпак",
+  "item.jetpacks.ultimate_jetpack": "Врвен џетпак",
+  "item.jetpacks.armored_basic_jetpack": "Оклопен основен џетпак",
+  "item.jetpacks.armored_advanced_jetpack": "Оклопен напреднат џетпак",
+  "item.jetpacks.armored_elite_jetpack": "Оклопен елитен џетпак",
+  "item.jetpacks.armored_ultimate_jetpack": "Оклопен ултимативен џетпак",
+  "menu.jetpacks.items.category.jetpacks": "Џетпекови"
+}
