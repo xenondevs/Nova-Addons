@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Արագության բարելավում",
+  "item.simple_upgrades.efficiency_upgrade": "Արդյունավետության բարելավում",
+  "item.simple_upgrades.energy_upgrade": "Էներգիայի արդիականացում",
+  "item.simple_upgrades.range_upgrade": "Տիրույթի արդիականացում",
+  "item.simple_upgrades.fluid_upgrade": "Հեղուկի արդիականացում",
+  "menu.simple_upgrades.upgrades": "Բարելավումներ",
+  "menu.simple_upgrades.upgrades.type.speed": "Արագության բարելավումներ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Արդյունավետության բարելավումներ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Էներգետիկ բարելավումներ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Տիրույթի բարելավումներ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Հեղուկի բարելավումներ: %s/%s"
+}

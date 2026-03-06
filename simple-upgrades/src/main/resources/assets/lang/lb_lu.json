@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Geschwindegkeets-Upgrade",
+  "item.simple_upgrades.efficiency_upgrade": "Effizienz-Upgrade",
+  "item.simple_upgrades.energy_upgrade": "Energie-Opgradéierung",
+  "item.simple_upgrades.range_upgrade": "Reichwäit-Opgradéierung",
+  "item.simple_upgrades.fluid_upgrade": "Flëssegkeets-Upgrade",
+  "menu.simple_upgrades.upgrades": "Upgrades",
+  "menu.simple_upgrades.upgrades.type.speed": "Geschwindegkeetsverbesserungen: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Effizienz-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energie-Upgrades: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Reichwäitverbesserungen: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Flëssegkeets-Upgrades: %s/%s"
+}

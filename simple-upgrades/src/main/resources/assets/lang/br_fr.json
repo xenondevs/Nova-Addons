@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Gwellaat an tizh",
+  "item.simple_upgrades.efficiency_upgrade": "Gwellaenn an efedusted",
+  "item.simple_upgrades.energy_upgrade": "Gwellaat an energiezh",
+  "item.simple_upgrades.range_upgrade": "Gwellaat an hed",
+  "item.simple_upgrades.fluid_upgrade": "Gwellaat an dourennoù",
+  "menu.simple_upgrades.upgrades": "Gwellaennoù",
+  "menu.simple_upgrades.upgrades.type.speed": "Gwellaennoù Tizh: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Gwellaennoù an efedusted: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Gwellaennoù an energiezh: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Gwellaennoù tennad: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Gwellaennoù an dourennoù: %s/%s"
+}

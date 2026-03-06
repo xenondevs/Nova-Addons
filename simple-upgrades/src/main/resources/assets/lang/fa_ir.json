@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "ارتقای سرعت",
+  "item.simple_upgrades.efficiency_upgrade": "ارتقای کارایی",
+  "item.simple_upgrades.energy_upgrade": "ارتقای انرژی",
+  "item.simple_upgrades.range_upgrade": "ارتقای برد",
+  "item.simple_upgrades.fluid_upgrade": "ارتقای سیالات",
+  "menu.simple_upgrades.upgrades": "ارتقاها",
+  "menu.simple_upgrades.upgrades.type.speed": "ارتقاءهای سرعت: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "ارتقاءهای کارایی: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "ارتقاءهای انرژی: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "ارتقاءهای برد: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "ارتقاءهای سیالات: %s/%s"
+}

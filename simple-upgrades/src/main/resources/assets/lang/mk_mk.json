@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Надградба на брзина",
+  "item.simple_upgrades.efficiency_upgrade": "Надградба на ефикасност",
+  "item.simple_upgrades.energy_upgrade": "Надградба на енергија",
+  "item.simple_upgrades.range_upgrade": "Надградба на дострел",
+  "item.simple_upgrades.fluid_upgrade": "Надградба на флуид",
+  "menu.simple_upgrades.upgrades": "Надградби",
+  "menu.simple_upgrades.upgrades.type.speed": "Надградби на брзина: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Надградби на ефикасност: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Надградби на енергија: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Надградби на дострелот: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Надградби на течности: %s/%s"
+}

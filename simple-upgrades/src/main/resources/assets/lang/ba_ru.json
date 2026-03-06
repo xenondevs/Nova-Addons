@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Тиҙлекте арттырыу",
+  "item.simple_upgrades.efficiency_upgrade": "Эффективлыҡты яңыртыу",
+  "item.simple_upgrades.energy_upgrade": "Энергияны яңыртыу",
+  "item.simple_upgrades.range_upgrade": "Араны яҡшыртыу",
+  "item.simple_upgrades.fluid_upgrade": "Сыуҙы яңыртыу",
+  "menu.simple_upgrades.upgrades": "Яңыртыуҙар",
+  "menu.simple_upgrades.upgrades.type.speed": "Тиҙлек яңыртыуҙары: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Эффективлыҡты арттырыу: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Энергияны яңыртыу: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Атыу алыҫлығын яҡшыртыу: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Сыулыҡты яҡшыртыуҙар: %s/%s"
+}

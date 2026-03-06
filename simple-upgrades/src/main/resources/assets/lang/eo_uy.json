@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Rapideca plibonigo",
+  "item.simple_upgrades.efficiency_upgrade": "Plibonigo de Efikeco",
+  "item.simple_upgrades.energy_upgrade": "Energia plibonigo",
+  "item.simple_upgrades.range_upgrade": "Pafdistanca plibonigo",
+  "item.simple_upgrades.fluid_upgrade": "Fluida Ĝisdatigo",
+  "menu.simple_upgrades.upgrades": "Plibonigoj",
+  "menu.simple_upgrades.upgrades.type.speed": "Rapidecplibonigoj: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Plibonigoj de efikeco: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energiaj plibonigoj: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Gama-plibonigoj: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Fluidaj plibonigoj: %s/%s"
+}

@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "גיכקייט־אויפֿגרייד",
+  "item.simple_upgrades.efficiency_upgrade": "עפֿיציענץ־אויפֿגרייד",
+  "item.simple_upgrades.energy_upgrade": "ענערגיע־אויפֿגרייד",
+  "item.simple_upgrades.range_upgrade": "רײַך־פֿאַרבעסערונג",
+  "item.simple_upgrades.fluid_upgrade": "פֿליסיקייט־אויפֿגרייד",
+  "menu.simple_upgrades.upgrades": "אויפֿבעסערונגען",
+  "menu.simple_upgrades.upgrades.type.speed": "גיכקייט־אויפֿגריידן: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "עפֿיציענץ־אויפֿבעסערונגען: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "ענערגיע־אויפֿגריידן: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "רײַך־פֿאַרבעסערונגען: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "פֿליסיקייט־אויפֿגריידן: %s/%s"
+}

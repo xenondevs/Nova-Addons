@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Hraðauppfærsla",
+  "item.simple_upgrades.efficiency_upgrade": "Uppfærsla á skilvirkni",
+  "item.simple_upgrades.energy_upgrade": "Orkuuppfærsla",
+  "item.simple_upgrades.range_upgrade": "Bogadælingaruppfærsla",
+  "item.simple_upgrades.fluid_upgrade": "Vökva uppfærsla",
+  "menu.simple_upgrades.upgrades": "Uppfærslur",
+  "menu.simple_upgrades.upgrades.type.speed": "Hraðauppfærslur: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Viðbætur við skilvirkni: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Orkuuppfærslur: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Bogahlutabætur: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Vökvaupfærslur: %s/%s"
+}

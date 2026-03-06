@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Spoedopgradering",
+  "item.simple_upgrades.efficiency_upgrade": "Doeltreffendheidsopgradering",
+  "item.simple_upgrades.energy_upgrade": "Energie-opgradering",
+  "item.simple_upgrades.range_upgrade": "Reeksopgradering",
+  "item.simple_upgrades.fluid_upgrade": "Vloeistof-opgradering",
+  "menu.simple_upgrades.upgrades": "Opgraderings",
+  "menu.simple_upgrades.upgrades.type.speed": "Spoedopgraderings: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Doeltreffendheidsopgraderings: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energie-opgraderings: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Bereikopgraderings: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Vloeistofopgraderings: %s/%s"
+}

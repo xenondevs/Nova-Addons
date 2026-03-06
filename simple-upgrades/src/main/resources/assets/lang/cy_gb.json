@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Uwchraddiad Cyflymder",
+  "item.simple_upgrades.efficiency_upgrade": "Uwchraddiad Effeithlonrwydd",
+  "item.simple_upgrades.energy_upgrade": "Uwchraddiad Ynni",
+  "item.simple_upgrades.range_upgrade": "Uwchraddiad Ystod",
+  "item.simple_upgrades.fluid_upgrade": "Uwchraddiad Hylif",
+  "menu.simple_upgrades.upgrades": "Uwchraddio",
+  "menu.simple_upgrades.upgrades.type.speed": "Gwelliannau Cyflymder: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Uwchraddiadau Effeithlonrwydd: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Gwelliannau Ynni: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Uwchraddiadau Cwmpas: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Gwelliannau Hylif: %s/%s"
+}

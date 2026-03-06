@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Aġġornament tal-veloċità",
+  "item.simple_upgrades.efficiency_upgrade": "Aġġornament tal-Effiċjenza",
+  "item.simple_upgrades.energy_upgrade": "Aġġornament tal-Enerġija",
+  "item.simple_upgrades.range_upgrade": "Aġġornament tal-firxa",
+  "item.simple_upgrades.fluid_upgrade": "Aġġornament tal-fluwidu",
+  "menu.simple_upgrades.upgrades": "Aġġornamenti",
+  "menu.simple_upgrades.upgrades.type.speed": "Titjibiet tal-veloċità: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Aġġornamenti tal-Effiċjenza: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Aġġornamenti tal-Enerġija: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Aġġornamenti tal-firxa: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Aġġornamenti tal-fluwidi: %s/%s"
+}

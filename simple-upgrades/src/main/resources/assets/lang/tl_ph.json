@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Pag-upgrade ng Bilis",
+  "item.simple_upgrades.efficiency_upgrade": "Pag-upgrade ng Kahusayan",
+  "item.simple_upgrades.energy_upgrade": "Pag-upgrade ng Enerhiya",
+  "item.simple_upgrades.range_upgrade": "Pag-upgrade ng Saklaw",
+  "item.simple_upgrades.fluid_upgrade": "Pag-upgrade ng Likido",
+  "menu.simple_upgrades.upgrades": "Mga Pag-upgrade",
+  "menu.simple_upgrades.upgrades.type.speed": "Pagpapabilis: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Mga Pag-upgrade sa Kahusayan: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Pag-upgrade ng Enerhiya: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Pag-upgrade ng Saklaw: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Pag-upgrade ng likido: %s/%s"
+}

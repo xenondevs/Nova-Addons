@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Incrementum Vitæ",
+  "item.simple_upgrades.efficiency_upgrade": "Melioratio Efficaciae",
+  "item.simple_upgrades.energy_upgrade": "Auctus Virium",
+  "item.simple_upgrades.range_upgrade": "Amplificatio Portus",
+  "item.simple_upgrades.fluid_upgrade": "Fluidum Melioratum",
+  "menu.simple_upgrades.upgrades": "Meliorationes",
+  "menu.simple_upgrades.upgrades.type.speed": "Incrementa Vitæ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Meliorationes Efficentiae: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Meliorationes Energiae: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Meliorationes Portus: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Meliorationes Fluidorum: %s/%s"
+}

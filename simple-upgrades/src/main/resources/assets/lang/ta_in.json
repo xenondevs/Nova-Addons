@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "வேக மேம்படுத்தல்",
+  "item.simple_upgrades.efficiency_upgrade": "திறன் மேம்பாடு",
+  "item.simple_upgrades.energy_upgrade": "ஆற்றல் மேம்படுத்தல்",
+  "item.simple_upgrades.range_upgrade": "தூரம் மேம்பாடு",
+  "item.simple_upgrades.fluid_upgrade": "திரவ மேம்படுத்தல்",
+  "menu.simple_upgrades.upgrades": "மேம்படுத்தல்கள்",
+  "menu.simple_upgrades.upgrades.type.speed": "வேக மேம்படுத்தல்கள்: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "செயல்திறன் மேம்பாடுகள்: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "ஆற்றல் மேம்படுத்தல்கள்: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "தூர மேம்பாடுகள்: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "திரவ மேம்படுத்தல்கள்: %s/%s"
+}

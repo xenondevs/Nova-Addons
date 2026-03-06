@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Amelhorament de la velocitat",
+  "item.simple_upgrades.efficiency_upgrade": "Amelhorament d'efiècia",
+  "item.simple_upgrades.energy_upgrade": "Amelhorament d'Energia",
+  "item.simple_upgrades.range_upgrade": "Amelhorament de la portada",
+  "item.simple_upgrades.fluid_upgrade": "Melhorament dels fluids",
+  "menu.simple_upgrades.upgrades": "Melhoraments",
+  "menu.simple_upgrades.upgrades.type.speed": "Melhoraments de velocitat: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Melhoraments d'efièchéncia: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Melhoraments d'energia: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Melhoraments de portada: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Melhoraments dels fluids: %s/%s"
+}

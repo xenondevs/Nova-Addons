@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Përmirësimi i Shpejtësisë",
+  "item.simple_upgrades.efficiency_upgrade": "Përmirësimi i Efikasitetit",
+  "item.simple_upgrades.energy_upgrade": "Përmirësimi i Energjisë",
+  "item.simple_upgrades.range_upgrade": "Përmirësimi i rrezes",
+  "item.simple_upgrades.fluid_upgrade": "Përmirësimi i Lëngut",
+  "menu.simple_upgrades.upgrades": "Përmirësimet",
+  "menu.simple_upgrades.upgrades.type.speed": "Përmirësimet e shpejtësisë: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Përmirësimet e efikasitetit: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Përmirësimet e energjisë: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Përmirësimet e rrezes: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Përmirësimet e lëngjeve: %s/%s"
+}

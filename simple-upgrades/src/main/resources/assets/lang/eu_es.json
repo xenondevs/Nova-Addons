@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Abiadura Hobekuntza",
+  "item.simple_upgrades.efficiency_upgrade": "Eraginkortasun Hobekuntza",
+  "item.simple_upgrades.energy_upgrade": "Energia Hobekuntza",
+  "item.simple_upgrades.range_upgrade": "Erradiantearen Hobekuntza",
+  "item.simple_upgrades.fluid_upgrade": "Fluidoen Hobekuntza",
+  "menu.simple_upgrades.upgrades": "Hobekuntzak",
+  "menu.simple_upgrades.upgrades.type.speed": "Abiadura Hobekuntzak: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Eraginkortasun Hobekuntzak: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Energia Hobekuntzak: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Erradiako hobekuntzak: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Fluidoen Hobekuntzak: %s/%s"
+}

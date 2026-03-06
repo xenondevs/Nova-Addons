@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "गति अपग्रेड",
+  "item.simple_upgrades.efficiency_upgrade": "दक्षता उन्नयन",
+  "item.simple_upgrades.energy_upgrade": "ऊर्जा उन्नयन",
+  "item.simple_upgrades.range_upgrade": "दायरा उन्नयन",
+  "item.simple_upgrades.fluid_upgrade": "द्रव उन्नयन",
+  "menu.simple_upgrades.upgrades": "अपग्रेड्स",
+  "menu.simple_upgrades.upgrades.type.speed": "गति उन्नयन: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "दक्षता उन्नयन: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "ऊर्जा उन्नयन: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "रेंज अपग्रेड: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "द्रव उन्नयन: %s/%s"
+}

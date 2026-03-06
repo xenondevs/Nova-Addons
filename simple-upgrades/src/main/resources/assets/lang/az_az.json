@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Sürət Təkmilləşdirilməsi",
+  "item.simple_upgrades.efficiency_upgrade": "Səmərəlilik Təkmilləşdirilməsi",
+  "item.simple_upgrades.energy_upgrade": "Enerji Təkmilləşdirilməsi",
+  "item.simple_upgrades.range_upgrade": "Menzil Təkmilləşdirilməsi",
+  "item.simple_upgrades.fluid_upgrade": "Maye Təkmilləşdirilməsi",
+  "menu.simple_upgrades.upgrades": "Yeniləmələr",
+  "menu.simple_upgrades.upgrades.type.speed": "Sürət Təkmilləşdirmələri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Səmərəlilik Təkmilləşdirmələri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Enerji Təkmilləşdirmələri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Menzil təkmilləşdirmələri: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Maye Təkmilləşdirmələri: %s/%s"
+}

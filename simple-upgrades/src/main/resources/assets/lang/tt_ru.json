@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Скоростьне арттыру",
+  "item.simple_upgrades.efficiency_upgrade": "Эффективлыкны арттыру",
+  "item.simple_upgrades.energy_upgrade": "Энергияне яңарту",
+  "item.simple_upgrades.range_upgrade": "Ату диапазонын яңарту",
+  "item.simple_upgrades.fluid_upgrade": "Сыеклыкны яңарту",
+  "menu.simple_upgrades.upgrades": "Яңартулар",
+  "menu.simple_upgrades.upgrades.type.speed": "Скорость яңартулары: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Эффективлыкны арттыру: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Энергияне яңартулар: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Ату ераклыгын арттыру: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Сыеклык яңартулары: %s/%s"
+}

@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Паскарэнне абнаўлення",
+  "item.simple_upgrades.efficiency_upgrade": "Павышэнне эфектыўнасці",
+  "item.simple_upgrades.energy_upgrade": "Абнаўленне энергіі",
+  "item.simple_upgrades.range_upgrade": "Паляпшэнне дасягу",
+  "item.simple_upgrades.fluid_upgrade": "Паляпшэнне вадкасцей",
+  "menu.simple_upgrades.upgrades": "Паляпшэнні",
+  "menu.simple_upgrades.upgrades.type.speed": "Паскарэнні: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Павышэнне эфектыўнасці: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Паляпшэнні энергетыкі: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Паляпшэнні дасягу: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Паляпшэнні вадкасцей: %s/%s"
+}

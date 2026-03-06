@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "სიჩქარის გაუმჯობესება",
+  "item.simple_upgrades.efficiency_upgrade": "ეფექტურობის გაუმჯობესება",
+  "item.simple_upgrades.energy_upgrade": "ენერგიის განახლება",
+  "item.simple_upgrades.range_upgrade": "მასშტაბის გაუმჯობესება",
+  "item.simple_upgrades.fluid_upgrade": "სითხის განახლება",
+  "menu.simple_upgrades.upgrades": "განახლებები",
+  "menu.simple_upgrades.upgrades.type.speed": "სიჩქარის გაუმჯობესებები: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "ეფექტურობის გაუმჯობესებები: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "ენერგიის გაუმჯობესებები: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "მასშტაბის გაუმჯობესებები: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "სითხის გაუმჯობესებები: %s/%s"
+}

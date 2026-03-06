@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Mmelite Ọsọ",
+  "item.simple_upgrades.efficiency_upgrade": "Mmelite arụmọrụ",
+  "item.simple_upgrades.energy_upgrade": "Mmelite Ike",
+  "item.simple_upgrades.range_upgrade": "Mmelite Ogologo",
+  "item.simple_upgrades.fluid_upgrade": "Mmelite Mmiri",
+  "menu.simple_upgrades.upgrades": "Mmelite",
+  "menu.simple_upgrades.upgrades.type.speed": "Mmelite ọsọ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Mmelite arụmọrụ: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Mmelite Ike: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Mmelite Ogologo: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Mmelite Mmiri: %s/%s"
+}

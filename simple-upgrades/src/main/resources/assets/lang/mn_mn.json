@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Хурдны шинэчлэлт",
+  "item.simple_upgrades.efficiency_upgrade": "Үр ашиг сайжруулалт",
+  "item.simple_upgrades.energy_upgrade": "Эрчим хүчний шинэчлэлт",
+  "item.simple_upgrades.range_upgrade": "Хүрээний шинэчлэлт",
+  "item.simple_upgrades.fluid_upgrade": "Шингэний шинэчлэлт",
+  "menu.simple_upgrades.upgrades": "Шинэчлэлтүүд",
+  "menu.simple_upgrades.upgrades.type.speed": "Хурдны шинэчлэлтүүд: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Үр ашигийн сайжруулалт: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Эрчим хүчний шинэчлэлтүүд: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Хүрээний шинэчлэлтүүд: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Шингэний шинэчлэлтүүд: %s/%s"
+}

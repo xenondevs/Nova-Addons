@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Peningkatan Kelajuan",
+  "item.simple_upgrades.efficiency_upgrade": "Peningkatan Kecekapan",
+  "item.simple_upgrades.energy_upgrade": "Peningkatan Tenaga",
+  "item.simple_upgrades.range_upgrade": "Peningkatan Julat",
+  "item.simple_upgrades.fluid_upgrade": "Peningkatan Cecair",
+  "menu.simple_upgrades.upgrades": "Peningkatan",
+  "menu.simple_upgrades.upgrades.type.speed": "Peningkatan Kelajuan: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Peningkatan Kecekapan: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Peningkatan Tenaga: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Peningkatan Julat: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Peningkatan Cecair: %s/%s"
+}

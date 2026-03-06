@@ -1,1 +1,13 @@
-{}
+{
+  "item.simple_upgrades.speed_upgrade": "Uasghrádú Luais",
+  "item.simple_upgrades.efficiency_upgrade": "Uasghrádú Éifeachtúlachta",
+  "item.simple_upgrades.energy_upgrade": "Uasghrádú Fuinnimh",
+  "item.simple_upgrades.range_upgrade": "Uasghrádú Raoin",
+  "item.simple_upgrades.fluid_upgrade": "Uasghrádú Sreabhán",
+  "menu.simple_upgrades.upgrades": "Uasghráduithe",
+  "menu.simple_upgrades.upgrades.type.speed": "Uasghráduithe Luais: %s/%s",
+  "menu.simple_upgrades.upgrades.type.efficiency": "Uasghráduithe Éifeachtúlachta: %s/%s",
+  "menu.simple_upgrades.upgrades.type.energy": "Uasghráduithe Fuinnimh: %s/%s",
+  "menu.simple_upgrades.upgrades.type.range": "Uasghráduithe Raoin: %s/%s",
+  "menu.simple_upgrades.upgrades.type.fluid": "Uasghráduithe Sreabhán: %s/%s"
+}
