@@ -16,8 +16,7 @@ import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
@@ -82,10 +81,10 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
             if (item.clone().apply { amount = 1 } !in permittedTypes)
                 continue
             
-            val ctx = Context.intention(DefaultContextIntentions.BlockPlace)
-                .param(DefaultContextParamTypes.BLOCK_POS, placePos)
-                .param(DefaultContextParamTypes.BLOCK_ITEM_STACK, item)
-                .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
+            val ctx = Context.intention(BlockPlace)
+                .param(BlockPlace.BLOCK_POS, placePos)
+                .param(BlockPlace.BLOCK_ITEM_STACK, item)
+                .param(BlockPlace.SOURCE_TILE_ENTITY, this)
                 .build()
             if (BlockUtils.placeBlock(ctx)) {
                 inventory.addItemAmount(SELF_UPDATE_REASON, index, -1)

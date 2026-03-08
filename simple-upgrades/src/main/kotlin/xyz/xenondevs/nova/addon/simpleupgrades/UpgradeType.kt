@@ -3,7 +3,7 @@ package xyz.xenondevs.nova.addon.simpleupgrades
 import net.minecraft.resources.Identifier
 import org.spongepowered.configurate.ConfigurationNode
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.orElse
+import xyz.xenondevs.commons.provider.orElseBy
 import xyz.xenondevs.commons.provider.requireNotNull
 import xyz.xenondevs.commons.reflection.createType
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypeRegistry
@@ -62,7 +62,7 @@ class UpgradeType<T> internal constructor(
     fun getValueListProvider(config: Provider<ConfigurationNode>): Provider<List<T>> =
         valueListProviders.getOrPut(config) {
             config.optionalEntry<List<T>>(listValueType, "upgrade_values", id.path)
-                .orElse(globalConfig.optionalEntry(listValueType, id.path))
+                .orElseBy(globalConfig.optionalEntry(listValueType, id.path))
                 .requireNotNull("No upgrade values present for $id")
         }
     

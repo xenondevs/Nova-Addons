@@ -39,9 +39,8 @@ import xyz.xenondevs.nova.api.NovaEventFactory
 import xyz.xenondevs.nova.config.GlobalValues
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockPlace
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
+import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
@@ -203,8 +202,8 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         if (owner == null || (checkPermission && runBlocking { !canBreak(owner!!, pos, minX, maxX, minZ, maxZ) })) { // TODO: non-blocking
             if (sizeXZ == MIN_SIZE) {
-                val ctx = Context.intention(DefaultContextIntentions.BlockBreak)
-                    .param(DefaultContextParamTypes.BLOCK_POS, pos)
+                val ctx = Context.intention(BlockBreak)
+                    .param(BlockBreak.BLOCK_POS, pos)
                     .build()
                 BlockUtils.breakBlockNaturally(ctx)
                 return false
@@ -311,10 +310,10 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         spawnDrillParticles(block)
         
         if (drillProgress >= 1) { // is done drilling
-            val ctx = Context.intention(DefaultContextIntentions.BlockBreak)
-                .param(DefaultContextParamTypes.BLOCK_POS, block.pos)
-                .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
-                .param(DefaultContextParamTypes.BLOCK_DROPS, true)
+            val ctx = Context.intention(BlockBreak)
+                .param(BlockBreak.BLOCK_POS, block.pos)
+                .param(BlockBreak.SOURCE_TILE_ENTITY, this)
+                .param(BlockBreak.BLOCK_DROPS, true)
                 .build()
             val drops = BlockUtils.getDrops(ctx).toMutableList()
             NovaEventFactory.callTileEntityBlockBreakEvent(this, block, drops)
@@ -599,7 +598,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     companion object : BlockBehavior {
         
         override suspend fun canPlace(pos: BlockPos, state: NovaBlockState, ctx: Context<BlockPlace>): Boolean {
-            val facing = ctx[DefaultContextParamTypes.BLOCK_STATE_NOVA]?.get(DefaultBlockStateProperties.FACING)
+            val facing = ctx[BlockPlace.BLOCK_STATE_NOVA]?.get(DefaultBlockStateProperties.FACING)
                 ?: return false
             
             val (minX, minZ, maxX, maxZ) = getMinMaxPositions(
@@ -609,9 +608,9 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
                 BlockSide.RIGHT.getBlockFace(facing)
             )
             
-            val itemStack = ctx[DefaultContextParamTypes.BLOCK_ITEM_STACK] ?: ItemStack(Material.AIR)
-            val tileEntity = ctx[DefaultContextParamTypes.SOURCE_TILE_ENTITY]
-            val player = ctx[DefaultContextParamTypes.RESPONSIBLE_PLAYER]
+            val itemStack = ctx[BlockPlace.BLOCK_ITEM_STACK] ?: ItemStack(Material.AIR)
+            val tileEntity = ctx[BlockPlace.SOURCE_TILE_ENTITY]
+            val player = ctx[BlockPlace.RESPONSIBLE_PLAYER]
             
             if (tileEntity != null) {
                 return checkBlockPermissions(minX, maxX, minZ, maxZ, pos.y, pos.world) {

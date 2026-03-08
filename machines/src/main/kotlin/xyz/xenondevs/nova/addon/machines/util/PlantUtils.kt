@@ -7,8 +7,7 @@ import org.bukkit.block.data.Ageable
 import org.bukkit.block.data.type.CaveVinesPlant
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
 import xyz.xenondevs.nova.integration.customitems.CustomBlockType
 import xyz.xenondevs.nova.integration.customitems.CustomItemServiceManager
 import xyz.xenondevs.nova.integration.customitems.CustomItemType
@@ -70,7 +69,7 @@ private sealed interface HarvestAction {
         }
         
         override fun getDrops(ctx: Context<BlockBreak>): List<ItemStack> {
-            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            val block = ctx[BlockBreak.BLOCK]
             if (isHarvestable(block)) {
                 return listOf(ItemStack.of(Material.SWEET_BERRIES, Random.nextInt(1, 4)))
             }
@@ -79,7 +78,7 @@ private sealed interface HarvestAction {
         }
         
         override fun harvest(ctx: Context<BlockBreak>) {
-            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            val block = ctx[BlockBreak.BLOCK]
             if (isHarvestable(block)) {
                 val data = block.blockData as Ageable
                 data.age = 1
@@ -97,7 +96,7 @@ private sealed interface HarvestAction {
         }
         
         override fun getDrops(ctx: Context<BlockBreak>): List<ItemStack> {
-            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            val block = ctx[BlockBreak.BLOCK]
             if (isHarvestable(block)) {
                 return listOf(ItemStack.of(Material.GLOW_BERRIES))
             }
@@ -106,7 +105,7 @@ private sealed interface HarvestAction {
         }
         
         override fun harvest(ctx: Context<BlockBreak>) {
-            val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+            val block = ctx[BlockBreak.BLOCK]
             if (isHarvestable(block)) {
                 val data = block.blockData as CaveVinesPlant
                 data.isBerries = false
@@ -259,12 +258,12 @@ object PlantUtils {
     }
     
     fun harvest(ctx: Context<BlockBreak>) {
-        val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+        val block = ctx[BlockBreak.BLOCK]
         HARVESTABLE_PLANTS[block.type]?.harvest(ctx)
     }
     
     fun getHarvestDrops(ctx: Context<BlockBreak>): List<ItemStack> {
-        val block = ctx[DefaultContextParamTypes.BLOCK_POS]!!.block
+        val block = ctx[BlockBreak.BLOCK]
         
         val customBlockType = CustomItemServiceManager.getBlockType(block)
         if (customBlockType == CustomBlockType.NORMAL)

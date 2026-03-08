@@ -5,28 +5,28 @@ import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.machines.registry.ContextParamTypes
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockInteract
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
+import xyz.xenondevs.nova.context.intention.BlockInteract
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.InteractionResult
 import xyz.xenondevs.nova.world.block.behavior.BlockBehavior
 import xyz.xenondevs.nova.world.block.state.NovaBlockState
 
 object WindTurbineSectionBehavior : BlockBehavior {
     
-    override fun handleInteract(pos: BlockPos, state: NovaBlockState, ctx: Context<BlockInteract>): Boolean {
+    override fun use(pos: BlockPos, state: NovaBlockState, ctx: Context<BlockInteract>): InteractionResult {
         val basePos = pos.add(0, -state.getOrThrow(BlockStateProperties.TURBINE_SECTION) - 1, 0)
         val baseState = basePos.novaBlockState
         if (baseState != null) {
-            val baseCtx = Context.from(ctx)
-                .param(DefaultContextParamTypes.BLOCK_POS, basePos)
+            val baseCtx = ctx.toBuilder()
+                .param(BlockInteract.BLOCK_POS, basePos)
                 .build()
             
-            return baseState.block.handleInteract(basePos, baseState, baseCtx)
+            return baseState.block.use(basePos, baseState, baseCtx)
         }
         
-        return false
+        return InteractionResult.Pass
     }
     
     override fun handleBreak(pos: BlockPos, state: NovaBlockState, ctx: Context<BlockBreak>) {
@@ -40,8 +40,8 @@ object WindTurbineSectionBehavior : BlockBehavior {
             if (extraPos == pos)
                 continue
             
-            val sectionCtx = Context.from(ctx)
-                .param(DefaultContextParamTypes.BLOCK_POS, basePos.add(0, i, 0))
+            val sectionCtx = ctx.toBuilder()
+                .param(BlockBreak.BLOCK_POS, basePos.add(0, i, 0))
                 .param(ContextParamTypes.WIND_TURBINE_RECURSIVE, true)
                 .build()
             BlockUtils.breakBlockNaturally(sectionCtx)

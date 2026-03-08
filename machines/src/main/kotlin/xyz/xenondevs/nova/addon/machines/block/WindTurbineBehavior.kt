@@ -5,9 +5,8 @@ import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
 import xyz.xenondevs.nova.addon.machines.registry.ContextParamTypes
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockPlace
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
+import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.world.BlockPos
@@ -34,12 +33,12 @@ object WindTurbineBehavior : BlockBehavior {
     override fun handlePlace(pos: BlockPos, state: NovaBlockState, ctx: Context<BlockPlace>) {
         for (i in 1..3) {
             val sectionCtx = Context.intention(BlockPlace)
-                .param(DefaultContextParamTypes.BLOCK_POS, pos.add(0, i, 0))
+                .param(BlockPlace.BLOCK_POS, pos.add(0, i, 0))
                 .param(
-                    DefaultContextParamTypes.BLOCK_STATE_NOVA,
+                    BlockPlace.BLOCK_STATE_NOVA,
                     Blocks.WIND_TURBINE_EXTRA.defaultBlockState.with(BlockStateProperties.TURBINE_SECTION, i - 1)
                 )
-                .param(DefaultContextParamTypes.BLOCK_PLACE_EFFECTS, false)
+                .param(BlockPlace.BLOCK_PLACE_EFFECTS, false)
                 .build()
             BlockUtils.placeBlock(sectionCtx)
         }
@@ -50,8 +49,8 @@ object WindTurbineBehavior : BlockBehavior {
             return
         
         for (i in 1..3) {
-            val sectionCtx = Context.from(ctx)
-                .param(DefaultContextParamTypes.BLOCK_POS, pos.add(0, i, 0))
+            val sectionCtx = ctx.toBuilder()
+                .param(BlockBreak.BLOCK_POS, pos.add(0, i, 0))
                 .param(ContextParamTypes.WIND_TURBINE_RECURSIVE, true)
                 .build()
             BlockUtils.breakBlockNaturally(sectionCtx)

@@ -14,8 +14,14 @@ dependencies {
     implementation(libs.kotlin.plugin)
     implementation(libs.nova.plugin)
     implementation(libs.origami.plugin)
-    implementation("xyz.xenondevs.publish:plugin-publish:1.0.0")
+    implementation("xyz.xenondevs.publish:plugin-publish:1.0.3")
     
     // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }

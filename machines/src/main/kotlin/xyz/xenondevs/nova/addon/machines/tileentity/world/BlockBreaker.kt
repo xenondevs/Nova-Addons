@@ -19,8 +19,7 @@ import xyz.xenondevs.nova.api.NovaEventFactory
 import xyz.xenondevs.nova.config.GlobalValues
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.ui.menu.EnergyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
@@ -113,9 +112,9 @@ class BlockBreaker(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
             
             if (breakProgress >= 1.0) {
                 val ctx = Context.intention(BlockBreak)
-                    .param(DefaultContextParamTypes.BLOCK_POS, targetPos)
-                    .param(DefaultContextParamTypes.BLOCK_DROPS, true)
-                    .param(DefaultContextParamTypes.SOURCE_TILE_ENTITY, this)
+                    .param(BlockBreak.BLOCK_POS, targetPos)
+                    .param(BlockBreak.BLOCK_DROPS, true)
+                    .param(BlockBreak.SOURCE_TILE_ENTITY, this)
                     .build()
                 val drops = BlockUtils.getDrops(ctx).toMutableList()
                 NovaEventFactory.callTileEntityBlockBreakEvent(this, targetPos.block, drops)
