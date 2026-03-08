@@ -1,3 +1,6 @@
+# Use cooldown in ticks
+cooldown: 10
+
 # A list of entities that can be caught with the Mob Catcher
 # Regardless of this configuration, only mob entities can be caught.
 # Refer to this page for a list of possible entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html

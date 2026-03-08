@@ -8,6 +8,7 @@ import xyz.xenondevs.nova.addon.machines.Machines.registerItem
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
+import xyz.xenondevs.nova.world.item.behavior.Cooldown
 import xyz.xenondevs.nova.world.item.behavior.Damageable
 import xyz.xenondevs.nova.world.item.behavior.Enchantable
 import xyz.xenondevs.nova.world.item.behavior.Equippable
@@ -139,6 +140,6 @@ object Items {
         maxStackSize(1)
     }
     
-    val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior)
+    val MOB_CATCHER = registerItem("mob_catcher", MobCatcherBehavior, Cooldown())
     
 }
