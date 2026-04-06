@@ -1,6 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.mob
 
 import net.minecraft.world.InteractionHand
+import net.minecraft.world.phys.Vec3
 import org.bukkit.Tag
 import org.bukkit.entity.Animals
 import org.bukkit.entity.Player
@@ -116,7 +117,7 @@ class Breeder(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
                 continue
             
             fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, item.unwrap())
-            val result = animal.nmsEntity.interact(fakePlayer, InteractionHand.MAIN_HAND)
+            val result = animal.nmsEntity.interact(fakePlayer, InteractionHand.MAIN_HAND, Vec3.ZERO)
             if (result.consumesAction()) {
                 inventory.addItemAmount(SELF_UPDATE_REASON, index, -1)
                 return true

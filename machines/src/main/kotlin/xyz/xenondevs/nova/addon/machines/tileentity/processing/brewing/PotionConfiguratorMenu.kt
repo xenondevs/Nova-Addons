@@ -51,14 +51,14 @@ class PotionConfiguratorMenu(
     private val potionMaterial = mutableProvider(type)
     
     private val potionTypeItem = Item.builder()
-        .setItemProvider(this.potionMaterial) { type ->
+        .setItemProvider(this.potionMaterial.map { type ->
             when (type) {
                 Material.POTION -> ItemBuilder(type).setCustomName(Component.translatable("menu.machines.potion_configurator.potion_type.normal"))
                 Material.SPLASH_POTION -> ItemBuilder(type).setCustomName(Component.translatable("menu.machines.potion_configurator.potion_type.splash"))
                 Material.LINGERING_POTION -> ItemBuilder(type).setCustomName(Component.translatable("menu.machines.potion_configurator.potion_type.lingering"))
                 else -> throw UnsupportedOperationException()
             }.hideTooltip(DataComponentTypes.POTION_CONTENTS)
-        }.addClickHandler { _, click ->
+        }).addClickHandler { _, click ->
             click.player.playItemPickupSound()
             this.potionMaterial.set(POTION_TYPES.after(this.potionMaterial.get()))
         }

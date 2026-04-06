@@ -15,7 +15,7 @@ import xyz.xenondevs.nova.util.advancement.AdvancementLoader
 import xyz.xenondevs.nova.util.advancement.advancement
 import xyz.xenondevs.nova.util.advancement.obtainNovaItemAdvancement
 import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
-import xyz.xenondevs.nova.util.unwrap
+import xyz.xenondevs.nova.util.toNmsTemplate
 import java.util.*
 
 @Init(stage = InitStage.POST_WORLD)
@@ -23,7 +23,7 @@ object Advancements {
     
     private val ROOT = advancement(Logistics, "root") {
         display(DisplayInfo(
-            Items.ULTIMATE_CABLE.clientsideProvider.get().unwrap(),
+            Items.ULTIMATE_CABLE.clientsideProvider.get().toNmsTemplate(),
             Component.translatable("advancement.logistics.root.title").toNMSComponent(),
             Component.empty().toNMSComponent(),
             Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),

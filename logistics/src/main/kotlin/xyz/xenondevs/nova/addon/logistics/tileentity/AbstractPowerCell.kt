@@ -149,11 +149,11 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
                 }
                 .updateOnClick()
             ).addIngredient('-', Item.builder()
-                .setItemProvider(_duration) { duration ->
+                .setItemProvider(_duration.map {
                     if (duration.nextOrNull() != null)
                         GuiItems.PLOT_SHRINK_HORIZONTALLY_ON.clientsideProvider
                     else GuiItems.PLOT_SHRINK_HORIZONTALLY_OFF.clientsideProvider
-                }
+                })
                 .addClickHandler { _, click ->
                     val nextDuration = duration.nextOrNull()
                     if (click.clickType == ClickType.LEFT && nextDuration != null) {
@@ -162,11 +162,11 @@ abstract class PowerCell(capacity: Provider<Long>, pos: BlockPos, state: NovaBlo
                     }
                 }
             ).addIngredient('+', Item.builder()
-                .setItemProvider(_duration) { duration ->
+                .setItemProvider(_duration.map { duration ->
                     if (duration.previousOrNull() != null)
                         GuiItems.PLOT_ENLARGE_HORIZONTALLY_ON.clientsideProvider
                     else GuiItems.PLOT_ENLARGE_HORIZONTALLY_OFF.clientsideProvider
-                }
+                })
                 .addClickHandler { _, click ->
                     val prevDuration = duration.previousOrNull()
                     if (click.clickType == ClickType.LEFT && prevDuration != null) {

@@ -5,10 +5,10 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.collections.enumSetOf
+import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.setItemProvider
@@ -141,12 +141,12 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
         private val progressItem = InfuserProgressItem()
         
         private val changeModeItem = Item.builder()
-            .setItemProvider(_mode) { mode ->
+            .setItemProvider(_mode.map { mode ->
                 when (mode) {
                     InfuserMode.INSERT -> FLUID_LEFT_RIGHT_BTN
                     InfuserMode.EXTRACT -> FLUID_RIGHT_LEFT_BTN
                 }.clientsideProvider
-            }.addClickHandler { _, click -> 
+            }).addClickHandler { _, click -> 
                 mode = InfuserMode.entries[(mode.ordinal + 1) % InfuserMode.entries.size]
                 reset()
                 click.player.playClickSound()
