@@ -7,34 +7,34 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.Identifier
+import org.bukkit.block.Block
+import org.bukkit.block.BlockFace
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
-import org.bukkit.event.block.Action
-import org.bukkit.event.player.PlayerInteractAtEntityEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.integration.protection.ProtectionManager
+import xyz.xenondevs.nova.context.Context
+import xyz.xenondevs.nova.context.intention.BlockInteract
+import xyz.xenondevs.nova.context.intention.EntityInteract
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.Key
-import xyz.xenondevs.nova.util.addPrioritized
+import xyz.xenondevs.nova.util.advance
+import xyz.xenondevs.nova.util.center
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
-import xyz.xenondevs.nova.util.getTargetLocation
 import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
+import xyz.xenondevs.nova.world.InteractionResult
+import xyz.xenondevs.nova.world.item.ItemAction
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
-import xyz.xenondevs.nova.world.player.swingHandEventless
 import kotlin.reflect.full.isSubclassOf
 
 private val DATA_KEY = Key(Machines, "entitydata")
 private val TYPE_KEY = Key(Machines, "entitytype")
-private val TIME_KEY = Key(Machines, "filltime")
 
 private val MOB_ENTITY_TYPES: Set<EntityType> = EntityType.entries.filterTo(HashSet()) { it.entityClass?.kotlin?.isSubclassOf(Mob::class) == true }
 private val WHITELISTED_ENTITY_TYPES: Provider<Set<EntityType>> = Items.MOB_CATCHER.config.entry<Set<EntityType>>("entity_whitelist")
@@ -47,48 +47,24 @@ val DISALLOWED_ENTITY_TYPES: Set<EntityType> by WHITELISTED_ENTITY_TYPES.map { w
 
 object MobCatcherBehavior : ItemBehavior {
     
-    override fun handleEntityInteract(player: Player, itemStack: ItemStack, clicked: Entity, event: PlayerInteractAtEntityEvent) {
-        if (
-            clicked.type !in DISALLOWED_ENTITY_TYPES
-            && ProtectionManager.canInteractWithEntity(player, clicked, itemStack)
-            && getEntityData(itemStack) == null
-        ) {
-            val newCatcher = Items.MOB_CATCHER.createItemStack()
-            absorbEntity(newCatcher, clicked)
-            
-            player.inventory.getItem(event.hand).amount -= 1
-            player.inventory.addPrioritized(event.hand, newCatcher)
-            
-            player.swingHandEventless(event.hand)
-            
-            event.isCancelled = true
-        }
+    override fun useOnEntity(itemStack: ItemStack, entity: Entity, ctx: Context<EntityInteract>): InteractionResult {
+        if (entity.type in DISALLOWED_ENTITY_TYPES || getEntityData(itemStack) != null)
+            return InteractionResult.Pass
+        
+        val newCatcher = Items.MOB_CATCHER.createItemStack()
+        absorbEntity(newCatcher, entity)
+        return InteractionResult.Success(swing = true, action = ItemAction.ConvertOne(newCatcher))
     }
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
-        if (wrappedEvent.actionPerformed)
-            return
+    override fun useOnBlock(itemStack: ItemStack, block: Block, ctx: Context<BlockInteract>): InteractionResult {
+        val data = getEntityData(itemStack)
+            ?: return InteractionResult.Pass
+        val clickedFace = ctx[BlockInteract.CLICKED_BLOCK_FACE] ?: BlockFace.UP
+        val targetLoc = block.center.advance(clickedFace, 1.0)
         
-        val event = wrappedEvent.event
-        if (action == Action.RIGHT_CLICK_BLOCK) {
-            // Adds a small delay to prevent players from spamming the item
-            if (System.currentTimeMillis() - (itemStack.retrieveData<Long>(TIME_KEY) ?: -1) < 50) return
-            
-            val data = getEntityData(itemStack)
-            if (data != null) {
-                val location = player.eyeLocation.getTargetLocation(0.25, 8.0)
-                
-                if (ProtectionManager.canUseItem(player, itemStack, location)) {
-                    player.inventory.getItem(event.hand!!).amount -= 1
-                    player.inventory.addPrioritized(event.hand!!, Items.MOB_CATCHER.createItemStack())
-                    
-                    EntityUtils.deserializeAndSpawn(data, location, disallowedEntityTypes = DISALLOWED_ENTITY_TYPES)
-                    player.swingHandEventless(event.hand ?: EquipmentSlot.HAND)
-                    
-                    event.isCancelled = true
-                }
-            }
-        }
+        EntityUtils.deserializeAndSpawn(data, targetLoc, disallowedEntityTypes = DISALLOWED_ENTITY_TYPES)
+        
+        return InteractionResult.Success(swing = true, action = ItemAction.ConvertOne(Items.MOB_CATCHER.createItemStack()))
     }
     
     fun getEntityData(itemStack: ItemStack): ByteArray? = itemStack.retrieveData(DATA_KEY)
@@ -98,7 +74,6 @@ object MobCatcherBehavior : ItemBehavior {
     private fun setEntityData(itemStack: ItemStack, type: EntityType, data: ByteArray) {
         itemStack.storeData(DATA_KEY, data)
         itemStack.storeData(TYPE_KEY, type)
-        itemStack.storeData(TIME_KEY, System.currentTimeMillis())
     }
     
     private fun absorbEntity(itemStack: ItemStack, entity: Entity) {

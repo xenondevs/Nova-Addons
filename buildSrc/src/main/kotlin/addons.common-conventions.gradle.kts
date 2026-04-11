@@ -32,6 +32,9 @@ kotlin {
 
 java {
     withSourcesJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }
 
 addon {

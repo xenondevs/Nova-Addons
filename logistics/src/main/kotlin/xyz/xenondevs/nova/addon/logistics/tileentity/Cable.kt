@@ -24,9 +24,8 @@ import xyz.xenondevs.nova.addon.logistics.registry.Models
 import xyz.xenondevs.nova.addon.logistics.util.MathUtils
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockBreak
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions.BlockPlace
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
+import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.CUBE_FACES
 import xyz.xenondevs.nova.util.LocationUtils
@@ -239,7 +238,7 @@ open class Cable(
         
         return VirtualHitbox(from, to).apply {
             setQualifier { player, _ -> player.inventory.itemInMainHand.novaItem == Items.WRENCH }
-            addRightClickHandler { player, _ -> 
+            addRightClickHandler { player, _ ->
                 cycleBridgeFaces(face)
                 player.swingMainHandEventless()
             }
@@ -255,8 +254,8 @@ open class Cable(
             setQualifier { player, _ -> player.gameMode != GameMode.ADVENTURE }
             addLeftClickHandler { player, _ ->
                 val ctx = Context.intention(BlockBreak)
-                    .param(DefaultContextParamTypes.BLOCK_POS, pos)
-                    .param(DefaultContextParamTypes.SOURCE_PLAYER, player)
+                    .param(BlockBreak.BLOCK_POS, pos)
+                    .param(BlockBreak.SOURCE_PLAYER, player)
                     .build()
                 BlockUtils.breakBlockNaturally(ctx)
             }

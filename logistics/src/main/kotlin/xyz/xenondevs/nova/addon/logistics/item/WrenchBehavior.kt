@@ -2,15 +2,18 @@ package xyz.xenondevs.nova.addon.logistics.item
 
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.text.Component
+import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
-import org.bukkit.event.block.Action
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.collections.after
 import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.addon.logistics.Logistics
+import xyz.xenondevs.nova.context.Context
+import xyz.xenondevs.nova.context.intention.BlockInteract
+import xyz.xenondevs.nova.context.intention.ItemUse
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
 import xyz.xenondevs.nova.util.BlockUtils
@@ -19,7 +22,7 @@ import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.util.runTask
 import xyz.xenondevs.nova.util.toString
-import xyz.xenondevs.nova.world.BlockPos
+import xyz.xenondevs.nova.world.InteractionResult
 import xyz.xenondevs.nova.world.block.tileentity.network.NetworkManager
 import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
@@ -30,9 +33,8 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.energy.holder.Ener
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.holder.FluidHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
 import xyz.xenondevs.nova.world.format.NetworkState
+import xyz.xenondevs.nova.world.item.ItemAction
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
-import xyz.xenondevs.nova.world.player.swingHandEventless
 import xyz.xenondevs.nova.world.pos
 
 internal object WrenchBehavior : ItemBehavior {
@@ -52,43 +54,17 @@ internal object WrenchBehavior : ItemBehavior {
             storeData(WRENCH_MODE_KEY, mode)
         }
     
-    override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
-        if (wrappedEvent.actionPerformed || !player.isSneaking || !action.isRightClick)
-            return
+    // cycle end point config
+    override fun useOnBlock(itemStack: ItemStack, block: Block, ctx: Context<BlockInteract>): InteractionResult {
+        val player = ctx[BlockInteract.SOURCE_PLAYER]
+            ?: return InteractionResult.Pass
+        val face = ctx[BlockInteract.CLICKED_BLOCK_FACE]
+            ?: return InteractionResult.Pass
         
-        if (action == Action.RIGHT_CLICK_BLOCK) {
-            cycleEndPointConfig(player, wrappedEvent.event.clickedBlock!!.pos, itemStack, wrappedEvent)
-        } else {
-            cycleWrenchMode(player, itemStack, wrappedEvent)
-        }
-    }
-    
-    private fun cycleWrenchMode(player: Player, itemStack: ItemStack, event: WrappedPlayerInteractEvent) {
-        val currentMode = itemStack.wrenchMode
-        val newMode = NETWORK_TYPES[(NETWORK_TYPES.indexOf(currentMode) + 1) % NETWORK_TYPES.size]
-        itemStack.wrenchMode = newMode
-        
-        player.swingHandEventless(event.event.hand!!)
-        player.sendActionBar(
-            Component.translatable(
-                "item.logistics.wrench.toggle_mode",
-                Component.translatable("item.logistics.wrench.network.${newMode.id.toString(".")}")
-            )
-        )
-        
-        event.event.isCancelled = true
-        event.actionPerformed = true
-    }
-    
-    private fun cycleEndPointConfig(player: Player, pos: BlockPos, itemStack: ItemStack, wrappedEvent: WrappedPlayerInteractEvent) {
-        val event = wrappedEvent.event
+        val pos = block.pos
         val endPoint = runBlocking { NetworkManager.getNode(pos) } // pos is already loaded, so this doesn't block
         if (endPoint is NetworkEndPoint) {
             val mode = itemStack.wrenchMode
-            val face = event.blockFace
-            
-            event.isCancelled = true
-            wrappedEvent.actionPerformed = true
             
             if (
                 ProtectionManager.canUseBlock(player, itemStack, pos) &&
@@ -96,7 +72,11 @@ internal object WrenchBehavior : ItemBehavior {
             ) {
                 cycleEndPointConfig(player, endPoint, mode, face)
             }
+            
+            return InteractionResult.Success(swing = true, action = ItemAction.None)
         }
+        
+        return InteractionResult.Pass
     }
     
     private fun cycleEndPointConfig(player: Player, endPoint: NetworkEndPoint, netType: NetworkType<*>, face: BlockFace) {
@@ -129,13 +109,28 @@ internal object WrenchBehavior : ItemBehavior {
         }
     }
     
+    // cycle wrench mode
+    override fun use(itemStack: ItemStack, ctx: Context<ItemUse>): InteractionResult {
+        val currentMode = itemStack.wrenchMode
+        val newMode = NETWORK_TYPES[(NETWORK_TYPES.indexOf(currentMode) + 1) % NETWORK_TYPES.size]
+        itemStack.wrenchMode = newMode
+        
+        ctx[ItemUse.SOURCE_PLAYER]?.sendActionBar(
+            Component.translatable(
+                "item.logistics.wrench.toggle_mode",
+                Component.translatable("item.logistics.wrench.network.${newMode.id.toString(".")}")
+            )
+        )
+        
+        return InteractionResult.Success(swing = true, ItemAction.ConvertStack(itemStack))
+    }
+    
     private fun runPostCyclingActions(
         player: Player,
         endPoint: NetworkEndPoint,
         netType: NetworkType<*>, face: BlockFace,
         conType: NetworkConnectionType
     ) {
-        player.swingMainHand()
         player.sendActionBar(Component.translatable(
             "item.logistics.wrench.use",
             Component.translatable("item.logistics.wrench.face.${face.name.lowercase()}"),

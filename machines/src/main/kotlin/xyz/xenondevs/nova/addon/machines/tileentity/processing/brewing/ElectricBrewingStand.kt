@@ -11,7 +11,6 @@ import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.RecipeChoice
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import xyz.xenondevs.cbf.Compound
@@ -150,7 +149,6 @@ class ElectricBrewingStand(pos: BlockPos, blockState: NovaBlockState, data: Comp
             // Potion ingredients
             potionEffects.forEach { effect ->
                 effect.recipe.inputs.forEach { choice ->
-                    require(choice is RecipeChoice.ExactChoice && choice.choices.size == 1)
                     val itemStack = choice.itemStack
                     val firstSimilar = requiredItems.firstOrNull { it.isSimilar(itemStack) }
                     

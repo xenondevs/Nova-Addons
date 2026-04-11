@@ -42,9 +42,9 @@ class ProgressBar(
 ) : VerticalBar(height) {
     
     override fun createBarItem(section: Int): Item =
-        Item.builder().setItemProvider(progress) { progress ->
+        Item.builder().setItemProvider(progress.map { progress ->
             createItemBuilder(DefaultGuiItems.BAR_GREEN, section, progress)
                 .setName(Component.translatable(translationKey, NamedTextColor.GRAY))
-        }.build()
+        }).build()
     
 }

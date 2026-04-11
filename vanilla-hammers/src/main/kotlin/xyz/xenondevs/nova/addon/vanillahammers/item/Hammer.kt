@@ -9,8 +9,7 @@ import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Enchantments
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
-import xyz.xenondevs.nova.context.intention.DefaultContextIntentions
-import xyz.xenondevs.nova.context.param.DefaultContextParamTypes
+import xyz.xenondevs.nova.context.intention.BlockBreak
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
@@ -155,10 +154,10 @@ class Hammer(
                 block.setBreakStage(breakerId, -1)
                 
                 BlockUtils.breakBlockNaturally(
-                    Context.intention(DefaultContextIntentions.BlockBreak)
-                        .param(DefaultContextParamTypes.BLOCK_POS, block.pos)
-                        .param(DefaultContextParamTypes.SOURCE_PLAYER, player)
-                        .param(DefaultContextParamTypes.TOOL_ITEM_STACK, player.inventory.itemInMainHand)
+                    Context.intention(BlockBreak)
+                        .param(BlockBreak.BLOCK_POS, block.pos)
+                        .param(BlockBreak.SOURCE_PLAYER, player)
+                        .param(BlockBreak.TOOL_ITEM_STACK, player.inventory.itemInMainHand)
                         .build()
                 )
             }
