@@ -55,12 +55,14 @@ class ItemFilterBehavior(size: Provider<Int>) : ItemBehavior, ItemFilterContaine
     override fun use(itemStack: ItemStack, ctx: Context<ItemUse>): InteractionResult {
         val player = ctx[ItemUse.SOURCE_PLAYER]
             ?: return InteractionResult.Pass
+        val hand = ctx[ItemUse.HELD_HAND]
+            ?: return InteractionResult.Pass
         
         val filter = getFilter(itemStack)
         val filterItems = filter.items.mapToArray { it.takeUnlessEmpty() }
         val whitelist = filter.whitelist
         val nbt = filter is NbtItemFilter
-        ItemFilterMenu(player, itemStack.novaItem!!.name!!, itemStack, filterItems, whitelist, nbt).open()
+        ItemFilterMenu(player, hand, itemStack.novaItem!!.name!!, itemStack, filterItems, whitelist, nbt).open()
         
         return InteractionResult.Success(swing = false, action = ItemAction.None)
     }

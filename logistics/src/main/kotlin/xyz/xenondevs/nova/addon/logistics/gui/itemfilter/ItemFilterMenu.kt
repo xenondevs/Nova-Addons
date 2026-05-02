@@ -3,6 +3,7 @@ package xyz.xenondevs.nova.addon.logistics.gui.itemfilter
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Gui
@@ -23,11 +24,12 @@ import kotlin.math.ceil
 
 class ItemFilterMenu(
     player: Player,
+    hand: EquipmentSlot,
     title: Component,
     private val itemStack: ItemStack,
     items: Array<ItemStack?>,
     private var whitelist: Boolean,
-    private var nbt: Boolean,
+    private var nbt: Boolean
 ) {
     
     private val filterInventory = VirtualInventory(null, items.size, items, IntArray(items.size) {1}).apply { 
@@ -80,7 +82,14 @@ class ItemFilterMenu(
                 }
             }
             .setTitle(title)
-            .addCloseHandler { itemStack.setItemFilter(createItemFilter()) }
+            .addCloseHandler {
+                if (player.inventory.getItem(hand) == itemStack) {
+                    val newItemStack = itemStack.clone().apply { 
+                        setItemFilter(createItemFilter()) 
+                    }
+                    player.inventory.setItem(hand, newItemStack)
+                }
+            }
             .build(player)
     
     fun open() {
