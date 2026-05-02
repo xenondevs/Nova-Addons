@@ -23,7 +23,7 @@ object Advancements {
     
     private val ROOT = advancement(Logistics, "root") {
         display(DisplayInfo(
-            Items.ULTIMATE_CABLE.clientsideProvider.get().toNmsTemplate(),
+            Items.ULTIMATE_CABLE.clientsideProvider.get().toNmsTemplate()!!,
             Component.translatable("advancement.logistics.root.title").toNMSComponent(),
             Component.empty().toNMSComponent(),
             Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),

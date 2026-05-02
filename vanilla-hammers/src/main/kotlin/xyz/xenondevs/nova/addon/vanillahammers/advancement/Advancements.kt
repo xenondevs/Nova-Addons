@@ -20,7 +20,7 @@ import java.util.*
 
 private val ROOT = advancement(VanillaHammers, "root") {
     display(DisplayInfo(
-        Items.WOODEN_HAMMER.clientsideProvider.get().toNmsTemplate(),
+        Items.WOODEN_HAMMER.clientsideProvider.get().toNmsTemplate()!!,
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
         Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),

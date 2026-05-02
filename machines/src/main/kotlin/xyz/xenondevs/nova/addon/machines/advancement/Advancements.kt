@@ -21,7 +21,7 @@ import java.util.*
 
 private val ROOT = advancement(Machines, "root") {
     display(DisplayInfo(
-        Items.QUARRY.clientsideProvider.get().toNmsTemplate(),
+        Items.QUARRY.clientsideProvider.get().toNmsTemplate()!!,
         Component.translatable("advancement.machines.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
         Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),
