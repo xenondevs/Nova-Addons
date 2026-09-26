@@ -3,45 +3,45 @@ package xyz.xenondevs.nova.addon.machines.tileentity.mob
 import net.minecraft.world.entity.Mob
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
-import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.mutableProvider
-import xyz.xenondevs.invui.Click
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.dsl.gui
+import xyz.xenondevs.invui.dsl.item
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.nova.addon.machines.gui.IdleBar
+import xyz.xenondevs.nova.addon.machines.gui.idleBar
 import xyz.xenondevs.nova.addon.machines.item.DISALLOWED_ENTITY_TYPES
 import xyz.xenondevs.nova.addon.machines.item.MobCatcherBehavior
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.MOB_DUPLICATOR
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.addIngredient
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.invui.dsl.with
 import xyz.xenondevs.nova.util.EntityUtils
 import xyz.xenondevs.nova.util.data.NBTUtils
 import xyz.xenondevs.nova.util.isBetweenXZ
-import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.nmsEntity
 import xyz.xenondevs.nova.util.playClickSound
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.BUFFER
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.item.guiItemProvider
+import xyz.xenondevs.nova.world.item.getBehaviorOrNull
+import xyz.xenondevs.nova.world.item.hasBehavior
+import xyz.xenondevs.nova.world.item.itemType
 import kotlin.math.roundToInt
 
 private val MAX_ENERGY = MOB_DUPLICATOR.config.entry<Long>("capacity")
@@ -52,7 +52,7 @@ private val IDLE_TIME_NBT = MOB_DUPLICATOR.config.entry<Int>("idle_time_nbt")
 private val ENTITY_LIMIT by MOB_DUPLICATOR.config.entry<Int>("entity_limit")
 private val NERF_MOBS by MOB_DUPLICATOR.config.entry<Boolean>("nerf_mobs")
 
-class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class MobDuplicator(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val inventory = storedInventory("inventory", size = 1, persistent = false, maxStackSizes = intArrayOf(1), ::handlePreUpdate, ::handlePostUpdate)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
@@ -84,6 +84,30 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     private var entityType: EntityType? = null
     private var entityData: ByteArray? = null
     
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.MOB_DUPLICATOR) {
+        upperGui by gui(
+            "s . . . . . . p e",
+            "n . . . i . . p e",
+            "u . . . . . . p e",
+        ) {
+            's' by openSideConfigItem(mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"))
+            'i' by (inventory with GuiItems.MOB_CATCHER_PLACEHOLDER)
+            'n' by item {
+                itemProvider by keepNbtProvider.flatMap {
+                    if (it) GuiItems.NBT_BTN_ON.guiItemProvider else GuiItems.NBT_BTN_OFF.guiItemProvider
+                }
+                onClick {
+                    keepNbt = !keepNbt
+                    timePassed = 0
+                    player.playClickSound()
+                }
+            }
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+            'p' by idleBar("menu.machines.mob_duplicator.idle", timePassedProvider, maxIdleTimeProvider)
+        }
+    }
+    
     init {
         updateEntityData(inventory.getItem(0))
     }
@@ -102,7 +126,7 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     
     private fun handlePreUpdate(event: ItemPreUpdateEvent) {
         if (!event.isRemove) {
-            event.isCancelled = event.newItem?.novaItem?.hasBehavior<MobCatcherBehavior>() != true
+            event.isCancelled = event.newItem?.itemType?.hasBehavior<MobCatcherBehavior>() != true
         }
     }
     
@@ -111,7 +135,7 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
     }
     
     private fun updateEntityData(itemStack: ItemStack?) {
-        val catcher = itemStack?.novaItem?.getBehaviorOrNull<MobCatcherBehavior>()
+        val catcher = itemStack?.itemType?.getBehaviorOrNull<MobCatcherBehavior>()
         
         entityData = catcher?.getEntityData(itemStack)
         entityType = catcher?.getEntityType(itemStack)
@@ -122,7 +146,7 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
         if (ENTITY_LIMIT != -1 && countSurroundingEntities() > ENTITY_LIMIT)
             return
         
-        val spawnLocation = pos.location.add(0.5, 1.0, 0.5)
+        val spawnLocation = block.location.add(0.5, 1.0, 0.5)
         
         val entityType = entityType
         val entityData = entityData
@@ -149,56 +173,10 @@ class MobDuplicator(pos: BlockPos, blockState: NovaBlockState, data: Compound) :
             nmsEntity.aware = false
     }
     
-    private fun countSurroundingEntities(): Int =
-        pos.world.livingEntities.asSequence()
-            .filter {
-                it.location.isBetweenXZ(
-                    pos.location.subtract(16.0, 0.0, 16.0),
-                    pos.location.add(16.0, 0.0, 16.0)
-                )
-            }.count()
-    
-    @TileEntityMenuClass
-    inner class MobDuplicatorMenu : GlobalTileEntityMenu() {
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@MobDuplicator,
-            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s # # # # p e |",
-                "| n # # i # p e |",
-                "| u # # # # p e |",
-                "3 - - - - - - - 4")
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('i', inventory, GuiItems.MOB_CATCHER_PLACEHOLDER)
-            .addIngredient('n', ToggleNBTModeItem())
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .addIngredient('p', IdleBar(3, "menu.machines.mob_duplicator.idle", timePassedProvider, maxIdleTimeProvider))
-            .build()
-        
-        private inner class ToggleNBTModeItem : AbstractItem() {
-            
-            override fun getItemProvider(player: Player): ItemProvider {
-                return (if (keepNbt) GuiItems.NBT_BTN_ON else GuiItems.NBT_BTN_OFF).clientsideProvider
-            }
-            
-            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
-                keepNbt = !keepNbt
-                notifyWindows()
-                
-                timePassed = 0
-                
-                player.playClickSound()
-            }
-            
-        }
-        
+    private fun countSurroundingEntities(): Int {
+        val from = block.location.subtract(16.0, 0.0, 16.0)
+        val to = block.location.add(16.0, 0.0, 16.0)
+        return block.world.livingEntities.count { it.location.isBetweenXZ(from, to) }
     }
     
 }

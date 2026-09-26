@@ -1,10 +1,12 @@
 package xyz.xenondevs.nova.addon.logistics.gui.cable
 
 import org.bukkit.block.BlockFace
+import xyz.xenondevs.commons.provider.provider
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
-import xyz.xenondevs.nova.ui.menu.item.DisplayNumberItem
-import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem
+import xyz.xenondevs.nova.ui.menu.item.addNumberItem
+import xyz.xenondevs.nova.ui.menu.item.displayNumberItem
+import xyz.xenondevs.nova.ui.menu.item.removeNumberItem
 import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidNetwork
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.holder.FluidHolder
@@ -20,21 +22,22 @@ class FluidCableConfigMenu(
     init {
         updateValues()
         
-        gui = Gui.builder()
-            .setStructure(
-                "# p # # # # # P #",
-                "# d # e c i # D #",
-                "# m # # # # # M #")
-            .addIngredient('i', InsertItem().also(updatableItems::add))
-            .addIngredient('e', ExtractItem().also(updatableItems::add))
-            .addIngredient('P', AddNumberItem({ 0..100 }, { insertPriority }, { insertPriority = it; updateGui() }).also(updatableItems::add))
-            .addIngredient('M', RemoveNumberItem({ 0..100 }, { insertPriority }, { insertPriority = it; updateGui() }).also(updatableItems::add))
-            .addIngredient('D', DisplayNumberItem({ insertPriority }, "menu.logistics.cable_config.insert_priority").also(updatableItems::add))
-            .addIngredient('p', AddNumberItem({ 0..100 }, { extractPriority }, { extractPriority = it; updateGui() }).also(updatableItems::add))
-            .addIngredient('m', RemoveNumberItem({ 0..100 }, { extractPriority }, { extractPriority = it; updateGui() }).also(updatableItems::add))
-            .addIngredient('d', DisplayNumberItem({ extractPriority }, "menu.logistics.cable_config.extract_priority").also(updatableItems::add))
-            .addIngredient('c', SwitchChannelItem().also(updatableItems::add))
-            .build()
+        val priorityRange = provider(0..100)
+        gui = gui(
+            "p . . c . . P",
+            "d . e . i . D",
+            "m . . . . . M"
+        ) {
+            'i' by insertItem()
+            'e' by extractItem()
+            'P' by addNumberItem(priorityRange, insertPriority)
+            'M' by removeNumberItem(priorityRange, insertPriority)
+            'D' by displayNumberItem(insertPriority, "menu.logistics.cable_config.insert_priority")
+            'p' by addNumberItem(priorityRange, extractPriority)
+            'm' by removeNumberItem(priorityRange, extractPriority)
+            'd' by displayNumberItem(extractPriority, "menu.logistics.cable_config.extract_priority")
+            'c' by switchChannelItem()
+        }
     }
     
 }

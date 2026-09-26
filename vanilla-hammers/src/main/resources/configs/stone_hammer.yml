@@ -1,9 +1,13 @@
 # Tool Options
 tool_tier: minecraft:stone
-tool_category: minecraft:pickaxe
+tool_category: vanilla_hammers:hammer
 break_speed: 1.15
+item_damage_on_break_block: 1
+
+# Weapon Options
 attack_damage: 4
 attack_speed: 1.4
+item_damage_on_attack_entity: 2
 
 # Hammer Options
 range: 1
@@ -13,9 +17,7 @@ slowdown_per_block: 0.2
 
 # Damageable Options
 durability: 130
-item_damage_on_attack_entity: 2
-item_damage_on_break_block: 1
-repair_ingredient: ["minecraft:stone", "minecraft:cobblestone"]
+repair_ingredient: [ "minecraft:stone", "minecraft:cobblestone" ]
 
 # Enchantable Options
 enchantment_value: 5

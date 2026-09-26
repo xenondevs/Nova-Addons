@@ -3,24 +3,31 @@ package xyz.xenondevs.nova.addon.simpleupgrades.registry
 import xyz.xenondevs.nova.addon.simpleupgrades.SimpleUpgrades.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.world.item.NovaItem
 
 @Init(stage = InitStage.PRE_PACK)
 object GuiItems {
     
-    val SPEED_UPGRADE = guiItem("speed_upgrade")
-    val EFFICIENCY_UPGRADE = guiItem("efficiency_upgrade")
-    val ENERGY_UPGRADE = guiItem("energy_upgrade")
-    val RANGE_UPGRADE = guiItem("range_upgrade")
-    val FLUID_UPGRADE = guiItem("fluid_upgrade")
-    
     val UPGRADES_BTN = guiItem("btn/upgrades", "menu.simple_upgrades.upgrades")
     
-    private fun guiItem(name: String, localizedName: String? = null): NovaItem = item("gui/$name") {
+    val SPEED_UPGRADE_PLACEHOLDER = tpGuiItem("placeholder/speed_upgrade")
+    val EFFICIENCY_UPGRADE_PLACEHOLDER = tpGuiItem("placeholder/efficiency_upgrade")
+    val ENERGY_UPGRADE_PLACEHOLDER = tpGuiItem("placeholder/energy_upgrade")
+    val FLUID_UPGRADE_PLACEHOLDER = tpGuiItem("placeholder/fluid_upgrade")
+    val RANGE_UPGRADE_PLACEHOLDER = tpGuiItem("placeholder/range_upgrade")
+    
+    private fun guiItem(name: String, localizedName: String? = null) = item("gui/$name") {
         if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         modelDefinition {
             model = buildModel { createGuiModel(background = true, stretched = false, "item/$name") }
+        }
+    }
+    
+    private fun tpGuiItem(name: String, localizedName: String? = null) = item("gui/$name") {
+        if (localizedName == null) name(null) else localizedName(localizedName)
+        hidden(true)
+        modelDefinition {
+            model = buildModel { createGuiModel(background = false, stretched = false, "item/$name") }
         }
     }
     

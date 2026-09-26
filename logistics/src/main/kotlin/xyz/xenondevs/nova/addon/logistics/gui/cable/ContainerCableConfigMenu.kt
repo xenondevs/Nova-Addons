@@ -2,14 +2,11 @@ package xyz.xenondevs.nova.addon.logistics.gui.cable
 
 import net.kyori.adventure.text.Component
 import org.bukkit.block.BlockFace
-import org.bukkit.entity.Player
-import org.bukkit.event.inventory.ClickType
-import xyz.xenondevs.invui.Click
-import xyz.xenondevs.invui.item.AbstractItem
+import xyz.xenondevs.commons.provider.mutableProvider
+import xyz.xenondevs.invui.dsl.item
+import xyz.xenondevs.invui.dsl.itemProvider
 import xyz.xenondevs.invui.item.Item
-import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.notifyWindows
-import xyz.xenondevs.nova.ui.menu.item.BUTTON_COLORS
+import xyz.xenondevs.nova.ui.menu.item.TP_BUTTON_COLORS
 import xyz.xenondevs.nova.util.playClickSound
 import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
@@ -23,28 +20,13 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
     private val channelAmount: Int
 ) {
     
-    protected val updatableItems = ArrayList<Item>()
-    
-    @Volatile
-    protected var allowsExtract = false
-    
-    @Volatile
-    protected var allowsInsert = false
-    
-    @Volatile
-    protected var insertPriority = -1
-    
-    @Volatile
-    protected var extractPriority = -1
-    
-    @Volatile
-    protected var insertState = false
-    
-    @Volatile
-    protected var extractState = false
-    
-    @Volatile
-    protected var channel = -1
+    protected val allowsExtract = mutableProvider(false)
+    protected val allowsInsert = mutableProvider(false)
+    protected val insertPriority = mutableProvider(-1)
+    protected val extractPriority = mutableProvider(-1)
+    protected val insertState = mutableProvider(false)
+    protected val extractState = mutableProvider(false)
+    protected val channel = mutableProvider(-1)
     
     /**
      * Loads the values relevant for this menu from the [holder].
@@ -53,13 +35,13 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
      */
     open fun updateValues() {
         val allowedConnection = holder.containers[holder.containerConfig[face]]!!
-        allowsExtract = allowedConnection.extract
-        allowsInsert = allowedConnection.insert
-        insertPriority = holder.insertPriorities[face]!!
-        extractPriority = holder.extractPriorities[face]!!
-        insertState = holder.connectionConfig[face]!!.insert
-        extractState = holder.connectionConfig[face]!!.extract
-        channel = holder.channels[face]!!
+        allowsExtract.set(allowedConnection.extract)
+        allowsInsert.set(allowedConnection.insert)
+        insertPriority.set(holder.insertPriorities[face])
+        extractPriority.set(holder.extractPriorities[face])
+        insertState.set(holder.connectionConfig[face].insert)
+        extractState.set(holder.connectionConfig[face].extract)
+        channel.set(holder.channels[face])
     }
     
     /**
@@ -67,9 +49,7 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
      *
      * Should only be called from the main thread.
      */
-    open fun updateGui() {
-        updatableItems.notifyWindows()
-    }
+    open fun updateGui() = Unit
     
     /**
      * Writes the values of this menu back to the [holder].
@@ -80,73 +60,70 @@ abstract class ContainerCableConfigMenu<H : ContainerEndPointDataHolder<*>>(
     open fun writeChanges(): Boolean {
         var changed = false
         
-        val newConnectionType = NetworkConnectionType.of(insertState, extractState)
+        val newConnectionType = NetworkConnectionType.of(insertState.get(), extractState.get())
         
-        changed = changed or (holder.connectionConfig.put(face, newConnectionType) != newConnectionType)
-        changed = changed or (holder.insertPriorities.put(face, insertPriority) != insertPriority)
-        changed = changed or (holder.extractPriorities.put(face, extractPriority) != extractPriority)
-        changed = changed or (holder.channels.put(face, channel) != channel)
+        if (holder.connectionConfig[face] != newConnectionType) {
+            changed = true
+            holder.connectionConfig = holder.connectionConfig.with(face, newConnectionType)
+        }
+        
+        if (holder.insertPriorities[face] != insertPriority.get()) {
+            changed = true
+            holder.insertPriorities = holder.insertPriorities.with(face, insertPriority.get())
+        }
+        
+        if (holder.extractPriorities[face] != extractPriority.get()) {
+            changed = true
+            holder.extractPriorities = holder.extractPriorities.with(face, extractPriority.get())
+        }
+        
+        if (holder.channels[face] != channel.get()) {
+            changed = true
+            holder.channels = holder.channels.with(face, channel.get())
+        }
         
         return changed
     }
     
-    protected inner class InsertItem : AbstractItem() {
-        
-        override fun getItemProvider(player: Player): ItemProvider {
-            val item = if (insertState) DefaultGuiItems.GREEN_BTN else DefaultGuiItems.RED_BTN
-            return item.createClientsideItemBuilder()
-                .setName(Component.translatable("menu.logistics.cable_config.insert"))
+    protected fun insertItem(): Item = item {
+        itemProvider by itemProvider(insertState.flatMap {
+            if (it) DefaultGuiItems.TP_GREEN_BTN else DefaultGuiItems.TP_RED_BTN
+        }) {
+            name by Component.translatable("menu.logistics.cable_config.insert")
         }
-        
-        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
-            if (!allowsInsert)
-                return
-            
-            insertState = !insertState
-            notifyWindows()
-            player.playClickSound()
-        }
-        
-    }
-    
-    protected inner class ExtractItem : AbstractItem() {
-        
-        override fun getItemProvider(player: Player): ItemProvider {
-            val item = if (extractState) DefaultGuiItems.GREEN_BTN else DefaultGuiItems.RED_BTN
-            return item.createClientsideItemBuilder()
-                .setName(Component.translatable("menu.logistics.cable_config.extract"))
-        }
-        
-        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
-            if (!allowsExtract) return
-            
-            extractState = !extractState
-            notifyWindows()
-            player.playClickSound()
-        }
-        
-    }
-    
-    protected inner class SwitchChannelItem : AbstractItem() {
-        
-        override fun getItemProvider(player: Player): ItemProvider {
-            return BUTTON_COLORS[channel].createClientsideItemBuilder()
-                .setName(Component.translatable("menu.logistics.cable_config.channel", Component.text(channel + 1)))
-        }
-        
-        override fun handleClick(clickType: ClickType, player: Player, click: Click) {
-            if (clickType == ClickType.RIGHT || clickType == ClickType.LEFT) {
-                if (clickType == ClickType.LEFT) {
-                    channel = (channel + 1).mod(channelAmount)
-                } else {
-                    channel = (channel - 1).mod(channelAmount)
-                }
-                
-                notifyWindows()
+        onClick {
+            if (allowsInsert.get()) {
+                insertState.set(!insertState.get())
                 player.playClickSound()
             }
         }
-        
+    }
+    
+    protected fun extractItem(): Item = item {
+        itemProvider by itemProvider(extractState.flatMap {
+            if (it) DefaultGuiItems.TP_GREEN_BTN else DefaultGuiItems.TP_RED_BTN
+        }) {
+            name by Component.translatable("menu.logistics.cable_config.extract")
+        }
+        onClick {
+            if (allowsExtract.get()) {
+                extractState.set(!extractState.get())
+                player.playClickSound()
+            }
+        }
+    }
+    
+    protected fun switchChannelItem(): Item = item {
+        itemProvider by itemProvider(channel.flatMap { TP_BUTTON_COLORS[it] }) {
+            name by channel.map { Component.translatable("menu.logistics.cable_config.channel", Component.text(it + 1)) }
+        }
+        onClick {
+            if (clickType.isLeftClick || clickType.isRightClick) {
+                val move = if (clickType.isLeftClick) 1 else -1
+                channel.set((channel.get() + move).mod(channelAmount))
+                player.playClickSound()
+            }
+        }
     }
     
 }

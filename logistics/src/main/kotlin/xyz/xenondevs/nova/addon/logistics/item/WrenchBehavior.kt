@@ -1,6 +1,6 @@
 package xyz.xenondevs.nova.addon.logistics.item
 
-import kotlinx.coroutines.runBlocking
+import net.kyori.adventure.key.Key.key
 import net.kyori.adventure.text.Component
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
@@ -8,21 +8,19 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.collections.after
 import xyz.xenondevs.commons.collections.firstInstanceOfOrNull
-import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.addon.logistics.Logistics
 import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.BlockInteract
 import xyz.xenondevs.nova.context.intention.ItemUse
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.serialization.cbf.NamespacedCompound
-import xyz.xenondevs.nova.util.BlockUtils
-import xyz.xenondevs.nova.util.Key
+import xyz.xenondevs.nova.registry.registryEntrySetOf
 import xyz.xenondevs.nova.util.item.retrieveData
 import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.util.runTask
 import xyz.xenondevs.nova.util.toString
 import xyz.xenondevs.nova.world.InteractionResult
+import xyz.xenondevs.nova.world.block.blockType
+import xyz.xenondevs.nova.world.block.name
 import xyz.xenondevs.nova.world.block.tileentity.network.NetworkManager
 import xyz.xenondevs.nova.world.block.tileentity.network.node.ContainerEndPointDataHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.node.NetworkEndPoint
@@ -32,24 +30,18 @@ import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.energy.holder.EnergyHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.holder.FluidHolder
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.holder.ItemHolder
+import xyz.xenondevs.nova.world.chunkPos
 import xyz.xenondevs.nova.world.format.NetworkState
 import xyz.xenondevs.nova.world.item.ItemAction
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.pos
 
 internal object WrenchBehavior : ItemBehavior {
     
-    private val WRENCH_MODE_KEY = Key(Logistics, "wrench_mode")
-    private val NETWORK_TYPES = arrayOf(DefaultNetworkTypes.ENERGY, DefaultNetworkTypes.ITEM, DefaultNetworkTypes.FLUID)
-    
-    override val defaultCompound: Provider<NamespacedCompound> = provider {
-        NamespacedCompound().apply {
-            this[WRENCH_MODE_KEY] = DefaultNetworkTypes.ITEM.id.toString()
-        }
-    }
+    private val WRENCH_MODE_KEY = key(Logistics, "wrench_mode")
+    private val NETWORK_TYPES by registryEntrySetOf(DefaultNetworkTypes.ENERGY, DefaultNetworkTypes.ITEM, DefaultNetworkTypes.FLUID).map { it.toList() }
     
     private var ItemStack.wrenchMode: NetworkType<*>
-        get() = retrieveData(WRENCH_MODE_KEY) ?: DefaultNetworkTypes.ITEM
+        get() = retrieveData(WRENCH_MODE_KEY) ?: DefaultNetworkTypes.ITEM.get()
         set(mode) {
             storeData(WRENCH_MODE_KEY, mode)
         }
@@ -61,14 +53,13 @@ internal object WrenchBehavior : ItemBehavior {
         val face = ctx[BlockInteract.CLICKED_BLOCK_FACE]
             ?: return InteractionResult.Pass
         
-        val pos = block.pos
-        val endPoint = runBlocking { NetworkManager.getNode(pos) } // pos is already loaded, so this doesn't block
+        val endPoint = NetworkManager.getNode(block)
         if (endPoint is NetworkEndPoint) {
             val mode = itemStack.wrenchMode
             
             if (
-                ProtectionManager.canUseBlock(player, itemStack, pos) &&
-                ProtectionManager.canUseBlock(player, itemStack, pos.advance(face))
+                ProtectionManager.canUseBlock(player, itemStack, block) &&
+                ProtectionManager.canUseBlock(player, itemStack, block.getRelative(face))
             ) {
                 cycleEndPointConfig(player, endPoint, mode, face)
             }
@@ -80,8 +71,8 @@ internal object WrenchBehavior : ItemBehavior {
     }
     
     private fun cycleEndPointConfig(player: Player, endPoint: NetworkEndPoint, netType: NetworkType<*>, face: BlockFace) {
-        NetworkManager.queue(endPoint.pos.chunkPos) { state ->
-            val conType = when (netType) {
+        NetworkManager.queue(endPoint.block.chunkPos) { state ->
+            val conType = when (netType.entry) {
                 DefaultNetworkTypes.ENERGY -> {
                     val energyHolder = endPoint.holders.firstInstanceOfOrNull<EnergyHolder>()
                         ?: return@queue false
@@ -118,7 +109,7 @@ internal object WrenchBehavior : ItemBehavior {
         ctx[ItemUse.SOURCE_PLAYER]?.sendActionBar(
             Component.translatable(
                 "item.logistics.wrench.toggle_mode",
-                Component.translatable("item.logistics.wrench.network.${newMode.id.toString(".")}")
+                Component.translatable("item.logistics.wrench.network.${newMode.key.toString(".")}")
             )
         )
         
@@ -134,9 +125,9 @@ internal object WrenchBehavior : ItemBehavior {
         player.sendActionBar(Component.translatable(
             "item.logistics.wrench.use",
             Component.translatable("item.logistics.wrench.face.${face.name.lowercase()}"),
-            BlockUtils.getName(endPoint.pos.block),
+            endPoint.block.blockType.name,
             Component.translatable("item.logistics.wrench.connection.${conType.name.lowercase()}"),
-            Component.translatable("item.logistics.wrench.network.${netType.id.toString(".")}"),
+            Component.translatable("item.logistics.wrench.network.${netType.key.toString(".")}"),
         ))
     }
     
@@ -148,9 +139,9 @@ internal object WrenchBehavior : ItemBehavior {
         if (face in energyHolder.blockedFaces)
             return NetworkConnectionType.NONE
         
-        val currentType = energyHolder.connectionConfig[face]!!
+        val currentType = energyHolder.connectionConfig[face]
         val newType = energyHolder.allowedConnectionType.supertypes.after(currentType)
-        energyHolder.connectionConfig[face] = newType
+        energyHolder.connectionConfig = energyHolder.connectionConfig.with(face, newType)
         
         if (newType != currentType) {
             state.getNetwork(endPoint, type, face)?.markDirty()
@@ -167,10 +158,10 @@ internal object WrenchBehavior : ItemBehavior {
         if (face in holder.blockedFaces)
             return NetworkConnectionType.NONE
         
-        val currentType = holder.connectionConfig[face]!!
+        val currentType = holder.connectionConfig[face]
         val container = holder.containerConfig[face]!!
         val newType = holder.containers[container]!!.supertypes.after(currentType)
-        holder.connectionConfig[face] = newType
+        holder.connectionConfig = holder.connectionConfig.with(face, newType)
         
         if (newType != currentType) {
             state.getNetwork(endPoint, type, face)?.markDirty()

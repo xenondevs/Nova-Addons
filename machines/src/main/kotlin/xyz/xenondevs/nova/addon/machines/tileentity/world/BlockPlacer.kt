@@ -3,14 +3,13 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.bukkit.Tag
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_PLACER
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.util.efficiencyDividedValue
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
@@ -18,25 +17,28 @@ import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.registry.tags.BlockTypeTags
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.BlockUtils
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
+import xyz.xenondevs.nova.world.block.blockType
+import xyz.xenondevs.nova.world.block.novaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
-import xyz.xenondevs.nova.world.format.WorldDataManager
+import kotlin.time.Duration.Companion.milliseconds
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+private val BLOCKED_SIDES = BlockSideSet(front = true)
 
 private val MAX_ENERGY = BLOCK_PLACER.config.entry<Long>("capacity")
 private val ENERGY_PER_PLACE = BLOCK_PLACER.config.entry<Long>("energy_per_place")
 
-class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class BlockPlacer(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val inventory = storedInventory("inventory", 9) {}
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
@@ -45,17 +47,31 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     
     private val energyPerPlace by efficiencyDividedValue(ENERGY_PER_PLACE, upgradeHolder)
     
-    private val placePos = pos.advance(blockState.getOrThrow(DefaultBlockStateProperties.FACING))
-    private val placeBlock = placePos.block
+    private val placePos = block.getRelative(blockState.getOrThrow(DefaultBlockStateProperties.FACING_HORIZONTAL))
+    private val placeBlock = placePos
     
     @Volatile
     private var permittedTypes: Set<ItemStack> = emptySet()
     
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.GENERIC_3X3_WITH_BAR) {
+        upperGui by gui(
+            "s . . i i i . . e",
+            "u . . i i i . . e",
+            ". . . i i i . . e",
+        ) {
+            'i' by inventory
+            's' by openSideConfigItem(mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"))
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+        }
+    }
+    
+    
     override fun handleTick() {
         if (energyHolder.energy >= energyPerPlace
             && !inventory.isEmpty
-            && Tag.REPLACEABLE.isTagged(placeBlock.type)
-            && WorldDataManager.getBlockState(placePos) == null
+            && placeBlock.blockType in BlockTypeTags.REPLACEABLE
+            && placePos.novaBlockState == null
         ) {
             if (placeBlock())
                 energyHolder.energy -= energyPerPlace
@@ -63,13 +79,13 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     }
     
     override fun handleEnableTicking() {
-        CoroutineScope(coroutineSupervisor).launch {
+        CoroutineScope(coroutineSupervisor!!).launch {
             while (true) {
                 permittedTypes = inventory.items.asSequence()
                     .filterNotNull()
                     .onEach { it.amount = 1 }
                     .filterTo(HashSet()) { ProtectionManager.canPlace(this@BlockPlacer, it, placePos) }
-                delay(50)
+                delay(50.milliseconds)
             }
         }
     }
@@ -82,7 +98,7 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
                 continue
             
             val ctx = Context.intention(BlockPlace)
-                .param(BlockPlace.BLOCK_POS, placePos)
+                .param(BlockPlace.BLOCK, placePos)
                 .param(BlockPlace.BLOCK_ITEM_STACK, item)
                 .param(BlockPlace.SOURCE_TILE_ENTITY, this)
                 .build()
@@ -93,30 +109,6 @@ class BlockPlacer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         }
         
         return false
-    }
-    
-    @TileEntityMenuClass
-    inner class BlockPlacerMenu : GlobalTileEntityMenu() {
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@BlockPlacer,
-            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s # i i i # e |",
-                "| u # i i i # e |",
-                "| # # i i i # e |",
-                "3 - - - - - - - 4")
-            .addIngredient('i', inventory)
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
     }
     
 }

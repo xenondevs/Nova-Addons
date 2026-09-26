@@ -1,42 +1,35 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.processing
 
-import org.bukkit.entity.Player
-import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.invui.Click
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.commons.provider.mutableProvider
+import xyz.xenondevs.invui.dsl.gui
+import xyz.xenondevs.invui.dsl.item
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Item
-import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.setItemProvider
 import xyz.xenondevs.nova.addon.machines.recipe.FluidInfuserRecipe
 import xyz.xenondevs.nova.addon.machines.recipe.FluidInfuserRecipe.InfuserMode
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.FLUID_INFUSER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
-import xyz.xenondevs.nova.addon.machines.registry.GuiItems.FLUID_LEFT_RIGHT_BTN
-import xyz.xenondevs.nova.addon.machines.registry.GuiItems.FLUID_RIGHT_LEFT_BTN
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedFluidContainer
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.FluidBar
-import xyz.xenondevs.nova.ui.menu.addIngredient
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.fluidBar
+import xyz.xenondevs.nova.ui.menu.item.progressItem
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.playClickSound
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.*
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.world.item.recipe.RecipeManager
@@ -61,13 +54,13 @@ fun getFluidInfuserExtractRecipeFor(input: ItemStack): FluidInfuserRecipe? {
         }
 }
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+private val BLOCKED_SIDES = BlockSideSet(front = true)
 
 private val ENERGY_PER_TICK = FLUID_INFUSER.config.entry<Long>("energy_per_tick")
 private val ENERGY_CAPACITY = FLUID_INFUSER.config.entry<Long>("energy_capacity")
 private val FLUID_CAPACITY = FLUID_INFUSER.config.entry<Long>("fluid_capacity")
 
-class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class FluidInfuser(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.FLUID)
     private val input = storedInventory("input", 1, ::handleInputInventoryUpdate)
@@ -86,6 +79,38 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private val recipeTime: Int
         get() = (recipe!!.time.toDouble() / upgradeHolder.getValue(UpgradeTypes.SPEED)).roundToInt()
     private var timePassed = 0
+    private val progress = mutableProvider(0.0)
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.FLUID_INFUSER) {
+        upperGui by gui(
+            "s f . . . . . . e",
+            "u f p i > o . . e",
+            "m f . . . . . . e",
+        ) {
+            'i' by input
+            'o' by output
+            'p' by progressItem(_mode.flatMap(InfuserMode::progressItemProvider), progress)
+            'm' by item {
+                itemProvider by _mode.flatMap(InfuserMode::btnItemProvider)
+                onClick {
+                    mode = InfuserMode.entries[(mode.ordinal + 1) % InfuserMode.entries.size]
+                    reset()
+                    player.playClickSound()
+                }
+            }
+            '>' by GuiItems.ARROW_PROGRESS
+            's' by openSideConfigItem(
+                mapOf(
+                    itemHolder.getNetworkedInventory(input) to "inventory.nova.input",
+                    itemHolder.getNetworkedInventory(output) to "inventory.nova.output"
+                ),
+                mapOf(tank to "container.nova.fluid_tank")
+            )
+            'u' by openUpgradesItem(upgradeHolder)
+            'f' by fluidBar(fluidHolder, tank)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     private fun handleInputInventoryUpdate(event: ItemPreUpdateEvent) {
         event.isCancelled = !event.isRemove && RecipeManager.getConversionRecipeFor(RecipeTypes.FLUID_INFUSER, event.newItem!!) == null
@@ -99,7 +124,7 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     private fun reset() {
         this.recipe = null
         this.timePassed = 0
-        menuContainer.forEachMenu(FluidInfuserMenu::updateProgress)
+        updateProgress()
     }
     
     override fun handleTick() {
@@ -129,80 +154,14 @@ class FluidInfuser(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
                         else tank.addFluid(recipe.fluidType, recipe.fluidAmount)
                         
                         reset()
-                    } else menuContainer.forEachMenu(FluidInfuserMenu::updateProgress)
+                    } else updateProgress()
                 } else timePassed = 0
             }
         }
     }
     
-    @TileEntityMenuClass
-    inner class FluidInfuserMenu : GlobalTileEntityMenu() {
-        
-        private val progressItem = InfuserProgressItem()
-        
-        private val changeModeItem = Item.builder()
-            .setItemProvider(_mode.map { mode ->
-                when (mode) {
-                    InfuserMode.INSERT -> FLUID_LEFT_RIGHT_BTN
-                    InfuserMode.EXTRACT -> FLUID_RIGHT_LEFT_BTN
-                }.clientsideProvider
-            }).addClickHandler { _, click -> 
-                mode = InfuserMode.entries[(mode.ordinal + 1) % InfuserMode.entries.size]
-                reset()
-                click.player.playClickSound()
-            }
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@FluidInfuser,
-            mapOf(
-                itemHolder.getNetworkedInventory(input) to "inventory.nova.input",
-                itemHolder.getNetworkedInventory(output) to "inventory.nova.output"
-            ),
-            mapOf(tank to "container.nova.fluid_tank"),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| f # m u s # e |",
-                "| f p i > o # e |",
-                "| f # # # # # e |",
-                "3 - - - - - - - 4")
-            .addIngredient('i', input)
-            .addIngredient('o', output)
-            .addIngredient('p', progressItem)
-            .addIngredient('m', changeModeItem)
-            .addIngredient('>', GuiItems.ARROW_PROGRESS)
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('f', FluidBar(3, fluidHolder, tank))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
-        fun updateProgress() {
-            progressItem.percentage = if (recipe != null) timePassed.toDouble() / recipeTime.toDouble() else 0.0
-        }
-        
-        private inner class InfuserProgressItem : AbstractItem() {
-            
-            var percentage: Double = 0.0
-                set(value) {
-                    field = value.coerceIn(0.0, 1.0)
-                    notifyWindows()
-                }
-            
-            override fun getItemProvider(player: Player): ItemProvider {
-                val material = if (mode == InfuserMode.INSERT)
-                    GuiItems.FLUID_PROGRESS_LEFT_RIGHT
-                else GuiItems.FLUID_PROGRESS_RIGHT_LEFT
-                
-                return material.createClientsideItemBuilder().addCustomModelData(percentage)
-            }
-            
-            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
-        }
-        
+    private fun updateProgress() {
+        progress.set(if (recipe != null) timePassed.toDouble() / recipeTime.toDouble() else 0.0)
     }
     
 }

@@ -7,19 +7,20 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.jetpacks.ui.JetpackOverlay
-import xyz.xenondevs.nova.config.Configs
+import xyz.xenondevs.nova.config.CONFIGS
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.ui.overlay.actionbar.ActionbarOverlayManager
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.broadcast
-import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.particle.ParticleBuilder
 import xyz.xenondevs.nova.util.serverTick
 import xyz.xenondevs.nova.world.item.behavior.Chargeable
+import xyz.xenondevs.nova.world.item.getBehaviorOrNull
+import xyz.xenondevs.nova.world.item.itemType
 import xyz.xenondevs.nova.world.player.ability.Ability
 import xyz.xenondevs.nova.world.player.ability.AbilityManager
 
-private val IGNORED_GAME_MODES by Configs["jetpacks:config"].entry<Set<GameMode>>("ignored_game_modes")
+private val IGNORED_GAME_MODES by CONFIGS["jetpacks:config"].entry<Set<GameMode>>("ignored_game_modes")
 
 class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick: Provider<Long>) : Ability(player) {
     
@@ -32,7 +33,7 @@ class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick
     
     private val overlay = JetpackOverlay()
     private val jetpackItem by lazy { player.equipment.chestplate }
-    private val novaItem by lazy { jetpackItem?.novaItem }
+    private val chargeable by lazy { jetpackItem.itemType.getBehaviorOrNull<Chargeable>() }
     
     init {
         if (isValidGameMode()) {
@@ -55,8 +56,8 @@ class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick
     
     override fun handleTick() {
         val jetpackItem = jetpackItem
-        val novaItem = novaItem
-        if (jetpackItem == null || novaItem == null) {
+        val chargeable = chargeable
+        if (chargeable == null) {
             AbilityManager.takeAbility(player, this)
             return
         }
@@ -67,7 +68,6 @@ class JetpackFlyAbility(player: Player, flySpeed: Provider<Float>, energyPerTick
             player.flySpeed = previousFlySpeed
         }
         
-        val chargeable = novaItem.getBehavior(Chargeable::class)
         val energyLeft = chargeable.getEnergy(jetpackItem)
         overlay.percentage = energyLeft / chargeable.maxEnergy.toDouble()
         

@@ -16,11 +16,12 @@ import xyz.xenondevs.nova.util.advancement.advancement
 import xyz.xenondevs.nova.util.advancement.obtainNovaItemAdvancement
 import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
 import xyz.xenondevs.nova.util.toNmsTemplate
+import xyz.xenondevs.nova.world.item.createItemStack
 import java.util.*
 
 private val ROOT = advancement(VanillaHammers, "root") {
     display(DisplayInfo(
-        Items.WOODEN_HAMMER.clientsideProvider.get().toNmsTemplate()!!,
+        Items.WOODEN_HAMMER.createItemStack().toNmsTemplate()!!,
         Component.translatable("advancement.vanilla_hammers.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
         Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),

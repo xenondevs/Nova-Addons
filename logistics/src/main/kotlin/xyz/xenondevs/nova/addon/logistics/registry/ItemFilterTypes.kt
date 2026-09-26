@@ -9,9 +9,7 @@ import xyz.xenondevs.nova.initialize.InitStage
 @Init(stage = InitStage.PRE_PACK)
 object ItemFilterTypes {
     
-    init {
-        registerItemFilterType("type_item_filter", TypeItemFilter)
-        registerItemFilterType("nbt_item_filter", NbtItemFilter)
-    }
+    val TYPE = registerItemFilterType("type_item_filter", TypeItemFilter)
+    val NBT = registerItemFilterType("nbt_item_filter", NbtItemFilter)
     
 }

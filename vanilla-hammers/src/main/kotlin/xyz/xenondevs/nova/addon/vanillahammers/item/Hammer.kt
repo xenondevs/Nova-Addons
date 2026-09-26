@@ -5,8 +5,10 @@ import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.ItemType
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.nova.addon.vanillahammers.registry.Enchantments
+import xyz.xenondevs.nova.config.ConfigProvider
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.BlockBreak
@@ -14,20 +16,19 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
+import xyz.xenondevs.nova.registry.RegistryEntry
 import xyz.xenondevs.nova.util.BlockFaceUtils
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.axis
 import xyz.xenondevs.nova.util.destroyProgress
-import xyz.xenondevs.nova.util.hardness
 import xyz.xenondevs.nova.util.runTaskTimer
 import xyz.xenondevs.nova.util.setBreakStage
+import xyz.xenondevs.nova.world.block.blockType
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent
 import xyz.xenondevs.nova.world.block.event.BlockBreakActionEvent.Action
-import xyz.xenondevs.nova.world.item.NovaItem
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.item.behavior.ItemBehaviorFactory
-import xyz.xenondevs.nova.world.pos
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -61,7 +62,7 @@ class Hammer(
     }
     
     private fun selectBlocks(player: Player, itemStack: ItemStack, middle: Block, face: BlockFace, cursed: Boolean): List<Block> {
-        if (!ProtectionManager.canBreak(player, itemStack, middle.pos))
+        if (!ProtectionManager.canBreak(player, itemStack, middle))
             return emptyList()
         
         val blocks = ArrayList<Block>()
@@ -86,10 +87,10 @@ class Hammer(
                         .block
                     
                     // don't include blocks whose hardness difference is outside the specified tolerance
-                    val hardnessDifference = abs(block.hardness - middle.hardness)
+                    val hardnessDifference = abs(block.blockType.hardness - middle.blockType.hardness)
                     if (hardnessDifference > hardnessTolerance)
                         continue
-                    if (!ProtectionManager.canBreak(player, itemStack, block.pos))
+                    if (!ProtectionManager.canBreak(player, itemStack, block))
                         continue
                     
                     blocks += block
@@ -117,15 +118,12 @@ class Hammer(
     @Init(stage = InitStage.POST_WORLD)
     companion object : ItemBehaviorFactory<Hammer> {
         
-        override fun create(item: NovaItem): Hammer {
-            val cfg = item.config
-            return Hammer(
-                cfg.entry<Int>("range"),
-                cfg.entry<Int>("depth"),
-                cfg.entry<Double>("hardness_tolerance"),
-                cfg.entry<Double>("slowdown_per_block")
-            )
-        }
+        override fun create(entry: RegistryEntry.Paper<ItemType>, config: ConfigProvider) = Hammer(
+            config.entry<Int>(1, "range"),
+            config.entry<Int>(1, "depth"),
+            config.entry<Double>(0.0, "hardness_tolerance"),
+            config.entry<Double>(0.2, "slowdown_per_block")
+        )
         
         private val hammerWorkers = HashMap<Player, Map<Block, Int>>()
         
@@ -155,7 +153,7 @@ class Hammer(
                 
                 BlockUtils.breakBlockNaturally(
                     Context.intention(BlockBreak)
-                        .param(BlockBreak.BLOCK_POS, block.pos)
+                        .param(BlockBreak.BLOCK, block)
                         .param(BlockBreak.SOURCE_PLAYER, player)
                         .param(BlockBreak.TOOL_ITEM_STACK, player.inventory.itemInMainHand)
                         .build()

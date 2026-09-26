@@ -3,46 +3,48 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.block.BlockFace
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.mutableProvider
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.nova.addon.machines.gui.ProgressBar
+import xyz.xenondevs.nova.addon.machines.gui.progressBar
 import xyz.xenondevs.nova.addon.machines.recipe.CrystallizerRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.packetentity.PacketItemEntity
+import xyz.xenondevs.nova.packetentity.packetItemEntity
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.nova.util.CubeFaceSet
 import xyz.xenondevs.nova.util.PacketTask
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.util.particle.vibration
 import xyz.xenondevs.nova.util.unwrap
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.BUFFER
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.inventory.NetworkedVirtualInventory
-import xyz.xenondevs.nova.world.fakeentity.impl.FakeItem
 import xyz.xenondevs.nova.world.item.recipe.RecipeManager
 
-private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+private val BLOCKED_FACES = CubeFaceSet(north = true, east = true, south = true, west = true, up = true)
 
 private val MAX_ENERGY = Blocks.CRYSTALLIZER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = Blocks.CRYSTALLIZER.config.entry<Long>("energy_per_tick")
 
-class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class Crystallizer(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val inventory = storedInventory("inventory", 1, false, intArrayOf(1), ::handleInventoryUpdate, ::handleInventoryUpdated)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
@@ -60,21 +62,39 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     
     private val particleTask: PacketTask
     private var displayState: Boolean
-    private val itemDisplay: FakeItem
+    private val itemDisplay: PacketItemEntity
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.CRYSTALLIZER) {
+        upperGui by gui(
+            "s . . . . . . p e",
+            "u . . . i . . p e",
+            ". . . . . . . p e",
+        ) {
+            's' by openSideConfigItem(mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"))
+            'u' by openUpgradesItem(upgradeHolder)
+            'i' by inventory
+            'p' by progressBar("menu.machines.crystallizer.idle", progressProvider)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     init {
         // item display
         val itemStack = inventory.getItem(0)
         displayState = itemStack != null
-        itemDisplay = FakeItem(pos.location.add(.5, .2, .5), false) { _, data ->
-            data.item = itemStack
-            data.hasNoGravity = true
+        itemDisplay = packetItemEntity {
+            location by block.location.add(.5, .2, .5)
+            metadata {
+                noGravity by true
+                if (itemStack != null)
+                    item by itemStack
+            }
         }
         
         // particle task
-        val centerLocation = pos.location.add(.5, .5, .5)
+        val centerLocation = block.location.add(.5, .5, .5)
         val packets = listOf(BlockFace.NORTH, BlockFace.WEST, BlockFace.SOUTH, BlockFace.EAST).map {
-            val startLocation = pos.location.add(.5, .8, .5).advance(it, .4)
+            val startLocation = block.location.add(.5, .8, .5).advance(it, .4)
             particle(ParticleTypes.VIBRATION, startLocation) {
                 vibration(centerLocation, 10)
             }
@@ -85,12 +105,12 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
     override fun handleEnable() {
         super.handleEnable()
         if (displayState)
-            itemDisplay.register()
+            itemDisplay.spawn()
     }
     
     override fun handleDisable() {
         super.handleDisable()
-        itemDisplay.remove()
+        itemDisplay.despawn()
         particleTask.stop()
     }
     
@@ -120,16 +140,16 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
         val itemStack = event.newItem.unwrap().copy()
         if (itemStack.isEmpty) {
             if (displayState) {
-                itemDisplay.remove()
+                itemDisplay.despawn()
                 displayState = false
             }
             return
         }
         
-        itemDisplay.updateEntityData(displayState) { item = event.newItem }
+        itemDisplay.metadata.item = event.newItem!!
         
         if (!displayState) {
-            itemDisplay.register()
+            itemDisplay.spawn()
             displayState = true
         }
     }
@@ -148,31 +168,6 @@ class Crystallizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : 
                 particleTask.start()
             }
         } else if (particleTask.isRunning()) particleTask.stop()
-    }
-    
-    @TileEntityMenuClass
-    inner class CrystallizerMenu : GlobalTileEntityMenu() {
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@Crystallizer,
-            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s # # # p # e |",
-                "| u # i # p # e |",
-                "| # # # # p # e |",
-                "3 - - - - - - - 4")
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('i', inventory)
-            .addIngredient('p', ProgressBar(3, "menu.machines.crystallizer.idle", progressProvider))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
     }
     
 }

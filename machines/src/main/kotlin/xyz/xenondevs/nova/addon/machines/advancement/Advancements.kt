@@ -17,11 +17,12 @@ import xyz.xenondevs.nova.util.advancement.obtainNovaItemAdvancement
 import xyz.xenondevs.nova.util.advancement.obtainNovaItemsAdvancement
 import xyz.xenondevs.nova.util.component.adventure.toNMSComponent
 import xyz.xenondevs.nova.util.toNmsTemplate
+import xyz.xenondevs.nova.world.item.createItemStack
 import java.util.*
 
 private val ROOT = advancement(Machines, "root") {
     display(DisplayInfo(
-        Items.QUARRY.clientsideProvider.get().toNmsTemplate()!!,
+        Items.QUARRY.createItemStack().toNmsTemplate()!!,
         Component.translatable("advancement.machines.root.title").toNMSComponent(),
         Component.empty().toNMSComponent(),
         Optional.of(ClientAsset.ResourceTexture(Identifier.withDefaultNamespace("block/tuff"))),

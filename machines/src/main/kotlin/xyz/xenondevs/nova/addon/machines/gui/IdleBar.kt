@@ -7,44 +7,30 @@ import net.kyori.adventure.text.format.NamedTextColor
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.invui.ExperimentalReactiveApi
-import xyz.xenondevs.invui.item.Item
-import xyz.xenondevs.invui.item.setItemProvider
-import xyz.xenondevs.nova.ui.menu.VerticalBar
+import xyz.xenondevs.nova.ui.menu.verticalBar
 import xyz.xenondevs.nova.world.item.DefaultGuiItems
 
-class IdleBar(
-    height: Int,
-    private val translationKey: String,
-    private val timePassed: Provider<Int>,
-    private val maxIdleTime: Provider<Int>
-) : VerticalBar(height) {
-    
-    override fun createBarItem(section: Int): Item =
-        Item.builder()
-            .setItemProvider(combinedProvider(timePassed, maxIdleTime) { timePassed, maxIdleTime ->
-                createItemBuilder(
-                    DefaultGuiItems.BAR_GREEN,
-                    section,
-                    timePassed.toDouble() / maxIdleTime.toDouble()
-                ).setName(Component.translatable(
-                    translationKey,
-                    NamedTextColor.GRAY,
-                    Component.text(maxIdleTime - timePassed)
-                ))
-            }).build()
-    
-}
+fun idleBar(
+    translationKey: String,
+    timePassed: Provider<Int>,
+    maxIdleTime: Provider<Int>
+) = verticalBar(
+    combinedProvider(timePassed, maxIdleTime) { a, b ->
+        (a.toDouble() / b.toDouble()).coerceIn(0.0, 1.0)
+    },
+    DefaultGuiItems.TP_BAR_GREEN,
+    {
+        name by combinedProvider(timePassed, maxIdleTime) { timePassed, maxIdleTime ->
+            Component.translatable(translationKey, NamedTextColor.GRAY, Component.text(maxIdleTime - timePassed))
+        }
+    }
+)
 
-class ProgressBar(
-    height: Int,
-    private val translationKey: String,
-    private val progress: Provider<Double>
-) : VerticalBar(height) {
-    
-    override fun createBarItem(section: Int): Item =
-        Item.builder().setItemProvider(progress.map { progress ->
-            createItemBuilder(DefaultGuiItems.BAR_GREEN, section, progress)
-                .setName(Component.translatable(translationKey, NamedTextColor.GRAY))
-        }).build()
-    
-}
+fun progressBar(
+    translationKey: String,
+    progress: Provider<Double>
+) = verticalBar(
+    progress,
+    DefaultGuiItems.TP_BAR_GREEN,
+    { name by Component.translatable(translationKey, NamedTextColor.GRAY) }
+)

@@ -1,18 +1,46 @@
 package xyz.xenondevs.nova.addon.machines.gui
 
+import xyz.xenondevs.commons.provider.Provider
+import xyz.xenondevs.commons.provider.combinedProvider
+import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
-import xyz.xenondevs.nova.ui.menu.item.ProgressItem
+import xyz.xenondevs.nova.ui.menu.item.progressItem
+import xyz.xenondevs.nova.world.item.guiItemProvider
 
-class EnergyProgressItem : ProgressItem(GuiItems.ENERGY_PROGRESS)
+fun <C : Number, T : Number> progressItem(
+    itemProvider: Provider<ItemProvider>,
+    current: Provider<C>,
+    total: Provider<T>,
+    customModelDataIndex: Int = 0
+) = progressItem(
+    itemProvider,
+    combinedProvider(current, total) { current, total ->
+        val totalDouble = total.toDouble()
+        if (totalDouble != 0.0) current.toDouble() / totalDouble else 0.0
+    },
+    customModelDataIndex
+)
 
-class ProgressArrowItem : ProgressItem(GuiItems.ARROW_PROGRESS)
+fun <C : Number, T : Number> energyProgressItem(current: Provider<C>, total: Provider<T>) =
+    progressItem(GuiItems.ENERGY_PROGRESS.guiItemProvider, current, total)
 
-class PressProgressItem : ProgressItem(GuiItems.PRESS_PROGRESS)
+fun energyProgressItem(progress: Provider<Double>) =
+    progressItem(GuiItems.ENERGY_PROGRESS.guiItemProvider, progress)
 
-class PulverizerProgressItem : ProgressItem(GuiItems.PULVERIZER_PROGRESS)
+fun progressArrowItem(progress: Provider<Double>) =
+    progressItem(GuiItems.ARROW_PROGRESS.guiItemProvider, progress)
 
-class LeftRightFluidProgressItem : ProgressItem(GuiItems.FLUID_PROGRESS_LEFT_RIGHT)
+fun pressProgressItem(progress: Provider<Double>) =
+    progressItem(GuiItems.PRESS_PROGRESS.guiItemProvider, progress)
 
-class RightLeftFluidProgressItem : ProgressItem(GuiItems.FLUID_PROGRESS_RIGHT_LEFT)
+fun pulverizerProgressItem(progress: Provider<Double>) =
+    progressItem(GuiItems.PULVERIZER_PROGRESS.guiItemProvider, progress)
 
-class BrewProgressItem : ProgressItem(GuiItems.TP_BREW_PROGRESS)
+fun leftRightFluidProgressItem(progress: Provider<Double>) =
+    progressItem(GuiItems.FLUID_PROGRESS_LEFT_RIGHT.guiItemProvider, progress)
+
+fun rightLeftFluidProgressItem(progress: Provider<Double>) =
+    progressItem(GuiItems.FLUID_PROGRESS_RIGHT_LEFT.guiItemProvider, progress)
+
+fun brewProgressItem(current: Provider<Int>, total: Provider<Int>) =
+    progressItem(GuiItems.BREW_PROGRESS.guiItemProvider, current, total)

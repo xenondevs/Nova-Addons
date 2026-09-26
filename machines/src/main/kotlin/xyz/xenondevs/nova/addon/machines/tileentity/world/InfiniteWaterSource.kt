@@ -1,47 +1,37 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.nova.ui.menu.StaticFluidBar
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.commons.provider.provider
+import xyz.xenondevs.invui.dsl.gui
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
+import xyz.xenondevs.nova.ui.menu.fluidBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.container.NetworkedFluidContainer
 import java.util.*
 
-class InfiniteWaterSource(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class InfiniteWaterSource(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val fluidContainer = InfiniteFluidContainer
     
-    init {
-        storedFluidHolder(fluidContainer to NetworkConnectionType.EXTRACT)
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.CENTER_BAR) {
+        upperGui by gui(
+            "s . . . f . . . .",
+            ". . . . f . . . .",
+            ". . . . f . . . .",
+        ) {
+            's' by openSideConfigItem(containers = mapOf(fluidContainer to "block.minecraft.water"))
+            'f' by fluidBar(provider(FluidType.WATER), provider(Long.MAX_VALUE), provider(Long.MAX_VALUE))
+        }
     }
     
-    @TileEntityMenuClass
-    inner class InfiniteWaterSourceMenu : GlobalTileEntityMenu() {
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@InfiniteWaterSource,
-            mapOf(fluidContainer to "block.minecraft.water"),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s # # f # # # |",
-                "| # # # f # # # |",
-                "| # # # f # # # |",
-                "3 - - - - - - - 4")
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('f', StaticFluidBar(3, Long.MAX_VALUE, FluidType.WATER, Long.MAX_VALUE))
-            .build()
-        
+    init {
+        storedFluidHolder(fluidContainer to NetworkConnectionType.EXTRACT)
     }
     
 }

@@ -1,4 +1,6 @@
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.internal.config.AnalysisFlags.optIn
 import xyz.xenondevs.origami.extension.OrigamiExtension
 
 group = "xyz.xenondevs.nova.addon"
@@ -11,7 +13,10 @@ plugins {
 val libs = the<LibrariesForLibs>()
 
 repositories {
-    mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }
+    val local = mavenLocal { content { includeGroupAndSubgroups("xyz.xenondevs") } }
+    remove(local)
+    addFirst(local)
+    
     gradlePluginPortal()
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
@@ -24,7 +29,14 @@ dependencies {
 
 kotlin {
     compilerOptions {
-        optIn.add("xyz.xenondevs.invui.ExperimentalReactiveApi")
+        optIn.addAll(
+            "xyz.xenondevs.invui.ExperimentalReactiveApi",
+            "xyz.xenondevs.invui.dsl.ExperimentalDslApi"
+        )
+        
+        freeCompilerArgs.addAll(
+            "-Xcollection-literals"
+        )
     }
 }
 

@@ -3,50 +3,50 @@ package xyz.xenondevs.nova.addon.machines.tileentity.processing
 import net.kyori.adventure.key.Key
 import net.minecraft.core.particles.ParticleTypes
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mapNonNull
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.commons.provider.mutableProvider
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
-import xyz.xenondevs.nova.addon.machines.gui.PulverizerProgressItem
+import xyz.xenondevs.nova.addon.machines.gui.pulverizerProgressItem
 import xyz.xenondevs.nova.addon.machines.recipe.PulverizerRecipe
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PULVERIZER
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.RecipeTypes
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.PacketTask
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.particle.particle
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
 import xyz.xenondevs.nova.world.item.recipe.RecipeManager
 import kotlin.math.max
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+private val BLOCKED_SIDES = BlockSideSet(front = true)
 
 private val MAX_ENERGY = PULVERIZER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = PULVERIZER.config.entry<Long>("energy_per_tick")
 private val PULVERIZE_SPEED = PULVERIZER.config.entry<Int>("speed")
 
-class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class Pulverizer(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val inputInv = storedInventory("input", 1, ::handleInputUpdate)
-    private val outputInv = storedInventory("output", 2, ::handleOutputUpdate)
+    private val outputInv = storedInventory("output", 3, ::handleOutputUpdate).apply { setIterationOrder(intArrayOf(1, 0, 2)) }
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, INSERT, BLOCKED_SIDES)
     private val itemHolder = storedItemHolder(inputInv to INSERT, outputInv to EXTRACT, blockedSides = BLOCKED_SIDES)
@@ -63,14 +63,37 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     
     private val particleTask = PacketTask(
         particle(ParticleTypes.SMOKE) {
-            val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
-            location(pos.location.add(0.5, 0.8, 0.5).advance(facing, 0.6))
+            val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING_HORIZONTAL)
+            location(block.location.add(0.5, 0.8, 0.5).advance(facing, 0.6))
             offset(0.05, 0.2, 0.05)
             speed(0f)
         },
         6,
         ::getViewers
     )
+    private val progress = mutableProvider(0.0)
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.PULVERIZER) {
+        updateProgress()
+        
+        upperGui by gui(
+            "s . . . i . . . e",
+            "u . . . ^ . . . e",
+            ". . . o o o . . e",
+        ) {
+            'i' by inputInv
+            'o' by outputInv
+            '^' by pulverizerProgressItem(progress)
+            's' by openSideConfigItem(
+                mapOf(
+                    itemHolder.getNetworkedInventory(inputInv) to "inventory.nova.input",
+                    itemHolder.getNetworkedInventory(outputInv) to "inventory.nova.output"
+                )
+            )
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     override fun handleDisable() {
         super.handleDisable()
@@ -96,7 +119,7 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
                     currentRecipe = null
                 }
                 
-                menuContainer.forEachMenu(PulverizerMenu::updateProgress)
+                updateProgress()
             }
             
         } else if (particleTask.isRunning()) particleTask.stop()
@@ -123,48 +146,10 @@ class Pulverizer(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
         event.isCancelled = !event.isRemove && event.updateReason != SELF_UPDATE_REASON
     }
     
-    @TileEntityMenuClass
-    inner class PulverizerMenu : GlobalTileEntityMenu() {
-        
-        private val mainProgress = ProgressArrowItem()
-        private val pulverizerProgress = PulverizerProgressItem()
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@Pulverizer,
-            mapOf(
-                itemHolder.getNetworkedInventory(inputInv) to "inventory.nova.input",
-                itemHolder.getNetworkedInventory(outputInv) to "inventory.nova.output"
-            ),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s u # # # # e |",
-                "| i # , # o a e |",
-                "| c # # # # # e |",
-                "3 - - - - - - - 4")
-            .addIngredient('i', inputInv)
-            .addIngredient('o', outputInv)
-            .addIngredient(',', mainProgress)
-            .addIngredient('c', pulverizerProgress)
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
-        init {
-            updateProgress()
-        }
-        
-        fun updateProgress() {
-            val recipeTime = currentRecipe?.time ?: 0
-            val percentage = if (timeLeft == 0) 0.0 else (recipeTime - timeLeft).toDouble() / recipeTime.toDouble()
-            mainProgress.percentage = percentage
-            pulverizerProgress.percentage = percentage
-        }
-        
+    private fun updateProgress() {
+        val recipeTime = currentRecipe?.time ?: 0
+        val percentage = if (timeLeft == 0) 0.0 else (recipeTime - timeLeft).toDouble() / recipeTime.toDouble()
+        progress.set(percentage)
     }
     
 }

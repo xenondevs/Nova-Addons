@@ -1,36 +1,36 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.energy
 
-import org.bukkit.Material
-import org.bukkit.block.BlockFace
 import org.bukkit.scheduler.BukkitTask
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.SOLAR_PANEL
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.util.efficiencyMultipliedValue
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.util.item.isGlass
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.util.CubeFaceSet
 import xyz.xenondevs.nova.util.runTaskTimer
 import xyz.xenondevs.nova.util.untilHeightLimit
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
+import xyz.xenondevs.nova.world.block.blockType
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
-private val BLOCKED_FACES = enumSetOf(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP)
+private val BLOCKED_FACES = CubeFaceSet(north = true, east = true, south = true, west = true, up = true)
 
 private val MAX_ENERGY = SOLAR_PANEL.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = SOLAR_PANEL.config.entry<Long>("energy_per_tick")
 
-class SolarPanel(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class SolarPanel(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_FACES)
@@ -39,6 +39,17 @@ class SolarPanel(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     
     private lateinit var obstructionTask: BukkitTask
     private var obstructed = true
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.CENTER_BAR) {
+        upperGui by gui(
+            "u . . . e . . . .",
+            ". . . . e . . . .",
+            ". . . . e . . . .",
+        ) {
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     override fun handleEnable() {
         super.handleEnable()
@@ -52,9 +63,9 @@ class SolarPanel(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     
     private fun checkSkyObstruction() {
         obstructed = false
-        pos.location.untilHeightLimit(false) { // TODO: may be replaceable with heightmap lookup
-            val material = it.block.type
-            if (material != Material.AIR && !material.isGlass()) {
+        block.location.untilHeightLimit(false) { // TODO: may be replaceable with heightmap lookup
+            val blockType = it.block.blockType
+            if (!blockType.isAir && "glass" !in blockType.key.value()) {
                 obstructed = true
                 return@untilHeightLimit false
             }
@@ -67,29 +78,13 @@ class SolarPanel(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Ne
     }
     
     private fun calculateCurrentEnergyOutput(): Long {
-        val time = pos.world.time
+        val time = block.world.time
         if (!obstructed && time < 13_000) {
             val bestTime = 6_500
             val multiplier = (bestTime - abs(bestTime - time)) / bestTime.toDouble()
             return (peakEnergyOutput * multiplier).roundToLong()
         }
         return 0
-    }
-    
-    @TileEntityMenuClass
-    inner class SolarPanelMenu : GlobalTileEntityMenu() {
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| u # # e # # # |",
-                "| # # # e # # # |",
-                "| # # # e # # # |",
-                "3 - - - - - - - 4")
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
     }
     
 }

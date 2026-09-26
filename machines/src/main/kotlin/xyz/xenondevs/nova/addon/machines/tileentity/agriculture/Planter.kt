@@ -1,52 +1,49 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.agriculture
 
 import kotlinx.coroutines.runBlocking
-import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Block
-import org.bukkit.entity.Player
-import org.bukkit.event.inventory.ClickType
+import org.bukkit.block.BlockType
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.invui.Click
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.dsl.gui
+import xyz.xenondevs.invui.dsl.item
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
-import xyz.xenondevs.invui.item.AbstractItem
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.PLANTER
 import xyz.xenondevs.nova.addon.machines.registry.GuiItems
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.util.PlantUtils
 import xyz.xenondevs.nova.addon.machines.util.blockSequence
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.isTillable
 import xyz.xenondevs.nova.addon.machines.util.iterator
 import xyz.xenondevs.nova.addon.machines.util.maxIdleTime
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedRegion
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.addIngredient
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.invui.dsl.with
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.below
 import xyz.xenondevs.nova.util.item.damage
 import xyz.xenondevs.nova.util.playClickSound
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.NovaBlockState
+import xyz.xenondevs.nova.world.block.blockType
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
-import xyz.xenondevs.nova.world.item.tool.ToolCategory
-import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
-import xyz.xenondevs.nova.world.pos
+import xyz.xenondevs.nova.world.item.guiItemProvider
+import xyz.xenondevs.nova.registry.tags.ItemTypeTags
+import xyz.xenondevs.nova.world.item.itemType
 import xyz.xenondevs.nova.world.region.Region
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+private val BLOCKED_SIDES = BlockSideSet(front = true)
 
 private val MAX_ENERGY = PLANTER.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = PLANTER.config.entry<Long>("energy_per_tick")
@@ -56,7 +53,7 @@ private val MIN_RANGE = PLANTER.config.entry<Int>("range", "min")
 private val MAX_RANGE = PLANTER.config.entry<Int>("range", "max")
 private val DEFAULT_RANGE by PLANTER.config.entry<Int>("range", "default")
 
-class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class Planter(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val inputInventory = storedInventory("input", 6, ::handleSeedUpdate)
     private val hoesInventory = storedInventory("hoes", 1, ::handleHoeUpdate)
@@ -75,8 +72,41 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         Region.inFrontOf(this, size, size, 1, 0)
     }
     
-    private var autoTill by storedValue("autoTill") { true }
+    private val autoTillProvider = storedValue("autoTill") { true }
+    private var autoTill by autoTillProvider
     private var timePassed = 0
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.PLANTER) {
+        upperGui by gui(
+            "s u v . . . . p e",
+            "i i i . . h . n e",
+            "i i i . . f . m e",
+        ) {
+            'i' by inputInventory
+            'h' by (hoesInventory with GuiItems.HOE_PLACEHOLDER)
+            's' by openSideConfigItem(
+                mapOf(
+                    itemHolder.getNetworkedInventory(inputInventory) to "inventory.nova.input",
+                    itemHolder.getNetworkedInventory(hoesInventory) to "inventory.machines.hoes",
+                )
+            )
+            'f' by item {
+                itemProvider by autoTillProvider.flatMap {
+                    (if (it) GuiItems.HOE_BTN_ON else GuiItems.HOE_BTN_OFF).guiItemProvider
+                }
+                onClick {
+                    autoTill = !autoTill
+                    player.playClickSound()
+                }
+            }
+            'u' by openUpgradesItem(upgradeHolder)
+            'v' by plantRegion.visualizeRegionItem
+            'p' by plantRegion.increaseSizeItem
+            'm' by plantRegion.decreaseSizeItem
+            'n' by plantRegion.displaySizeItem
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     override fun handleTick() {
         if (energyHolder.energy >= energyPerTick) {
@@ -100,7 +130,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
                 energyHolder.energy -= energyPerPlant
                 
                 // till dirt if possible
-                if (soil.type.isTillable() && autoTill && !hoesInventory.isEmpty) tillDirt(soil)
+                if (soil.blockType.isTillable() && autoTill && !hoesInventory.isEmpty) tillDirt(soil)
                 
                 // plant the seed
                 PlantUtils.placeSeed(item, plant, true)
@@ -124,30 +154,30 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         val emptyHoes = hoesInventory.isEmpty
         for (block in plantRegion) {
             val soilBlock = block.below
-            val soilType = soilBlock.type
+            val soilType = soilBlock.blockType
             
             // if the plant block is already occupied continue
-            if (!block.type.isAir)
+            if (!block.blockType.isAir)
                 continue
             
-            val soilTypeApplicable = PlantUtils.canBePlaced(seedStack, soilBlock)
+            val soilTypeApplicable = PlantUtils.canBePlaced(seedStack, block)
             if (soilTypeApplicable) {
                 // if the seed can be placed on the soil block, only the permission needs to be checked
-                val hasPermissions = runBlocking { ProtectionManager.canPlace(this@Planter, seedStack, block.pos) } // TODO: non-blocking
+                val hasPermissions = runBlocking { ProtectionManager.canPlace(this@Planter, seedStack, block) } // TODO: non-blocking
                 if (hasPermissions)
                     return block
             } else {
                 // if the seed can not be placed on the soil block, check if this seed requires farmland and if it does
                 // check if the soil block can be tilled
                 val requiresFarmland = PlantUtils.requiresFarmland(seedStack)
-                val isOrCanBeFarmland = soilType == Material.FARMLAND || (soilType.isTillable() && autoTill && !emptyHoes)
+                val isOrCanBeFarmland = soilType == BlockType.FARMLAND || (soilType.isTillable() && autoTill && !emptyHoes)
                 if (requiresFarmland && !isOrCanBeFarmland)
                     continue
                 
                 // the block can be tilled, now check for both planting and tilling permissions
                 val hasPermissions = runBlocking {
-                    ProtectionManager.canPlace(this@Planter, seedStack, block.pos) &&
-                        ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), soilBlock.pos)
+                    ProtectionManager.canPlace(this@Planter, seedStack, block) &&
+                        ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), soilBlock)
                 } // TODO: non-blocking
                 if (hasPermissions)
                     return block
@@ -158,19 +188,19 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
     
     private fun getNextTillableBlock(): Block? {
         return plantRegion.blockSequence.firstOrNull {
-            it.type.isTillable()
-                && runBlocking { ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), it.pos) } // TODO: non-blocking
+            it.blockType.isTillable()
+                && runBlocking { ProtectionManager.canUseBlock(this@Planter, hoesInventory.getItem(0), it) } // TODO: non-blocking
         }
     }
     
     private fun tillDirt(block: Block) {
-        block.type = Material.FARMLAND
-        pos.world.playSound(block.location, Sound.ITEM_HOE_TILL, 1f, 1f)
+        block.blockType = BlockType.FARMLAND
+        block.world.playSound(block.location, Sound.ITEM_HOE_TILL, 1f, 1f)
         useHoe()
     }
     
     private fun handleHoeUpdate(event: ItemPreUpdateEvent) {
-        if ((event.isAdd || event.isSwap) && VanillaToolCategories.HOE !in ToolCategory.ofItem(event.newItem))
+        if ((event.isAdd || event.isSwap) && event.newItem!!.itemType !in ItemTypeTags.HOES)
             event.isCancelled = true
     }
     
@@ -183,54 +213,7 @@ class Planter(pos: BlockPos, blockState: NovaBlockState, data: Compound) : Netwo
         if (hoesInventory.isEmpty)
             return
         
-        hoesInventory.modifyItem(null, 0) { it?.damage(1, pos.world) }
-    }
-    
-    @TileEntityMenuClass
-    inner class PlanterMenu(player: Player) : IndividualTileEntityMenu(player) {
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@Planter,
-            mapOf(
-                itemHolder.getNetworkedInventory(inputInventory) to "inventory.nova.input",
-                itemHolder.getNetworkedInventory(hoesInventory) to "inventory.machines.hoes",
-            ),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s u v # # p e |",
-                "| i i i # h n e |",
-                "| i i i # f m e |",
-                "3 - - - - - - - 4")
-            .addIngredient('i', inputInventory)
-            .addIngredient('h', hoesInventory, GuiItems.HOE_PLACEHOLDER)
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('f', AutoTillingItem())
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('v', plantRegion.visualizeRegionItem)
-            .addIngredient('p', plantRegion.increaseSizeItem)
-            .addIngredient('m', plantRegion.decreaseSizeItem)
-            .addIngredient('n', plantRegion.displaySizeItem)
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
-        private inner class AutoTillingItem : AbstractItem() {
-            
-            override fun getItemProvider(player: Player) =
-                (if (autoTill) GuiItems.HOE_BTN_ON else GuiItems.HOE_BTN_OFF).clientsideProvider
-            
-            override fun handleClick(clickType: ClickType, player: Player, click: Click) {
-                autoTill = !autoTill
-                notifyWindows()
-                
-                player.playClickSound()
-            }
-            
-        }
-        
+        hoesInventory.modifyItem(null, 0) { it?.damage(1, block.world) }
     }
     
 }

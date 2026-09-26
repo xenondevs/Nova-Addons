@@ -1,9 +1,10 @@
 package xyz.xenondevs.nova.addon.machines.util
 
-import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.block.BlockType
 import org.bukkit.block.data.Levelled
 import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
+import xyz.xenondevs.nova.world.block.blockType
 
 /**
  * Checks if this block is a source fluid.
@@ -19,9 +20,9 @@ val Block.sourceFluidType: FluidType?
     get() {
         val blockData = blockData
         if (blockData is Levelled && blockData.level == 0) {
-            return when (type) {
-                Material.WATER, Material.BUBBLE_COLUMN -> FluidType.WATER
-                Material.LAVA -> FluidType.LAVA
+            return when (blockType) {
+                BlockType.WATER, BlockType.BUBBLE_COLUMN -> FluidType.WATER
+                BlockType.LAVA -> FluidType.LAVA
                 else -> null
             }
         }

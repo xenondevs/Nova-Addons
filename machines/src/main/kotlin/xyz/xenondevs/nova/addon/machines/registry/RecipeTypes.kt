@@ -28,17 +28,17 @@ import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 
 
-@Init(stage = InitStage.POST_WORLD)
+@Init(stage = InitStage.PRE_WORLD)
 object RecipeTypes {
     
-    val PULVERIZER = registerRecipeType("pulverizer", PulverizerRecipe::class, PulverizingRecipeGroup, PulverizerRecipeDeserializer)
-    val GEAR_PRESS = registerRecipeType("press/gear", GearPressRecipe::class, PressingRecipeGroup, GearPressRecipeDeserializer)
-    val PLATE_PRESS = registerRecipeType("press/plate", PlatePressRecipe::class, PressingRecipeGroup, PlatePressRecipeDeserializer)
-    val FLUID_INFUSER = registerRecipeType("fluid_infuser", FluidInfuserRecipe::class, FluidInfuserRecipeGroup, FluidInfuserRecipeDeserializer)
-    val ELECTRIC_BREWING_STAND = registerRecipeType("electric_brewing_stand", ElectricBrewingStandRecipe::class, ElectricBrewingStandRecipeGroup, ElectricBrewingStandRecipeDeserializer)
-    val CRYSTALLIZER = registerRecipeType("crystallizer", CrystallizerRecipe::class, CrystallizerRecipeGroup, CrystallizerRecipeDeserializer)
-    val STAR_COLLECTOR = registerRecipeType("star_collector", StarCollectorRecipe::class, StarCollectorRecipeGroup, null)
-    val COBBLESTONE_GENERATOR = registerRecipeType("cobblestone_generator", CobblestoneGeneratorRecipe::class, CobblestoneGeneratorRecipeGroup, null)
-    val FREEZER = registerRecipeType("freezer", FreezerRecipe::class, FreezerRecipeGroup, null)
+    val PULVERIZER by registerRecipeType("pulverizer", PulverizerRecipe::class, PulverizingRecipeGroup, PulverizerRecipeDeserializer)
+    val GEAR_PRESS by registerRecipeType("press/gear", GearPressRecipe::class, PressingRecipeGroup, GearPressRecipeDeserializer)
+    val PLATE_PRESS by registerRecipeType("press/plate", PlatePressRecipe::class, PressingRecipeGroup, PlatePressRecipeDeserializer)
+    val FLUID_INFUSER by registerRecipeType("fluid_infuser", FluidInfuserRecipe::class, FluidInfuserRecipeGroup, FluidInfuserRecipeDeserializer)
+    val ELECTRIC_BREWING_STAND by registerRecipeType("electric_brewing_stand", ElectricBrewingStandRecipe::class, ElectricBrewingStandRecipeGroup, ElectricBrewingStandRecipeDeserializer)
+    val CRYSTALLIZER by registerRecipeType("crystallizer", CrystallizerRecipe::class, CrystallizerRecipeGroup, CrystallizerRecipeDeserializer)
+    val STAR_COLLECTOR by registerRecipeType("star_collector", StarCollectorRecipe::class, StarCollectorRecipeGroup, null)
+    val COBBLESTONE_GENERATOR by registerRecipeType("cobblestone_generator", CobblestoneGeneratorRecipe::class, CobblestoneGeneratorRecipeGroup, null)
+    val FREEZER by registerRecipeType("freezer", FreezerRecipe::class, FreezerRecipeGroup, null)
     
 }

@@ -3,14 +3,11 @@ package xyz.xenondevs.nova.addon.machines.registry
 import xyz.xenondevs.nova.addon.machines.Machines.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.world.block.tileentity.network.type.fluid.FluidType
-import xyz.xenondevs.nova.world.item.DefaultGuiItems
-import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.resources.builder.data.TintSource
+import java.awt.Color
 
 @Init(stage = InitStage.PRE_PACK)
 object GuiItems {
-    
-    val TP_FLUID_BAR_ITEMS = mapOf(null to DefaultGuiItems.TP_BAR_BLUE, FluidType.WATER to DefaultGuiItems.TP_BAR_BLUE, FluidType.LAVA to DefaultGuiItems.TP_BAR_RED)
     
     val GEAR_BTN_OFF = guiItem("btn/gear_off", "menu.machines.mechanical_press.press_gears")
     val GEAR_BTN_ON = guiItem("btn/gear_on", "menu.machines.mechanical_press.press_gears")
@@ -32,40 +29,45 @@ object GuiItems {
     val FLUID_RIGHT_LEFT_BTN = guiItem("btn/fluid_right_left", "menu.machines.fluid_infuser.mode.extract")
     val INVENTORY_BTN = guiItem("btn/inventory", "menu.machines.auto_crafter.inventory")
     
-    val TP_COLOR_PICKER = guiItem("color_picker")
-    val TP_GREEN_PLUS = tpGuiItem("green_plus")
-    val TP_RED_MINUS = tpGuiItem("red_minus")
+    val AXE_PLACEHOLDER = guiItem("placeholder/axe", null)
+    val HOE_PLACEHOLDER = guiItem("placeholder/hoe", null)
+    val SHEARS_PLACEHOLDER = guiItem("placeholder/shears", null)
+    val BOTTLE_PLACEHOLDER = guiItem("placeholder/bottle", null)
+    val FISHING_ROD_PLACEHOLDER = guiItem("placeholder/fishing_rod", null)
+    val MOB_CATCHER_PLACEHOLDER = guiItem("placeholder/mob_catcher", null)
+    val SAPLING_PLACEHOLDER = guiItem("placeholder/sapling", null)
+    val REDSTONE_PLACEHOLDER = guiItem("placeholder/redstone", null)
+    val GLOWSTONE_DUST_PLACEHOLDER = guiItem("placeholder/glowstone_dust", null)
     
-    val AXE_PLACEHOLDER = tpGuiItem("placeholder/axe", null)
-    val HOE_PLACEHOLDER = tpGuiItem("placeholder/hoe", null)
-    val SHEARS_PLACEHOLDER = tpGuiItem("placeholder/shears", null)
-    val BOTTLE_PLACEHOLDER = tpGuiItem("placeholder/bottle", null)
-    val FISHING_ROD_PLACEHOLDER = tpGuiItem("placeholder/fishing_rod", null)
-    val MOB_CATCHER_PLACEHOLDER = tpGuiItem("placeholder/mob_catcher", null)
-    val SAPLING_PLACEHOLDER = tpGuiItem("placeholder/sapling", null)
+    val POTION_PLACEHOLDER = potionPlaceholder("potion")
+    val SPLASH_POTION_PLACEHOLDER = potionPlaceholder("splash_potion")
+    val LINGERING_POTION_PLACEHOLDER = potionPlaceholder("lingering_potion")
     
     val ARROW_PROGRESS = progressItem("progress/arrow", 17)
     val ENERGY_PROGRESS = progressItem("progress/energy", 17)
     val PULVERIZER_PROGRESS = progressItem("progress/pulverizer", 15)
     val PRESS_PROGRESS = progressItem("progress/press", 9)
-    val TP_BREW_PROGRESS = progressItem("progress/brew", 17)
+    val BREW_PROGRESS = progressItem("progress/brew", 17)
     val FLUID_PROGRESS_LEFT_RIGHT = progressItem("progress/fluid/left_right", 17)
     val FLUID_PROGRESS_RIGHT_LEFT = progressItem("progress/fluid/right_left", 17)
-    val TP_FLUID_PROGRESS_LEFT_RIGHT = tpProgressItem("progress/fluid/left_right", 17)
-    val TP_FLUID_PROGRESS_RIGHT_LEFT = tpProgressItem("progress/fluid/right_left", 17)
     
-    private fun guiItem(name: String, localizedName: String? = null): NovaItem = item("gui/opaque/$name") {
-        if (localizedName == null) name(null) else localizedName(localizedName)
+    private fun potionPlaceholder(name: String) = item("gui/transparent/${name}_placeholder") {
+        name(null)
         hidden(true)
-        
         modelDefinition {
-            model = buildModel {
-                createGuiModel(background = true, stretched = false, "item/gui/$name")
+            model = model {
+                tintSource[0] = TintSource.Potion(Color.WHITE)
+                model = {
+                    createLayeredModel(
+                        "item/gui/placeholder/potion_overlay",
+                        "item/gui/placeholder/${name}"
+                    )
+                }
             }
         }
     }
     
-    private fun tpGuiItem(name: String, localizedName: String? = null): NovaItem = item("gui/transparent/$name") {
+    private fun guiItem(name: String, localizedName: String? = null) = item("gui/transparent/$name") {
         if (localizedName == null) name(null) else localizedName(localizedName)
         hidden(true)
         
@@ -76,19 +78,8 @@ object GuiItems {
         }
     }
     
-    private fun progressItem(name: String, count: Int) = item("gui/opaque/$name") {
-        localizedName("")
-        hidden(true)
-        
-        modelDefinition {
-            model = rangedModels(count) {
-                createGuiModel(background = true, stretched = false, "item/gui/$name/$it")
-            }
-        }
-    }
-    
-    private fun tpProgressItem(name: String, count: Int) = item("gui/transparent/$name") {
-        localizedName("")
+    private fun progressItem(name: String, count: Int) = item("gui/transparent/$name") {
+        name(null)
         hidden(true)
         
         modelDefinition {

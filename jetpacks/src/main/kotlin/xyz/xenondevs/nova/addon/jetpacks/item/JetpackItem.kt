@@ -18,11 +18,11 @@ class JetpackBehavior(
             return
         
         if (equipped) {
-            AttachmentManager.addAttachment(player, tier.attachmentType)
-            AbilityManager.giveAbility(player, tier.abilityType)
+            AttachmentManager.addAttachment(player, tier.attachmentType.get())
+            AbilityManager.giveAbility(player, tier.abilityType.get())
         } else {
-            AttachmentManager.removeAttachment(player, tier.attachmentType)
-            AbilityManager.takeAbility(player, tier.abilityType)
+            AttachmentManager.removeAttachment(player, tier.attachmentType.get())
+            AbilityManager.takeAbility(player, tier.abilityType.get())
         }
     }
     

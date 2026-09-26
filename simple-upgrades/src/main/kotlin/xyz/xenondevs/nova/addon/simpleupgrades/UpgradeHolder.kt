@@ -1,14 +1,18 @@
 package xyz.xenondevs.nova.addon.simpleupgrades
 
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.commons.provider.MutableProvider
 import xyz.xenondevs.commons.provider.Provider
-import xyz.xenondevs.commons.provider.combinedProvider
+import xyz.xenondevs.commons.provider.getCoerced
 import xyz.xenondevs.commons.provider.mutableProvider
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.UpgradesGui
+import xyz.xenondevs.commons.provider.provider
+import xyz.xenondevs.invui.inventory.VirtualInventory
+import xyz.xenondevs.invui.inventory.event.UpdateReason
+import xyz.xenondevs.nova.registry.RegistryEntry
+import xyz.xenondevs.nova.world.block.config
 import xyz.xenondevs.nova.world.block.tileentity.TileEntity
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
+import xyz.xenondevs.nova.world.item.createItemStack
+import xyz.xenondevs.nova.world.item.itemTypeEntry
 import kotlin.math.min
 
 /**
@@ -18,108 +22,141 @@ import kotlin.math.min
  * instead of directly calling the [UpgradeHolder] constructor.
  */
 class UpgradeHolder(
-    internal val tileEntity: TileEntity,
-    internal val allowed: Set<UpgradeType<*>>,
-    upgrades: Provider<MutableMap<UpgradeType<*>, Int>>
+    val tileEntity: TileEntity,
+    val allowed: Set<RegistryEntry.Nova<UpgradeType<*>>>,
+    upgrades: MutableProvider<Map<RegistryEntry.Nova<UpgradeType<*>>, Int>>
 ) {
     
-    private val config = tileEntity.block.config
-    private val upgradeCountProviders = allowed.associateWithTo(HashMap()) { type ->
-        val countProvider = mutableProvider { upgrades.get()[type] ?: 0 }
-        countProvider.subscribe { upgrades.get()[type] = it }
-        countProvider
-    }
-    private val valueProviders: Map<UpgradeType<*>, Provider<*>> = allowed.associateWithTo(HashMap()) { type ->
-        combinedProvider(
-            type.getValueListProvider(config), upgradeCountProviders[type]!!
-        ) { valueList, level ->
-            valueList[level.coerceIn(0..valueList.lastIndex)]
+    private val upgradeCounts: Map<RegistryEntry.Nova<UpgradeType<*>>, MutableProvider<Int>>
+    private val valueLists: Map<RegistryEntry.Nova<UpgradeType<*>>, Provider<List<*>>>
+    private val values: Map<RegistryEntry.Nova<UpgradeType<*>>, Provider<*>>
+    private val limits: Map<RegistryEntry.Nova<UpgradeType<*>>, Provider<Int>>
+    
+    /**
+     * The [Inventories][VirtualInventory] representing the upgrade slots of all allowed upgrade types.
+     */
+    val inventories: Map<RegistryEntry.Nova<UpgradeType<*>>, VirtualInventory>
+        
+    init {
+        val config = tileEntity.blockType.config
+        
+        upgradeCounts = allowed.asSequence()
+            .zip(
+                upgrades.decompose(
+                    allowed.size,
+                    { map -> allowed.map { map[it] ?: 0 } },
+                    { values ->
+                        allowed.asSequence()
+                            .zip(values.asSequence())
+                            .filter { (_, value) -> value > 0 }
+                            .toMap()
+                    }
+                ).asSequence()
+            )
+            .toMap()
+        
+        valueLists = allowed.associateWith { type -> type.flatMap { it.getValueList(config) } }
+        values = allowed.associateWith { type -> valueLists[type]!!.getCoerced(upgradeCounts[type]!!) }
+        limits = allowed.associateWith { type -> valueLists[type]!!.map { min(it.size - 1, 99) } }
+        
+        inventories = allowed.associateWith { type ->
+            val inv = VirtualInventory(1)
+            
+            // init inventory
+            inv.setMaxStackSize(0, getLimit(type))
+            inv.setItem(UpdateReason.SUPPRESSED, 0, type.get().item.createItemStack(getLevel(type)))
+            
+            // prevent putting in items that don't match the upgrade type's item
+            inv.addPreUpdateHandler { e ->
+                e.isCancelled = (e.isAdd || e.isSwap) && e.newItem?.itemTypeEntry != type.get().item
+            }
+            // update upgrade count based on inventory changes
+            inv.addPostUpdateHandler {
+                getLevelProvider(type).set(inv.getItemAmount(0))
+            }
+            
+            // update maxStackSize, item type on reload
+            getLimitProvider(type).subscribe { limit ->
+                inv.setMaxStackSize(0, limit)
+            }
+            type.subscribe { type ->
+                inv.setItem(UpdateReason.SUPPRESSED, 0, type.item.createItemStack(inv.getItemAmount(0)))
+            }
+            
+            // update item in inventory when level changes
+            getLevelProvider(type).subscribe { level ->
+                inv.setItem(UpdateReason.SUPPRESSED, 0, type.get().item.createItemStack(level))
+            }
+            
+            inv
         }
     }
-    internal val gui = lazy { UpgradesGui(this) { tileEntity.menuContainer.openWindow(it) } }
     
     /**
-     * Gets the upgrade value of the given [type] based on the amount of upgrades this [UpgradeHolder] contains.
-     */
-    fun <T> getValue(type: UpgradeType<T>): T = type.getValue(config, upgradeCountProviders[type]?.get() ?: 0)
-    
-    /**
-     * Gets a provider for the upgrade value of the given [type].
+     * Gets a provider for the upgrade value list of the given [type],
+     * or of an empty list if the given [type] is not allowed in this [UpgradeHolder].
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T> getValueProvider(type: UpgradeType<T>): Provider<T> = valueProviders[type] as Provider<T>
+    fun <T : Any> getValueListProvider(type: RegistryEntry.Nova<UpgradeType<T>>): Provider<List<T>> =
+        valueLists[type] as Provider<List<T>>? ?: provider(emptyList())
     
     /**
-     * Gets the amount of upgrades that this [UpgradeHolder] contains for the given [type].
+     * Gets a provider for the current upgrade value of the given [type], 
+     * or of the default value of the given [type] if it is not allowed in this [UpgradeHolder].
      */
-    fun getLevel(type: UpgradeType<*>): Int = upgradeCountProviders[type]?.get() ?: 0
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> getValueProvider(type: RegistryEntry.Nova<UpgradeType<T>>): Provider<T> =
+        values[type] as Provider<T>? ?: type.map { it.defaultValue }
     
     /**
-     * Checks whether this [UpgradeHolder] contains any upgrades of the given [type].
+     * Gets a provider for the amount of upgrades of the given [type] that this [UpgradeHolder] contains,
+     * or of 0 if the given [type] is not allowed in this [UpgradeHolder].
      */
-    fun hasUpgrade(type: UpgradeType<*>): Boolean = getLevel(type) > 0
+    fun getLevelProvider(type: RegistryEntry.Nova<UpgradeType<*>>): MutableProvider<Int> =
+        upgradeCounts[type] ?: mutableProvider(0)
     
     /**
-     * Gets the maximum amount of upgrades that this [UpgradeHolder] can contain for the given [type].
+     * Gets a provider for the maximum amount of upgrades of the given [type] that this [UpgradeHolder] can contain,
+     * or of 0 if the given [type] is not allowed in this [UpgradeHolder].
      */
-    fun getLimit(type: UpgradeType<*>): Int = min(type.getValueList(config).size - 1, 999)
+    fun getLimitProvider(type: RegistryEntry.Nova<UpgradeType<*>>): Provider<Int> =
+        limits[type] ?: provider(0)
+    
+    /**
+     * Gets the current upgrade value of the given [type] based on the amount of upgrades this [UpgradeHolder] contains,
+     * or the current default value of the given [type] if it is not allowed in this [UpgradeHolder].
+     */
+    fun <T : Any> getValue(type: RegistryEntry.Nova<UpgradeType<T>>): T =
+        getValueProvider(type).get()
+    
+    /**
+     * Gets the current amount of upgrades that this [UpgradeHolder] contains for the given [type],
+     * or 0 if the given [type] is not allowed in this [UpgradeHolder].
+     */
+    fun getLevel(type: RegistryEntry.Nova<UpgradeType<*>>): Int =
+        getLevelProvider(type).get()
+    
+    /**
+     * Checks whether this [UpgradeHolder] currently contains any upgrades of the given [type].
+     * Returns `false` if the given [type] is not allowed in this [UpgradeHolder].
+     */
+    fun hasUpgrade(type: RegistryEntry.Nova<UpgradeType<*>>): Boolean =
+        getLevel(type) > 0
+    
+    /**
+     * Gets the current maximum amount of upgrades that this [UpgradeHolder] can contain for the given [type],
+     * or 0 if the given [type] is not allowed in this [UpgradeHolder].
+     */
+    fun getLimit(type: RegistryEntry.Nova<UpgradeType<*>>): Int =
+        getLimitProvider(type).get()
     
     /**
      * Gets the [ItemStack] representation of all upgrades that this [UpgradeHolder] contains.
      */
-    fun getUpgradeItems(): List<ItemStack> = upgradeCountProviders.asSequence()
+    fun getUpgradeItems(): List<ItemStack> = upgradeCounts.asSequence()
         .map { (type, provider) -> type to provider.get() }
         .filter { (_, amount) -> amount > 0 }
-        .map { (type, amount) -> type.item.createItemStack(amount) }
+        .map { (type, amount) -> type.get().item.createItemStack(amount) }
         .toList()
-    
-    /**
-     * Tries adding the given amount of upgrades and returns the amount of upgrades that wasn't added.
-     */
-    fun addUpgrade(type: UpgradeType<*>, amount: Int): Int {
-        if (type !in allowed || amount == 0)
-            return amount
-        
-        val limit = getLimit(type)
-        
-        val currentProvider = upgradeCountProviders[type]!!
-        val current = currentProvider.get()
-        if (limit - current < amount) {
-            currentProvider.set(limit)
-            handleUpgradeUpdates()
-            return amount - (limit - current)
-        } else {
-            currentProvider.set(current + amount)
-            handleUpgradeUpdates()
-            return 0
-        }
-    }
-    
-    /**
-     * Removes one or all upgrades of the given type and returns the [ItemStack] of removed upgrades.
-     */
-    fun removeUpgrade(type: UpgradeType<*>, all: Boolean): ItemStack? {
-        if (type !in allowed)
-            return null
-        
-        val amountProvider = upgradeCountProviders[type]!!
-        val amount = amountProvider.get()
-        if (amount <= 0)
-            return null
-        
-        if (all) {
-            amountProvider.set(0)
-        } else {
-            amountProvider.set(amount - 1)
-        }
-        
-        handleUpgradeUpdates()
-        return type.item.createItemStack(if (all) amount else 1)
-    }
-    
-    private fun handleUpgradeUpdates() {
-        if (gui.isInitialized())
-            gui.value.updateUpgrades()
-    }
     
 }

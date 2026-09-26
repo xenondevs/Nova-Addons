@@ -2,11 +2,11 @@ package xyz.xenondevs.nova.addon.logistics.item.itemfilter
 
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilterType
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilterSerializer
 
 abstract class LogisticsItemFilterSerializer(
     private val constructor: (List<ItemStack>, Boolean) -> LogisticsItemFilter
-) : ItemFilterType<LogisticsItemFilter> {
+) : ItemFilterSerializer<LogisticsItemFilter> {
     
     override fun serialize(filter: LogisticsItemFilter): Compound {
         val compound = Compound()

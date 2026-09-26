@@ -1,5 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.tileentity.world
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.CustomModelData.customModelData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -9,29 +11,26 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.particles.ParticleTypes
 import org.bukkit.Axis
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
-import org.bukkit.entity.Player
-import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.combinedProvider
-import xyz.xenondevs.invui.Click
-import xyz.xenondevs.invui.gui.Gui
-import xyz.xenondevs.invui.item.AbstractItem
-import xyz.xenondevs.invui.item.Item
-import xyz.xenondevs.invui.item.ItemProvider
+import xyz.xenondevs.commons.provider.mutableProvider
+import xyz.xenondevs.commons.provider.provider
+import xyz.xenondevs.invui.dsl.gui
+import xyz.xenondevs.invui.dsl.item
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.QUARRY
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Models
+import xyz.xenondevs.nova.addon.machines.util.addDisplay
 import xyz.xenondevs.nova.addon.machines.util.rangeAffectedValue
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
@@ -42,48 +41,48 @@ import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.BlockBreak
 import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.item.AddNumberItem
-import xyz.xenondevs.nova.ui.menu.item.RemoveNumberItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
+import xyz.xenondevs.nova.network.sendTo
+import xyz.xenondevs.nova.packetentity.PacketItemDisplay
+import xyz.xenondevs.nova.packetentity.clearAndDespawn
+import xyz.xenondevs.nova.packetentity.removeAndDespawnIf
+import xyz.xenondevs.nova.packetentity.updateMetadata
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.item.addNumberItem
+import xyz.xenondevs.nova.ui.menu.item.removeNumberItem
+import xyz.xenondevs.nova.ui.menu.itemProvider
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
 import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.BlockUtils
-import xyz.xenondevs.nova.util.Location
 import xyz.xenondevs.nova.util.LocationUtils
 import xyz.xenondevs.nova.util.center
 import xyz.xenondevs.nova.util.getNextBlockBelow
 import xyz.xenondevs.nova.util.getRectangle
 import xyz.xenondevs.nova.util.getStraightLine
-import xyz.xenondevs.nova.util.hardness
 import xyz.xenondevs.nova.util.item.ToolUtils
-import xyz.xenondevs.nova.util.novaBlock
 import xyz.xenondevs.nova.util.particle.block
 import xyz.xenondevs.nova.util.particle.particle
 import xyz.xenondevs.nova.util.positionEquals
-import xyz.xenondevs.nova.util.sendTo
 import xyz.xenondevs.nova.util.serverTick
 import xyz.xenondevs.nova.util.setBreakStage
 import xyz.xenondevs.nova.util.toVector3f
-import xyz.xenondevs.nova.world.BlockPos
 import xyz.xenondevs.nova.world.block.behavior.BlockBehavior
-import xyz.xenondevs.nova.world.block.behavior.Breakable
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import xyz.xenondevs.nova.world.block.NovaBlockState
+import xyz.xenondevs.nova.world.block.blockType
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
 import xyz.xenondevs.nova.world.item.DefaultGuiItems
-import xyz.xenondevs.nova.world.model.Model
-import xyz.xenondevs.nova.world.model.MovableMultiModel
-import xyz.xenondevs.nova.world.model.MultiModel
-import xyz.xenondevs.nova.world.pos
+import xyz.xenondevs.nova.world.item.guiItemProvider
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+private val BLOCKED_SIDES = BlockSideSet(front = true)
 
 private val MIN_SIZE by QUARRY.config.entry<Int>("min_size")
 private val MAX_SIZE = QUARRY.config.entry<Int>("max_size")
@@ -101,7 +100,7 @@ private val MAX_ENERGY = QUARRY.config.entry<Long>("capacity")
 private val BASE_ENERGY_CONSUMPTION = QUARRY.config.entry<Int>("base_energy_consumption")
 private val ENERGY_PER_SQUARE_BLOCK = QUARRY.config.entry<Int>("energy_consumption_per_square_block")
 
-class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : NetworkedTileEntity(pos, blockState, compound) {
+class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : NetworkedTileEntity(pos, blockState, compound) {
     
     private val inventory = storedInventory("quarryInventory", 9)
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.SPEED, UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY, UpgradeTypes.RANGE)
@@ -110,13 +109,16 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     
     private var sizeXZProvider = storedValue("sizeX") { DEFAULT_SIZE_X }
     private var sizeXZ by sizeXZProvider
-    private var sizeY by storedValue("sizeY") { DEFAULT_SIZE_Y }
+    private val sizeYProvider = storedValue("sizeY") { DEFAULT_SIZE_Y }
+    private var sizeY by sizeYProvider
+    private val menuSize = mutableProvider(sizeXZ)
+    private val menuDepth = mutableProvider(sizeY)
     
-    private val solidScaffolding = MovableMultiModel()
-    private val armX = MovableMultiModel()
-    private val armZ = MovableMultiModel()
-    private val armY = MovableMultiModel()
-    private val drill = MovableMultiModel()
+    private val solidScaffolding = ArrayList<PacketItemDisplay>()
+    private val armX = ArrayList<PacketItemDisplay>()
+    private val armZ = ArrayList<PacketItemDisplay>()
+    private val armY = ArrayList<PacketItemDisplay>()
+    private val drill = ArrayList<PacketItemDisplay>()
     
     private val energyPerTick by combinedProvider(
         BASE_ENERGY_CONSUMPTION,
@@ -135,7 +137,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     private var maxX = 0
     private var maxZ = 0
     private val minY: Int
-        get() = max(pos.world.minHeight, pos.y - 1 - sizeY)
+        get() = max(block.world.minHeight, block.y - 1 - sizeY)
     
     private val minBreakX: Int
         get() = minX + 1
@@ -146,12 +148,12 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     private val maxBreakX: Int
         get() = maxX - 1
     private val maxBreakY: Int
-        get() = pos.y - 2
+        get() = block.y - 2
     private val maxBreakZ: Int
         get() = maxZ - 1
     
-    private var lastPointerLocation by storedValue("lastPointerLocation") { Location(pos.world, 0.0, 0.0, 0.0) }
-    private var pointerLocation by storedValue("pointerLocation") { Location(pos.world, minX + 1.5, pos.y - 2.0, minZ + 1.5) }
+    private var lastPointerLocation by storedValue("lastPointerLocation") { Location(block.world, 0.0, 0.0, 0.0) }
+    private var pointerLocation by storedValue("pointerLocation") { Location(block.world, minX + 1.5, block.y - 2.0, minZ + 1.5) }
     private var pointerDestination: Location? by storedValue("pointerDestination")
     private var drillProgress by storedValue("drillProgress") { 0.0 }
     private var drilling by storedValue("drilling") { false }
@@ -163,9 +165,51 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         get() = moveSpeed * energySufficiency
     private val currentDrillSpeedMultiplier: Double
         get() = drillSpeedMultiplier * energySufficiency
+    private val sizeRange = maxSizeProvider.map { MIN_SIZE..it }
+    private val depthRange = provider(MIN_DEPTH..MAX_DEPTH)
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.GENERIC_3X3_WITH_BAR) {
+        upperGui by gui(
+            "s . u i i i . . e",
+            "m n p i i i . . e",
+            "M N P i i i . . e",
+        ) {
+            'i' by inventory
+            's' by openSideConfigItem(mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"))
+            'm' by removeNumberItem(sizeRange, menuSize)
+            'n' by item {
+                itemProvider by itemProvider(DefaultGuiItems.TP_NUMBER.guiItemProvider) {
+                    data[DataComponentTypes.CUSTOM_MODEL_DATA] by sizeXZProvider.map {
+                        customModelData().addFloat(it.toFloat()).build()
+                    }
+                    name by sizeXZProvider.map { Component.translatable("menu.machines.quarry.size", Component.text(it), Component.text(it)) }
+                    lore by listOf(Component.translatable("menu.machines.quarry.size_tip", NamedTextColor.GRAY))
+                }
+            }
+            'p' by addNumberItem(sizeRange, menuSize)
+            'M' by removeNumberItem(depthRange, menuDepth)
+            'N' by item {
+                itemProvider by itemProvider(DefaultGuiItems.TP_NUMBER.guiItemProvider) {
+                    data[DataComponentTypes.CUSTOM_MODEL_DATA] by sizeYProvider.map {
+                        customModelData().addFloat(it.toFloat()).build()
+                    }
+                    name by sizeYProvider.map { Component.translatable("menu.machines.quarry.depth", Component.text(it)) }
+                    lore by listOf(Component.translatable("menu.machines.quarry.depth_tip", NamedTextColor.GRAY))
+                }
+            }
+            'P' by addNumberItem(depthRange, menuDepth)
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     init {
         maxSizeProvider.subscribe { resize(sizeXZ.coerceIn(MIN_SIZE, it)) }
+        menuSize.subscribe(::resize)
+        menuDepth.subscribe {
+            sizeY = it
+            done = false
+        }
     }
     
     override fun handleEnable() {
@@ -177,21 +221,20 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     override fun handleDisable() {
         super.handleDisable()
         
-        // despawn multi-models
-        solidScaffolding.clear()
-        armX.clear()
-        armZ.clear()
-        armY.clear()
-        drill.clear()
+        solidScaffolding.clearAndDespawn()
+        armX.clearAndDespawn()
+        armZ.clearAndDespawn()
+        armY.clearAndDespawn()
+        drill.clearAndDespawn()
         
         // reset break stage of current block
         pointerDestination?.block?.setBreakStage(uuid.hashCode(), -1)
     }
     
     private fun updateBounds(checkPermission: Boolean): Boolean {
-        val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING)
+        val facing = blockState.getOrThrow(DefaultBlockStateProperties.FACING_HORIZONTAL)
         val (minX, minZ, maxX, maxZ) = getMinMaxPositions(
-            pos,
+            block,
             sizeXZ, sizeXZ,
             BlockSide.BACK.getBlockFace(facing), BlockSide.RIGHT.getBlockFace(facing)
         )
@@ -200,10 +243,10 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         this.minZ = minZ
         this.maxZ = maxZ
         
-        if (owner == null || (checkPermission && runBlocking { !canBreak(owner!!, pos, minX, maxX, minZ, maxZ) })) { // TODO: non-blocking
+        if (owner == null || (checkPermission && runBlocking { !canBreak(owner!!, block, minX, maxX, minZ, maxZ) })) { // TODO: non-blocking
             if (sizeXZ == MIN_SIZE) {
                 val ctx = Context.intention(BlockBreak)
-                    .param(BlockBreak.BLOCK_POS, pos)
+                    .param(BlockBreak.BLOCK, block)
                     .build()
                 BlockUtils.breakBlockNaturally(ctx)
                 return false
@@ -217,19 +260,20 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         if (this.sizeXZ == sizeXZ)
             return
         this.sizeXZ = sizeXZ
+        if (menuSize.get() != sizeXZ) menuSize.set(sizeXZ)
         
         if (updateBounds(true)) {
             drilling = false
             drillProgress = 0.0
             done = false
             pointerDestination = null
-            pointerLocation = Location(pos.world, minX + 1.5, pos.y - 2.0, minZ + 1.5)
+            pointerLocation = Location(block.world, minX + 1.5, block.y - 2.0, minZ + 1.5)
             
-            solidScaffolding.clear()
-            armX.clear()
-            armY.clear()
-            armZ.clear()
-            drill.clear()
+            solidScaffolding.clearAndDespawn()
+            armX.clearAndDespawn()
+            armY.clearAndDespawn()
+            armZ.clearAndDespawn()
+            drill.clearAndDespawn()
             
             createScaffolding()
         }
@@ -259,11 +303,11 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     }
     
     override fun handleEnableTicking() {
-        CoroutineScope(coroutineSupervisor).launch {
+        CoroutineScope(coroutineSupervisor!!).launch {
             while (true) {
                 if (!done && energyHolder.energy != 0L)
                     updatePointer()
-                delay(50)
+                delay(50.milliseconds)
             }
         }
     }
@@ -298,7 +342,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         // calculate and add damage
         val damage = ToolUtils.calculateDamage(
-            block.hardness,
+            block.blockType.hardness.toDouble(),
             correctForDrops = true,
             speed = currentDrillSpeedMultiplier
         ).coerceAtMost(DRILL_SPEED_CLAMP)
@@ -311,7 +355,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         if (drillProgress >= 1) { // is done drilling
             val ctx = Context.intention(BlockBreak)
-                .param(BlockBreak.BLOCK_POS, block.pos)
+                .param(BlockBreak.BLOCK, block)
                 .param(BlockBreak.SOURCE_TILE_ENTITY, this)
                 .param(BlockBreak.BLOCK_DROPS, true)
                 .build()
@@ -328,7 +372,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
                 val leftover = inventory.addItem(null, drop)
                 if (GlobalValues.DROP_EXCESS_ON_GROUND && leftover != 0) {
                     drop.amount = leftover
-                    pos.world.dropItemNaturally(block.location, drop)
+                    block.world.dropItemNaturally(block.location, drop)
                 }
             }
             
@@ -345,24 +389,24 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         // move arm x
         if (force || lastPointerLocation.z != pointerLocation.z) {
-            armX.useMetadata {
-                it.transformationInterpolationDelay = 0
-                it.translation = Vector3f(
-                    it.translation.x(),
-                    it.translation.y(),
-                    (pointerLocation.z - pos.z).toFloat()
+            armX.updateMetadata {
+                transformationInterpolationStartDeltaTicks = 0
+                translation = Vector3f(
+                    translation.x(),
+                    translation.y(),
+                    (pointerLocation.z - block.z).toFloat()
                 )
             }
         }
         
         // move arm z
         if (force || lastPointerLocation.x != pointerLocation.x) {
-            armZ.useMetadata {
-                it.transformationInterpolationDelay = 0
-                it.translation = Vector3f(
-                    (pointerLocation.x - pos.x).toFloat(),
-                    it.translation.y(),
-                    it.translation.z()
+            armZ.updateMetadata {
+                transformationInterpolationStartDeltaTicks = 0
+                translation = Vector3f(
+                    (pointerLocation.x - block.x).toFloat(),
+                    translation.y(),
+                    translation.z()
                 )
             }
         }
@@ -371,45 +415,44 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         var extended = false
         if (force || lastPointerLocation.y != pointerLocation.y) {
             // extend
-            for (y in (pos.y - 1) downTo (pointerLocation.blockY + 1)) {
-                val transY = y + 0.5f - pos.y
-                if (armY.itemDisplays.none { it.metadata.translation.y() == transY }) {
-                    val entity = armY.add(Model(
-                        item = Models.SCAFFOLDING_FULL_SLIM_VERTICAL,
-                        location = pos.location,
+            for (y in (block.y - 1) downTo (pointerLocation.blockY + 1)) {
+                val transY = y + 0.5f - block.y
+                if (armY.none { it.metadata.translation.y() == transY }) {
+                    armY.addDisplay(
+                        Models.SCAFFOLDING_FULL_SLIM_VERTICAL,
+                        block.location,
                         translation = Vector3f(0f, transY, 0f)
-                    ))
-                    entity.metadata.transformationInterpolationDuration = 1
+                    )
                     extended = true
                 }
             }
             
             // retract
-            armY.removeIf { it.metadata.translation.y() < (pointerLocation.y + 0.5 - pos.y) }
+            armY.removeAndDespawnIf { it.metadata.translation.y() < (pointerLocation.y + 0.5 - block.y) }
         }
         
         // move arm y
         if (force || extended || lastPointerLocation.x != pointerLocation.x || lastPointerLocation.z != pointerLocation.z) {
-            armY.useMetadata {
-                it.transformationInterpolationDelay = 0
-                it.translation = Vector3f(
-                    (pointerLocation.x - pos.x).toFloat(),
-                    it.translation.y(),
-                    (pointerLocation.z - pos.z).toFloat()
+            armY.updateMetadata {
+                transformationInterpolationStartDeltaTicks = 0
+                translation = Vector3f(
+                    (pointerLocation.x - block.x).toFloat(),
+                    translation.y(),
+                    (pointerLocation.z - block.z).toFloat()
                 )
             }
         }
         
         // move and rotate drill
-        drill.useMetadata {
-            it.transformationInterpolationDelay = 0
-            it.translation = Vector3f(
-                (pointerLocation.x - pos.x).toFloat(),
-                (pointerLocation.y - pos.y + 0.5).toFloat(),
-                (pointerLocation.z - pos.z).toFloat()
+        val rotAngle = if (drilling) 25 * (2 - drillProgress) else 0.0
+        drill.updateMetadata {
+            transformationInterpolationStartDeltaTicks = 0
+            translation = Vector3f(
+                (pointerLocation.x - block.x).toFloat(),
+                (pointerLocation.y - block.y + 0.5).toFloat(),
+                (pointerLocation.z - block.z).toFloat()
             )
-            val rotAngle = if (drilling) 25 * (2 - drillProgress) else 0.0
-            it.leftRotation = it.leftRotation.rotateY(Math.toRadians(rotAngle).toFloat(), Quaternionf())
+            leftRotation = leftRotation.rotateY(Math.toRadians(rotAngle).toFloat(), Quaternionf())
         }
         
         lastPointerLocation = pointerLocation
@@ -431,10 +474,10 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
                 for (z in minZ..maxZ) {
                     if (x != minX && x != maxX && z != minZ && z != maxZ) continue
                     
-                    val topLoc = LocationUtils.getTopBlockBetween(pos.world, x, z, maxBreakY, minBreakY)
+                    val topLoc = LocationUtils.getTopBlockBetween(block.world, x, z, maxBreakY, minBreakY)
                     if (topLoc != null
-                        && topLoc.block.hardness >= 0
-                        && runBlocking { ProtectionManager.canBreak(this@Quarry, null, topLoc.pos) } // TODO: non-blocking
+                        && topLoc.block.blockType.hardness >= 0
+                        && runBlocking { ProtectionManager.canBreak(this@Quarry, null, topLoc.block) } // TODO: non-blocking
                     ) {
                         results += topLoc
                     }
@@ -473,7 +516,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     private fun spawnDrillParticles(block: Block) {
         // block cracks
         particle(ParticleTypes.BLOCK, block.location.center().apply { y += 1 }) {
-            block(block.novaBlock?.getBehaviorOrNull<Breakable>()?.breakParticles ?: block.type)
+            block(block.blockType)
             offsetX(0.2f)
             offsetZ(0.2f)
             speed(0.5f)
@@ -486,24 +529,20 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         }.sendTo(getViewers())
     }
     
+    //<editor-fold desc="scaffolding creation">
     private fun createScaffolding() {
         createScaffoldingOutlines()
         createScaffoldingCorners()
         createScaffoldingPillars()
         createScaffoldingArms()
-        drill.add(Model(Models.NETHERITE_DRILL, pos.location))
-        
-        armX.useMetadata(false) { it.transformationInterpolationDuration = 1 }
-        armZ.useMetadata(false) { it.transformationInterpolationDuration = 1 }
-        armY.useMetadata(false) { it.transformationInterpolationDuration = 1 }
-        drill.useMetadata(false) { it.transformationInterpolationDuration = 1 }
+        drill.addDisplay(Models.NETHERITE_DRILL, block.location)
         
         updatePointer(true)
     }
     
     private fun createScaffoldingOutlines() {
-        val min = Location(pos.world, minX.toDouble(), pos.y, minZ.toDouble())
-        val max = Location(pos.world, maxX.toDouble(), pos.y, maxZ.toDouble())
+        val min = Location(block.world, minX.toDouble(), block.y.toDouble(), minZ.toDouble())
+        val max = Location(block.world, maxX.toDouble(), block.y.toDouble(), maxZ.toDouble())
         
         min.getRectangle(max, true).forEach { (axis, locations) ->
             locations.forEach { createHorizontalScaffolding(solidScaffolding, it, axis) }
@@ -511,7 +550,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
     }
     
     private fun createScaffoldingArms() {
-        val baseLocation = pos.location.add(0.0, 0.5, 0.0)
+        val baseLocation = block.location.add(0.0, 0.5, 0.0)
         
         val armXLocations = LocationUtils.getStraightLine(baseLocation, Axis.X, minX..maxX)
         armXLocations.withIndex().forEach { (index, location) ->
@@ -533,7 +572,10 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             }
         }
         
-        armY.add(Model(Models.SCAFFOLDING_SLIM_VERTICAL_DOWN, baseLocation.clone()))
+        armY.addDisplay(
+            Models.SCAFFOLDING_SLIM_VERTICAL_DOWN,
+            baseLocation.clone()
+        )
     }
     
     private fun createScaffoldingPillars() {
@@ -544,80 +586,80 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             if (blockBelow != null && blockBelow.positionEquals(corner)) continue
             
             corner
-                .getStraightLine(Axis.Y, (blockBelow?.blockY ?: pos.world.minHeight) + 1)
+                .getStraightLine(Axis.Y, (blockBelow?.blockY ?: block.world.minHeight) + 1)
                 .forEach { createVerticalScaffolding(solidScaffolding, it) }
         }
     }
     
     private fun createScaffoldingCorners() {
         val corners = getCornerLocations()
-            .filterNot { it.pos == pos }
+            .filterNot { it.block == block }
             .map { it.add(.5, .5, .5) }
         
-        solidScaffolding.addAll(corners.map { Model(Models.SCAFFOLDING_CORNER_DOWN, it) })
+        corners.forEach { solidScaffolding.addDisplay(Models.SCAFFOLDING_CORNER_DOWN, it) }
     }
     
     private fun getCornerLocations(): List<Location> =
         listOf(
-            Location(pos.world, maxX.toDouble(), pos.y, maxZ.toDouble(), 180f, 0f),
-            Location(pos.world, minX.toDouble(), pos.y, maxZ.toDouble(), 270f, 0f),
-            Location(pos.world, maxX.toDouble(), pos.y, minZ.toDouble(), 90f, 0f),
-            Location(pos.world, minX.toDouble(), pos.y, minZ.toDouble(), 0f, 0f),
+            Location(block.world, maxX.toDouble(), block.y.toDouble(), maxZ.toDouble(), 180f, 0f),
+            Location(block.world, minX.toDouble(), block.y.toDouble(), maxZ.toDouble(), 270f, 0f),
+            Location(block.world, maxX.toDouble(), block.y.toDouble(), minZ.toDouble(), 90f, 0f),
+            Location(block.world, minX.toDouble(), block.y.toDouble(), minZ.toDouble(), 0f, 0f),
         )
     
-    private fun createSmallHorizontalScaffolding(model: MultiModel, location: Location, extraRot: Float, axis: Axis) {
-        val modelLocation = pos.location
+    private fun createSmallHorizontalScaffolding(model: MutableList<PacketItemDisplay>, location: Location, extraRot: Float, axis: Axis) {
+        val modelLocation = block.location
         val translation = location.toVector3f().sub(modelLocation.toVector3f())
         
-        model.add(Model(
-            item = Models.SCAFFOLDING_SMALL_HORIZONTAL,
-            location = modelLocation,
+        model.addDisplay(
+            Models.SCAFFOLDING_SMALL_HORIZONTAL,
+            modelLocation,
             translation = translation,
             leftRotation = Quaternionf().rotateY((if (axis == Axis.Z) Math.PI else Math.PI / -2).toFloat() + extraRot)
-        ))
+        )
     }
     
-    private fun createHorizontalScaffolding(model: MultiModel, location: Location, axis: Axis, center: Boolean = true) {
-        val modelLocation = pos.location
-        var translation = location.toVector3f().sub(modelLocation.toVector3f())
+    private fun createHorizontalScaffolding(model: MutableList<PacketItemDisplay>, location: Location, axis: Axis, center: Boolean = true) {
+        val modelLocation = block.location
+        val translation = location.toVector3f().sub(modelLocation.toVector3f())
         if (center)
             translation.add(0.5f, 0.5f, 0.5f)
         
-        model.add(Model(
-            item = Models.SCAFFOLDING_FULL_HORIZONTAL,
-            location = modelLocation,
+        model.addDisplay(
+            Models.SCAFFOLDING_FULL_HORIZONTAL,
+            modelLocation,
             translation = translation,
             leftRotation = Quaternionf().rotateY((if (axis == Axis.Z) Math.PI else Math.PI / -2).toFloat())
-        ))
+        )
     }
     
-    private fun createVerticalScaffolding(model: MultiModel, location: Location) {
-        model.add(Model(Models.SCAFFOLDING_FULL_VERTICAL, location.add(.5, .5, .5)))
+    private fun createVerticalScaffolding(model: MutableList<PacketItemDisplay>, location: Location) {
+        model.addDisplay(Models.SCAFFOLDING_FULL_VERTICAL, location.add(.5, .5, .5))
     }
+    //</editor-fold>
     
     companion object : BlockBehavior {
         
-        override suspend fun canPlace(pos: BlockPos, state: NovaBlockState, ctx: Context<BlockPlace>): Boolean {
-            val facing = ctx[BlockPlace.BLOCK_STATE_NOVA]?.get(DefaultBlockStateProperties.FACING)
-                ?: return false
+        override suspend fun canPlace(block: Block, data: NovaBlockState, ctx: Context<BlockPlace>): Boolean {
+            val facing = data.getOrThrow(DefaultBlockStateProperties.FACING_HORIZONTAL)
             
             val (minX, minZ, maxX, maxZ) = getMinMaxPositions(
-                pos,
+                block,
                 MIN_SIZE, MIN_SIZE,
                 BlockSide.BACK.getBlockFace(facing),
                 BlockSide.RIGHT.getBlockFace(facing)
             )
             
-            val itemStack = ctx[BlockPlace.BLOCK_ITEM_STACK] ?: ItemStack(Material.AIR)
+            val itemStack = ctx[BlockPlace.BLOCK_ITEM_STACK] ?: ItemStack.empty()
             val tileEntity = ctx[BlockPlace.SOURCE_TILE_ENTITY]
             val player = ctx[BlockPlace.RESPONSIBLE_PLAYER]
             
             if (tileEntity != null) {
-                return checkBlockPermissions(minX, maxX, minZ, maxZ, pos.y, pos.world) {
+                return checkBlockPermissions(minX, maxX, minZ, maxZ, block.y, block.world) {
                     ProtectionManager.canPlace(tileEntity, itemStack, it)
                 }
             } else if (player != null) {
-                return checkBlockPermissions(minX, maxX, minZ, maxZ, pos.y, pos.world) {
+                return checkBlockPermissions(minX, maxX, minZ, maxZ, block.y, block.world) {
                     ProtectionManager.canPlace(player, itemStack, it)
                 }
             }
@@ -627,7 +669,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
         
         private suspend fun canBreak(
             owner: OfflinePlayer?,
-            pos: BlockPos,
+            pos: Block,
             minX: Int, maxX: Int,
             minZ: Int, maxZ: Int
         ): Boolean {
@@ -643,11 +685,11 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             minX: Int, maxX: Int,
             minZ: Int, maxZ: Int,
             y: Int, world: World,
-            check: suspend (BlockPos) -> Boolean
+            check: suspend (Block) -> Boolean
         ): Boolean {
             for (x in minX..maxX) {
                 for (z in minZ..maxZ) {
-                    if (!check(BlockPos(world, x, y, z)))
+                    if (!check(world.getBlockAt(x, y, z)))
                         return false
                 }
             }
@@ -655,7 +697,7 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             return true
         }
         
-        private fun getMinMaxPositions(pos: BlockPos, sizeX: Int, sizeZ: Int, back: BlockFace, right: BlockFace): IntArray {
+        private fun getMinMaxPositions(pos: Block, sizeX: Int, sizeZ: Int, back: BlockFace, right: BlockFace): IntArray {
             val modX = back.modX.takeUnless { it == 0 } ?: right.modX
             val modZ = back.modZ.takeUnless { it == 0 } ?: right.modZ
             
@@ -668,77 +710,6 @@ class Quarry(pos: BlockPos, blockState: NovaBlockState, compound: Compound) : Ne
             val maxZ = max(pos.z, pos.z + distanceZ)
             
             return intArrayOf(minX, minZ, maxX, maxZ)
-        }
-        
-    }
-    
-    @TileEntityMenuClass
-    inner class QuarryMenu : GlobalTileEntityMenu() {
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@Quarry,
-            mapOf(itemHolder.getNetworkedInventory(inventory) to "inventory.nova.default"),
-            ::openWindow
-        )
-        
-        private val sizeItems = ArrayList<Item>()
-        private val depthItems = ArrayList<Item>()
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s u # # # # e |",
-                "| # # # i i i e |",
-                "| m n p i i i e |",
-                "| M N P i i i e |",
-                "3 - - - - - - - 4")
-            .addIngredient('i', inventory)
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('m', RemoveNumberItem({ MIN_SIZE..maxSize }, { sizeXZ }, ::setSize).also(sizeItems::add))
-            .addIngredient('n', SizeDisplayItem { sizeXZ }.also(sizeItems::add))
-            .addIngredient('p', AddNumberItem({ MIN_SIZE..maxSize }, { sizeXZ }, ::setSize).also(sizeItems::add))
-            .addIngredient('M', RemoveNumberItem({ MIN_DEPTH..MAX_DEPTH }, { sizeY }, ::setDepth).also(depthItems::add))
-            .addIngredient('N', DepthDisplayItem { sizeY }.also(depthItems::add))
-            .addIngredient('P', AddNumberItem({ MIN_DEPTH..MAX_DEPTH }, { sizeY }, ::setDepth).also(depthItems::add))
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(4, energyHolder))
-            .build()
-        
-        private fun setSize(size: Int) {
-            resize(size)
-            sizeItems.forEach(Item::notifyWindows)
-        }
-        
-        private fun setDepth(depth: Int) {
-            sizeY = depth
-            done = false
-            depthItems.forEach(Item::notifyWindows)
-        }
-        
-        private inner class SizeDisplayItem(private val getNumber: () -> Int) : AbstractItem() {
-            
-            override fun getItemProvider(player: Player): ItemProvider {
-                val number = getNumber()
-                return DefaultGuiItems.NUMBER.createClientsideItemBuilder().addCustomModelData(getNumber())
-                    .setName(Component.translatable("menu.machines.quarry.size", Component.text(number), Component.text(number)))
-                    .addLoreLines(Component.translatable("menu.machines.quarry.size_tip", NamedTextColor.GRAY))
-            }
-            
-            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
-            
-        }
-        
-        private inner class DepthDisplayItem(private val getNumber: () -> Int) : AbstractItem() {
-            
-            override fun getItemProvider(player: Player): ItemProvider {
-                val number = getNumber()
-                return DefaultGuiItems.NUMBER.createClientsideItemBuilder().addCustomModelData(getNumber())
-                    .setName(Component.translatable("menu.machines.quarry.depth", Component.text(number)))
-                    .addLoreLines(Component.translatable("menu.machines.quarry.depth_tip", NamedTextColor.GRAY))
-            }
-            
-            override fun handleClick(clickType: ClickType, player: Player, click: Click) = Unit
-            
         }
         
     }

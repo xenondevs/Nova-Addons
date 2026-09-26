@@ -1,6 +1,7 @@
 package xyz.xenondevs.nova.addon.machines.recipe.group.hardcoded
 
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.key.Key.key
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.addon.machines.registry.Items
@@ -10,7 +11,7 @@ import xyz.xenondevs.nova.addon.machines.tileentity.processing.Freezer
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.util.Key
+import xyz.xenondevs.nova.world.item.createItemStack
 import xyz.xenondevs.nova.world.item.recipe.NovaRecipe
 import xyz.xenondevs.nova.world.item.recipe.RecipeRegistry
 import xyz.xenondevs.nova.world.item.recipe.SingleResultRecipe
@@ -20,12 +21,12 @@ object HardcodedRecipes {
     
     private val recipes: List<NovaRecipe> = listOf(
         StarCollectorRecipe,
-        CobblestoneGeneratorRecipe(Key(Machines, "cobblestone_generator.cobblestone"), CobblestoneGenerator.Mode.COBBLESTONE),
-        CobblestoneGeneratorRecipe(Key(Machines, "cobblestone_generator.stone"), CobblestoneGenerator.Mode.STONE),
-        CobblestoneGeneratorRecipe(Key(Machines, "cobblestone_generator.obsidian"), CobblestoneGenerator.Mode.OBSIDIAN),
-        FreezerRecipe(Key(Machines, "freezer.ice"), Freezer.Mode.ICE),
-        FreezerRecipe(Key(Machines, "freezer.packed_ice"), Freezer.Mode.PACKED_ICE),
-        FreezerRecipe(Key(Machines, "freezer.blue_ice"), Freezer.Mode.BLUE_ICE),
+        CobblestoneGeneratorRecipe(key(Machines, "cobblestone_generator.cobblestone"), CobblestoneGenerator.Mode.COBBLESTONE),
+        CobblestoneGeneratorRecipe(key(Machines, "cobblestone_generator.stone"), CobblestoneGenerator.Mode.STONE),
+        CobblestoneGeneratorRecipe(key(Machines, "cobblestone_generator.obsidian"), CobblestoneGenerator.Mode.OBSIDIAN),
+        FreezerRecipe(key(Machines, "freezer.ice"), Freezer.Mode.ICE),
+        FreezerRecipe(key(Machines, "freezer.packed_ice"), Freezer.Mode.PACKED_ICE),
+        FreezerRecipe(key(Machines, "freezer.blue_ice"), Freezer.Mode.BLUE_ICE),
     )
     
     @InitFun
@@ -40,7 +41,7 @@ object HardcodedRecipes {
 }
 
 object StarCollectorRecipe : NovaRecipe, SingleResultRecipe {
-    override val id = Key(Machines, "star_collector.star_dust")
+    override val id = key(Machines, "star_collector.star_dust")
     override val type = RecipeTypes.STAR_COLLECTOR
     override val result = Items.STAR_DUST.createItemStack()
 }

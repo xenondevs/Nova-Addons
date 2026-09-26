@@ -1,9 +1,13 @@
 # Tool Options
 tool_tier: vanilla_hammers:emerald
-tool_category: minecraft:pickaxe
+tool_category: vanilla_hammers:hammer
 break_speed: 2
+item_damage_on_break_block: 1
+
+# Weapon Options
 attack_damage: 7
 attack_speed: 1
+item_damage_on_attack_entity: 2
 
 # Hammer Options
 range: 1
@@ -13,8 +17,6 @@ slowdown_per_block: 0.2
 
 # Damageable Options
 durability: 1560
-item_damage_on_attack_entity: 2
-item_damage_on_break_block: 1
 repair_ingredient: "minecraft:emerald"
 
 # Enchantable Options

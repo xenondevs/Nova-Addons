@@ -5,44 +5,59 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.joml.Quaternionf
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.registry.Models
+import xyz.xenondevs.nova.addon.machines.util.addDisplay
 import xyz.xenondevs.nova.addon.machines.util.efficiencyMultipliedValue
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.packetentity.PacketItemDisplay
+import xyz.xenondevs.nova.packetentity.despawn
+import xyz.xenondevs.nova.packetentity.updateMetadata
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.yaw
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
-import xyz.xenondevs.nova.world.model.Model
-import xyz.xenondevs.nova.world.model.MovableMultiModel
 import kotlin.math.roundToLong
+import kotlin.time.Duration.Companion.milliseconds
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.LEFT, BlockSide.RIGHT, BlockSide.BACK, BlockSide.BOTTOM, BlockSide.TOP)
+private val BLOCKED_SIDES = BlockSideSet(left = true, right = true, back = true, bottom = true, top = true)
 
 private val MAX_ENERGY = Blocks.WIND_TURBINE.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = Blocks.WIND_TURBINE.config.entry<Long>("energy_per_tick")
 private val PLAY_ANIMATION by Blocks.WIND_TURBINE.config.entry<Boolean>("animation")
 
-class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class WindTurbine(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val upgradeHolder = storedUpgradeHolder(UpgradeTypes.EFFICIENCY, UpgradeTypes.ENERGY)
     private val energyHolder = storedEnergyHolder(MAX_ENERGY, upgradeHolder, EXTRACT, BLOCKED_SIDES)
     
-    private val turbineModel = MovableMultiModel()
-    private val altitude = (pos.y - pos.world.minHeight) / (pos.world.maxHeight - pos.world.minHeight - 1).toDouble()
+    private val turbineModel = ArrayList<PacketItemDisplay>()
+    private val altitude = (block.y - block.world.minHeight) / (block.world.maxHeight - block.world.minHeight - 1).toDouble()
     private val rotationPerTick = altitude * 15.0
     private val energyPerTick by efficiencyMultipliedValue(ENERGY_PER_TICK, upgradeHolder).map { (it * altitude).roundToLong() }
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.CENTER_BAR) {
+        upperGui by gui(
+            "u . . . e . . . .",
+            ". . . . e . . . .",
+            ". . . . e . . . .",
+        ) {
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     override fun handleEnable() {
         super.handleEnable()
@@ -51,26 +66,25 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
     
     override fun handleDisable() {
         super.handleDisable()
+        turbineModel.despawn()
         turbineModel.clear()
     }
     
     private fun spawnModels() {
-        val location = pos.location.add(0.5, 3.5, 0.5)
-        location.yaw = blockState.getOrThrow(DefaultBlockStateProperties.FACING).yaw
+        val location = block.location.add(0.5, 3.5, 0.5)
+        location.yaw = blockState.getOrThrow(DefaultBlockStateProperties.FACING_HORIZONTAL).yaw
         
-        turbineModel.add(Model(Models.WIND_TURBINE_ROTOR_MIDDLE, location))
+        turbineModel.addDisplay(Models.WIND_TURBINE_ROTOR_MIDDLE, location)
         for (blade in 0..2) {
-            turbineModel.add(Model(
+            turbineModel.addDisplay(
                 Models.WIND_TURBINE_ROTOR_BLADE,
                 location,
                 rightRotation = Quaternionf().setAngleAxis(
                     (Math.PI * 2 / 3 * blade).toFloat(),
                     0f, 0f, 1f
                 )
-            ))
+            )
         }
-        
-        turbineModel.useMetadata(false) { it.transformationInterpolationDuration = 1 }
     }
     
     override fun handleTick() {
@@ -81,38 +95,22 @@ class WindTurbine(pos: BlockPos, blockState: NovaBlockState, data: Compound) : N
         if (!PLAY_ANIMATION)
             return
         
-        CoroutineScope(coroutineSupervisor).launch { 
+        CoroutineScope(coroutineSupervisor!!).launch {
             while (true) {
                 rotate()
-                delay(50)
+                delay(50.milliseconds)
             }
         }
     }
     
     private fun rotate() {
-        turbineModel.useMetadata {
-            it.transformationInterpolationDelay = 0
-            it.leftRotation = it.leftRotation.rotateZ(
+        turbineModel.updateMetadata {
+            transformationInterpolationStartDeltaTicks = 0
+            leftRotation = leftRotation.rotateZ(
                 Math.toRadians(rotationPerTick).toFloat(),
                 Quaternionf()
             )
         }
-    }
-    
-    @TileEntityMenuClass
-    inner class WindTurbineMenu : GlobalTileEntityMenu() {
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| u # # e # # # |",
-                "| # # # e # # # |",
-                "| # # # e # # # |",
-                "3 - - - - - - - 4")
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
     }
     
 }

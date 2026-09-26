@@ -1,18 +1,20 @@
 package xyz.xenondevs.nova.addon.logistics.item.itemfilter
 
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.ItemType
 import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
 import xyz.xenondevs.nova.addon.logistics.registry.Items
 import xyz.xenondevs.nova.addon.logistics.util.setItemFilter
+import xyz.xenondevs.nova.registry.registryEntrySetOf
 import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilter
-import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.world.item.getBehaviorOrThrow
 
-private val FILTER_TYPES: Map<Int, NovaItem> = setOf(
+private val FILTER_TYPES: Map<Int, ItemType> by registryEntrySetOf(
     Items.BASIC_ITEM_FILTER,
     Items.ADVANCED_ITEM_FILTER,
     Items.ELITE_ITEM_FILTER,
     Items.ULTIMATE_ITEM_FILTER
-).associateBy { it.getBehavior<ItemFilterBehavior>().size }
+).map { set -> set.associateBy { item -> item.getBehaviorOrThrow<ItemFilterBehavior>().size } }
 
 abstract class LogisticsItemFilter : ItemFilter<LogisticsItemFilter> {
     

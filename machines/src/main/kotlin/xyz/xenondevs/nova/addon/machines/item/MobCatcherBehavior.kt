@@ -3,6 +3,7 @@
 package xyz.xenondevs.nova.addon.machines.item
 
 import com.google.common.collect.Sets
+import net.kyori.adventure.key.Key.key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.core.registries.BuiltInRegistries
@@ -22,7 +23,6 @@ import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.BlockInteract
 import xyz.xenondevs.nova.context.intention.EntityInteract
 import xyz.xenondevs.nova.util.EntityUtils
-import xyz.xenondevs.nova.util.Key
 import xyz.xenondevs.nova.util.advance
 import xyz.xenondevs.nova.util.center
 import xyz.xenondevs.nova.util.component.adventure.withoutPreFormatting
@@ -31,10 +31,12 @@ import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.world.InteractionResult
 import xyz.xenondevs.nova.world.item.ItemAction
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import xyz.xenondevs.nova.world.item.config
+import xyz.xenondevs.nova.world.item.createItemStack
 import kotlin.reflect.full.isSubclassOf
 
-private val DATA_KEY = Key(Machines, "entitydata")
-private val TYPE_KEY = Key(Machines, "entitytype")
+private val DATA_KEY = key(Machines, "entitydata")
+private val TYPE_KEY = key(Machines, "entitytype")
 
 private val MOB_ENTITY_TYPES: Set<EntityType> = EntityType.entries.filterTo(HashSet()) { it.entityClass?.kotlin?.isSubclassOf(Mob::class) == true }
 private val WHITELISTED_ENTITY_TYPES: Provider<Set<EntityType>> = Items.MOB_CATCHER.config.entry<Set<EntityType>>("entity_whitelist")

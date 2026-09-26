@@ -5,6 +5,7 @@ import xyz.xenondevs.nova.addon.jetpacks.ability.JetpackFlyAbility
 import xyz.xenondevs.nova.config.entry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
+import xyz.xenondevs.nova.world.item.config
 
 private val BASIC_FLY_SPEED = Items.BASIC_JETPACK.config.entry<Float>("fly_speed")
 private val BASIC_ENERGY_PER_TICK = Items.BASIC_JETPACK.config.entry<Long>("energy_per_tick")
@@ -15,7 +16,7 @@ private val ELITE_ENERGY_PER_TICK = Items.ELITE_JETPACK.config.entry<Long>("ener
 private val ULTIMATE_FLY_SPEED = Items.ULTIMATE_JETPACK.config.entry<Float>("fly_speed")
 private val ULTIMATE_ENERGY_PER_TICK = Items.ULTIMATE_JETPACK.config.entry<Long>("energy_per_tick")
 
-@Init(stage = InitStage.POST_PACK_PRE_WORLD)
+@Init(stage = InitStage.PRE_PACK)
 object Abilities {
     
     val BASIC_JETPACK_FLY = registerAbilityType("basic_jetpack_fly") { JetpackFlyAbility(it, BASIC_FLY_SPEED, BASIC_ENERGY_PER_TICK) }

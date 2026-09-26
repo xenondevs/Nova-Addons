@@ -10,33 +10,34 @@ import org.bukkit.World
 import org.bukkit.inventory.CookingRecipe
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.cbf.Compound
-import xyz.xenondevs.commons.collections.enumSetOf
 import xyz.xenondevs.commons.provider.mapNonNull
-import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.commons.provider.mutableProvider
+import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import xyz.xenondevs.invui.inventory.event.PlayerUpdateReason
-import xyz.xenondevs.nova.addon.machines.gui.ProgressArrowItem
+import xyz.xenondevs.nova.addon.machines.gui.progressArrowItem
 import xyz.xenondevs.nova.addon.machines.registry.BlockStateProperties
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.ELECTRIC_FURNACE
+import xyz.xenondevs.nova.addon.machines.registry.GuiTextures
 import xyz.xenondevs.nova.addon.machines.util.energyConsumption
 import xyz.xenondevs.nova.addon.machines.util.speedMultipliedValue
-import xyz.xenondevs.nova.addon.simpleupgrades.gui.OpenUpgradesItem
+import xyz.xenondevs.nova.addon.simpleupgrades.openUpgradesItem
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
 import xyz.xenondevs.nova.addon.simpleupgrades.storedEnergyHolder
 import xyz.xenondevs.nova.addon.simpleupgrades.storedUpgradeHolder
 import xyz.xenondevs.nova.config.entry
-import xyz.xenondevs.nova.ui.menu.EnergyBar
-import xyz.xenondevs.nova.ui.menu.sideconfig.OpenSideConfigItem
-import xyz.xenondevs.nova.ui.menu.sideconfig.SideConfigMenu
-import xyz.xenondevs.nova.util.BlockSide
+import xyz.xenondevs.nova.world.block.config
+import xyz.xenondevs.nova.ui.menu.energyBar
+import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
+import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.MINECRAFT_SERVER
 import xyz.xenondevs.nova.util.serverLevel
 import xyz.xenondevs.nova.util.spawnExpOrb
 import xyz.xenondevs.nova.util.unwrap
-import xyz.xenondevs.nova.world.BlockPos
-import xyz.xenondevs.nova.world.block.state.NovaBlockState
+import org.bukkit.block.Block
+import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
-import xyz.xenondevs.nova.world.block.tileentity.menu.TileEntityMenuClass
+import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.EXTRACT
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
 
@@ -46,13 +47,13 @@ private fun getRecipe(input: ItemStack, world: World): CookingRecipe<*>? {
         ?.toBukkitRecipe() as? CookingRecipe<*>
 }
 
-private val BLOCKED_SIDES = enumSetOf(BlockSide.FRONT)
+private val BLOCKED_SIDES = BlockSideSet(front = true)
 
 private val MAX_ENERGY = ELECTRIC_FURNACE.config.entry<Long>("capacity")
 private val ENERGY_PER_TICK = ELECTRIC_FURNACE.config.entry<Long>("energy_per_tick")
 private val COOK_SPEED = ELECTRIC_FURNACE.config.entry<Int>("cook_speed")
 
-class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
+class ElectricFurnace(pos: Block, blockState: NovaBlockState, data: Compound) : NetworkedTileEntity(pos, blockState, data) {
     
     private val inputInventory = storedInventory("input", 1, ::handleInputInventoryUpdate)
     private val outputInventory = storedInventory("output", 1, ::handleOutputInventoryUpdate)
@@ -74,13 +75,36 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
         set(active) {
             if (field != active) {
                 field = active
-                updateBlockState(blockState.with(BlockStateProperties.ACTIVE, active))
+                updateBlockState(blockState.apply { this[BlockStateProperties.ACTIVE] = active })
             }
         }
+    private val progress = mutableProvider(0.0)
+    
+    override val menu = TileEntityMenu.cachedWindow(GuiTextures.ELECTRIC_FURNACE) {
+        updateProgress()
+        
+        upperGui by gui(
+            "s . . . . . . . e",
+            "u . i . > . o . e",
+            ". . . . . . . . e",
+        ) {
+            'i' by inputInventory
+            'o' by outputInventory
+            '>' by progressArrowItem(progress)
+            's' by openSideConfigItem(
+                mapOf(
+                    itemHolder.getNetworkedInventory(inputInventory) to "inventory.nova.input",
+                    itemHolder.getNetworkedInventory(outputInventory) to "inventory.nova.output"
+                )
+            )
+            'u' by openUpgradesItem(upgradeHolder)
+            'e' by energyBar(energyHolder)
+        }
+    }
     
     private fun handleInputInventoryUpdate(event: ItemPreUpdateEvent) {
         val itemStack = event.newItem
-        if (itemStack != null && getRecipe(itemStack, pos.world) == null) {
+        if (itemStack != null && getRecipe(itemStack, block.world) == null) {
             event.isCancelled = true
         }
     }
@@ -93,13 +117,13 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
             if (updateReason is PlayerUpdateReason) {
                 val player = updateReason.player()
                 if (event.newItem == null) { // took all items
-                    experience -= pos.block.spawnExpOrb(experience.toInt(), player.location)
+                    experience -= block.spawnExpOrb(experience.toInt(), player.location)
                 } else {
                     val amount = event.removedAmount
                     val experiencePerItem = experience / event.previousItem!!.amount
                     val experience = amount * experiencePerItem
                     
-                    this.experience -= pos.block.spawnExpOrb(experience.toInt(), player.location)
+                    this.experience -= block.spawnExpOrb(experience.toInt(), player.location)
                 }
             }
         } else event.isCancelled = true
@@ -112,7 +136,7 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
             if (currentRecipe == null) {
                 val item = inputInventory.getItem(0)
                 if (item != null) {
-                    val recipe = getRecipe(item, pos.world)
+                    val recipe = getRecipe(item, block.world)
                     if (recipe != null && outputInventory.canHold(recipe.result)) {
                         currentRecipe = recipe
                         inputInventory.addItemAmount(null, 0, -1)
@@ -134,49 +158,14 @@ class ElectricFurnace(pos: BlockPos, blockState: NovaBlockState, data: Compound)
                     this.currentRecipe = null
                 }
                 
-                menuContainer.forEachMenu(ElectricFurnaceMenu::updateProgress)
+                updateProgress()
             }
         } else active = false
     }
     
-    @TileEntityMenuClass
-    inner class ElectricFurnaceMenu : GlobalTileEntityMenu() {
-        
-        private val progressItem = ProgressArrowItem()
-        
-        private val sideConfigGui = SideConfigMenu(
-            this@ElectricFurnace,
-            mapOf(
-                itemHolder.getNetworkedInventory(inputInventory) to "inventory.nova.input",
-                itemHolder.getNetworkedInventory(outputInventory) to "inventory.nova.output"
-            ),
-            ::openWindow
-        )
-        
-        override val gui = Gui.builder()
-            .setStructure(
-                "1 - - - - - - - 2",
-                "| s u # # # # e |",
-                "| i # > # o # e |",
-                "| # # # # # # e |",
-                "3 - - - - - - - 4")
-            .addIngredient('i', inputInventory)
-            .addIngredient('o', outputInventory)
-            .addIngredient('>', progressItem)
-            .addIngredient('s', OpenSideConfigItem(sideConfigGui))
-            .addIngredient('u', OpenUpgradesItem(upgradeHolder))
-            .addIngredient('e', EnergyBar(3, energyHolder))
-            .build()
-        
-        init {
-            updateProgress()
-        }
-        
-        fun updateProgress() {
-            val cookTime = currentRecipe?.cookingTime ?: 0
-            progressItem.percentage = if (timeCooked == 0) 0.0 else timeCooked.toDouble() / cookTime.toDouble()
-        }
-        
+    private fun updateProgress() {
+        val cookTime = currentRecipe?.cookingTime ?: 0
+        progress.set(if (timeCooked == 0) 0.0 else timeCooked.toDouble() / cookTime.toDouble())
     }
     
 }

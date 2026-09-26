@@ -1,13 +1,14 @@
 package xyz.xenondevs.nova.addon.simpleupgrades
 
-import org.bukkit.block.BlockFace
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.commons.collections.enumMap
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.nova.addon.simpleupgrades.registry.UpgradeTypes
-import xyz.xenondevs.nova.util.BlockSide
-import xyz.xenondevs.nova.util.CUBE_FACES
+import xyz.xenondevs.nova.registry.RegistryEntry
+import xyz.xenondevs.nova.util.BlockSideMap
+import xyz.xenondevs.nova.util.BlockSideSet
+import xyz.xenondevs.nova.util.CubeFaceMap
+import xyz.xenondevs.nova.util.CubeFaceSet
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.world.block.tileentity.TileEntity
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType
@@ -25,7 +26,7 @@ import kotlin.math.roundToLong
  * The upgrade holder will also be registered as a drop provider, i.e. the upgrade items will be dropped
  * when the [TileEntity] is destroyed.
  */
-fun TileEntity.storedUpgradeHolder(vararg allowedTypes: UpgradeType<*>): UpgradeHolder =
+fun TileEntity.storedUpgradeHolder(vararg allowedTypes: RegistryEntry.Nova<UpgradeType<*>>): UpgradeHolder =
     storedUpgradeHolder(false, *allowedTypes)
 
 /**
@@ -36,8 +37,8 @@ fun TileEntity.storedUpgradeHolder(vararg allowedTypes: UpgradeType<*>): Upgrade
  * items will be dropped when the [TileEntity] is destroyed. Otherwise, the upgrade items will be stored in the
  * [TileEntity's][TileEntity] [ItemStack].
  */
-fun TileEntity.storedUpgradeHolder(persistent: Boolean, vararg allowedTypes: UpgradeType<*>): UpgradeHolder {
-    val holder = UpgradeHolder(this, allowedTypes.toHashSet(), storedValue("upgrades", persistent, ::HashMap))
+fun TileEntity.storedUpgradeHolder(persistent: Boolean, vararg allowedTypes: RegistryEntry.Nova<UpgradeType<*>>): UpgradeHolder {
+    val holder = UpgradeHolder(this, allowedTypes.toSet(), storedValue("upgrades", persistent, ::HashMap))
     dropProvider(holder::getUpgradeItems)
     return holder
 }
@@ -53,8 +54,8 @@ fun NetworkedTileEntity.storedEnergyHolder(
     maxEnergy: Provider<Long>,
     upgradeHolder: UpgradeHolder,
     allowedConnectionType: NetworkConnectionType,
-    blockedSides: Set<BlockSide>,
-    defaultConnectionConfig: () -> Map<BlockFace, NetworkConnectionType> = { CUBE_FACES.associateWithTo(enumMap()) { allowedConnectionType } }
+    blockedSides: BlockSideSet,
+    defaultConnectionConfig: BlockSideMap<NetworkConnectionType> = BlockSideMap(allowedConnectionType)
 ) = storedEnergyHolder(upgradedMaxEnergy(maxEnergy, upgradeHolder), allowedConnectionType, blockedSides, defaultConnectionConfig)
 
 /**
@@ -68,8 +69,8 @@ fun NetworkedTileEntity.storedEnergyHolder(
     maxEnergy: Provider<Long>,
     upgradeHolder: UpgradeHolder,
     allowedConnectionType: NetworkConnectionType,
-    blockedFaces: Set<BlockFace> = emptySet(),
-    defaultConnectionConfig: () -> Map<BlockFace, NetworkConnectionType> = { CUBE_FACES.associateWithTo(enumMap()) { allowedConnectionType } }
+    blockedFaces: CubeFaceSet = CubeFaceSet.NONE,
+    defaultConnectionConfig: CubeFaceMap<NetworkConnectionType> = CubeFaceMap(allowedConnectionType)
 ) = storedEnergyHolder(upgradedMaxEnergy(maxEnergy, upgradeHolder), allowedConnectionType, blockedFaces, defaultConnectionConfig)
 
 private fun upgradedMaxEnergy(maxEnergy: Provider<Long>, upgradeHolder: UpgradeHolder): Provider<Long> =

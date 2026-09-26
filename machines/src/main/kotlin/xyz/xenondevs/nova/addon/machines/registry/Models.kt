@@ -4,7 +4,12 @@ import org.joml.Vector3d
 import xyz.xenondevs.nova.addon.machines.Machines.item
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
-import xyz.xenondevs.nova.world.item.NovaItem
+import xyz.xenondevs.nova.resources.builder.data.ItemModel
+import xyz.xenondevs.nova.resources.builder.data.TintSource
+import xyz.xenondevs.nova.resources.builder.layout.item.ItemModelCreationScope
+import xyz.xenondevs.nova.resources.builder.layout.item.ItemModelSelectorScope
+import xyz.xenondevs.nova.resources.builder.layout.item.RangeDispatchItemModelProperty
+import java.awt.Color
 
 @Init(stage = InitStage.PRE_PACK)
 object Models {
@@ -23,7 +28,7 @@ object Models {
     val GIANT_BROWN_MUSHROOM_MINIATURE = modelItem("tree_miniature/brown_mushroom")
     
     // Water levels
-    val COBBLESTONE_GENERATOR_WATER_LEVELS = fluidLevels("cobblestone_generator/water")
+    val COBBLESTONE_GENERATOR_WATER_LEVELS = fluidLevels("cobblestone_generator/water", true)
     val COBBLESTONE_GENERATOR_LAVA_LEVELS = fluidLevels("cobblestone_generator/lava")
     
     // Star Collector
@@ -43,22 +48,33 @@ object Models {
     val SCAFFOLDING_SLIM_VERTICAL_DOWN = modelItem("scaffolding/slim_vertical_down")
     val NETHERITE_DRILL = modelItem("netherite_drill")
     
-    private fun modelItem(name: String): NovaItem = item("model/$name") {
+    private fun modelItem(name: String) = item("model/$name") {
         hidden(true)
         modelDefinition { model = buildModel { getModel("block/$name") } }
     }
     
-    private fun fluidLevels(name: String): NovaItem = item("model/$name") {
+    private fun fluidLevels(name: String, water: Boolean = false) = item("model/$name") {
         hidden(true)
-        modelDefinition { 
-            model = rangedModels(101) {
+        modelDefinition { model = fluidLevelModel(name, water) }
+    }
+    
+}
+
+private fun ItemModelCreationScope<ItemModelSelectorScope>.fluidLevelModel(
+    name: String,
+    water: Boolean = false
+): ItemModel = rangeDispatch(RangeDispatchItemModelProperty.CustomModelData(0)) {
+    fallback = empty()
+    for (level in 1..100) {
+        entry[level] = model {
+            if (water) tintSource[0] = TintSource.CustomModelData(Color(0x3F76E4))
+            model = {
                 getModel("block/$name").scale(
-                    Vector3d(0.0, 0.0, 0.0),
-                    Vector3d(1.0, it / 100.0, 1.0),
+                    Vector3d(0.0, 1.0, 0.0),
+                    Vector3d(1.0, level / 100.0, 1.0),
                     true
                 )
             }
         }
     }
-    
 }

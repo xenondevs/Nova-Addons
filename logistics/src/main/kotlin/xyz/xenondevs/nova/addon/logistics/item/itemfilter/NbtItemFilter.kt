@@ -1,6 +1,8 @@
 package xyz.xenondevs.nova.addon.logistics.item.itemfilter
 
 import org.bukkit.inventory.ItemStack
+import xyz.xenondevs.nova.addon.logistics.registry.ItemFilterTypes
+import xyz.xenondevs.nova.world.block.tileentity.network.type.item.ItemFilterType
 
 private class HashableItemStack(val itemStack: ItemStack) {
     
@@ -17,7 +19,8 @@ class NbtItemFilter(
     override val whitelist: Boolean
 ) : LogisticsItemFilter() {
     
-    override val type = NbtItemFilter
+    override val type: ItemFilterType<LogisticsItemFilter>
+        get() = ItemFilterTypes.NBT.get()
     
     private val itemSet = items.mapTo(HashSet(items.size)) { HashableItemStack(it) }
     

@@ -2,10 +2,16 @@
 
 package xyz.xenondevs.nova.addon.logistics.registry
 
-import net.minecraft.core.Direction.Axis
-import net.minecraft.world.level.block.Blocks
-import org.bukkit.Material
+import org.bukkit.Axis
+import org.bukkit.block.BlockType
+import org.joml.Matrix4f
 import xyz.xenondevs.nova.addon.logistics.Logistics.tileEntity
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.DOWN
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.EAST
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.NORTH
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.SOUTH
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.UP
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.WEST
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedFluidTank
 import xyz.xenondevs.nova.addon.logistics.tileentity.AdvancedPowerCell
@@ -28,29 +34,27 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.VacuumChest
 import xyz.xenondevs.nova.addon.logistics.util.MathUtils
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
+import xyz.xenondevs.nova.registry.NovaBlockBuilder
+import xyz.xenondevs.nova.registry.NovaTileEntityBlockBuilder
+import xyz.xenondevs.nova.registry.entries.BlockTypeEntries
+import xyz.xenondevs.nova.registry.entries.ItemTypeEntries
+import xyz.xenondevs.nova.resources.builder.data.EndCubeEffect
 import xyz.xenondevs.nova.resources.builder.layout.block.BackingStateCategory
-import xyz.xenondevs.nova.world.block.NovaTileEntityBlock
-import xyz.xenondevs.nova.world.block.NovaTileEntityBlockBuilder
+import xyz.xenondevs.nova.world.block.ColliderCube
+import xyz.xenondevs.nova.world.block.FluidFlowMode
+import xyz.xenondevs.nova.world.block.HitboxCuboid
 import xyz.xenondevs.nova.world.block.TileEntityConstructor
-import xyz.xenondevs.nova.world.block.behavior.BlockSounds
-import xyz.xenondevs.nova.world.block.behavior.Breakable
 import xyz.xenondevs.nova.world.block.behavior.Bucketable
 import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
 import xyz.xenondevs.nova.world.block.behavior.TileEntityInteractive
-import xyz.xenondevs.nova.world.block.behavior.TileEntityLimited
 import xyz.xenondevs.nova.world.block.sound.SoundGroup
-import xyz.xenondevs.nova.world.block.state.property.DefaultScopedBlockStateProperties.AXIS
+import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties.AXIS
+import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties.WATERLOGGED
 import xyz.xenondevs.nova.world.item.tool.VanillaToolCategories
 import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
-import net.minecraft.world.level.block.state.properties.BlockStateProperties as MojangBlockStateProperties
 
 @Init(stage = InitStage.PRE_PACK)
 object Blocks {
-    
-    private val CABLE = Breakable(0.0, requiresToolForDrops = false)
-    private val POWER_CELL = Breakable(4.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.IRON_BLOCK)
-    private val TANK = Breakable(2.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.GLASS)
-    private val OTHER = Breakable(4.0, setOf(VanillaToolCategories.PICKAXE), VanillaToolTiers.STONE, true, Material.COBBLESTONE)
     
     val BASIC_CABLE = cable("basic", ::BasicCable)
     val ADVANCED_CABLE = cable("advanced", ::AdvancedCable)
@@ -70,83 +74,243 @@ object Blocks {
     val ULTIMATE_FLUID_TANK = tank("ultimate", ::UltimateFluidTank)
     val CREATIVE_FLUID_TANK = tank("creative", ::CreativeFluidTank)
     
-    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) { behaviors(OTHER, BlockSounds(SoundGroup.STONE)) }
-    val FLUID_STORAGE_UNIT = interactiveTileEntity("fluid_storage_unit", ::FluidStorageUnit) { behaviors(Bucketable, OTHER, BlockSounds(SoundGroup.STONE)) }
-    val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) { behaviors(OTHER, BlockSounds(SoundGroup.STONE)) }
-    val TRASH_CAN = interactiveTileEntity("trash_can", ::TrashCan) {
-        behaviors(OTHER, BlockSounds(SoundGroup.STONE))
-        stateProperties(AXIS)
-        entityBacked { defaultModel.rotated() }
+    val STORAGE_UNIT = interactiveTileEntity("storage_unit", ::StorageUnit) {
+        breakableOther()
     }
     
-    private fun cable(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
+    val FLUID_STORAGE_UNIT = interactiveTileEntity("fluid_storage_unit", ::FluidStorageUnit) {
+        behaviors(Bucketable)
+        breakableOther()
+        stateProperties(BlockStateProperties.LAVA)
+        lightEmission { if (getPropertyValueOrThrow(BlockStateProperties.LAVA)) 15 else 0 }
+    }
+    
+    val VACUUM_CHEST = interactiveTileEntity("vacuum_chest", ::VacuumChest) {
+        stateProperties(WATERLOGGED)
+        entityItemBacked(
+            stateSelector = { BlockType.STRUCTURE_VOID.createBlockData() },
+            extraColliderSelector = { [ColliderCube(5.25 / 16.0, 5.25 / 16.0, 5.25 / 16.0, 5.5 / 16.0)] },
+            extraHitboxSelector = { [] }
+        ) {
+            model = endCubeSpecialModel {
+                effect = EndCubeEffect.GATEWAY
+                base = { getModel("block/vacuum_chest") }
+                transformation = Matrix4f().translate(5f / 16f, 5f / 16f, 5f / 16f).scale(6f / 16f)
+            }
+        }
+        sounds(SoundGroup.STONE)
+        breakable(
+            hardness = 4.0,
+            toolCategories = setOf(VanillaToolCategories.PICKAXE),
+            toolTier = VanillaToolTiers.STONE,
+            requiresToolForDrops = true,
+            hitParticles = ItemTypeEntries.BLACK_CONCRETE
+        )
+    }
+    
+    val TRASH_CAN = interactiveTileEntity("trash_can", ::TrashCan) {
+        breakableOther()
+        stateProperties(AXIS, WATERLOGGED)
+    }
+    
+    private fun cable(tier: String, constructor: TileEntityConstructor) =
         tileEntity("${tier}_cable", constructor) {
             tickrate(0)
-            behaviors(TileEntityLimited, TileEntityDrops, CABLE, BlockSounds(SoundGroup.METAL))
-            stateProperties(
-                ScopedBlockStateProperties.NORTH,
-                ScopedBlockStateProperties.EAST,
-                ScopedBlockStateProperties.SOUTH,
-                ScopedBlockStateProperties.WEST,
-                ScopedBlockStateProperties.UP,
-                ScopedBlockStateProperties.DOWN
-            )
+            behaviors(TileEntityDrops)
+            sounds(SoundGroup.METAL)
+            breakable(hardness = 0.0, requiresToolForDrops = false)
+            stateProperties(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED)
+            fluidFlowMode(FluidFlowMode.WATERLOG_OUT)
             
-            entityBacked({
-                val north = getPropertyValueOrThrow(BlockStateProperties.NORTH)
-                val east = getPropertyValueOrThrow(BlockStateProperties.EAST)
-                val south = getPropertyValueOrThrow(BlockStateProperties.SOUTH)
-                val west = getPropertyValueOrThrow(BlockStateProperties.WEST)
-                val up = getPropertyValueOrThrow(BlockStateProperties.UP)
-                val down = getPropertyValueOrThrow(BlockStateProperties.DOWN)
-                
-                when {
-                    east && west -> Blocks.IRON_CHAIN.defaultBlockState()
-                        .setValue(MojangBlockStateProperties.AXIS, Axis.X)
+            entityBacked(
+                stateSelector = {
+                    val north = getPropertyValueOrThrow(NORTH)
+                    val east = getPropertyValueOrThrow(EAST)
+                    val south = getPropertyValueOrThrow(SOUTH)
+                    val west = getPropertyValueOrThrow(WEST)
+                    val up = getPropertyValueOrThrow(UP)
+                    val down = getPropertyValueOrThrow(DOWN)
                     
-                    north && south -> Blocks.IRON_CHAIN.defaultBlockState()
-                        .setValue(MojangBlockStateProperties.AXIS, Axis.Z)
+                    when {
+                        east && west -> BlockType.IRON_CHAIN.createBlockData()
+                            .apply { axis = Axis.X }
+                        
+                        north && south -> BlockType.IRON_CHAIN.createBlockData()
+                            .apply { axis = Axis.Z }
+                        
+                        up && down -> BlockType.IRON_CHAIN.createBlockData()
+                            .apply { axis = Axis.Y }
+                        
+                        else -> BlockType.LIGHT.createBlockData().apply { level = 0 }
+                    }
+                },
+                extraColliderSelector = {
+                    val north = getPropertyValueOrThrow(NORTH)
+                    val east = getPropertyValueOrThrow(EAST)
+                    val south = getPropertyValueOrThrow(SOUTH)
+                    val west = getPropertyValueOrThrow(WEST)
+                    val up = getPropertyValueOrThrow(UP)
+                    val down = getPropertyValueOrThrow(DOWN)
                     
-                    up && down -> Blocks.IRON_CHAIN.defaultBlockState()
-                        .setValue(MojangBlockStateProperties.AXIS, Axis.Y)
+                    val chainAxis = when {
+                        east && west -> Axis.X
+                        north && south -> Axis.Z
+                        up && down -> Axis.Y
+                        else -> null
+                    }
                     
-                    else -> Blocks.STRUCTURE_VOID.defaultBlockState()
+                    buildList {
+                        // add centerpiece when using light
+                        if (chainAxis == null)
+                            add(ColliderCube(6.5 / 16.0, 6.5 / 16.0, 6.5 / 16.0, 3.0 / 16.0))
+                        
+                        fun addArm(axis: Axis, positive: Boolean) {
+                            val size = 3.0
+                            val gap = 0.25
+                            val firstMin = if (positive) 9.75 else 0.0
+                            repeat(2) { segment ->
+                                val axisMin = (firstMin + segment * (size + gap)) / 16.0
+                                val sideMin = 6.5 / 16.0
+                                val normalizedSize = size / 16.0
+                                add(
+                                    when (axis) {
+                                        Axis.X -> ColliderCube(axisMin, sideMin, sideMin, normalizedSize)
+                                        Axis.Y -> ColliderCube(sideMin, axisMin, sideMin, normalizedSize)
+                                        Axis.Z -> ColliderCube(sideMin, sideMin, axisMin, normalizedSize)
+                                    }
+                                )
+                            }
+                        }
+                        
+                        if (chainAxis != Axis.Z) {
+                            if (north) addArm(Axis.Z, false)
+                            if (south) addArm(Axis.Z, true)
+                        }
+                        if (chainAxis != Axis.X) {
+                            if (east) addArm(Axis.X, true)
+                            if (west) addArm(Axis.X, false)
+                        }
+                        if (chainAxis != Axis.Y) {
+                            if (up) addArm(Axis.Y, true)
+                            if (down) addArm(Axis.Y, false)
+                        }
+                    }
+                },
+                extraHitboxSelector = {
+                    val north = getPropertyValueOrThrow(NORTH)
+                    val east = getPropertyValueOrThrow(EAST)
+                    val south = getPropertyValueOrThrow(SOUTH)
+                    val west = getPropertyValueOrThrow(WEST)
+                    val up = getPropertyValueOrThrow(UP)
+                    val down = getPropertyValueOrThrow(DOWN)
+                    
+                    val chainAxis = when {
+                        east && west -> Axis.X
+                        north && south -> Axis.Z
+                        up && down -> Axis.Y
+                        else -> null
+                    }
+                    
+                    buildList {
+                        if (chainAxis == null && !up && !down)
+                            add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 4.0 / 16.0))
+                        
+                        fun addHorizontalArm(axis: Axis, positive: Boolean) {
+                            val axisMin = if (positive) 10.0 / 16.0 else 0.0
+                            val sideMin = 5.0 / 16.0
+                            add(HitboxCuboid(
+                                if (axis == Axis.X) axisMin else sideMin,
+                                6.0 / 16.0,
+                                if (axis == Axis.Z) axisMin else sideMin,
+                                6.0 / 16.0,
+                                4.0 / 16.0
+                            ))
+                        }
+                        
+                        if (chainAxis != Axis.Z) {
+                            if (north) addHorizontalArm(Axis.Z, false)
+                            if (south) addHorizontalArm(Axis.Z, true)
+                        }
+                        if (chainAxis != Axis.X) {
+                            if (east) addHorizontalArm(Axis.X, true)
+                            if (west) addHorizontalArm(Axis.X, false)
+                        }
+                        if (chainAxis != Axis.Y) {
+                            when {
+                                up && down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 1.0))
+                                up -> add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
+                                down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
+                            }
+                        }
+                    }
+                },
+                modelSelector = {
+                    val id = MathUtils.encodeToInt(
+                        getPropertyValueOrThrow(NORTH),
+                        getPropertyValueOrThrow(EAST),
+                        getPropertyValueOrThrow(SOUTH),
+                        getPropertyValueOrThrow(WEST),
+                        getPropertyValueOrThrow(UP),
+                        getPropertyValueOrThrow(DOWN)
+                    )
+                    
+                    getModel("block/cable/$tier/$id")
                 }
-            }, {
-                val id = MathUtils.encodeToInt(
-                    getPropertyValueOrThrow(BlockStateProperties.NORTH),
-                    getPropertyValueOrThrow(BlockStateProperties.EAST),
-                    getPropertyValueOrThrow(BlockStateProperties.SOUTH),
-                    getPropertyValueOrThrow(BlockStateProperties.WEST),
-                    getPropertyValueOrThrow(BlockStateProperties.UP),
-                    getPropertyValueOrThrow(BlockStateProperties.DOWN)
-                )
-                
-                getModel("block/cable/$tier/$id")
-            })
+            )
         }
     
     private fun interactiveTileEntity(
         name: String,
         constructor: TileEntityConstructor,
         init: NovaTileEntityBlockBuilder.() -> Unit
-    ): NovaTileEntityBlock = tileEntity(name, constructor) {
+    ) = tileEntity(name, constructor) {
         init()
-        behaviors(TileEntityLimited, TileEntityDrops, TileEntityInteractive)
+        behaviors(TileEntityDrops, TileEntityInteractive)
     }
     
-    private fun powerCell(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
+    private fun powerCell(tier: String, constructor: TileEntityConstructor) =
         interactiveTileEntity("${tier}_power_cell", constructor) {
-            behaviors(POWER_CELL, BlockSounds(SoundGroup.METAL))
+            sounds(SoundGroup.METAL)
+            breakable(
+                hardness = 4.0,
+                toolCategories = setOf(VanillaToolCategories.PICKAXE),
+                toolTier = VanillaToolTiers.STONE,
+                requiresToolForDrops = true,
+                hitParticles = ItemTypeEntries.IRON_BLOCK,
+                breakParticles = BlockTypeEntries.IRON_BLOCK
+            )
             stateBacked(BackingStateCategory.NOTE_BLOCK, BackingStateCategory.MUSHROOM_BLOCK) {
                 getModel("block/power_cell/$tier")
             }
         }
     
-    private fun tank(tier: String, constructor: TileEntityConstructor): NovaTileEntityBlock =
+    private fun tank(tier: String, constructor: TileEntityConstructor) =
         interactiveTileEntity("${tier}_fluid_tank", constructor) {
-            behaviors(Bucketable, TANK, BlockSounds(SoundGroup.GLASS))
+            stateProperties(WATERLOGGED, BlockStateProperties.LAVA)
+            lightEmission { if (getPropertyValueOrThrow(BlockStateProperties.LAVA)) 15 else 0 }
+            behaviors(Bucketable)
+            sounds(SoundGroup.GLASS)
+            breakable(
+                hardness = 2.0,
+                toolCategories = setOf(VanillaToolCategories.PICKAXE),
+                toolTier = VanillaToolTiers.STONE,
+                requiresToolForDrops = true,
+                hitParticles = ItemTypeEntries.GLASS,
+                breakParticles = BlockTypeEntries.GLASS
+            )
             entityBacked { getModel("block/fluid_tank/$tier") }
         }
+    
+    private fun NovaBlockBuilder.breakableOther() {
+        sounds(SoundGroup.STONE)
+        breakable(
+            hardness = 4.0,
+            toolCategories = setOf(VanillaToolCategories.PICKAXE),
+            toolTier = VanillaToolTiers.STONE,
+            requiresToolForDrops = true,
+            hitParticles = ItemTypeEntries.COBBLESTONE,
+            breakParticles = BlockTypeEntries.COBBLESTONE
+        )
+    }
     
 }
