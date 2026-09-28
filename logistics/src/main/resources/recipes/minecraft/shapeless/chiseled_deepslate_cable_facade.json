@@ -1,0 +1,9 @@
+{
+  "result": "logistics:chiseled_deepslate_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:chiseled_deepslate": 1
+  }
+}

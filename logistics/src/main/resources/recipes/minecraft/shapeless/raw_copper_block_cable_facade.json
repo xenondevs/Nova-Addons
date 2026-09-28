@@ -1,0 +1,9 @@
+{
+  "result": "logistics:raw_copper_block_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:raw_copper_block": 1
+  }
+}

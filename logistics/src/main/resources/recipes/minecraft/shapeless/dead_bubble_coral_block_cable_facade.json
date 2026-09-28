@@ -1,0 +1,9 @@
+{
+  "result": "logistics:dead_bubble_coral_block_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:dead_bubble_coral_block": 1
+  }
+}

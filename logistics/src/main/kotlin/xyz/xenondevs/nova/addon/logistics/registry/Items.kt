@@ -2,13 +2,16 @@
 
 package xyz.xenondevs.nova.addon.logistics.registry
 
+import net.kyori.adventure.text.Component
 import org.bukkit.block.BlockType
+import org.joml.Matrix4f
 import xyz.xenondevs.commons.provider.Provider
 import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.addon.logistics.Logistics.item
 import xyz.xenondevs.nova.addon.logistics.Logistics.registerItem
-import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
+import xyz.xenondevs.nova.addon.logistics.item.CableFacadeItemBehavior
 import xyz.xenondevs.nova.addon.logistics.item.FluidTankItemBehavior
+import xyz.xenondevs.nova.addon.logistics.item.ItemFilterBehavior
 import xyz.xenondevs.nova.addon.logistics.item.StorageUnitItemBehavior
 import xyz.xenondevs.nova.addon.logistics.item.WrenchBehavior
 import xyz.xenondevs.nova.addon.logistics.tileentity.FLUID_TANK_ADVANCED_CAPACITY
@@ -18,7 +21,10 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.FLUID_TANK_ULTIMATE_CAPACIT
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.registry.RegistryEntry
+import xyz.xenondevs.nova.resources.ResourcePath
+import xyz.xenondevs.nova.resources.ResourceType
 import xyz.xenondevs.nova.resources.builder.layout.item.SelectItemModelProperty
+import xyz.xenondevs.nova.resources.builder.task.ItemModelContent
 
 @Init(stage = InitStage.PRE_PACK)
 object Items {
@@ -54,6 +60,29 @@ object Items {
     val WRENCH = item("wrench") {
         behaviors(WrenchBehavior)
         maxStackSize(1)
+    }
+    
+    val CABLE_FACADES = FacadeType.entries.associateWith { type ->
+        val tn = type.name.lowercase()
+        item("${tn}_cable_facade") {
+            behaviors(CableFacadeItemBehavior(type))
+            name(Component.translatable("item.logistics.cable_facade", Component.translatable("block.minecraft.${tn}")))
+            modelDefinition {
+                val modelToEmbed = resourcePackBuilder.getBuildData<ItemModelContent>()
+                    .getVanilla(ResourcePath.of(ResourceType.ItemModelDefinition, tn))!!
+                    .model
+                
+                model = composite {
+                    models += buildModel { getModel("item/cable_facade") }
+                    models += composite {
+                        models += modelToEmbed
+                        transformation = Matrix4f()
+                            .scaleLocal(0.5f)
+                            .translateLocal(4f / 16f, 4f / 16f, 4f / 16f)
+                    }
+                }
+            }
+        }
     }
     
     private fun cable(block: RegistryEntry.Paper<BlockType>, tier: String) = item(block) {

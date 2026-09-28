@@ -1,0 +1,9 @@
+{
+  "result": "logistics:quartz_block_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:quartz_block": 1
+  }
+}

@@ -2,12 +2,14 @@
 
 package xyz.xenondevs.nova.addon.logistics.registry
 
+import io.papermc.paper.registry.keys.SoundEventKeys
 import org.bukkit.Axis
 import org.bukkit.block.BlockType
 import org.joml.Matrix4f
 import xyz.xenondevs.nova.addon.logistics.Logistics.tileEntity
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.DOWN
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.EAST
+import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.FACADE
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.NORTH
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.SOUTH
 import xyz.xenondevs.nova.addon.logistics.registry.BlockStateProperties.UP
@@ -24,6 +26,11 @@ import xyz.xenondevs.nova.addon.logistics.tileentity.CreativePowerCell
 import xyz.xenondevs.nova.addon.logistics.tileentity.EliteCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.EliteFluidTank
 import xyz.xenondevs.nova.addon.logistics.tileentity.ElitePowerCell
+import xyz.xenondevs.nova.addon.logistics.tileentity.FacadedAdvancedCable
+import xyz.xenondevs.nova.addon.logistics.tileentity.FacadedBasicCable
+import xyz.xenondevs.nova.addon.logistics.tileentity.FacadedCreativeCable
+import xyz.xenondevs.nova.addon.logistics.tileentity.FacadedEliteCable
+import xyz.xenondevs.nova.addon.logistics.tileentity.FacadedUltimateCable
 import xyz.xenondevs.nova.addon.logistics.tileentity.FluidStorageUnit
 import xyz.xenondevs.nova.addon.logistics.tileentity.StorageUnit
 import xyz.xenondevs.nova.addon.logistics.tileentity.TrashCan
@@ -56,11 +63,17 @@ import xyz.xenondevs.nova.world.item.tool.VanillaToolTiers
 @Init(stage = InitStage.PRE_PACK)
 object Blocks {
     
-    val BASIC_CABLE = cable("basic", ::BasicCable)
-    val ADVANCED_CABLE = cable("advanced", ::AdvancedCable)
-    val ELITE_CABLE = cable("elite", ::EliteCable)
-    val ULTIMATE_CABLE = cable("ultimate", ::UltimateCable)
-    val CREATIVE_CABLE = cable("creative", ::CreativeCable)
+    val BASIC_CABLE = unfacadedCable("basic", ::BasicCable)
+    val ADVANCED_CABLE = unfacadedCable("advanced", ::AdvancedCable)
+    val ELITE_CABLE = unfacadedCable("elite", ::EliteCable)
+    val ULTIMATE_CABLE = unfacadedCable("ultimate", ::UltimateCable)
+    val CREATIVE_CABLE = unfacadedCable("creative", ::CreativeCable)
+    
+    val FACADED_BASIC_CABLE = facadedCable("basic", ::FacadedBasicCable)
+    val FACADED_ADVANCED_CABLE = facadedCable("advanced", ::FacadedAdvancedCable)
+    val FACADED_ELITE_CABLE = facadedCable("elite", ::FacadedEliteCable)
+    val FACADED_ULTIMATE_CABLE = facadedCable("ultimate", ::FacadedUltimateCable)
+    val FACADED_CREATIVE_CABLE = facadedCable("creative", ::FacadedCreativeCable)
     
     val BASIC_POWER_CELL = powerCell("basic", ::BasicPowerCell)
     val ADVANCED_POWER_CELL = powerCell("advanced", ::AdvancedPowerCell)
@@ -113,151 +126,177 @@ object Blocks {
         stateProperties(AXIS, WATERLOGGED)
     }
     
-    private fun cable(tier: String, constructor: TileEntityConstructor) =
-        tileEntity("${tier}_cable", constructor) {
-            tickrate(0)
-            behaviors(TileEntityDrops)
-            sounds(SoundGroup.METAL)
-            breakable(hardness = 0.0, requiresToolForDrops = false)
-            stateProperties(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED)
-            fluidFlowMode(FluidFlowMode.WATERLOG_OUT)
-            
-            entityBacked(
-                stateSelector = {
-                    val north = getPropertyValueOrThrow(NORTH)
-                    val east = getPropertyValueOrThrow(EAST)
-                    val south = getPropertyValueOrThrow(SOUTH)
-                    val west = getPropertyValueOrThrow(WEST)
-                    val up = getPropertyValueOrThrow(UP)
-                    val down = getPropertyValueOrThrow(DOWN)
+    private fun unfacadedCable(tier: String, ctor: TileEntityConstructor) = cable("${tier}_cable", ctor) {
+        stateProperties(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED)
+        sounds(SoundGroup.METAL)
+        entityBacked(
+            stateSelector = {
+                val north = getPropertyValueOrThrow(NORTH)
+                val east = getPropertyValueOrThrow(EAST)
+                val south = getPropertyValueOrThrow(SOUTH)
+                val west = getPropertyValueOrThrow(WEST)
+                val up = getPropertyValueOrThrow(UP)
+                val down = getPropertyValueOrThrow(DOWN)
+                
+                when {
+                    east && west -> BlockType.IRON_CHAIN.createBlockData()
+                        .apply { axis = Axis.X }
                     
-                    when {
-                        east && west -> BlockType.IRON_CHAIN.createBlockData()
-                            .apply { axis = Axis.X }
-                        
-                        north && south -> BlockType.IRON_CHAIN.createBlockData()
-                            .apply { axis = Axis.Z }
-                        
-                        up && down -> BlockType.IRON_CHAIN.createBlockData()
-                            .apply { axis = Axis.Y }
-                        
-                        else -> BlockType.LIGHT.createBlockData().apply { level = 0 }
-                    }
-                },
-                extraColliderSelector = {
-                    val north = getPropertyValueOrThrow(NORTH)
-                    val east = getPropertyValueOrThrow(EAST)
-                    val south = getPropertyValueOrThrow(SOUTH)
-                    val west = getPropertyValueOrThrow(WEST)
-                    val up = getPropertyValueOrThrow(UP)
-                    val down = getPropertyValueOrThrow(DOWN)
+                    north && south -> BlockType.IRON_CHAIN.createBlockData()
+                        .apply { axis = Axis.Z }
                     
-                    val chainAxis = when {
-                        east && west -> Axis.X
-                        north && south -> Axis.Z
-                        up && down -> Axis.Y
-                        else -> null
-                    }
+                    up && down -> BlockType.IRON_CHAIN.createBlockData()
+                        .apply { axis = Axis.Y }
                     
-                    buildList {
-                        // add centerpiece when using light
-                        if (chainAxis == null)
-                            add(ColliderCube(6.5 / 16.0, 6.5 / 16.0, 6.5 / 16.0, 3.0 / 16.0))
-                        
-                        fun addArm(axis: Axis, positive: Boolean) {
-                            val size = 3.0
-                            val gap = 0.25
-                            val firstMin = if (positive) 9.75 else 0.0
-                            repeat(2) { segment ->
-                                val axisMin = (firstMin + segment * (size + gap)) / 16.0
-                                val sideMin = 6.5 / 16.0
-                                val normalizedSize = size / 16.0
-                                add(
-                                    when (axis) {
-                                        Axis.X -> ColliderCube(axisMin, sideMin, sideMin, normalizedSize)
-                                        Axis.Y -> ColliderCube(sideMin, axisMin, sideMin, normalizedSize)
-                                        Axis.Z -> ColliderCube(sideMin, sideMin, axisMin, normalizedSize)
-                                    }
-                                )
-                            }
-                        }
-                        
-                        if (chainAxis != Axis.Z) {
-                            if (north) addArm(Axis.Z, false)
-                            if (south) addArm(Axis.Z, true)
-                        }
-                        if (chainAxis != Axis.X) {
-                            if (east) addArm(Axis.X, true)
-                            if (west) addArm(Axis.X, false)
-                        }
-                        if (chainAxis != Axis.Y) {
-                            if (up) addArm(Axis.Y, true)
-                            if (down) addArm(Axis.Y, false)
-                        }
-                    }
-                },
-                extraHitboxSelector = {
-                    val north = getPropertyValueOrThrow(NORTH)
-                    val east = getPropertyValueOrThrow(EAST)
-                    val south = getPropertyValueOrThrow(SOUTH)
-                    val west = getPropertyValueOrThrow(WEST)
-                    val up = getPropertyValueOrThrow(UP)
-                    val down = getPropertyValueOrThrow(DOWN)
-                    
-                    val chainAxis = when {
-                        east && west -> Axis.X
-                        north && south -> Axis.Z
-                        up && down -> Axis.Y
-                        else -> null
-                    }
-                    
-                    buildList {
-                        if (chainAxis == null && !up && !down)
-                            add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 4.0 / 16.0))
-                        
-                        fun addHorizontalArm(axis: Axis, positive: Boolean) {
-                            val axisMin = if (positive) 10.0 / 16.0 else 0.0
-                            val sideMin = 5.0 / 16.0
-                            add(HitboxCuboid(
-                                if (axis == Axis.X) axisMin else sideMin,
-                                6.0 / 16.0,
-                                if (axis == Axis.Z) axisMin else sideMin,
-                                6.0 / 16.0,
-                                4.0 / 16.0
-                            ))
-                        }
-                        
-                        if (chainAxis != Axis.Z) {
-                            if (north) addHorizontalArm(Axis.Z, false)
-                            if (south) addHorizontalArm(Axis.Z, true)
-                        }
-                        if (chainAxis != Axis.X) {
-                            if (east) addHorizontalArm(Axis.X, true)
-                            if (west) addHorizontalArm(Axis.X, false)
-                        }
-                        if (chainAxis != Axis.Y) {
-                            when {
-                                up && down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 1.0))
-                                up -> add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
-                                down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
-                            }
-                        }
-                    }
-                },
-                modelSelector = {
-                    val id = MathUtils.encodeToInt(
-                        getPropertyValueOrThrow(NORTH),
-                        getPropertyValueOrThrow(EAST),
-                        getPropertyValueOrThrow(SOUTH),
-                        getPropertyValueOrThrow(WEST),
-                        getPropertyValueOrThrow(UP),
-                        getPropertyValueOrThrow(DOWN)
-                    )
-                    
-                    getModel("block/cable/$tier/$id")
+                    else -> BlockType.LIGHT.createBlockData().apply { level = 0 }
                 }
+            },
+            extraColliderSelector = {
+                val north = getPropertyValueOrThrow(NORTH)
+                val east = getPropertyValueOrThrow(EAST)
+                val south = getPropertyValueOrThrow(SOUTH)
+                val west = getPropertyValueOrThrow(WEST)
+                val up = getPropertyValueOrThrow(UP)
+                val down = getPropertyValueOrThrow(DOWN)
+                
+                val chainAxis = when {
+                    east && west -> Axis.X
+                    north && south -> Axis.Z
+                    up && down -> Axis.Y
+                    else -> null
+                }
+                
+                buildList {
+                    // add centerpiece when using light
+                    if (chainAxis == null)
+                        add(ColliderCube(6.5 / 16.0, 6.5 / 16.0, 6.5 / 16.0, 3.0 / 16.0))
+                    
+                    fun addArm(axis: Axis, positive: Boolean) {
+                        val size = 3.0
+                        val gap = 0.25
+                        val firstMin = if (positive) 9.75 else 0.0
+                        repeat(2) { segment ->
+                            val axisMin = (firstMin + segment * (size + gap)) / 16.0
+                            val sideMin = 6.5 / 16.0
+                            val normalizedSize = size / 16.0
+                            add(
+                                when (axis) {
+                                    Axis.X -> ColliderCube(axisMin, sideMin, sideMin, normalizedSize)
+                                    Axis.Y -> ColliderCube(sideMin, axisMin, sideMin, normalizedSize)
+                                    Axis.Z -> ColliderCube(sideMin, sideMin, axisMin, normalizedSize)
+                                }
+                            )
+                        }
+                    }
+                    
+                    if (chainAxis != Axis.Z) {
+                        if (north) addArm(Axis.Z, false)
+                        if (south) addArm(Axis.Z, true)
+                    }
+                    if (chainAxis != Axis.X) {
+                        if (east) addArm(Axis.X, true)
+                        if (west) addArm(Axis.X, false)
+                    }
+                    if (chainAxis != Axis.Y) {
+                        if (up) addArm(Axis.Y, true)
+                        if (down) addArm(Axis.Y, false)
+                    }
+                }
+            },
+            extraHitboxSelector = {
+                val north = getPropertyValueOrThrow(NORTH)
+                val east = getPropertyValueOrThrow(EAST)
+                val south = getPropertyValueOrThrow(SOUTH)
+                val west = getPropertyValueOrThrow(WEST)
+                val up = getPropertyValueOrThrow(UP)
+                val down = getPropertyValueOrThrow(DOWN)
+                
+                val chainAxis = when {
+                    east && west -> Axis.X
+                    north && south -> Axis.Z
+                    up && down -> Axis.Y
+                    else -> null
+                }
+                
+                buildList {
+                    if (chainAxis == null && !up && !down)
+                        add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 4.0 / 16.0))
+                    
+                    fun addHorizontalArm(axis: Axis, positive: Boolean) {
+                        val axisMin = if (positive) 10.0 / 16.0 else 0.0
+                        val sideMin = 5.0 / 16.0
+                        add(HitboxCuboid(
+                            if (axis == Axis.X) axisMin else sideMin,
+                            6.0 / 16.0,
+                            if (axis == Axis.Z) axisMin else sideMin,
+                            6.0 / 16.0,
+                            4.0 / 16.0
+                        ))
+                    }
+                    
+                    if (chainAxis != Axis.Z) {
+                        if (north) addHorizontalArm(Axis.Z, false)
+                        if (south) addHorizontalArm(Axis.Z, true)
+                    }
+                    if (chainAxis != Axis.X) {
+                        if (east) addHorizontalArm(Axis.X, true)
+                        if (west) addHorizontalArm(Axis.X, false)
+                    }
+                    if (chainAxis != Axis.Y) {
+                        when {
+                            up && down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 1.0))
+                            up -> add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
+                            down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
+                        }
+                    }
+                }
+            },
+            modelSelector = {
+                val id = MathUtils.encodeToInt(
+                    getPropertyValueOrThrow(NORTH),
+                    getPropertyValueOrThrow(EAST),
+                    getPropertyValueOrThrow(SOUTH),
+                    getPropertyValueOrThrow(WEST),
+                    getPropertyValueOrThrow(UP),
+                    getPropertyValueOrThrow(DOWN)
+                )
+                
+                getModel("block/cable/$tier/$id")
+            }
+        )
+    }
+    
+    private fun facadedCable(tier: String, ctor: TileEntityConstructor) = cable("facaded_${tier}_cable", ctor) {
+        config("${tier}_cable")
+        stateProperties(FACADE)
+        modelLess { getPropertyValueOrThrow(FACADE).type.get().createBlockData() }
+        lightEmission { getPropertyValueOrThrow(FACADE).lightEmission }
+        sounds {
+            val facadeSoundGroup = getPropertyValueOrThrow(FACADE).soundGroup
+            SoundGroup(
+                volume = 1f,
+                pitch = 1f,
+                placeSound = SoundEventKeys.ENTITY_ITEM_FRAME_ADD_ITEM.asString(),
+                breakSound = SoundEventKeys.ENTITY_ITEM_FRAME_ADD_ITEM.asString(),
+                stepSound = facadeSoundGroup.stepSound,
+                hitSound = facadeSoundGroup.hitSound,
+                fallSound = facadeSoundGroup.fallSound
             )
         }
+    }
+    
+    private fun cable(
+        name: String,
+        constructor: TileEntityConstructor,
+        configure: NovaTileEntityBlockBuilder.() -> Unit
+    ) = tileEntity(name, constructor) {
+        tickrate(0)
+        behaviors(TileEntityDrops)
+        sounds(SoundGroup.METAL)
+        breakable(hardness = 0.0, requiresToolForDrops = false)
+        fluidFlowMode(FluidFlowMode.WATERLOG_OUT)
+        configure()
+    }
     
     private fun interactiveTileEntity(
         name: String,

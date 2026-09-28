@@ -1,0 +1,9 @@
+{
+  "result": "logistics:pale_oak_planks_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:pale_oak_planks": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "result": "logistics:spruce_log_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:spruce_log": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "result": "logistics:stone_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:stone": 1
+  }
+}

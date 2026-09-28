@@ -1,0 +1,9 @@
+{
+  "result": "logistics:warped_nylium_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:warped_nylium": 1
+  }
+}

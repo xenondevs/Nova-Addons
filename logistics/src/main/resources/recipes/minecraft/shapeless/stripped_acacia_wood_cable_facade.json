@@ -1,0 +1,9 @@
+{
+  "result": "logistics:stripped_acacia_wood_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:stripped_acacia_wood": 1
+  }
+}

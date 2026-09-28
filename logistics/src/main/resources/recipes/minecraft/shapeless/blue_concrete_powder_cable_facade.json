@@ -1,0 +1,9 @@
+{
+  "result": "logistics:blue_concrete_powder_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:blue_concrete_powder": 1
+  }
+}

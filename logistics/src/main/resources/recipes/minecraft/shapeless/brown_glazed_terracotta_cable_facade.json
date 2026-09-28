@@ -1,0 +1,9 @@
+{
+  "result": "logistics:brown_glazed_terracotta_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:brown_glazed_terracotta": 1
+  }
+}

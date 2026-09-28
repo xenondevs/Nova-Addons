@@ -1,0 +1,9 @@
+{
+  "result": "logistics:oxidized_chiseled_copper_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:oxidized_chiseled_copper": 1
+  }
+}

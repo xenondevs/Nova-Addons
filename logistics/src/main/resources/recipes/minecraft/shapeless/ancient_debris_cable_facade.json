@@ -1,0 +1,9 @@
+{
+  "result": "logistics:ancient_debris_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:ancient_debris": 1
+  }
+}

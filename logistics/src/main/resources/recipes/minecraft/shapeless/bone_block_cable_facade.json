@@ -1,0 +1,9 @@
+{
+  "result": "logistics:bone_block_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:bone_block": 1
+  }
+}

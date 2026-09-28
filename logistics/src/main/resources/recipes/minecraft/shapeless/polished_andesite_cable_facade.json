@@ -1,0 +1,9 @@
+{
+  "result": "logistics:polished_andesite_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:polished_andesite": 1
+  }
+}

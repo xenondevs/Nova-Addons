@@ -72,13 +72,34 @@ import kotlin.math.roundToLong
 
 private val SUPPORTED_NETWORK_TYPES by registryEntrySetOf(ENERGY, ITEM, FLUID)
 
+private val BASIC_ENERGY_TRANSFER_RATE = energyTransferRate(Blocks.BASIC_CABLE)
+private val BASIC_ITEM_TRANSFER_RATE = itemTransferRate(Blocks.BASIC_CABLE)
+private val BASIC_FLUID_TRANSFER_RATE = fluidTransferRate(Blocks.BASIC_CABLE)
+
+private val ADVANCED_ENERGY_TRANSFER_RATE = energyTransferRate(Blocks.ADVANCED_CABLE)
+private val ADVANCED_ITEM_TRANSFER_RATE = itemTransferRate(Blocks.ADVANCED_CABLE)
+private val ADVANCED_FLUID_TRANSFER_RATE = fluidTransferRate(Blocks.ADVANCED_CABLE)
+
+private val ELITE_ENERGY_TRANSFER_RATE = energyTransferRate(Blocks.ELITE_CABLE)
+private val ELITE_ITEM_TRANSFER_RATE = itemTransferRate(Blocks.ELITE_CABLE)
+private val ELITE_FLUID_TRANSFER_RATE = fluidTransferRate(Blocks.ELITE_CABLE)
+
+private val ULTIMATE_ENERGY_TRANSFER_RATE = energyTransferRate(Blocks.ULTIMATE_CABLE)
+private val ULTIMATE_ITEM_TRANSFER_RATE = itemTransferRate(Blocks.ULTIMATE_CABLE)
+private val ULTIMATE_FLUID_TRANSFER_RATE = fluidTransferRate(Blocks.ULTIMATE_CABLE)
+
+private val CREATIVE_ENERGY_TRANSFER_RATE = provider(Long.MAX_VALUE)
+private val CREATIVE_ITEM_TRANSFER_RATE = provider(Int.MAX_VALUE)
+private val CREATIVE_FLUID_TRANSFER_RATE = provider(Long.MAX_VALUE)
+
 private val NetworkNode.itemHolder: ItemHolder?
     get() = (this as? NetworkEndPoint)?.holders?.firstInstanceOfOrNull<ItemHolder>()
 
 private val NetworkNode.fluidHolder: FluidHolder?
     get() = (this as? NetworkEndPoint)?.holders?.firstInstanceOfOrNull<FluidHolder>()
 
-open class Cable(
+abstract class AbstractCable(
+    private val unfacaded: RegistryEntry.Paper<BlockType>,
     energyTransferRateDelegate: Provider<Long>,
     itemTransferRateDelegate: Provider<Int>,
     fluidTransferRateDelegate: Provider<Long>,
@@ -88,18 +109,13 @@ open class Cable(
 ) : TileEntity(pos, state, data), EnergyBridge, ItemBridge, FluidBridge {
     
     @Volatile
-    override var isValid = false
+    final override var isValid = false
     
-    override val energyTransferRate by energyTransferRateDelegate
-    override val itemTransferRate by itemTransferRateDelegate
-    override val fluidTransferRate by fluidTransferRateDelegate
-    override val linkedNodes: Set<NetworkNode> = emptySet()
-    override val typeId get() = blockType.key
-    
-    private val configMenus = ConcurrentHashMap<BlockFace, CableConfigMenu>()
-    
-    private var hitboxes: Set<Hitbox<*, *>> = emptySet()
-    private var attachmentDisplays: CubeFaceMap<PacketItemDisplay?> = CubeFaceMap.NULL
+    final override val energyTransferRate by energyTransferRateDelegate
+    final override val itemTransferRate by itemTransferRateDelegate
+    final override val fluidTransferRate by fluidTransferRateDelegate
+    final override val linkedNodes: Set<NetworkNode> = emptySet()
+    final override val typeId get() = unfacaded.key
     
     override fun handleEnable() {
         super.handleEnable()
@@ -108,9 +124,6 @@ open class Cable(
     
     override fun handleDisable() {
         super.handleDisable()
-        attachmentDisplays.forEachNonNull(PacketItemDisplay::despawn)
-        attachmentDisplays = CubeFaceMap.NULL
-        hitboxes.forEach { it.remove() }
         isValid = false
     }
     
@@ -124,6 +137,45 @@ open class Cable(
         super.handleBreak(ctx)
         NetworkManager.queueRemoveBridge(this)
         isValid = false
+    }
+    
+    override fun getDrops(includeSelf: Boolean): List<ItemStack> {
+        if (!includeSelf)
+            return []
+        return [unfacaded.get().itemType.createItemStack()]
+    }
+    
+    override fun handleTick() = Unit
+    
+}
+
+abstract class UnfacadedCable(
+    unfacaded: RegistryEntry.Paper<BlockType>,
+    energyTransferRateDelegate: Provider<Long>,
+    itemTransferRateDelegate: Provider<Int>,
+    fluidTransferRateDelegate: Provider<Long>,
+    pos: Block,
+    state: NovaBlockState,
+    data: Compound
+) : AbstractCable(
+    unfacaded,
+    energyTransferRateDelegate,
+    itemTransferRateDelegate,
+    fluidTransferRateDelegate,
+    pos,
+    state,
+    data
+) {
+    
+    private val configMenus = ConcurrentHashMap<BlockFace, CableConfigMenu>()
+    private var hitboxes: Set<Hitbox<*, *>> = emptySet()
+    private var attachmentDisplays: CubeFaceMap<PacketItemDisplay?> = CubeFaceMap.NULL
+    
+    override fun handleDisable() {
+        super.handleDisable()
+        attachmentDisplays.forEachNonNull(PacketItemDisplay::despawn)
+        attachmentDisplays = CubeFaceMap.NULL
+        hitboxes.forEach { it.remove() }
     }
     
     override suspend fun handleNetworkLoaded(state: NetworkState) {
@@ -314,7 +366,7 @@ open class Cable(
                 
                 val gui = configMenus.computeIfAbsent(face) {
                     CableConfigMenu(
-                        this@Cable,
+                        this@UnfacadedCable,
                         endPoint,
                         endPoint.itemHolder,
                         endPoint.fluidHolder,
@@ -346,38 +398,111 @@ open class Cable(
     
 }
 
-class BasicCable(block: Block, state: NovaBlockState, data: Compound) : Cable(
-    energyTransferRate(Blocks.BASIC_CABLE),
-    itemTransferRate(Blocks.BASIC_CABLE),
-    fluidTransferRate(Blocks.BASIC_CABLE),
+abstract class FacadedCable(
+    unfacaded: RegistryEntry.Paper<BlockType>,
+    energyTransferRateDelegate: Provider<Long>,
+    itemTransferRateDelegate: Provider<Int>,
+    fluidTransferRateDelegate: Provider<Long>,
+    pos: Block,
+    state: NovaBlockState,
+    data: Compound
+) : AbstractCable(
+    unfacaded,
+    energyTransferRateDelegate,
+    itemTransferRateDelegate,
+    fluidTransferRateDelegate,
+    pos,
+    state,
+    data
+) {
+    
+    override fun getDrops(includeSelf: Boolean): List<ItemStack> {
+        if (!includeSelf)
+            return []
+        
+        val facadeStack = Items.CABLE_FACADES[blockState[BlockStateProperties.FACADE]]!!.get().createItemStack()
+        return super.getDrops(includeSelf) + facadeStack
+    }
+    
+}
+
+class BasicCable(block: Block, state: NovaBlockState, data: Compound) : UnfacadedCable(
+    Blocks.BASIC_CABLE,
+    BASIC_ENERGY_TRANSFER_RATE,
+    BASIC_ITEM_TRANSFER_RATE,
+    BASIC_FLUID_TRANSFER_RATE,
     block, state, data
 )
 
-class AdvancedCable(block: Block, state: NovaBlockState, data: Compound) : Cable(
-    energyTransferRate(Blocks.ADVANCED_CABLE),
-    itemTransferRate(Blocks.ADVANCED_CABLE),
-    fluidTransferRate(Blocks.ADVANCED_CABLE),
+class AdvancedCable(block: Block, state: NovaBlockState, data: Compound) : UnfacadedCable(
+    Blocks.ADVANCED_CABLE,
+    ADVANCED_ENERGY_TRANSFER_RATE,
+    ADVANCED_ITEM_TRANSFER_RATE,
+    ADVANCED_FLUID_TRANSFER_RATE,
     block, state, data
 )
 
-class EliteCable(block: Block, state: NovaBlockState, data: Compound) : Cable(
-    energyTransferRate(Blocks.ELITE_CABLE),
-    itemTransferRate(Blocks.ELITE_CABLE),
-    fluidTransferRate(Blocks.ELITE_CABLE),
+class EliteCable(block: Block, state: NovaBlockState, data: Compound) : UnfacadedCable(
+    Blocks.ELITE_CABLE,
+    ELITE_ENERGY_TRANSFER_RATE,
+    ELITE_ITEM_TRANSFER_RATE,
+    ELITE_FLUID_TRANSFER_RATE,
     block, state, data
 )
 
-class UltimateCable(block: Block, state: NovaBlockState, data: Compound) : Cable(
-    energyTransferRate(Blocks.ULTIMATE_CABLE),
-    itemTransferRate(Blocks.ULTIMATE_CABLE),
-    fluidTransferRate(Blocks.ULTIMATE_CABLE),
+class UltimateCable(block: Block, state: NovaBlockState, data: Compound) : UnfacadedCable(
+    Blocks.ULTIMATE_CABLE,
+    ULTIMATE_ENERGY_TRANSFER_RATE,
+    ULTIMATE_ITEM_TRANSFER_RATE,
+    ULTIMATE_FLUID_TRANSFER_RATE,
     block, state, data
 )
 
-class CreativeCable(block: Block, state: NovaBlockState, data: Compound) : Cable(
-    provider(Long.MAX_VALUE),
-    provider(Int.MAX_VALUE),
-    provider(Long.MAX_VALUE),
+class CreativeCable(block: Block, state: NovaBlockState, data: Compound) : UnfacadedCable(
+    Blocks.CREATIVE_CABLE,
+    CREATIVE_ENERGY_TRANSFER_RATE,
+    CREATIVE_ITEM_TRANSFER_RATE,
+    CREATIVE_FLUID_TRANSFER_RATE,
+    block, state, data
+)
+
+class FacadedBasicCable(block: Block, state: NovaBlockState, data: Compound) : FacadedCable(
+    Blocks.BASIC_CABLE,
+    BASIC_ENERGY_TRANSFER_RATE,
+    BASIC_ITEM_TRANSFER_RATE,
+    BASIC_FLUID_TRANSFER_RATE,
+    block, state, data
+)
+
+class FacadedAdvancedCable(block: Block, state: NovaBlockState, data: Compound) : FacadedCable(
+    Blocks.ADVANCED_CABLE,
+    ADVANCED_ENERGY_TRANSFER_RATE,
+    ADVANCED_ITEM_TRANSFER_RATE,
+    ADVANCED_FLUID_TRANSFER_RATE,
+    block, state, data
+)
+
+class FacadedEliteCable(block: Block, state: NovaBlockState, data: Compound) : FacadedCable(
+    Blocks.ELITE_CABLE,
+    ELITE_ENERGY_TRANSFER_RATE,
+    ELITE_ITEM_TRANSFER_RATE,
+    ELITE_FLUID_TRANSFER_RATE,
+    block, state, data
+)
+
+class FacadedUltimateCable(block: Block, state: NovaBlockState, data: Compound) : FacadedCable(
+    Blocks.ULTIMATE_CABLE,
+    ULTIMATE_ENERGY_TRANSFER_RATE,
+    ULTIMATE_ITEM_TRANSFER_RATE,
+    ULTIMATE_FLUID_TRANSFER_RATE,
+    block, state, data
+)
+
+class FacadedCreativeCable(block: Block, state: NovaBlockState, data: Compound) : FacadedCable(
+    Blocks.CREATIVE_CABLE,
+    CREATIVE_ENERGY_TRANSFER_RATE,
+    CREATIVE_ITEM_TRANSFER_RATE,
+    CREATIVE_FLUID_TRANSFER_RATE,
     block, state, data
 )
 

@@ -1,0 +1,9 @@
+{
+  "result": "logistics:stripped_mangrove_log_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:stripped_mangrove_log": 1
+  }
+}

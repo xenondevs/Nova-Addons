@@ -1,0 +1,9 @@
+{
+  "result": "logistics:cracked_deepslate_tiles_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:cracked_deepslate_tiles": 1
+  }
+}

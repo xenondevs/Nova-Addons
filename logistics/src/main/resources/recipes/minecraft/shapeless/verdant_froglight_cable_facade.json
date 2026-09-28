@@ -1,0 +1,9 @@
+{
+  "result": "logistics:verdant_froglight_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:verdant_froglight": 1
+  }
+}

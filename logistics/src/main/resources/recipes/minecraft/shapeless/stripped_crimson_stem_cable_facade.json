@@ -1,0 +1,9 @@
+{
+  "result": "logistics:stripped_crimson_stem_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:stripped_crimson_stem": 1
+  }
+}

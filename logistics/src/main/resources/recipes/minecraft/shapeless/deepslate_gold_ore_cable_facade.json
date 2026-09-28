@@ -1,0 +1,9 @@
+{
+  "result": "logistics:deepslate_gold_ore_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:deepslate_gold_ore": 1
+  }
+}

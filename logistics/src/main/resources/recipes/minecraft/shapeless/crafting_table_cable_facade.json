@@ -1,0 +1,9 @@
+{
+  "result": "logistics:crafting_table_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:crafting_table": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "result": "logistics:tube_coral_block_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:tube_coral_block": 1
+  }
+}

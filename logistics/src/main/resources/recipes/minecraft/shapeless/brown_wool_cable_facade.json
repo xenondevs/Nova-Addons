@@ -1,0 +1,9 @@
+{
+  "result": "logistics:brown_wool_cable_facade",
+  "amount": 4,
+  "ingredients": {
+    "minecraft:paper": 1,
+    "minecraft:string": 1,
+    "minecraft:brown_wool": 1
+  }
+}
