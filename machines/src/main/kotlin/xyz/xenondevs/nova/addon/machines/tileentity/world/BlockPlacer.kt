@@ -3,7 +3,8 @@ package xyz.xenondevs.nova.addon.machines.tileentity.world
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.bukkit.inventory.ItemStack
+import org.bukkit.block.Block
+import org.bukkit.inventory.ItemType
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.invui.dsl.gui
 import xyz.xenondevs.nova.addon.machines.registry.Blocks.BLOCK_PLACER
@@ -18,19 +19,19 @@ import xyz.xenondevs.nova.context.Context
 import xyz.xenondevs.nova.context.intention.BlockPlace
 import xyz.xenondevs.nova.integration.protection.ProtectionManager
 import xyz.xenondevs.nova.registry.tags.BlockTypeTags
-import xyz.xenondevs.nova.world.block.config
 import xyz.xenondevs.nova.ui.menu.energyBar
 import xyz.xenondevs.nova.ui.menu.sideconfig.openSideConfigItem
 import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.BlockUtils
-import org.bukkit.block.Block
 import xyz.xenondevs.nova.world.block.NovaBlockState
 import xyz.xenondevs.nova.world.block.blockType
+import xyz.xenondevs.nova.world.block.config
 import xyz.xenondevs.nova.world.block.novaBlockState
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
 import xyz.xenondevs.nova.world.block.tileentity.network.type.NetworkConnectionType.INSERT
+import xyz.xenondevs.nova.world.item.itemType
 import kotlin.time.Duration.Companion.milliseconds
 
 private val BLOCKED_SIDES = BlockSideSet(front = true)
@@ -51,7 +52,7 @@ class BlockPlacer(pos: Block, blockState: NovaBlockState, data: Compound) : Netw
     private val placeBlock = placePos
     
     @Volatile
-    private var permittedTypes: Set<ItemStack> = emptySet()
+    private var permittedTypes: Set<ItemType> = emptySet()
     
     override val menu = TileEntityMenu.cachedWindow(GuiTextures.GENERIC_3X3_WITH_BAR) {
         upperGui by gui(
@@ -82,9 +83,9 @@ class BlockPlacer(pos: Block, blockState: NovaBlockState, data: Compound) : Netw
         CoroutineScope(coroutineSupervisor!!).launch {
             while (true) {
                 permittedTypes = inventory.items.asSequence()
-                    .filterNotNull()
-                    .onEach { it.amount = 1 }
-                    .filterTo(HashSet()) { ProtectionManager.canPlace(this@BlockPlacer, it, placePos) }
+                    .mapNotNull { it?.itemType }
+                    .filter { it.hasBlockType() }
+                    .filterTo(HashSet()) { ProtectionManager.canPlace(this@BlockPlacer, it.createItemStack(), placePos) }
                 delay(50.milliseconds)
             }
         }
@@ -94,7 +95,7 @@ class BlockPlacer(pos: Block, blockState: NovaBlockState, data: Compound) : Netw
         for ((index, item) in inventory.items.withIndex()) {
             if (item == null)
                 continue
-            if (item.clone().apply { amount = 1 } !in permittedTypes)
+            if (item.itemType !in permittedTypes)
                 continue
             
             val ctx = Context.intention(BlockPlace)
