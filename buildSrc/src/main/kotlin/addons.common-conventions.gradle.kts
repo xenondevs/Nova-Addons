@@ -1,6 +1,4 @@
 import org.gradle.accessors.dm.LibrariesForLibs
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.internal.config.AnalysisFlags.optIn
 import xyz.xenondevs.origami.extension.OrigamiExtension
 
 group = "xyz.xenondevs.nova.addon"
@@ -59,5 +57,12 @@ pluginPublish {
 }
 
 extensions.configure<OrigamiExtension> {
-    runServer.workingDirectory.set(layout.dir(providers.gradleProperty("serverDir").map(::File)))
+    runServer {
+        workingDirectory.set(layout.dir(providers.gradleProperty("serverDir").map(::File)))
+        javaLauncher = javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(25)
+            vendor = JvmVendorSpec.JETBRAINS
+        }
+        jvmArgs.addAll("-XX:+AllowEnhancedClassRedefinition")
+    }
 }

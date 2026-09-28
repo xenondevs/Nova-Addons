@@ -24,14 +24,21 @@ tasks.named("_oriPrepareMarker") { enabled = false }
 tasks.withType<Jar>().configureEach { enabled = false }
 
 extensions.configure<OrigamiExtension> {
-    runServer.plugins.from(
-        rootProject.subprojects
-            .filter { it != project }
-            .map { addonProject ->
-                addonProject.tasks
-                    .withType<Jar>()
-                    .matching { it.name == "addonJar" }
-            }
-    )
-    runServer.workingDirectory.set(layout.dir(providers.gradleProperty("serverDir").map(::File)))
+    runServer {
+        plugins.from(
+            rootProject.subprojects
+                .filter { it != project }
+                .map { addonProject ->
+                    addonProject.tasks
+                        .withType<Jar>()
+                        .matching { it.name == "addonJar" }
+                }
+        )
+        workingDirectory.set(layout.dir(providers.gradleProperty("serverDir").map(::File)))
+        javaLauncher = javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(25)
+            vendor = JvmVendorSpec.JETBRAINS
+        }
+        jvmArgs.addAll("-XX:+AllowEnhancedClassRedefinition")
+    }
 }
