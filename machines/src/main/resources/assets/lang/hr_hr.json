@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Način: Zalediti u led",
   "menu.machines.freezer.mode.packed_ice": "Način: Zalediti na zbijeni led",
   "menu.machines.freezer.mode.blue_ice": "Način: Zalediti u plavi led",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfiguriraj napitak",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfiguriraj napitak...",
   "menu.machines.electric_brewing_stand.ingredients": "Sastojci:",
   "menu.machines.potion_configurator.effect": "Učinak:",
   "menu.machines.potion_configurator.add_effect": "Dodaj efekt",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Izradi kristalizator",
   "advancement.machines.all_star_tools.title": "Zvjezdani alati",
   "advancement.machines.all_star_tools.description": "Izradi svih pet zvjezdanih alata",
-  "subtitles.machines.item.armor.equip_star": "Zvjezdani oklop zvecka"
+  "subtitles.machines.item.armor.equip_star": "Zvjezdani oklop zvecka",
+  "menu.machines.potion_configurator.pick_effect": "Odaberi efekt..."
 }

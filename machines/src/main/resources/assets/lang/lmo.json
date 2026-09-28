@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Modalità: Congelà in Gècc",
   "menu.machines.freezer.mode.packed_ice": "Modalità: Da gelà a giass compatt",
   "menu.machines.freezer.mode.blue_ice": "Modalità: Gelà in Gèzz Blu",
-  "menu.machines.electric_brewing_stand.configure_potion": "Configurà la Pòzion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Configurà la Pòzion...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredient:",
   "menu.machines.potion_configurator.effect": "Effet:",
   "menu.machines.potion_configurator.add_effect": "Giont on effet",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Fà su on Cristallizadur",
   "advancement.machines.all_star_tools.title": "Strument Stellar",
   "advancement.machines.all_star_tools.description": "Fà sü tücc i cinch Strümént de la Stela",
-  "subtitles.machines.item.armor.equip_star": "L'armadura de stela la tintinna"
+  "subtitles.machines.item.armor.equip_star": "L'armadura de stela la tintinna",
+  "menu.machines.potion_configurator.pick_effect": "Sceglì l'effett..."
 }

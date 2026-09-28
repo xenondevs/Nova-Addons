@@ -37,7 +37,7 @@
   "menu.machines.freezer.mode.ice": "โหมด: แช่แข็งเป็นน้ำแข็ง",
   "menu.machines.freezer.mode.packed_ice": "โหมด: แช่แข็งเป็นน้ำแข็งอัดแน่น",
   "menu.machines.freezer.mode.blue_ice": "โหมด: แช่แข็งเป็นน้ำแข็งสีฟ้า",
-  "menu.machines.electric_brewing_stand.configure_potion": "กำหนดค่าโพชั่น",
+  "menu.machines.electric_brewing_stand.configure_potion": "ตั้งค่ายา...",
   "menu.machines.electric_brewing_stand.ingredients": "ส่วนผสม:",
   "menu.machines.potion_configurator.effect": "ผล:",
   "menu.machines.potion_configurator.add_effect": "เพิ่มเอฟเฟกต์",
@@ -224,5 +224,6 @@
   "inventory.machines.fuel": "ปริมาณเชื้อเพลิง",
   "inventory.machines.hoes": "รายการเครื่องมือ",
   "inventory.machines.shears": "สินค้าคงคลังของ Shears",
-  "inventory.machines.axes": "สินค้าคงคลังของขวาน"
+  "inventory.machines.axes": "สินค้าคงคลังของขวาน",
+  "menu.machines.potion_configurator.pick_effect": "เลือกเอฟเฟกต์..."
 }

@@ -179,7 +179,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Замрзавање у лед",
   "menu.machines.freezer.mode.packed_ice": "Режим: Замрзнути у чврсти лед",
   "menu.machines.freezer.mode.blue_ice": "Режим: Замрзнути у плави лед",
-  "menu.machines.electric_brewing_stand.configure_potion": "Конфигуриши напитак",
+  "menu.machines.electric_brewing_stand.configure_potion": "Конфигуриши напитак...",
   "menu.machines.electric_brewing_stand.ingredients": "Састојци:",
   "menu.machines.potion_configurator.effect": "Ефекат:",
   "menu.machines.potion_configurator.add_effect": "Додај ефекат",
@@ -224,5 +224,6 @@
   "advancement.machines.all_gears.description": "Набави по један од сваког комада опреме",
   "advancement.machines.pulverizer.title": "Основно дуплирање руда",
   "advancement.machines.pulverizer.description": "Израдите пулверизатор",
-  "advancement.machines.dust.title": "Прашина"
+  "advancement.machines.dust.title": "Прашина",
+  "menu.machines.potion_configurator.pick_effect": "Изабери ефекат..."
 }

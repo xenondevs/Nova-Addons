@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "რეჟიმი: გაყინვა ყინულად",
   "menu.machines.freezer.mode.packed_ice": "რეჟიმი: გადაყინვა მყარ ყინულად",
   "menu.machines.freezer.mode.blue_ice": "რეჟიმი: გაყინვა ლურჯ ყინულად",
-  "menu.machines.electric_brewing_stand.configure_potion": "ელექსირის კონფიგურაცია",
+  "menu.machines.electric_brewing_stand.configure_potion": "ელექსირის კონფიგურაცია...",
   "menu.machines.electric_brewing_stand.ingredients": "ინგრედიენტები:",
   "menu.machines.potion_configurator.effect": "ეფექტი:",
   "menu.machines.potion_configurator.add_effect": "ეფექტის დამატება",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "დაამზადეთ კრისტალიზატორი",
   "advancement.machines.all_star_tools.title": "ვარსკვლავური ხელსაწყოები",
   "advancement.machines.all_star_tools.description": "დაამზადეთ ხუთივე ვარსკვლავური ხელსაწყო",
-  "subtitles.machines.item.armor.equip_star": "ვარსკვლავური აბჯარი წკარუნობს"
+  "subtitles.machines.item.armor.equip_star": "ვარსკვლავური აბჯარი წკარუნობს",
+  "menu.machines.potion_configurator.pick_effect": "ეფექტის არჩევა..."
 }

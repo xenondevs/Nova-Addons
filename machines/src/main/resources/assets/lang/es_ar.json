@@ -133,7 +133,7 @@
   "menu.machines.freezer.mode.ice": "Modo: Congelar en hielo",
   "menu.machines.freezer.mode.packed_ice": "Modo: Congelación a hielo compacto",
   "menu.machines.freezer.mode.blue_ice": "Modo: Congelar en hielo azul",
-  "menu.machines.electric_brewing_stand.configure_potion": "Configurar poción",
+  "menu.machines.electric_brewing_stand.configure_potion": "Configurar poción...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredientes:",
   "menu.machines.potion_configurator.effect": "Efecto:",
   "menu.machines.potion_configurator.add_effect": "Añadir efecto",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Duración máxima nivel: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Nivel máximo de amplificador: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Multiplicador de duración: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Amplificador multiplicador: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Amplificador multiplicador: %s",
+  "menu.machines.potion_configurator.pick_effect": "Seleccionar efecto..."
 }

@@ -150,7 +150,7 @@
   "menu.machines.fluid_infuser.mode.extract": "Trích xuất chất lỏng ra khỏi vật phẩm",
   "menu.machines.freezer.mode.ice": "Chế độ: Đóng Băng",
   "menu.machines.freezer.mode.blue_ice": "Chế độ: Đóng Băng thành Băng Xanh",
-  "menu.machines.electric_brewing_stand.configure_potion": "Cấu hình Pha chế",
+  "menu.machines.electric_brewing_stand.configure_potion": "Cấu hình Thuốc...",
   "menu.machines.electric_brewing_stand.ingredients": "Nguyên liệu:",
   "menu.machines.potion_configurator.effect": "Hiệu ứng:",
   "menu.machines.potion_configurator.add_effect": "Thêm hiệu ứng",
@@ -224,5 +224,6 @@
   "menu.machines.potion_configurator.potion_type.splash": "Loại thuốc: Tưới",
   "menu.machines.potion_configurator.potion_type.lingering": "Loại thuốc: Lưu lại",
   "advancement.machines.fluid_infuser.description": "Tạo ra một thiết bị truyền chất lỏng",
-  "subtitles.machines.item.armor.equip_star": "Giáp sao kêu lách cách"
+  "subtitles.machines.item.armor.equip_star": "Giáp sao kêu lách cách",
+  "menu.machines.potion_configurator.pick_effect": "Chọn hiệu ứng..."
 }

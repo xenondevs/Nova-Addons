@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Mód: Reo go hOighear",
   "menu.machines.freezer.mode.packed_ice": "Mód: Reoite go hOighear Dlúth",
   "menu.machines.freezer.mode.blue_ice": "Mód: Reo go hOighear Gorm",
-  "menu.machines.electric_brewing_stand.configure_potion": "Cumrú an Óil",
+  "menu.machines.electric_brewing_stand.configure_potion": "Cumrú an Óil...",
   "menu.machines.electric_brewing_stand.ingredients": "Comhábhair:",
   "menu.machines.potion_configurator.effect": "Éifeacht:",
   "menu.machines.potion_configurator.add_effect": "Cuir Éifeacht Leis",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Déan Criostalaí",
   "advancement.machines.all_star_tools.title": "Uirlisí Réalta",
   "advancement.machines.all_star_tools.description": "Déan na cúig Uirlis Réalta go léir.",
-  "subtitles.machines.item.armor.equip_star": "Clinc armair réalta"
+  "subtitles.machines.item.armor.equip_star": "Clinc armair réalta",
+  "menu.machines.potion_configurator.pick_effect": "Roghnaigh Éifeacht..."
 }

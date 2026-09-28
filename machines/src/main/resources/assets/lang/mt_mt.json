@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Modalità: Iffriża f'Glaċju",
   "menu.machines.freezer.mode.packed_ice": "Modalità: Ifriżar f'Glaċe Kompatt",
   "menu.machines.freezer.mode.blue_ice": "Modalità: Iffriża f'Glaċer Blu",
-  "menu.machines.electric_brewing_stand.configure_potion": "Ikkonfigura l-Potion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Ikkonfigura l-Potion...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredjenti:",
   "menu.machines.potion_configurator.effect": "Effett:",
   "menu.machines.potion_configurator.add_effect": "Żid l-effett",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Oħloq kristallizzatur",
   "advancement.machines.all_star_tools.title": "Għodod tal-Istilla",
   "advancement.machines.all_star_tools.description": "Oħloq il-ħames Għodod tal-Istilla kollha",
-  "subtitles.machines.item.armor.equip_star": "Il-klinkjar tal-armatura tal-istilla"
+  "subtitles.machines.item.armor.equip_star": "Il-klinkjar tal-armatura tal-istilla",
+  "menu.machines.potion_configurator.pick_effect": "Agħżel l-effett..."
 }

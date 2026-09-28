@@ -101,7 +101,7 @@
   "menu.machines.freezer.mode.ice": "מצב: הקפאה לקרח",
   "menu.machines.freezer.mode.packed_ice": "מצב: הקפאה לקרח דחוס",
   "menu.machines.freezer.mode.blue_ice": "מצב: הקפאה לקרח כחול",
-  "menu.machines.electric_brewing_stand.configure_potion": "הגדר שיקוי",
+  "menu.machines.electric_brewing_stand.configure_potion": "הגדר שיקוי...",
   "menu.machines.electric_brewing_stand.ingredients": "מרכיבים:",
   "menu.machines.potion_configurator.effect": "אפקט:",
   "menu.machines.potion_configurator.add_effect": "הוסף אפקט",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.cobblestone_generator.cobblestone": "דורש מים ולבה, אך אינו צורך אותם.",
   "menu.machines.recipe.cobblestone_generator.stone": "צורך 1000 מגה-בייט של מים לכל אבן.",
   "menu.machines.recipe.cobblestone_generator.obsidian": "משתמש ב-1000 מגה-בייט של לבה לכל אובסידיאן.",
-  "menu.machines.lightning_exchanger": "מחליף ברקים"
+  "menu.machines.lightning_exchanger": "מחליף ברקים",
+  "menu.machines.potion_configurator.pick_effect": "בחר אפקט..."
 }

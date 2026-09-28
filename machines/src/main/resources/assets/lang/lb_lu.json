@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Modus: Gefriere zu Äis",
   "menu.machines.freezer.mode.packed_ice": "Modus: Gefroren op festgepressten Äis",
   "menu.machines.freezer.mode.blue_ice": "Modus: Gefriere zu bloem Äis",
-  "menu.machines.electric_brewing_stand.configure_potion": "Potion konfiguréieren",
+  "menu.machines.electric_brewing_stand.configure_potion": "Potion konfiguréieren...",
   "menu.machines.electric_brewing_stand.ingredients": "Zutaten:",
   "menu.machines.potion_configurator.effect": "Effekt:",
   "menu.machines.potion_configurator.add_effect": "Effekt derbäisetzen",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Bau e Kristalliséierer",
   "advancement.machines.all_star_tools.title": "Stär-Tools",
   "advancement.machines.all_star_tools.description": "Craft all fënnef Stär-Tools",
-  "subtitles.machines.item.armor.equip_star": "Stärepanzer kléngt"
+  "subtitles.machines.item.armor.equip_star": "Stärepanzer kléngt",
+  "menu.machines.potion_configurator.pick_effect": "Effekt auswielen..."
 }

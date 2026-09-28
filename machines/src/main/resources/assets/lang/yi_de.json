@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "מאָד: פֿאַרפֿרירן צו אײַז",
   "menu.machines.freezer.mode.packed_ice": "מאָד: פֿאַרפֿרירן צו געפּאַקטן אײַז",
   "menu.machines.freezer.mode.blue_ice": "מאָד: פֿרירן צו בלויען אײַז",
-  "menu.machines.electric_brewing_stand.configure_potion": "קאָנפֿיגורירן פּאָושן",
+  "menu.machines.electric_brewing_stand.configure_potion": "קאָנפֿיגורירן פּאָושן...",
   "menu.machines.electric_brewing_stand.ingredients": "צוטאַטן:",
   "menu.machines.potion_configurator.effect": "עפעקט:",
   "menu.machines.potion_configurator.add_effect": "לייג עפעקט",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "עקסטראַקטירן %s מ\"ב %s",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "פֿאָדערט וואַסער און לאַוואַ, אָבער נוצט נישט קיין.",
   "menu.machines.recipe.cobblestone_generator.stone": "ניצט 1000 מ\"ב וואַסער פּער שטיין.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "ניצט 1000 mB לאַוואַ פּער אָבסידיאַן."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "ניצט 1000 mB לאַוואַ פּער אָבסידיאַן.",
+  "menu.machines.potion_configurator.pick_effect": "קלײַבט אויס עפֿעקט..."
 }

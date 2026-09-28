@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Мұзға қату",
   "menu.machines.freezer.mode.packed_ice": "Режим: Қатты мұзға айналдыру",
   "menu.machines.freezer.mode.blue_ice": "Режим: Көк мұзға қату",
-  "menu.machines.electric_brewing_stand.configure_potion": "Эликсирді баптау",
+  "menu.machines.electric_brewing_stand.configure_potion": "Сиқырлы сусынды баптау...",
   "menu.machines.electric_brewing_stand.ingredients": "Құрамдас бөліктері:",
   "menu.machines.potion_configurator.effect": "Әсері:",
   "menu.machines.potion_configurator.add_effect": "Әсерді қосу",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Кристаллизатор жасаңыз",
   "advancement.machines.all_star_tools.title": "Жұлдыз құралдары",
   "advancement.machines.all_star_tools.description": "Барлық бес Жұлдыз құралын жасаңыз",
-  "subtitles.machines.item.armor.equip_star": "Жұлдызды броня сыңғырады"
+  "subtitles.machines.item.armor.equip_star": "Жұлдызды броня сыңғырады",
+  "menu.machines.potion_configurator.pick_effect": "Әсерді таңда..."
 }

@@ -179,7 +179,7 @@
   "menu.machines.freezer.mode.ice": "Tryb: Freeze to Ice",
   "menu.machines.freezer.mode.packed_ice": "Tryb: Freeze to Packed Ice",
   "menu.machines.freezer.mode.blue_ice": "Tryb: Zamrożenie do Niebieskiego Lodu",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfiguracja mikstury",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfiguracja mikstury...",
   "menu.machines.electric_brewing_stand.ingredients": "Składniki:",
   "menu.machines.potion_configurator.effect": "Efekt:",
   "menu.machines.potion_configurator.add_effect": "Dodaj efekt",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksymalny poziom trwania: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksymalny poziom wzmacniacza: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Mnożnik czasu trwania: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Mnożnik wzmacniacza: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Mnożnik wzmacniacza: %s",
+  "menu.machines.potion_configurator.pick_effect": "Wybierz efekt..."
 }

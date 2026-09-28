@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Бозга әйләндерү",
   "menu.machines.freezer.mode.packed_ice": "Режим: Катып калган бозга әйләндерү",
   "menu.machines.freezer.mode.blue_ice": "Режим: Зәңгәр бозга туңдыру",
-  "menu.machines.electric_brewing_stand.configure_potion": "Эсемлекне көйләү",
+  "menu.machines.electric_brewing_stand.configure_potion": "Эсемлекне көйләү...",
   "menu.machines.electric_brewing_stand.ingredients": "Ингредиентлар:",
   "menu.machines.potion_configurator.effect": "Эффект:",
   "menu.machines.potion_configurator.add_effect": "Эффект өстәргә",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "%s mB %s чыгару",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Су һәм лава таләп итә, ләкин берниндисен дә кулланып бетерми.",
   "menu.machines.recipe.cobblestone_generator.stone": "Һәр таш өчен 1000 мБ су куллана.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "Һәр обсидиан өчен 1000 мБ лава куллана."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "Һәр обсидиан өчен 1000 мБ лава куллана.",
+  "menu.machines.potion_configurator.pick_effect": "Эффектны сайлагыз..."
 }

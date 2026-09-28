@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Mod: Beku Menjadi Ais",
   "menu.machines.freezer.mode.packed_ice": "Mod: Beku menjadi ais padat",
   "menu.machines.freezer.mode.blue_ice": "Mod: Beku menjadi Ais Biru",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurasikan Minuman Ajaib",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurasikan Ramuan...",
   "menu.machines.electric_brewing_stand.ingredients": "Bahan-bahan:",
   "menu.machines.potion_configurator.effect": "Kesan:",
   "menu.machines.potion_configurator.add_effect": "Tambah Kesan",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Membuat Kristalisator",
   "advancement.machines.all_star_tools.title": "Alat Bintang",
   "advancement.machines.all_star_tools.description": "Tukang semua lima Alat Bintang",
-  "subtitles.machines.item.armor.equip_star": "Zirah bintang berketing"
+  "subtitles.machines.item.armor.equip_star": "Zirah bintang berketing",
+  "menu.machines.potion_configurator.pick_effect": "Pilih Kesan..."
 }

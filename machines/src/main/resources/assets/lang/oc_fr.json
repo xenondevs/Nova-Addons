@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Mòde: Congelar en glaç",
   "menu.machines.freezer.mode.packed_ice": "Mòde: Gelar a glaç compactat",
   "menu.machines.freezer.mode.blue_ice": "Mòde: Gelar per far de glaç blau",
-  "menu.machines.electric_brewing_stand.configure_potion": "Configurar la pocion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Configurar la pocion...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredients:",
   "menu.machines.potion_configurator.effect": "Efècte:",
   "menu.machines.potion_configurator.add_effect": "Apondre un efècte",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Fabricar un Cristallizador",
   "advancement.machines.all_star_tools.title": "Estelas Utís",
   "advancement.machines.all_star_tools.description": "Fabricatz las cinc aisinas estelaras",
-  "subtitles.machines.item.armor.equip_star": "L'armadura estelada clinca"
+  "subtitles.machines.item.armor.equip_star": "L'armadura estelada clinca",
+  "menu.machines.potion_configurator.pick_effect": "Causissètz l'efècte..."
 }

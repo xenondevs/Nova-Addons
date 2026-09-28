@@ -131,7 +131,7 @@
   "menu.machines.freezer.mode.ice": "模式：冻结成冰",
   "menu.machines.freezer.mode.packed_ice": "模式：冻结为包装冰",
   "menu.machines.freezer.mode.blue_ice": "模式：冻结成蓝冰",
-  "menu.machines.electric_brewing_stand.configure_potion": "配置药水",
+  "menu.machines.electric_brewing_stand.configure_potion": "設定藥水...",
   "menu.machines.electric_brewing_stand.ingredients": "成分",
   "menu.machines.potion_configurator.effect": "效果",
   "menu.machines.potion_configurator.add_effect": "添加效果",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "最大持续时间级别： %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "最大放大器级别： %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "持续时间乘数： %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "放大器乘数： %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "放大器乘数： %s",
+  "menu.machines.potion_configurator.pick_effect": "選擇效果..."
 }

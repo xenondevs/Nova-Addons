@@ -131,7 +131,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Замръзване на лед",
   "menu.machines.freezer.mode.packed_ice": "Режим: Замразяване до опакован лед",
   "menu.machines.freezer.mode.blue_ice": "Режим: Замръзване на син лед",
-  "menu.machines.electric_brewing_stand.configure_potion": "Конфигуриране на отварачката",
+  "menu.machines.electric_brewing_stand.configure_potion": "Конфигуриране на отварата...",
   "menu.machines.electric_brewing_stand.ingredients": "Съставки:",
   "menu.machines.potion_configurator.effect": "Ефект:",
   "menu.machines.potion_configurator.add_effect": "Добавяне на ефект",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимално ниво на продължителност: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимално ниво на усилвателя: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множител на продължителността: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множител на усилвателя: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множител на усилвателя: %s",
+  "menu.machines.potion_configurator.pick_effect": "Изберете ефект..."
 }

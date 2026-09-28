@@ -132,7 +132,7 @@
   "menu.machines.freezer.mode.ice": "Mód: Jéggé fagyasztás",
   "menu.machines.freezer.mode.packed_ice": "Mód: Fagyasztás csomagolt jéggé",
   "menu.machines.freezer.mode.blue_ice": "Mód: Kék jéggé fagyasztás",
-  "menu.machines.electric_brewing_stand.configure_potion": "Potion konfigurálása",
+  "menu.machines.electric_brewing_stand.configure_potion": "Bájital beállítása...",
   "menu.machines.electric_brewing_stand.ingredients": "Összetevők:",
   "menu.machines.potion_configurator.effect": "Hatás:",
   "menu.machines.potion_configurator.add_effect": "Hatás hozzáadása",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximális erősítő szint: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Időtartam szorzó: %s",
   "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Erősítő szorzó: %s",
-  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximális időtartam szint: %s"
+  "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximális időtartam szint: %s",
+  "menu.machines.potion_configurator.pick_effect": "Válassz hatást..."
 }

@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Modd: Rhew i Iâ",
   "menu.machines.freezer.mode.packed_ice": "Modd: Rhew i Iâ Wedi'i Bacio",
   "menu.machines.freezer.mode.blue_ice": "Modd: Rhew i Iâ Glas",
-  "menu.machines.electric_brewing_stand.configure_potion": "Ffurfweddu Potion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Ffurfweddu Diod...",
   "menu.machines.electric_brewing_stand.ingredients": "Cynhwysion:",
   "menu.machines.potion_configurator.effect": "Effaith:",
   "menu.machines.potion_configurator.add_effect": "Ychwanegu Effaith",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "Eithrio %s mB %s",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Mae'n gofyn am ddŵr a lafa, ond dydy e ddim yn defnyddio dim.",
   "menu.machines.recipe.cobblestone_generator.stone": "Defnyddir 1000 mB o ddŵr fesul carreg.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "Defnyddir 1000 mB o lafa fesul obsidian."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "Defnyddir 1000 mB o lafa fesul obsidian.",
+  "menu.machines.potion_configurator.pick_effect": "Dewis Effaith..."
 }

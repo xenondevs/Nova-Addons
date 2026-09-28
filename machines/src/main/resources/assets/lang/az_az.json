@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Rejim: Buzlaşmaq",
   "menu.machines.freezer.mode.packed_ice": "Rejim: Donmuş buz halına gətir",
   "menu.machines.freezer.mode.blue_ice": "Rejim: Mavi buzda donma",
-  "menu.machines.electric_brewing_stand.configure_potion": "İksirin konfiqurasiyası",
+  "menu.machines.electric_brewing_stand.configure_potion": "İksiri tənzimlə...",
   "menu.machines.electric_brewing_stand.ingredients": "Tərkibi:",
   "menu.machines.potion_configurator.effect": "Effekt:",
   "menu.machines.potion_configurator.add_effect": "Effekt əlavə et",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "%s mB %s çıxarın",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Su və lava tələb edir, amma heç birini istifadə etmir.",
   "menu.machines.recipe.cobblestone_generator.stone": "Hər daş üçün 1000 mB su istifadə edir.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "Hər obsidian üçün 1000 mB lava istifadə edir."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "Hər obsidian üçün 1000 mB lava istifadə edir.",
+  "menu.machines.potion_configurator.pick_effect": "Təsir seçin..."
 }

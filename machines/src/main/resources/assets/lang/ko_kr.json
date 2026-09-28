@@ -107,7 +107,7 @@
   "menu.machines.fluid_infuser.mode.extract": "아이템에 유체 추출",
   "menu.machines.freezer.mode.ice": "얼음으로 얼리는 모드",
   "menu.machines.freezer.mode.blue_ice": "푸른얼음으로 얼리는 모드",
-  "menu.machines.electric_brewing_stand.configure_potion": "물약 구성",
+  "menu.machines.electric_brewing_stand.configure_potion": "포션 설정...",
   "menu.machines.electric_brewing_stand.ingredients": "구성성분:",
   "menu.machines.potion_configurator.effect": "효과:",
   "menu.machines.potion_configurator.add_effect": "효과 추가",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "최대 지속 시간 수준: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "최대 증폭기 레벨: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "지속 시간 승수: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "증폭기 승수: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "증폭기 승수: %s",
+  "menu.machines.potion_configurator.pick_effect": "효과 선택..."
 }

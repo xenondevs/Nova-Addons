@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Modus: Vries tot ys",
   "menu.machines.freezer.mode.packed_ice": "Modus: Bevries tot diggepakte ys",
   "menu.machines.freezer.mode.blue_ice": "Modus: Vries tot Blouys",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfigureer brousel",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfigureer brousel...",
   "menu.machines.electric_brewing_stand.ingredients": "Bestanddele:",
   "menu.machines.potion_configurator.effect": "Effek:",
   "menu.machines.potion_configurator.add_effect": "Voeg effek by",
@@ -224,5 +224,6 @@
   "advancement.machines.star_shards.description": "Vind Sterfragmente in 'n kelderkas",
   "advancement.machines.star_collector.title": "Uit die lug op",
   "advancement.machines.star_collector.description": "Bou 'n Sterversamelaar",
-  "advancement.machines.infinite_water_source.title": "'n antieke waterbron"
+  "advancement.machines.infinite_water_source.title": "'n antieke waterbron",
+  "menu.machines.potion_configurator.pick_effect": "Kies effek..."
 }

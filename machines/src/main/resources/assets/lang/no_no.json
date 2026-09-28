@@ -131,7 +131,7 @@
   "menu.machines.freezer.mode.ice": "Modus: Frys til is",
   "menu.machines.freezer.mode.packed_ice": "Modus: Frys til pakket is",
   "menu.machines.freezer.mode.blue_ice": "Modus: Frys til blå is",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurere Potion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurer potion...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredienser:",
   "menu.machines.potion_configurator.effect": "Effekt:",
   "menu.machines.potion_configurator.add_effect": "Legg til effekt",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maks varighetsnivå: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maks forsterkernivå: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Varighetsmultiplikator: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Forsterkermultiplikator: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Forsterkermultiplikator: %s",
+  "menu.machines.potion_configurator.pick_effect": "Velg effekt..."
 }

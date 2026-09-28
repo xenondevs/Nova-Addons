@@ -131,7 +131,7 @@
   "menu.machines.freezer.mode.ice": "Mode: Membekukan ke Es",
   "menu.machines.freezer.mode.packed_ice": "Mode Bekukan ke Es yang Dikemas",
   "menu.machines.freezer.mode.blue_ice": "Mode: Membekukan ke Es Biru",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurasi Ramuan",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurasi Ramuan...",
   "menu.machines.electric_brewing_stand.ingredients": "Bahan:",
   "menu.machines.potion_configurator.effect": "Efek:",
   "menu.machines.potion_configurator.add_effect": "Tambahkan Efek",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Tingkat durasi maksimum: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Tingkat penguat maksimum: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Pengganda durasi: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Pengganda amplifier: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Pengganda amplifier: %s",
+  "menu.machines.potion_configurator.pick_effect": "Pilih Efek..."
 }

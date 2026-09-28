@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "मोड: बर्फ में जमना",
   "menu.machines.freezer.mode.packed_ice": "मोड: जमी हुई बर्फ में फ्रीज",
   "menu.machines.freezer.mode.blue_ice": "मोड: नीले बर्फ में जमना",
-  "menu.machines.electric_brewing_stand.configure_potion": "पॉशन कॉन्फ़िगर करें",
+  "menu.machines.electric_brewing_stand.configure_potion": "पॉशन कॉन्फ़िगर करें..।",
   "menu.machines.electric_brewing_stand.ingredients": "सामग्री:",
   "menu.machines.potion_configurator.effect": "प्रभाव:",
   "menu.machines.potion_configurator.add_effect": "प्रभाव जोड़ें",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "क्रिस्टलाइज़र बनाएं",
   "advancement.machines.all_star_tools.title": "स्टार टूल्स",
   "advancement.machines.all_star_tools.description": "सभी पाँच स्टार टूल्स तैयार करें",
-  "subtitles.machines.item.armor.equip_star": "स्टार आर्मर खनखनाता है"
+  "subtitles.machines.item.armor.equip_star": "स्टार आर्मर खनखनाता है",
+  "menu.machines.potion_configurator.pick_effect": "प्रभाव चुनें..।"
 }

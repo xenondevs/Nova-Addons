@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Mod: Skornadur da skorn",
   "menu.machines.freezer.mode.packed_ice": "Mod: Diverrañ war skorn stanket",
   "menu.machines.freezer.mode.blue_ice": "Mod: Skorn da skorn glas",
-  "menu.machines.electric_brewing_stand.configure_potion": "Kefluniañ Potion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Kefluniañ an evaj...",
   "menu.machines.electric_brewing_stand.ingredients": "Aozennoù:",
   "menu.machines.potion_configurator.effect": "Efed:",
   "menu.machines.potion_configurator.add_effect": "Ouzhpennañ un efed",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Goulenn a ra dour ha lafa, met ne zispign hini ebet.",
   "menu.machines.recipe.cobblestone_generator.stone": "Implijout a ra 1000 mB dour dre vaen.",
   "menu.machines.recipe.cobblestone_generator.obsidian": "Implij a ra 1000 mB a laved dre obsidian.",
-  "advancement.machines.gears.title": "Roulemantoù"
+  "advancement.machines.gears.title": "Roulemantoù",
+  "menu.machines.potion_configurator.pick_effect": "Diuzit an efed..."
 }

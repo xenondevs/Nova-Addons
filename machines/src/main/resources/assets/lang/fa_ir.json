@@ -136,7 +136,7 @@
   "menu.machines.freezer.mode.ice": "حالت: یخ‌زدگی به یخ",
   "menu.machines.freezer.mode.packed_ice": "حالت: یخ‌زدگی به یخ فشرده",
   "menu.machines.freezer.mode.blue_ice": "حالت: یخ‌زدگی به یخ آبی",
-  "menu.machines.electric_brewing_stand.configure_potion": "پوشش را پیکربندی کنید",
+  "menu.machines.electric_brewing_stand.configure_potion": "پوشش را پیکربندی کنید...",
   "menu.machines.electric_brewing_stand.ingredients": "مواد لازم:",
   "menu.machines.potion_configurator.effect": "اثر:",
   "menu.machines.potion_configurator.add_effect": "افزودن افکت",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "یک کریستالیزور بسازید",
   "advancement.machines.all_star_tools.title": "ابزارهای ستاره‌ای",
   "advancement.machines.all_star_tools.description": "هر پنج ابزار ستاره‌ای را بسازید",
-  "subtitles.machines.item.armor.equip_star": "زره ستاره‌ای جیرجیر می‌کند"
+  "subtitles.machines.item.armor.equip_star": "زره ستاره‌ای جیرجیر می‌کند",
+  "menu.machines.potion_configurator.pick_effect": "اثر را انتخاب کنید..."
 }

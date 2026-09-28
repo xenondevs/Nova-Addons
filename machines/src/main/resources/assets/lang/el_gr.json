@@ -131,7 +131,7 @@
   "menu.machines.freezer.mode.ice": "Λειτουργία: Πάγος",
   "menu.machines.freezer.mode.packed_ice": "Λειτουργία: Πάγωμα σε παγωμένο πάγο",
   "menu.machines.freezer.mode.blue_ice": "Λειτουργία: Πάγωμα σε μπλε πάγο",
-  "menu.machines.electric_brewing_stand.configure_potion": "Διαμόρφωση φίλτρου",
+  "menu.machines.electric_brewing_stand.configure_potion": "Ρύθμιση φίλτρου...",
   "menu.machines.electric_brewing_stand.ingredients": "Συστατικά:",
   "menu.machines.potion_configurator.effect": "Αποτελέσματα:",
   "menu.machines.potion_configurator.add_effect": "Προσθήκη εφέ",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Μέγιστο επίπεδο διάρκειας: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Μέγιστο επίπεδο ενισχυτή: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Πολλαπλασιαστής διάρκειας: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Πολλαπλασιαστής ενισχυτή: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Πολλαπλασιαστής ενισχυτή: %s",
+  "menu.machines.potion_configurator.pick_effect": "Επιλογή εφέ..."
 }

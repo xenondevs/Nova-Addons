@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Modus: In Glaciem Congehe",
   "menu.machines.freezer.mode.packed_ice": "Modus: Congelatio in Glaciem Compactam",
   "menu.machines.freezer.mode.blue_ice": "Modus: Congelare in Glaciem Caeruleam",
-  "menu.machines.electric_brewing_stand.configure_potion": "Confige Poculum",
+  "menu.machines.electric_brewing_stand.configure_potion": "Confige Poculum...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredientia:",
   "menu.machines.potion_configurator.effect": "Effectus:",
   "menu.machines.potion_configurator.add_effect": "Adde Effectum",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Finge crystallizatorem",
   "advancement.machines.all_star_tools.title": "Instrumenta Stellaria",
   "advancement.machines.all_star_tools.description": "Confice omnia quinque Instrumenta Stellaria.",
-  "subtitles.machines.item.armor.equip_star": "Armatura Stellaris crepat"
+  "subtitles.machines.item.armor.equip_star": "Armatura Stellaris crepat",
+  "menu.machines.potion_configurator.pick_effect": "Effectum elige..."
 }

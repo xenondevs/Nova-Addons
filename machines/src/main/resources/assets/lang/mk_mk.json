@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Замрзнување во мраз",
   "menu.machines.freezer.mode.packed_ice": "Режим: Замрзнување на збиена мраз",
   "menu.machines.freezer.mode.blue_ice": "Режим: Замрзне во сина ледена форма",
-  "menu.machines.electric_brewing_stand.configure_potion": "Конфигурирај напиток",
+  "menu.machines.electric_brewing_stand.configure_potion": "Конфигурирај напиток...",
   "menu.machines.electric_brewing_stand.ingredients": "Состојки:",
   "menu.machines.potion_configurator.effect": "Ефект:",
   "menu.machines.potion_configurator.add_effect": "Додај ефект",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Изработете кристализатор",
   "advancement.machines.all_star_tools.title": "Ѕвездени алатки",
   "advancement.machines.all_star_tools.description": "Изработете ги сите пет ѕвездени алатки",
-  "subtitles.machines.item.armor.equip_star": "Ѕвезден оклоп ѕвечи"
+  "subtitles.machines.item.armor.equip_star": "Ѕвезден оклоп ѕвечи",
+  "menu.machines.potion_configurator.pick_effect": "Изберете ефект..."
 }

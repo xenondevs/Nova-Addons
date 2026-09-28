@@ -103,7 +103,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Лёд",
   "menu.machines.freezer.mode.packed_ice": "Режим: Плотный Лёд",
   "menu.machines.freezer.mode.blue_ice": "Режим: Синий Лёд",
-  "menu.machines.electric_brewing_stand.configure_potion": "Настройка Зелья",
+  "menu.machines.electric_brewing_stand.configure_potion": "Настройка зелья...",
   "menu.machines.electric_brewing_stand.ingredients": "Ингредиенты:",
   "menu.machines.potion_configurator.effect": "Эффект:",
   "menu.machines.potion_configurator.add_effect": "Добавить Эффект",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимальный уровень продолжительности: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимальный уровень усиления: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множитель продолжительности: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множитель усилителя: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множитель усилителя: %s",
+  "menu.machines.potion_configurator.pick_effect": "Выбрать эффект..."
 }

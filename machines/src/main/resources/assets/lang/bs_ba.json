@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Način: Zamrzni u led",
   "menu.machines.freezer.mode.packed_ice": "Način: Zalediti na zbijeni led",
   "menu.machines.freezer.mode.blue_ice": "Način: Zalediti u plavi led",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfiguriraj napitak",
+  "menu.machines.electric_brewing_stand.configure_potion": "Konfiguriraj napitak...",
   "menu.machines.electric_brewing_stand.ingredients": "Sastojci:",
   "menu.machines.potion_configurator.effect": "Efekat:",
   "menu.machines.potion_configurator.add_effect": "Dodaj efekt",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "Izvući %s mB %s",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Zahtijeva vodu i lavu, ali ne troši nijednu.",
   "menu.machines.recipe.cobblestone_generator.stone": "Troši 1000 mB vode po kamenu.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "Koristi 1000 mB lave po komadu obsidijana."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "Koristi 1000 mB lave po komadu obsidijana.",
+  "menu.machines.potion_configurator.pick_effect": "Odaberi efekt..."
 }

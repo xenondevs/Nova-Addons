@@ -141,7 +141,7 @@
   "menu.machines.freezer.mode.ice": "Режим: Лід",
   "menu.machines.freezer.mode.packed_ice": "Режим: Сухий лід",
   "menu.machines.freezer.mode.blue_ice": "Режим: Синій Лід",
-  "menu.machines.electric_brewing_stand.configure_potion": "Налаштування Зілля",
+  "menu.machines.electric_brewing_stand.configure_potion": "Налаштування зілля...",
   "menu.machines.electric_brewing_stand.ingredients": "Інгредієнти:",
   "menu.machines.potion_configurator.effect": "Ефект:",
   "menu.machines.potion_configurator.add_effect": "Додати Ефект",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимальний рівень тривалості: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимальний рівень підсилювача: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множник тривалості: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множник підсилювача: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множник підсилювача: %s",
+  "menu.machines.potion_configurator.pick_effect": "Вибрати ефект..."
 }

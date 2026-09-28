@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Modo: Magyelo sa Yelo",
   "menu.machines.freezer.mode.packed_ice": "Modo: Maging Nakatambak na Yelo",
   "menu.machines.freezer.mode.blue_ice": "Modo: Magyelo sa Asul na Yelo",
-  "menu.machines.electric_brewing_stand.configure_potion": "I-configure ang Potion",
+  "menu.machines.electric_brewing_stand.configure_potion": "I-configure ang Potion...",
   "menu.machines.electric_brewing_stand.ingredients": "Mga sangkap:",
   "menu.machines.potion_configurator.effect": "Epekto:",
   "menu.machines.potion_configurator.add_effect": "Magdagdag ng Epekto",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "I-extract ang %s mB %s",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Kailangan ng tubig at lava, ngunit hindi nito nauubos ang alinman.",
   "menu.machines.recipe.cobblestone_generator.stone": "Gumagamit ng 1000 mB ng tubig bawat bato.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "Gumagamit ng 1000 mB ng lava bawat obsidian."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "Gumagamit ng 1000 mB ng lava bawat obsidian.",
+  "menu.machines.potion_configurator.pick_effect": "Pumili ng Epekto..."
 }

@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "முறை: உறைந்து பனியாக மாறுதல்",
   "menu.machines.freezer.mode.packed_ice": "முறை: உறைந்து கெட்டியாகும் பனி",
   "menu.machines.freezer.mode.blue_ice": "முறை: நீலப் பனிக்கட்டிக்கு உறை",
-  "menu.machines.electric_brewing_stand.configure_potion": "போஷனை உள்ளமைக்கவும்",
+  "menu.machines.electric_brewing_stand.configure_potion": "போஷனை உள்ளமைக்கவும்...",
   "menu.machines.electric_brewing_stand.ingredients": "சேர்மானங்கள்:",
   "menu.machines.potion_configurator.effect": "விளைவு:",
   "menu.machines.potion_configurator.add_effect": "விளைவைச் சேர்",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "%s mB %s ஐ பிரித்தெடுக்கவும்",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "நீர் மற்றும் லாவா தேவை, ஆனால் எதையும் பயன்படுத்திக் கொள்ளாது.",
   "menu.machines.recipe.cobblestone_generator.stone": "ஒவ்வொரு கல்லுக்கும் 1000 mB தண்ணீர் பயன்படுத்தப்படுகிறது.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "ஒவ்வொர் ஒப்சிடியனுக்கும் 1000 mB லாவாவைப் பயன்படுத்துகிறது."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "ஒவ்வொர் ஒப்சிடியனுக்கும் 1000 mB லாவாவைப் பயன்படுத்துகிறது.",
+  "menu.machines.potion_configurator.pick_effect": "விளைவைத் தேர்ந்தெடுக்கவும்..."
 }

@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Stilling: Frýs í ís",
   "menu.machines.freezer.mode.packed_ice": "Hamur: Frjósa í þjappaðan ís",
   "menu.machines.freezer.mode.blue_ice": "Stilling: Frjósa í bláan ís",
-  "menu.machines.electric_brewing_stand.configure_potion": "Stilla drykk",
+  "menu.machines.electric_brewing_stand.configure_potion": "Stilla drykk...",
   "menu.machines.electric_brewing_stand.ingredients": "Innihaldsefni:",
   "menu.machines.potion_configurator.effect": "Áhrif:",
   "menu.machines.potion_configurator.add_effect": "Bæta við áhrifum",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Búðu til kristöllunarvél",
   "advancement.machines.all_star_tools.title": "Stjörnuvélar",
   "advancement.machines.all_star_tools.description": "Búðu til öll fimm Stjörnuvélin",
-  "subtitles.machines.item.armor.equip_star": "Stjörnubúningurinn klinkar"
+  "subtitles.machines.item.armor.equip_star": "Stjörnubúningurinn klinkar",
+  "menu.machines.potion_configurator.pick_effect": "Veldu áhrif..."
 }

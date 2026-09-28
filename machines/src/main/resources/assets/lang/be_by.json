@@ -30,7 +30,7 @@
   "menu.machines.freezer.mode.ice": "Рэжым: Замарозіць у лёд",
   "menu.machines.freezer.mode.packed_ice": "Рэжым: Ператварыцца ў шчыльны лёд",
   "menu.machines.freezer.mode.blue_ice": "Рэжым: Замарозіцца ў сіні лёд",
-  "menu.machines.electric_brewing_stand.configure_potion": "Наладзіць эліксір",
+  "menu.machines.electric_brewing_stand.configure_potion": "Наладзіць зелек...",
   "menu.machines.electric_brewing_stand.ingredients": "Інгрэдыенты:",
   "menu.machines.potion_configurator.effect": "Эфект:",
   "menu.machines.potion_configurator.add_effect": "Дадаць эфект",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.extract_fluid": "Дастаць %s мБ %s",
   "menu.machines.recipe.cobblestone_generator.cobblestone": "Патрабуе вады і лавы, але не спажывае іх.",
   "menu.machines.recipe.cobblestone_generator.stone": "Выкарыстоўвае 1000 мБ вады на адзін камень.",
-  "menu.machines.recipe.cobblestone_generator.obsidian": "Выкарыстоўвае 1000 мБ лавы на адзінкі абсідыяну."
+  "menu.machines.recipe.cobblestone_generator.obsidian": "Выкарыстоўвае 1000 мБ лавы на адзінкі абсідыяну.",
+  "menu.machines.potion_configurator.pick_effect": "Выберыце эфект..."
 }

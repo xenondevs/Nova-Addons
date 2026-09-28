@@ -135,7 +135,7 @@
   "menu.machines.freezer.mode.ice": "Ụdị: Gbanwee ka ọ bụrụ oyi",
   "menu.machines.freezer.mode.packed_ice": "Ụdị: Kpoo oyi ka ọ bụrụ ice juputara",
   "menu.machines.freezer.mode.blue_ice": "Ụdị: Kpoo oyi ruo n'Ájá-acha-anụnụ-anụnụ",
-  "menu.machines.electric_brewing_stand.configure_potion": "Hazie Potion",
+  "menu.machines.electric_brewing_stand.configure_potion": "Hazie ọgwụ anwansi...",
   "menu.machines.electric_brewing_stand.ingredients": "Ihe mejupụtara:",
   "menu.machines.potion_configurator.effect": "Mmetụta:",
   "menu.machines.potion_configurator.add_effect": "Tinye mmetụta",
@@ -224,5 +224,6 @@
   "advancement.machines.crystallizer.description": "Mepụta igwe na-eme kristal",
   "advancement.machines.all_star_tools.title": "Ngwa Ụlọ Ọkụkụ",
   "advancement.machines.all_star_tools.description": "Mepụta ngwa kpakpando ise niile",
-  "subtitles.machines.item.armor.equip_star": "Akpụkpọ ahụ kpakpando na-ada ụda"
+  "subtitles.machines.item.armor.equip_star": "Akpụkpọ ahụ kpakpando na-ada ụda",
+  "menu.machines.potion_configurator.pick_effect": "Họrọ mmetụta..."
 }

@@ -83,7 +83,7 @@
   "menu.machines.fluid_infuser.mode.extract": "Skysčių ištraukimas iš itemų",
   "menu.machines.freezer.mode.ice": "Rėžimas: sušaldyti į ledą",
   "menu.machines.freezer.mode.packed_ice": "Rėžimas: sušaldyti į supakuotą ledą",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfigūruoti eleksyrą",
+  "menu.machines.electric_brewing_stand.configure_potion": "Nustatyti eliksyro parametrus...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingridientai:",
   "menu.machines.potion_configurator.effect": "Efektas:",
   "menu.machines.potion_configurator.remove_effect": "Pašalinti efektą",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maksimalus trukmės lygis: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maksimalus stiprintuvo lygis: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Trukmės daugiklis: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Stiprintuvo daugiklis: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Stiprintuvo daugiklis: %s",
+  "menu.machines.potion_configurator.pick_effect": "Pasirinkite efektą..."
 }

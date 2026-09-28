@@ -131,7 +131,7 @@
   "menu.machines.freezer.mode.ice": "Režim: Zmraziť na ľad",
   "menu.machines.freezer.mode.packed_ice": "Režim: Zmraziť na balený ľad",
   "menu.machines.freezer.mode.blue_ice": "Režim: Zmraziť na modrý ľad",
-  "menu.machines.electric_brewing_stand.configure_potion": "Konfigurácia elixíru",
+  "menu.machines.electric_brewing_stand.configure_potion": "Nastaviť lektvar...",
   "menu.machines.electric_brewing_stand.ingredients": "Zloženie:",
   "advancement.machines.freezer.description": "Vyrobte si mrazničku",
   "menu.machines.potion_configurator.effect": "Účinok:",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximálna úroveň trvania: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Maximálna úroveň zosilňovača: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Násobiteľ trvania: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Násobiteľ zosilňovača: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Násobiteľ zosilňovača: %s",
+  "menu.machines.potion_configurator.pick_effect": "Vyber efekt..."
 }

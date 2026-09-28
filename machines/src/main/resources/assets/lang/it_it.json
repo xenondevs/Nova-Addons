@@ -103,7 +103,7 @@
   "menu.machines.freezer.mode.ice": "Modalità: Congela in Ghiaccio",
   "menu.machines.freezer.mode.packed_ice": "Modalità: Congela in Ghiaccio Compatto",
   "menu.machines.freezer.mode.blue_ice": "Modalità: Congela in Ghiaccio Azzurro",
-  "menu.machines.electric_brewing_stand.configure_potion": "Configura Pozione",
+  "menu.machines.electric_brewing_stand.configure_potion": "Configura pozione...",
   "menu.machines.electric_brewing_stand.ingredients": "Ingredienti:",
   "menu.machines.potion_configurator.effect": "Effetto:",
   "menu.machines.potion_configurator.add_effect": "Aggiungi Effetto",
@@ -224,5 +224,6 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Livello di durata massima: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Livello massimo dell'amplificatore: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Moltiplicatore di durata: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Moltiplicatore amplificatore: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Moltiplicatore amplificatore: %s",
+  "menu.machines.potion_configurator.pick_effect": "Scegli l'effetto..."
 }
