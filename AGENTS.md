@@ -7,6 +7,7 @@ Nova-Addons is a Gradle multi-module project that contains the official addons f
 ### Modules
 
 - `all-addons`: Development-only launcher that starts an Origami server with every addon jar installed. It is not an addon and must not produce a jar of its own.
+- `gigantic-chests`: Adds multiblock storage chests with capacities beyond vanilla chests.
 - `jetpacks`: Adds wearable, tiered jetpacks and their flight behavior.
 - `logistics`: Adds item, fluid, and energy transport and storage networks, including cables, filters, and related GUIs. Depends on `simple-upgrades`.
 - `machines`: Adds power generation and automated processing, farming, mob, and world-interaction machines. Depends on `simple-upgrades`.

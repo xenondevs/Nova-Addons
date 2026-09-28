@@ -1,0 +1,20 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"0": "entity/chest/normal"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 10, 15],
+			"faces": {
+				"north": {"uv": [10.5, 8.25, 14, 10.75], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [3.5, 10.75, 0, 8.25], "texture": "#0"},
+				"south": {"uv": [3.5, 8.25, 7, 10.75], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [7, 8.25, 10.5, 10.75], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [7, 4.75, 10.5, 8.25], "texture": "#0"},
+				"down": {"uv": [7, 8.25, 3.5, 4.75], "texture": "#0"}
+			}
+		}
+	]
+}

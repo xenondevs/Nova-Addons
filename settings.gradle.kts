@@ -5,6 +5,7 @@ include("logistics")
 include("machines")
 include("simple-upgrades")
 include("vanilla-hammers")
+include("gigantic-chests")
 include("all-addons")
 
 dependencyResolutionManagement {
