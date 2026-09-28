@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Se a seblant sur",
   "advancement.logistics.vacuum_chest.description": "Fardañ ur Voest-goullo",
   "advancement.logistics.storage_unit.title": "Traoù didermen",
-  "advancement.logistics.storage_unit.description": "Fardañ ur c'hombod"
+  "advancement.logistics.storage_unit.description": "Fardañ ur c'hombod",
+  "block.logistics.facaded_basic_cable": "Kablierez diazez kuzhet",
+  "block.logistics.facaded_advanced_cable": "Kabll Kuzhet Araokaet",
+  "block.logistics.facaded_elite_cable": "Fun Elite Kuzhet",
+  "block.logistics.facaded_ultimate_cable": "Fun Kuzhet an Dibenn",
+  "block.logistics.facaded_creative_cable": "Kabl Krouiñ Kuzhet",
+  "item.logistics.cable_facade": "%s Fasadenn fun"
 }

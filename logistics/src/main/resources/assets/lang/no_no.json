@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy": "Graf: Total energi",
   "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energi inn/ut",
   "menu.logistics.power_cell.graph_enlarge": "Zoom inn",
-  "menu.logistics.power_cell.graph_bar_duration": "Én strek = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Én strek = %s",
+  "block.logistics.facaded_basic_cable": "Skjult grunnkabel",
+  "block.logistics.facaded_advanced_cable": "Skjult avansert kabel",
+  "block.logistics.facaded_elite_cable": "Skjult Elite-kabel",
+  "block.logistics.facaded_ultimate_cable": "Concealed Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Skjult kreativ kabel",
+  "item.logistics.cable_facade": "%s Kabel-fasade"
 }

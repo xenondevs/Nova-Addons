@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Wykres: Energia na wejściu/wyjściu",
   "menu.logistics.power_cell.graph_enlarge": "Powiększenie",
   "menu.logistics.power_cell.graph_shrink": "Powiększenie",
-  "menu.logistics.power_cell.graph_bar_duration": "Jeden pasek = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Jeden pasek = %s",
+  "block.logistics.facaded_basic_cable": "Ukryty kabel podstawowy",
+  "block.logistics.facaded_advanced_cable": "Ukryty kabel zaawansowany",
+  "block.logistics.facaded_elite_cable": "Ukryty kabel Elite",
+  "block.logistics.facaded_ultimate_cable": "Ukryty kabel Ultimate",
+  "block.logistics.facaded_creative_cable": "Ukryty kabel w trybie kreatywnym",
+  "item.logistics.cable_facade": "%s Fasada kablowa"
 }

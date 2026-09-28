@@ -97,5 +97,11 @@
   "menu.logistics.cable_config": "التكوين",
   "menu.logistics.power_cell.graph_enlarge": "تكبير",
   "block.logistics.trash_can": "سلة المهملات",
-  "advancement.logistics.basic_power_cell.title": "تخزين الطاقة"
+  "advancement.logistics.basic_power_cell.title": "تخزين الطاقة",
+  "block.logistics.facaded_basic_cable": "كابل أساسي مخفي",
+  "block.logistics.facaded_advanced_cable": "كابل متطور مخفي",
+  "block.logistics.facaded_elite_cable": "كابل النخبة المخفي",
+  "block.logistics.facaded_ultimate_cable": "الكابل الخفي المطلق",
+  "block.logistics.facaded_creative_cable": "كابل إبداعي مخفي",
+  "item.logistics.cable_facade": "%s واجهة الكابلات"
 }

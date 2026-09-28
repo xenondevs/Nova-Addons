@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy": "Grafikon: Teljes energia",
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafikon: Energia be/kiáramlás",
   "menu.logistics.power_cell.graph_shrink": "Kicsinyítés",
-  "menu.logistics.power_cell.graph_bar_duration": "Egy sáv = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Egy sáv = %s",
+  "block.logistics.facaded_basic_cable": "Rejtett alapkábel",
+  "block.logistics.facaded_advanced_cable": "Rejtett fejlett kábel",
+  "block.logistics.facaded_elite_cable": "Rejtett Elite kábel",
+  "block.logistics.facaded_ultimate_cable": "Rejtett Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Rejtett kreatív kábel",
+  "item.logistics.cable_facade": "%s Cable Facade"
 }

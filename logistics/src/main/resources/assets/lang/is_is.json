@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Þetta virðist öruggt",
   "advancement.logistics.vacuum_chest.description": "Búðu til tómarúmhkassa",
   "advancement.logistics.storage_unit.title": "Óendanlegir hlutir",
-  "advancement.logistics.storage_unit.description": "Búðu til geymslueiningu"
+  "advancement.logistics.storage_unit.description": "Búðu til geymslueiningu",
+  "block.logistics.facaded_basic_cable": "Falið grunnkapall",
+  "block.logistics.facaded_advanced_cable": "Falinn háþróaður kapall",
+  "block.logistics.facaded_elite_cable": "Falinn Elite-kapall",
+  "block.logistics.facaded_ultimate_cable": "Falinn fullkominn kapall",
+  "block.logistics.facaded_creative_cable": "Falið skapandi kapall",
+  "item.logistics.cable_facade": "%s kapalsfasada"
 }

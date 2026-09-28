@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "यह सुरक्षित लगता है",
   "advancement.logistics.vacuum_chest.description": "एक वैक्यूम चेस्ट बनाएं",
   "advancement.logistics.storage_unit.title": "अनंत आइटम",
-  "advancement.logistics.storage_unit.description": "एक भंडारण इकाई तैयार करें"
+  "advancement.logistics.storage_unit.description": "एक भंडारण इकाई तैयार करें",
+  "block.logistics.facaded_basic_cable": "छिपी हुई बेसिक केबल",
+  "block.logistics.facaded_advanced_cable": "छिपी हुई उन्नत केबल",
+  "block.logistics.facaded_elite_cable": "छिपा हुआ एलीट केबल",
+  "block.logistics.facaded_ultimate_cable": "छिपा हुआ अल्टीमेट केबल",
+  "block.logistics.facaded_creative_cable": "छिपी हुई रचनात्मक केबल",
+  "item.logistics.cable_facade": "%s केबल फेसैड"
 }

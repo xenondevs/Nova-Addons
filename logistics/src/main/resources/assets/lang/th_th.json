@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "นี่ดูเหมือนจะปลอดภัย",
   "advancement.logistics.vacuum_chest.description": "สร้างหีบสูญญากาศ",
   "advancement.logistics.storage_unit.title": "ไอเท็มไม่จำกัด",
-  "advancement.logistics.storage_unit.description": "สร้างหน่วยเก็บของ"
+  "advancement.logistics.storage_unit.description": "สร้างหน่วยเก็บของ",
+  "block.logistics.facaded_basic_cable": "Concealed Basic Cable",
+  "block.logistics.facaded_advanced_cable": "Concealed Advanced Cable",
+  "block.logistics.facaded_elite_cable": "Concealed Elite Cable",
+  "block.logistics.facaded_ultimate_cable": "Concealed Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Concealed Creative Cable",
+  "item.logistics.cable_facade": "%s Cable Facade"
 }

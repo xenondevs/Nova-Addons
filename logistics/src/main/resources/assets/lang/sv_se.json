@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy": "Diagram: Total energi",
   "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energi in/ut",
   "menu.logistics.power_cell.graph_enlarge": "Zooma in",
-  "menu.logistics.power_cell.graph_shrink": "Zooma ut"
+  "menu.logistics.power_cell.graph_shrink": "Zooma ut",
+  "block.logistics.facaded_basic_cable": "Dold basiskabel",
+  "block.logistics.facaded_advanced_cable": "Dold avancerad kabel",
+  "block.logistics.facaded_elite_cable": "Concealed Elite Cable",
+  "block.logistics.facaded_ultimate_cable": "Concealed Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Dold kreativ kabel",
+  "item.logistics.cable_facade": "%s Kabel Fasad"
 }

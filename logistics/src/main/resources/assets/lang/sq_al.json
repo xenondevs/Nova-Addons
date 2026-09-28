@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Kjo duket e sigurt",
   "advancement.logistics.vacuum_chest.description": "Ndërto një gjoks vakumi",
   "advancement.logistics.storage_unit.title": "Objekte të pafundme",
-  "advancement.logistics.storage_unit.description": "Ndërto një njësi magazinimi"
+  "advancement.logistics.storage_unit.description": "Ndërto një njësi magazinimi",
+  "block.logistics.facaded_basic_cable": "Kabllo bazë e fshehur",
+  "block.logistics.facaded_advanced_cable": "Kabllo e Avancuar e Fshehur",
+  "block.logistics.facaded_elite_cable": "Kablli Elitar i Fshehur",
+  "block.logistics.facaded_ultimate_cable": "Kablli Përfundimtar i Fshehur",
+  "block.logistics.facaded_creative_cable": "Kablli Kreativ i Fshehur",
+  "item.logistics.cable_facade": "%s Fasada e kabllit"
 }

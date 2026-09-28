@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Бу куркынычсыз кебек",
   "advancement.logistics.vacuum_chest.description": "Вакуум сундыгын ясагыз",
   "advancement.logistics.storage_unit.title": "Чиксез әйберләр",
-  "advancement.logistics.storage_unit.description": "Саклау берәмлеге ясагыз"
+  "advancement.logistics.storage_unit.description": "Саклау берәмлеге ясагыз",
+  "block.logistics.facaded_basic_cable": "Яшерелгән төп кабель",
+  "block.logistics.facaded_advanced_cable": "Яшерелгән алдынгы кабель",
+  "block.logistics.facaded_elite_cable": "Яшерелгән элита кабеле",
+  "block.logistics.facaded_ultimate_cable": "Яшерелгән иң югары кабель",
+  "block.logistics.facaded_creative_cable": "Яшерелгән иҗади кабель",
+  "item.logistics.cable_facade": "%s кабель фасады"
 }

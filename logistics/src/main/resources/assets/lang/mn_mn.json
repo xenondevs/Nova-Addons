@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Энэ нь аюулгүй мэт байна",
   "advancement.logistics.vacuum_chest.description": "Хоосон зайтай хайрцаг урлаарай",
   "advancement.logistics.storage_unit.title": "Хязгааргүй зүйлс",
-  "advancement.logistics.storage_unit.description": "Хадгалах нэгж урлах"
+  "advancement.logistics.storage_unit.description": "Хадгалах нэгж урлах",
+  "block.logistics.facaded_basic_cable": "Нуугдсан үндсэн кабель",
+  "block.logistics.facaded_advanced_cable": "Нуугдсан дэвшилтэт кабель",
+  "block.logistics.facaded_elite_cable": "Нуугдсан дээд зэрэглэлийн кабель",
+  "block.logistics.facaded_ultimate_cable": "Нуугдсан Дээд Зэрэглэлийн Кабель",
+  "block.logistics.facaded_creative_cable": "Нуугдсан бүтээлч кабель",
+  "item.logistics.cable_facade": "%s Кабелийн фасад"
 }

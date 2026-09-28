@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Dan jidher sigur",
   "advancement.logistics.vacuum_chest.description": "Oħloq kaxxa tal-vakwu",
   "advancement.logistics.storage_unit.title": "Oġġetti Infiniti",
-  "advancement.logistics.storage_unit.description": "Oħloq unità ta' ħażna"
+  "advancement.logistics.storage_unit.description": "Oħloq unità ta' ħażna",
+  "block.logistics.facaded_basic_cable": "Kejbil Bażiku Moħbi",
+  "block.logistics.facaded_advanced_cable": "Kejbil Avvanzat Moħbi",
+  "block.logistics.facaded_elite_cable": "Kejbil Elite Moħbi",
+  "block.logistics.facaded_ultimate_cable": "Kejbil Ultimattiv Moħbi",
+  "block.logistics.facaded_creative_cable": "Kejbil Kreattiv Moħbi",
+  "item.logistics.cable_facade": "%s Faċċata tal-kejbil"
 }

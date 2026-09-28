@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "График: Поступление/отток энергии",
   "menu.logistics.power_cell.graph_enlarge": "Увеличить",
   "menu.logistics.power_cell.graph_shrink": "Уменьшить масштаб",
-  "menu.logistics.power_cell.graph_bar_duration": "Один бар = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Один бар = %s",
+  "block.logistics.facaded_basic_cable": "Скрытый базовый кабель",
+  "block.logistics.facaded_advanced_cable": "Скрытый усовершенствованный кабель",
+  "block.logistics.facaded_elite_cable": "Скрытый элитный кабель",
+  "block.logistics.facaded_ultimate_cable": "Скрытый кабель Ultimate",
+  "block.logistics.facaded_creative_cable": "Скрытый кабель для творческого режима",
+  "item.logistics.cable_facade": "%s Кабельный фасад"
 }

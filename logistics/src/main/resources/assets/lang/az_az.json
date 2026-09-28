@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Bu təhlükəsiz görünür",
   "advancement.logistics.vacuum_chest.description": "Vakuum Sandığını Hazırlayın",
   "advancement.logistics.storage_unit.title": "Tükənməz əşyalar",
-  "advancement.logistics.storage_unit.description": "Saxlama vahidi hazırlayın"
+  "advancement.logistics.storage_unit.description": "Saxlama vahidi hazırlayın",
+  "block.logistics.facaded_basic_cable": "Gizlədilmiş Əsas Kabel",
+  "block.logistics.facaded_advanced_cable": "Gizlədilmiş Qabaqcıl Kabel",
+  "block.logistics.facaded_elite_cable": "Gizlədilmiş Elite Kabel",
+  "block.logistics.facaded_ultimate_cable": "Gizlənmiş Ən Yaxşı Kabel",
+  "block.logistics.facaded_creative_cable": "Gizlədilmiş Yaradıcı Kabel",
+  "item.logistics.cable_facade": "%s Kabel Fasadı"
 }

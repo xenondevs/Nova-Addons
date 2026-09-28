@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Dat schéngt sécher ze sinn",
   "advancement.logistics.vacuum_chest.description": "Bau eng Vakuumkëscht",
   "advancement.logistics.storage_unit.title": "Onendlech Items",
-  "advancement.logistics.storage_unit.description": "Bau eng Lager-Eenheet"
+  "advancement.logistics.storage_unit.description": "Bau eng Lager-Eenheet",
+  "block.logistics.facaded_basic_cable": "Verborgenes Basis-Kabel",
+  "block.logistics.facaded_advanced_cable": "Verborgenes fortgeschratt Kabel",
+  "block.logistics.facaded_elite_cable": "Verborgenes Elite-Kabel",
+  "block.logistics.facaded_ultimate_cable": "Verborgenes ultimativt Kabel",
+  "block.logistics.facaded_creative_cable": "Verborgenes Kreativkabel",
+  "item.logistics.cable_facade": "%s Kabelfassade"
 }

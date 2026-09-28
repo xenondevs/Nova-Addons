@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Ovo izgleda sigurno",
   "advancement.logistics.vacuum_chest.description": "Izradi vakuumsku kutiju",
   "advancement.logistics.storage_unit.title": "Neograničeni predmeti",
-  "advancement.logistics.storage_unit.description": "Izradi jedinicu za pohranu"
+  "advancement.logistics.storage_unit.description": "Izradi jedinicu za pohranu",
+  "block.logistics.facaded_basic_cable": "Ugrađeni osnovni kabl",
+  "block.logistics.facaded_advanced_cable": "Skriveni napredni kabl",
+  "block.logistics.facaded_elite_cable": "Skriveni elitni kabl",
+  "block.logistics.facaded_ultimate_cable": "Skriveni ultimativni kabl",
+  "block.logistics.facaded_creative_cable": "Prikriveni kreativni kabl",
+  "item.logistics.cable_facade": "%s Kabelska fasada"
 }

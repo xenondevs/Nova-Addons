@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafik: Energi Masuk/Keluar",
   "menu.logistics.power_cell.graph_enlarge": "Memperbesar",
   "menu.logistics.power_cell.graph_shrink": "Perkecil",
-  "menu.logistics.power_cell.graph_bar_duration": "Satu batang = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Satu batang = %s",
+  "block.logistics.facaded_basic_cable": "Kabel Dasar Tersembunyi",
+  "block.logistics.facaded_advanced_cable": "Kabel Canggih Tersembunyi",
+  "block.logistics.facaded_elite_cable": "Kabel Elite Tersembunyi",
+  "block.logistics.facaded_ultimate_cable": "Kabel Ultimate Tersembunyi",
+  "block.logistics.facaded_creative_cable": "Kabel Kreatif Tersembunyi",
+  "item.logistics.cable_facade": "%s Cable Facade"
 }

@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Graafik: Energia sisse/välja",
   "menu.logistics.power_cell.graph_enlarge": "Suurendage",
   "menu.logistics.power_cell.graph_shrink": "Suurenda välja",
-  "menu.logistics.power_cell.graph_bar_duration": "Üks riba = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Üks riba = %s",
+  "block.logistics.facaded_basic_cable": "Peidetud põhikaabel",
+  "block.logistics.facaded_advanced_cable": "Peidetud täiustatud kaabel",
+  "block.logistics.facaded_elite_cable": "Peidetud eliitkaabel",
+  "block.logistics.facaded_ultimate_cable": "Peidetud Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Peidetud loominguline kaabel",
+  "item.logistics.cable_facade": "%s Kaabelfassaad"
 }

@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Hau segurutzat dirudi",
   "advancement.logistics.vacuum_chest.description": "Huts-kaxa bat eraiki",
   "advancement.logistics.storage_unit.title": "Elementu mugagabeak",
-  "advancement.logistics.storage_unit.description": "Biltegiratze-unitate bat eraiki"
+  "advancement.logistics.storage_unit.description": "Biltegiratze-unitate bat eraiki",
+  "block.logistics.facaded_basic_cable": "Kable oinarrizko ezkutatua",
+  "block.logistics.facaded_advanced_cable": "Kable Aurreratua Ezkutatua",
+  "block.logistics.facaded_elite_cable": "Kable Elite ezkutua",
+  "block.logistics.facaded_ultimate_cable": "Kable Ultimoa Ezkutatua",
+  "block.logistics.facaded_creative_cable": "Kable Sortzaile Kreatiboa Ezkutatua",
+  "item.logistics.cable_facade": "%s kablearen fatxada"
 }

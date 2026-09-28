@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "图表能源输入/输出",
   "menu.logistics.power_cell.graph_enlarge": "放大",
   "menu.logistics.power_cell.graph_shrink": "放大",
-  "menu.logistics.power_cell.graph_bar_duration": "一条 = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "一条 = %s",
+  "block.logistics.facaded_basic_cable": "隐蔽基本电缆",
+  "block.logistics.facaded_advanced_cable": "隐蔽高级电缆",
+  "block.logistics.facaded_elite_cable": "隐形精英线缆",
+  "block.logistics.facaded_ultimate_cable": "隐形终极线缆",
+  "block.logistics.facaded_creative_cable": "隐形创意线缆",
+  "item.logistics.cable_facade": "%s 电缆外墙"
 }

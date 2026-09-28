@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "ეს უსაფრთხოდ ჩანს",
   "advancement.logistics.vacuum_chest.description": "დაამზადეთ ვაკუუმური ყუთი",
   "advancement.logistics.storage_unit.title": "უსასრულო ნივთები",
-  "advancement.logistics.storage_unit.description": "დაამზადეთ სათავსო"
+  "advancement.logistics.storage_unit.description": "დაამზადეთ სათავსო",
+  "block.logistics.facaded_basic_cable": "დამალული საბაზისო კაბელი",
+  "block.logistics.facaded_advanced_cable": "დამალული მოწინავე კაბელი",
+  "block.logistics.facaded_elite_cable": "დამალული ელიტური კაბელი",
+  "block.logistics.facaded_ultimate_cable": "დამალული საბოლოო კაბელი",
+  "block.logistics.facaded_creative_cable": "დამალული შემოქმედებითი კაბელი",
+  "item.logistics.cable_facade": "%s-ის კაბელის ფასადი"
 }

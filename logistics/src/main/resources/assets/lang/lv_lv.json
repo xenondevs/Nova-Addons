@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafiks: Enerģijas ievade/izvade",
   "menu.logistics.power_cell.graph_enlarge": "Pietuvināt",
   "menu.logistics.power_cell.graph_shrink": "Palielināt",
-  "menu.logistics.power_cell.graph_bar_duration": "Viena josla = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Viena josla = %s",
+  "block.logistics.facaded_basic_cable": "Paslēpts pamata kabelis",
+  "block.logistics.facaded_advanced_cable": "Slēpts uzlabots kabelis",
+  "block.logistics.facaded_elite_cable": "Slēptais Elite Cable",
+  "block.logistics.facaded_ultimate_cable": "Concealed Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Slēptais radošais kabelis",
+  "item.logistics.cable_facade": "%s Cable Facade"
 }

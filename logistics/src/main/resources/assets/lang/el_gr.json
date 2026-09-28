@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Γράφημα: Ενέργεια In/Out",
   "menu.logistics.power_cell.graph_enlarge": "Μεγέθυνση",
   "menu.logistics.power_cell.graph_shrink": "Μεγέθυνση",
-  "menu.logistics.power_cell.graph_bar_duration": "Μία μπάρα = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Μία μπάρα = %s",
+  "block.logistics.facaded_basic_cable": "Κρυφό βασικό καλώδιο",
+  "block.logistics.facaded_advanced_cable": "Κρυφό καλώδιο προηγμένης τεχνολογίας",
+  "block.logistics.facaded_elite_cable": "Κρυφό καλώδιο Elite",
+  "block.logistics.facaded_ultimate_cable": "Κρυφό καλώδιο Ultimate",
+  "block.logistics.facaded_creative_cable": "Κρυφό καλώδιο δημιουργικής λειτουργίας",
+  "item.logistics.cable_facade": "%s Πρόσοψη καλωδίων"
 }

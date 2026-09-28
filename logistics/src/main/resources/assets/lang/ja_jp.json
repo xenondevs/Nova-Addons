@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "グラフエネルギーの出入り",
   "menu.logistics.power_cell.graph_enlarge": "ズームイン",
   "menu.logistics.power_cell.graph_shrink": "ズームアウト",
-  "menu.logistics.power_cell.graph_bar_duration": "1本のバー = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "1本のバー = %s",
+  "block.logistics.facaded_basic_cable": "隠し基本ケーブル",
+  "block.logistics.facaded_advanced_cable": "隠蔽型アドバンストケーブル",
+  "block.logistics.facaded_elite_cable": "隠されたエリートケーブル",
+  "block.logistics.facaded_ultimate_cable": "隠された究極のケーブル",
+  "block.logistics.facaded_creative_cable": "隠されたクリエイティブケーブル",
+  "item.logistics.cable_facade": "%s ケーブル・ファサード"
 }

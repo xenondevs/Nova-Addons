@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Energija vhod/izhod",
   "menu.logistics.power_cell.graph_enlarge": "Povečanje prikaza",
   "menu.logistics.power_cell.graph_shrink": "Pomanjšanje slike",
-  "menu.logistics.power_cell.graph_bar_duration": "Ena vrstica = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Ena vrstica = %s",
+  "block.logistics.facaded_basic_cable": "Skriti osnovni kabel",
+  "block.logistics.facaded_advanced_cable": "Skriti napreden kabel",
+  "block.logistics.facaded_elite_cable": "Skriti elitni kabel",
+  "block.logistics.facaded_ultimate_cable": "Skriti vrhunski kabel",
+  "block.logistics.facaded_creative_cable": "Skriti kreativni kabel",
+  "item.logistics.cable_facade": "%s Kabelska fasada"
 }

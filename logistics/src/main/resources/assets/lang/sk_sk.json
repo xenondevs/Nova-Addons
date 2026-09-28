@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Graf: Príjem/výdaj energie",
   "menu.logistics.power_cell.graph_enlarge": "Priblíženie",
   "menu.logistics.power_cell.graph_shrink": "Zväčšenie",
-  "menu.logistics.power_cell.graph_bar_duration": "Jeden stĺpec = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Jeden stĺpec = %s",
+  "block.logistics.facaded_basic_cable": "Skrytý základný kábel",
+  "block.logistics.facaded_advanced_cable": "Skrytý pokročilý kábel",
+  "block.logistics.facaded_elite_cable": "Skrytý elitný kábel",
+  "block.logistics.facaded_ultimate_cable": "Skrytý kábel Ultimate",
+  "block.logistics.facaded_creative_cable": "Skrytý kreatívny kábel",
+  "item.logistics.cable_facade": "%s Káblová fasáda"
 }

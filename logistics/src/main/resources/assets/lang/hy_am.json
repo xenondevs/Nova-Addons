@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Սա անվտանգ է թվում",
   "advancement.logistics.vacuum_chest.description": "Ստեղծեք վակուումային կրծքավանդակ",
   "advancement.logistics.storage_unit.title": "Անսահման իրեր",
-  "advancement.logistics.storage_unit.description": "Ստեղծեք պահեստավորման միավոր"
+  "advancement.logistics.storage_unit.description": "Ստեղծեք պահեստավորման միավոր",
+  "block.logistics.facaded_basic_cable": "Թաքնված հիմնական մալուխ",
+  "block.logistics.facaded_advanced_cable": "Թաքնված առաջադեմ մալուխ",
+  "block.logistics.facaded_elite_cable": "Թաքնված էլիտար մալուխ",
+  "block.logistics.facaded_ultimate_cable": "Թաքնված վերջնական մալուխ",
+  "block.logistics.facaded_creative_cable": "Թաքնված ստեղծագործական մալուխ",
+  "item.logistics.cable_facade": "%s Կաբելի ֆասադ"
 }

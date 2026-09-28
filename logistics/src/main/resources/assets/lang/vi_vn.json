@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Biểu đồ: Năng lượng vào/ra",
   "menu.logistics.power_cell.graph_enlarge": "Zoom vào",
   "menu.logistics.power_cell.graph_shrink": "Zoom ra",
-  "menu.logistics.power_cell.graph_bar_duration": "Một thanh = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Một thanh = %s",
+  "block.logistics.facaded_basic_cable": "Cáp cơ bản ẩn",
+  "block.logistics.facaded_advanced_cable": "Cáp nâng cao ẩn",
+  "block.logistics.facaded_elite_cable": "Dây cáp Elite ẩn",
+  "block.logistics.facaded_ultimate_cable": "Dây cáp tối thượng ẩn",
+  "block.logistics.facaded_creative_cable": "Dây cáp sáng tạo ẩn",
+  "item.logistics.cable_facade": "%s Mặt tiền bằng cáp"
 }

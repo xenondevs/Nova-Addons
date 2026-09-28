@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "דאָס זעט אויס זיכער",
   "advancement.logistics.vacuum_chest.description": "בויען אַ וואַקוום־קעסטל",
   "advancement.logistics.storage_unit.title": "אומענדיקע זאַכן",
-  "advancement.logistics.storage_unit.description": "בויען אַ לאַגער־איינהייט"
+  "advancement.logistics.storage_unit.description": "בויען אַ לאַגער־איינהייט",
+  "block.logistics.facaded_basic_cable": "פֿאַרבאָרגענער גרונט־קאַבל",
+  "block.logistics.facaded_advanced_cable": "פֿאַרבאָרגענער אַוואַנסירטער קאַבל",
+  "block.logistics.facaded_elite_cable": "פֿאַרבאָרגענער עליט־קאַבל",
+  "block.logistics.facaded_ultimate_cable": "פֿאַרבאָרגענער אַלטימאַטער קאַבל",
+  "block.logistics.facaded_creative_cable": "פֿאַרבאָרגענער קרעאַטיווער קאַבל",
+  "item.logistics.cable_facade": "%s קאַבל־פֿאַסאַד"
 }

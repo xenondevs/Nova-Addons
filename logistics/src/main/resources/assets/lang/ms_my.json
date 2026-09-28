@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Ini nampak selamat",
   "advancement.logistics.vacuum_chest.description": "Membuat Peti Vakum",
   "advancement.logistics.storage_unit.title": "Barangan Tanpa Had",
-  "advancement.logistics.storage_unit.description": "Membuat Unit Penyimpanan"
+  "advancement.logistics.storage_unit.description": "Membuat Unit Penyimpanan",
+  "block.logistics.facaded_basic_cable": "Kabel Asas Tersembunyi",
+  "block.logistics.facaded_advanced_cable": "Kabel Lanjutan Tersembunyi",
+  "block.logistics.facaded_elite_cable": "Kabel Elit Tersembunyi",
+  "block.logistics.facaded_ultimate_cable": "Kabel Ultimut Tersembunyi",
+  "block.logistics.facaded_creative_cable": "Kabel Kreatif Tersembunyi",
+  "item.logistics.cable_facade": "%s Fasad Kabel"
 }

@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "זה נראה בטוח",
   "advancement.logistics.vacuum_chest.description": "יצירת תיבת ואקום",
   "advancement.logistics.storage_unit.title": "פריטים אינסופיים",
-  "advancement.logistics.storage_unit.description": "יצירת יחידת אחסון"
+  "advancement.logistics.storage_unit.description": "יצירת יחידת אחסון",
+  "block.logistics.facaded_basic_cable": "כבל בסיסי מוסתר",
+  "block.logistics.facaded_advanced_cable": "כבל מתקדם מוסתר",
+  "block.logistics.facaded_elite_cable": "כבל \"אליטה\" מוסתר",
+  "block.logistics.facaded_ultimate_cable": "כבל אולטימטיבי מוסתר",
+  "block.logistics.facaded_creative_cable": "כבל יצירתי מוסתר",
+  "item.logistics.cable_facade": "%s חזית כבלים"
 }

@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafiek: Energie in/uit",
   "menu.logistics.power_cell.graph_enlarge": "Inzoomen",
   "menu.logistics.power_cell.graph_shrink": "Uitzoomen",
-  "menu.logistics.power_cell.graph_bar_duration": "Eén balk = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Eén balk = %s",
+  "block.logistics.facaded_basic_cable": "Verborgen basiskabel",
+  "block.logistics.facaded_advanced_cable": "Verborgen geavanceerde kabel",
+  "block.logistics.facaded_elite_cable": "Verborgen Elite-kabel",
+  "block.logistics.facaded_ultimate_cable": "Verborgen Ultimate-kabel",
+  "block.logistics.facaded_creative_cable": "Verborgen creatieve kabel",
+  "item.logistics.cable_facade": "%s Kabelgevel"
 }

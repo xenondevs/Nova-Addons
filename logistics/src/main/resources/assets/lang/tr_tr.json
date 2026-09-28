@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafik: Enerji Giriş/Çıkışı",
   "menu.logistics.power_cell.graph_enlarge": "Yakınlaştır",
   "menu.logistics.power_cell.graph_shrink": "Uzaklaştır",
-  "menu.logistics.power_cell.graph_bar_duration": "Bir çubuk = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Bir çubuk = %s",
+  "block.logistics.facaded_basic_cable": "Gizli Temel Kablo",
+  "block.logistics.facaded_advanced_cable": "Gizli Gelişmiş Kablo",
+  "block.logistics.facaded_elite_cable": "Gizli Elit Kablo",
+  "block.logistics.facaded_ultimate_cable": "Gizli Ultimate Kablo",
+  "block.logistics.facaded_creative_cable": "Gizli Yaratıcı Kablo",
+  "item.logistics.cable_facade": "%s Kablo Cephe"
 }

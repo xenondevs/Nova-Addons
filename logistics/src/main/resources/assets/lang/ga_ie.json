@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Tá an chuma air go bhfuil sé seo sábháilte",
   "advancement.logistics.vacuum_chest.description": "Déan Ciste Folúis",
   "advancement.logistics.storage_unit.title": "Míreanna gan teorainn",
-  "advancement.logistics.storage_unit.description": "Déan Aonad Stórála"
+  "advancement.logistics.storage_unit.description": "Déan Aonad Stórála",
+  "block.logistics.facaded_basic_cable": "Cábla Bunúsach Folaithe",
+  "block.logistics.facaded_advanced_cable": "Cábla Ardleibhéil Folaithe",
+  "block.logistics.facaded_elite_cable": "Cábla Préimhe Folaithe",
+  "block.logistics.facaded_ultimate_cable": "Cábla Uachtarach Folaithe",
+  "block.logistics.facaded_creative_cable": "Cábla Cruthaitheach Folaithe",
+  "item.logistics.cable_facade": "%s Aghaidh Cháblach"
 }

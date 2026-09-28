@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Графік: Надходження/витрати енергії",
   "menu.logistics.power_cell.graph_enlarge": "Збільшити",
   "menu.logistics.power_cell.graph_shrink": "Зменшити",
-  "menu.logistics.power_cell.graph_bar_duration": "Один бар = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Один бар = %s",
+  "block.logistics.facaded_basic_cable": "Прихований базовий кабель",
+  "block.logistics.facaded_advanced_cable": "Прихований просунутий кабель",
+  "block.logistics.facaded_elite_cable": "Прихований елітний кабель",
+  "block.logistics.facaded_ultimate_cable": "Прихований кабель Ultimate",
+  "block.logistics.facaded_creative_cable": "Прихований кабель для творчого режиму",
+  "item.logistics.cable_facade": "%s Кабельний фасад"
 }

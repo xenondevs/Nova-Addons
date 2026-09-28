@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Mae hyn yn ymddangos yn ddiogel",
   "advancement.logistics.vacuum_chest.description": "Creu Bysgodyn Gwactod",
   "advancement.logistics.storage_unit.title": "Eitemau Anfeidrol",
-  "advancement.logistics.storage_unit.description": "Creu Uned Storio"
+  "advancement.logistics.storage_unit.description": "Creu Uned Storio",
+  "block.logistics.facaded_basic_cable": "Cebl Sylfaenol Cudd",
+  "block.logistics.facaded_advanced_cable": "Cebl Uwch Gudd",
+  "block.logistics.facaded_elite_cable": "Cebl Elite Cudd",
+  "block.logistics.facaded_ultimate_cable": "Cebl Goruchel Gudd",
+  "block.logistics.facaded_creative_cable": "Cebl Creadigol Cudd",
+  "item.logistics.cable_facade": "%s Gwynebblaen Cable"
 }

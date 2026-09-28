@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Isto parece seguro",
   "advancement.logistics.vacuum_chest.description": "Fai unha caixa de baleiro",
   "advancement.logistics.storage_unit.title": "Itens infinitos",
-  "advancement.logistics.storage_unit.description": "Fabricar unha unidade de almacenamento"
+  "advancement.logistics.storage_unit.description": "Fabricar unha unidade de almacenamento",
+  "block.logistics.facaded_basic_cable": "Cable Básico Ocultado",
+  "block.logistics.facaded_advanced_cable": "Cable Avanzado Ocultado",
+  "block.logistics.facaded_elite_cable": "Cable Elite Ocultado",
+  "block.logistics.facaded_ultimate_cable": "Cable Ultimate Oculto",
+  "block.logistics.facaded_creative_cable": "Cable creativo ocultado",
+  "item.logistics.cable_facade": "%s Fachada de cable"
 }

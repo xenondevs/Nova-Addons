@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Quest al par sicur",
   "advancement.logistics.vacuum_chest.description": "Fà sü on Cassett del Vacuüm",
   "advancement.logistics.storage_unit.title": "Oggett infinìi",
-  "advancement.logistics.storage_unit.description": "Fà sü on contenitur"
+  "advancement.logistics.storage_unit.description": "Fà sü on contenitur",
+  "block.logistics.facaded_basic_cable": "Càbel de basa scundüü",
+  "block.logistics.facaded_advanced_cable": "Càbel Avanzàa Scundüü",
+  "block.logistics.facaded_elite_cable": "Càbel Elicit Scundüü",
+  "block.logistics.facaded_ultimate_cable": "Càbel Ultim Scundüü",
+  "block.logistics.facaded_creative_cable": "Càbel Creativ Scundüü",
+  "item.logistics.cable_facade": "%s Facciada del cavo"
 }

@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Kuvio: Energia sisään/ulos",
   "menu.logistics.power_cell.graph_enlarge": "Suurenna",
   "menu.logistics.power_cell.graph_shrink": "Pienennä",
-  "menu.logistics.power_cell.graph_bar_duration": "Yksi palkki = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Yksi palkki = %s",
+  "block.logistics.facaded_basic_cable": "Piilotettu peruskaapeli",
+  "block.logistics.facaded_advanced_cable": "Piilotettu edistyksellinen kaapeli",
+  "block.logistics.facaded_elite_cable": "Piilotettu Elite-kaapeli",
+  "block.logistics.facaded_ultimate_cable": "Concealed Ultimate Cable",
+  "block.logistics.facaded_creative_cable": "Piilotettu luova kaapeli",
+  "item.logistics.cable_facade": "%s Kaapelijulkisivu"
 }

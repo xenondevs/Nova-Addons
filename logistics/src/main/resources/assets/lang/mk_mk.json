@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Ова изгледа безбедно",
   "advancement.logistics.vacuum_chest.description": "Изработете вакуумска граднина",
   "advancement.logistics.storage_unit.title": "Бескрајни предмети",
-  "advancement.logistics.storage_unit.description": "Изработете единица за складирање"
+  "advancement.logistics.storage_unit.description": "Изработете единица за складирање",
+  "block.logistics.facaded_basic_cable": "Скриен основен кабел",
+  "block.logistics.facaded_advanced_cable": "Скриен напреден кабел",
+  "block.logistics.facaded_elite_cable": "Скриен елитен кабел",
+  "block.logistics.facaded_ultimate_cable": "Скриен ултимативен кабел",
+  "block.logistics.facaded_creative_cable": "Сокриен креативен кабел",
+  "item.logistics.cable_facade": "%s Кабелска фасада"
 }

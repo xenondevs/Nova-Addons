@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "그래프: 에너지 입력/출력",
   "menu.logistics.power_cell.graph_enlarge": "확대",
   "menu.logistics.power_cell.graph_shrink": "축소",
-  "menu.logistics.power_cell.graph_bar_duration": "하나의 막대 = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "하나의 막대 = %s",
+  "block.logistics.facaded_basic_cable": "숨겨진 기본 케이블",
+  "block.logistics.facaded_advanced_cable": "은폐형 고급 케이블",
+  "block.logistics.facaded_elite_cable": "은폐형 엘리트 케이블",
+  "block.logistics.facaded_ultimate_cable": "은폐형 얼티밋 케이블",
+  "block.logistics.facaded_creative_cable": "숨겨진 크리에이티브 케이블",
+  "item.logistics.cable_facade": "%s 케이블 파사드"
 }

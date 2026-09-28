@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "این به نظر امن می‌آید",
   "advancement.logistics.vacuum_chest.description": "یک صندوق خلأ بسازید",
   "advancement.logistics.storage_unit.title": "اقلام نامحدود",
-  "advancement.logistics.storage_unit.description": "یک واحد ذخیره‌سازی بسازید"
+  "advancement.logistics.storage_unit.description": "یک واحد ذخیره‌سازی بسازید",
+  "block.logistics.facaded_basic_cable": "کابل پایهٔ پنهان",
+  "block.logistics.facaded_advanced_cable": "کابل پیشرفته مخفی",
+  "block.logistics.facaded_elite_cable": "کابل مخفی ممتاز",
+  "block.logistics.facaded_ultimate_cable": "کابل نهایی مخفی",
+  "block.logistics.facaded_creative_cable": "کابل خلاق پنهان",
+  "item.logistics.cable_facade": "%s نمای کابل"
 }

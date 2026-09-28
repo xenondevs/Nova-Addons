@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Gráfico: Entrada/Saída de energia",
   "menu.logistics.power_cell.graph_enlarge": "Aumentar o zoom",
   "menu.logistics.power_cell.graph_shrink": "Reduzir o zoom",
-  "menu.logistics.power_cell.graph_bar_duration": "Uma barra = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Uma barra = %s",
+  "block.logistics.facaded_basic_cable": "Cabo básico oculto",
+  "block.logistics.facaded_advanced_cable": "Cabo avançado oculto",
+  "block.logistics.facaded_elite_cable": "Cabo Concealed Elite",
+  "block.logistics.facaded_ultimate_cable": "Cabo Ultimate Oculto",
+  "block.logistics.facaded_creative_cable": "Cabo criativo oculto",
+  "item.logistics.cable_facade": "%s Fachada de Cabos"
 }

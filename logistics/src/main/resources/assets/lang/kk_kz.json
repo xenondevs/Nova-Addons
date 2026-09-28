@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Бұл қауіпсіз сияқты",
   "advancement.logistics.vacuum_chest.description": "Вакуумдық сандық жасаңыз",
   "advancement.logistics.storage_unit.title": "Шексіз заттар",
-  "advancement.logistics.storage_unit.description": "Сақтау орнын жасаңыз"
+  "advancement.logistics.storage_unit.description": "Сақтау орнын жасаңыз",
+  "block.logistics.facaded_basic_cable": "Жасырын негізгі кабель",
+  "block.logistics.facaded_advanced_cable": "Жасырын жетілдірілген кабель",
+  "block.logistics.facaded_elite_cable": "Жасырын элиталық кабель",
+  "block.logistics.facaded_ultimate_cable": "Жасырын ең үздік кабель",
+  "block.logistics.facaded_creative_cable": "Жасырын шығармашылық кабель",
+  "item.logistics.cable_facade": "%s кабель фасады"
 }

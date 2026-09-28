@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Hoc tutum videtur",
   "advancement.logistics.vacuum_chest.description": "Finge Loculum Vacuum",
   "advancement.logistics.storage_unit.title": "Res Infinitae",
-  "advancement.logistics.storage_unit.description": "Finge Cellam Repositoriam"
+  "advancement.logistics.storage_unit.description": "Finge Cellam Repositoriam",
+  "block.logistics.facaded_basic_cable": "Cable Basileum Occultum",
+  "block.logistics.facaded_advanced_cable": "Cable Latens Provectum",
+  "block.logistics.facaded_elite_cable": "Cabletum Elitarium Occultum",
+  "block.logistics.facaded_ultimate_cable": "Cable Ultimum Occultum",
+  "block.logistics.facaded_creative_cable": "Cable Creativum Occultum",
+  "item.logistics.cable_facade": "%s Facies Cavi"
 }

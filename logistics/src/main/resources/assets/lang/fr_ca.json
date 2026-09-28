@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Graphique : Entrée/sortie d'énergie",
   "menu.logistics.power_cell.graph_enlarge": "Zoom avant",
   "menu.logistics.power_cell.graph_shrink": "Zoom arrière",
-  "menu.logistics.power_cell.graph_bar_duration": "Une barre = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Une barre = %s",
+  "block.logistics.facaded_basic_cable": "Câble de base dissimulé",
+  "block.logistics.facaded_advanced_cable": "Câble avancé dissimulé",
+  "block.logistics.facaded_elite_cable": "Câble d’élite dissimulé",
+  "block.logistics.facaded_ultimate_cable": "Câble ultime dissimulé",
+  "block.logistics.facaded_creative_cable": "Câble créatif dissimulé",
+  "item.logistics.cable_facade": "%s Façade en câbles"
 }

@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Aquò sembla segur",
   "advancement.logistics.vacuum_chest.description": "Fabricatz una Cassa de Vacum",
   "advancement.logistics.storage_unit.title": "Objèctes infinits",
-  "advancement.logistics.storage_unit.description": "Fabricatz una unitat d'emmagazinatge"
+  "advancement.logistics.storage_unit.description": "Fabricatz una unitat d'emmagazinatge",
+  "block.logistics.facaded_basic_cable": "Cable basic amagat",
+  "block.logistics.facaded_advanced_cable": "Cable avançat amagat",
+  "block.logistics.facaded_elite_cable": "Cable Elite Amagat",
+  "block.logistics.facaded_ultimate_cable": "Cable Ultim Amagat",
+  "block.logistics.facaded_creative_cable": "Cable creatiu amagat",
+  "item.logistics.cable_facade": "%s Façada de cable"
 }

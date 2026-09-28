@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafikas: Įeinanti/išeinanti energija",
   "menu.logistics.power_cell.graph_enlarge": "Priartinti vaizdą",
   "menu.logistics.power_cell.graph_shrink": "Padidinti mastelį",
-  "menu.logistics.power_cell.graph_bar_duration": "Viena juosta = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Viena juosta = %s",
+  "block.logistics.facaded_basic_cable": "Paslėptas pagrindinis kabelis",
+  "block.logistics.facaded_advanced_cable": "Paslėptas pažangusis kabelis",
+  "block.logistics.facaded_elite_cable": "Paslėptas „Elite Cable“",
+  "block.logistics.facaded_ultimate_cable": "„Concealed Ultimate Cable“",
+  "block.logistics.facaded_creative_cable": "Paslėptas kūrybinis kabelis",
+  "item.logistics.cable_facade": "%s „Cable Facade“"
 }

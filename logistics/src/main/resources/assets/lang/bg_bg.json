@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Графика: Въвеждане/извеждане на енергия",
   "menu.logistics.power_cell.graph_enlarge": "Увеличаване на мащаба",
   "menu.logistics.power_cell.graph_shrink": "Увеличаване на мащаба",
-  "menu.logistics.power_cell.graph_bar_duration": "Един бар = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Един бар = %s",
+  "block.logistics.facaded_basic_cable": "Скрит основен кабел",
+  "block.logistics.facaded_advanced_cable": "Скрит усъвършенстван кабел",
+  "block.logistics.facaded_elite_cable": "Скрит елитен кабел",
+  "block.logistics.facaded_ultimate_cable": "Скрит кабел Ultimate",
+  "block.logistics.facaded_creative_cable": "Скрит творчески кабел",
+  "item.logistics.cable_facade": "%s Кабелна фасада"
 }

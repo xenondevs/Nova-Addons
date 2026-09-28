@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "இது பாதுகாப்பானது போல் தெரிகிறது",
   "advancement.logistics.vacuum_chest.description": "ஒரு வெற்றிடப் பெட்டியை உருவாக்குங்கள்",
   "advancement.logistics.storage_unit.title": "வரம்பற்ற பொருட்கள்",
-  "advancement.logistics.storage_unit.description": "ஒரு சேமிப்பு அலகை உருவாக்குங்கள்"
+  "advancement.logistics.storage_unit.description": "ஒரு சேமிப்பு அலகை உருவாக்குங்கள்",
+  "block.logistics.facaded_basic_cable": "மறைக்கப்பட்ட அடிப்படைக் கேபிள்",
+  "block.logistics.facaded_advanced_cable": "மறைக்கப்பட்ட மேம்பட்ட கேபிள்",
+  "block.logistics.facaded_elite_cable": "மறைக்கப்பட்ட உயர்தர கேபிள்",
+  "block.logistics.facaded_ultimate_cable": "மறைக்கப்பட்ட உன்னதமான கேபிள்",
+  "block.logistics.facaded_creative_cable": "மறைக்கப்பட்ட கிரியேட்டிவ் கேபிள்",
+  "item.logistics.cable_facade": "%s கேபிள் முகப்பு"
 }

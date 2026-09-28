@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Dit lyk veilig",
   "advancement.logistics.vacuum_chest.description": "Bou 'n vakuumkissie",
   "advancement.logistics.storage_unit.title": "Onbeperkte items",
-  "advancement.logistics.storage_unit.description": "Bou 'n Stooreenheid"
+  "advancement.logistics.storage_unit.description": "Bou 'n Stooreenheid",
+  "block.logistics.facaded_basic_cable": "Verborge Basiskabel",
+  "block.logistics.facaded_advanced_cable": "Verborge gevorderde kabel",
+  "block.logistics.facaded_elite_cable": "Verborge Elite-kabel",
+  "block.logistics.facaded_ultimate_cable": "Verborge Ultieme Kabel",
+  "block.logistics.facaded_creative_cable": "Verborge Kreatiewe Kabel",
+  "item.logistics.cable_facade": "%s-kabelgevel"
 }

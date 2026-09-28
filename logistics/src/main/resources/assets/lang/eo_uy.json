@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Ĉi tio ŝajnas sekura",
   "advancement.logistics.vacuum_chest.description": "Faru vakuokeston",
   "advancement.logistics.storage_unit.title": "Senfinaj objektoj",
-  "advancement.logistics.storage_unit.description": "Faru Stokunuon"
+  "advancement.logistics.storage_unit.description": "Faru Stokunuon",
+  "block.logistics.facaded_basic_cable": "Kaŝita baza kablo",
+  "block.logistics.facaded_advanced_cable": "Kaŝita Altnivela Kablo",
+  "block.logistics.facaded_elite_cable": "Kaŝita Elita Kablo",
+  "block.logistics.facaded_ultimate_cable": "Kaŝita Ultima Kablo",
+  "block.logistics.facaded_creative_cable": "Kaŝita Krea Kablo",
+  "item.logistics.cable_facade": "%s Kabla Fasado"
 }

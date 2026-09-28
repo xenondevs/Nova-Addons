@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafico: Energia in entrata e in uscita",
   "menu.logistics.power_cell.graph_enlarge": "Ingrandimento",
   "menu.logistics.power_cell.graph_shrink": "Zoom out",
-  "menu.logistics.power_cell.graph_bar_duration": "Una barra = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "Una barra = %s",
+  "block.logistics.facaded_basic_cable": "Cavo di base nascosto",
+  "block.logistics.facaded_advanced_cable": "Cavo avanzato nascosto",
+  "block.logistics.facaded_elite_cable": "Cavo Elite nascosto",
+  "block.logistics.facaded_ultimate_cable": "Cavo nascosto definitivo",
+  "block.logistics.facaded_creative_cable": "Cavo creativo nascosto",
+  "item.logistics.cable_facade": "%s Facciata in cavi"
 }

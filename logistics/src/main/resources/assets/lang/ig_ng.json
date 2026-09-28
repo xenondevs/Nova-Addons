@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Nke a yiri ka ọ dị nchebe",
   "advancement.logistics.vacuum_chest.description": "Mepụta igbe ikuku efu",
   "advancement.logistics.storage_unit.title": "Ihe na-enweghị ngwụcha",
-  "advancement.logistics.storage_unit.description": "Mepụta otu ngwugwu nchekwa"
+  "advancement.logistics.storage_unit.description": "Mepụta otu ngwugwu nchekwa",
+  "block.logistics.facaded_basic_cable": "Eriri Dị Mfe Zoro Ezo",
+  "block.logistics.facaded_advanced_cable": "Eriri Ezooro Elu",
+  "block.logistics.facaded_elite_cable": "Eriri Elit Ezochiri",
+  "block.logistics.facaded_ultimate_cable": "Eriri Kasị Elu Zoro Ezo",
+  "block.logistics.facaded_creative_cable": "Eriri Mmepụta Zoro Ezo",
+  "item.logistics.cable_facade": "%s Ihu eriri"
 }

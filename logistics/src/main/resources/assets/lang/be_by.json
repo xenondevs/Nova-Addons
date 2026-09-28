@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Здаецца, бяспечна",
   "advancement.logistics.vacuum_chest.description": "Зрабіце вакуумную скрыню",
   "advancement.logistics.storage_unit.title": "Бясконцыя прадметы",
-  "advancement.logistics.storage_unit.description": "Зрабіце сховішча"
+  "advancement.logistics.storage_unit.description": "Зрабіце сховішча",
+  "block.logistics.facaded_basic_cable": "Схаваны базавы кабель",
+  "block.logistics.facaded_advanced_cable": "Схаваны пашыраны кабель",
+  "block.logistics.facaded_elite_cable": "Схаваны элітны кабель",
+  "block.logistics.facaded_ultimate_cable": "Схаваны канчатковы кабель",
+  "block.logistics.facaded_creative_cable": "Схаваны творчы кабель",
+  "item.logistics.cable_facade": "%s Кабельная фасада"
 }

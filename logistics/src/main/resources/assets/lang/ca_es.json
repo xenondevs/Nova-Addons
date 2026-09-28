@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Això sembla segur",
   "advancement.logistics.vacuum_chest.description": "Fes una caixa de buit",
   "advancement.logistics.storage_unit.title": "Items Infinits",
-  "advancement.logistics.storage_unit.description": "Fes una unitat d'emmagatzematge"
+  "advancement.logistics.storage_unit.description": "Fes una unitat d'emmagatzematge",
+  "block.logistics.facaded_basic_cable": "Cable bàsic ocult",
+  "block.logistics.facaded_advanced_cable": "Cable avançat ocult",
+  "block.logistics.facaded_elite_cable": "Cable Elite Ocult",
+  "block.logistics.facaded_ultimate_cable": "Cable Ultimate Ocult",
+  "block.logistics.facaded_creative_cable": "Cable Creatiu Ocult",
+  "item.logistics.cable_facade": "%s façana de cable"
 }

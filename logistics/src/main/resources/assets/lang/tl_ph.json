@@ -97,5 +97,11 @@
   "advancement.logistics.vacuum_chest.title": "Mukhang ligtas ito",
   "advancement.logistics.vacuum_chest.description": "Gumawa ng Vacuum Chest",
   "advancement.logistics.storage_unit.title": "Walang Hanggang Mga Bagay",
-  "advancement.logistics.storage_unit.description": "Gumawa ng yunit ng imbakan"
+  "advancement.logistics.storage_unit.description": "Gumawa ng yunit ng imbakan",
+  "block.logistics.facaded_basic_cable": "Nakasalikut na Pangunahing Kable",
+  "block.logistics.facaded_advanced_cable": "Nakasalikut na Advanced na Kable",
+  "block.logistics.facaded_elite_cable": "Nakatagong Elite na Kable",
+  "block.logistics.facaded_ultimate_cable": "Nakatagong Pinakahuling Kable",
+  "block.logistics.facaded_creative_cable": "Nakasalikut na Malikhaing Kable",
+  "item.logistics.cable_facade": "%s Cable Facade"
 }

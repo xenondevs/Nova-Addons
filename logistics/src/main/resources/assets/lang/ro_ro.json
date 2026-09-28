@@ -97,5 +97,11 @@
   "menu.logistics.power_cell.graph_mode.energy_delta": "Grafic: Energia In/Out",
   "menu.logistics.power_cell.graph_enlarge": "Zoom in",
   "menu.logistics.power_cell.graph_shrink": "Zoom out",
-  "menu.logistics.power_cell.graph_bar_duration": "O bară = %s"
+  "menu.logistics.power_cell.graph_bar_duration": "O bară = %s",
+  "block.logistics.facaded_basic_cable": "Cablu de bază ascuns",
+  "block.logistics.facaded_advanced_cable": "Cablu avansat ascuns",
+  "block.logistics.facaded_elite_cable": "Cablu Elite ascuns",
+  "block.logistics.facaded_ultimate_cable": "Cablul suprem ascuns",
+  "block.logistics.facaded_creative_cable": "Cablu creativ ascuns",
+  "item.logistics.cable_facade": "%s Fațadă din cabluri"
 }
