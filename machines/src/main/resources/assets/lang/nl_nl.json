@@ -102,17 +102,11 @@
   "menu.machines.freezer.mode.packed_ice": "Modus: Bevriezen naar Pakijs",
   "menu.machines.freezer.mode.blue_ice": "Modus: Bevriezen naar Blauw IJs",
   "menu.machines.electric_brewing_stand.configure_potion": "Drankje Configureren",
-  "menu.machines.electric_brewing_stand.pick_effect": "Kies Effect",
-  "menu.machines.electric_brewing_stand.configured_potion": "Geconfigureerde Drankje",
   "menu.machines.electric_brewing_stand.ingredients": "Ingrediënten:",
-  "menu.machines.color_picker.current_color": "Huidige Kleur",
-  "menu.machines.potion_configurator.undefined_effect": "Klik om een effect in te stellen",
   "menu.machines.potion_configurator.add_effect": "Voeg Effect toe",
   "menu.machines.potion_configurator.remove_effect": "Effect Verwijderen",
   "menu.machines.potion_configurator.duration": "Duur Level: %s/%s",
   "menu.machines.potion_configurator.amplifier": "Versterker Level: %s/%s",
-  "menu.machines.potion_configurator.left_inc": "Linksklik om te verhogen",
-  "menu.machines.potion_configurator.right_dec": "Linksklik om te verminderen",
   "menu.machines.potion_configurator.potion_type.normal": "Drank Type: Normaal",
   "menu.machines.potion_configurator.potion_type.splash": "Drank Type: Spattend",
   "menu.machines.potion_configurator.potion_type.lingering": "Drank Type: Aanhoudend",
@@ -230,9 +224,5 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Maximale duur level: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Max versterkingsniveau: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Duur vermenigvuldiger: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Versterker vermenigvuldiger: %s",
-  "menu.machines.color_picker": "Kies een kleur...",
-  "menu.machines.color_picker.red": "Rood: %s",
-  "menu.machines.color_picker.green": "Groen: %s",
-  "menu.machines.color_picker.blue": "Blauw: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Versterker vermenigvuldiger: %s"
 }

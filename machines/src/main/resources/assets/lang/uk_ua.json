@@ -72,7 +72,6 @@
   "menu.machines.star_collector.collection": "Збір Зоряного Пилу...",
   "menu.machines.cobblestone_generator.mode.stone": "Режим: Камінь",
   "menu.machines.fluid_infuser.mode.insert": "Наповнити предмет рідиною",
-  "menu.machines.electric_brewing_stand.configured_potion": "Налаштувати Зілля",
   "menu.machines.potion_configurator.duration": "Рівень тривалості: %s/%s",
   "advancement.machines.block_breaker.description": "Створіть Руйнівник Блоків",
   "advancement.machines.furnace_generator.title": "Генерування Енергії",
@@ -143,10 +142,7 @@
   "menu.machines.freezer.mode.packed_ice": "Режим: Сухий лід",
   "menu.machines.freezer.mode.blue_ice": "Режим: Синій Лід",
   "menu.machines.electric_brewing_stand.configure_potion": "Налаштування Зілля",
-  "menu.machines.electric_brewing_stand.pick_effect": "Виберіть Ефект",
   "menu.machines.electric_brewing_stand.ingredients": "Інгредієнти:",
-  "menu.machines.color_picker.current_color": "Поточний Колір",
-  "menu.machines.potion_configurator.undefined_effect": "Натисніть, щоб встановити ефект",
   "menu.machines.potion_configurator.effect": "Ефект:",
   "menu.machines.potion_configurator.add_effect": "Додати Ефект",
   "menu.machines.potion_configurator.remove_effect": "Прибрати Ефект",
@@ -220,8 +216,6 @@
   "block.machines.auto_crafter.inv_window.title": "Внутрішня інвентаризація",
   "item.machines.star_shards": "Зоряні осколки",
   "menu.machines.fluid_infuser.mode.extract": "Видаляйте рідини з предметів",
-  "menu.machines.potion_configurator.left_inc": "Клацніть лівою кнопкою миші, щоб збільшити",
-  "menu.machines.potion_configurator.right_dec": "Клацніть правою кнопкою миші, щоб зменшити",
   "menu.machines.potion_configurator.potion_type.splash": "Тип зілля: Сплеск",
   "menu.machines.potion_configurator.potion_type.lingering": "Тип зілля: Затягуюче",
   "menu.machines.auto_crafter.inventory": "Інвентаризація",
@@ -230,9 +224,5 @@
   "menu.machines.recipe.electric_brewing_stand.max_duration_level": "Максимальний рівень тривалості: %s",
   "menu.machines.recipe.electric_brewing_stand.max_amplifier_level": "Максимальний рівень підсилювача: %s",
   "menu.machines.recipe.electric_brewing_stand.duration_multiplier": "Множник тривалості: %s",
-  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множник підсилювача: %s",
-  "menu.machines.color_picker": "Виберіть колір...",
-  "menu.machines.color_picker.red": "Червоний: %s",
-  "menu.machines.color_picker.green": "Зелений: %s",
-  "menu.machines.color_picker.blue": "Синій: %s"
+  "menu.machines.recipe.electric_brewing_stand.amplifier_multiplier": "Множник підсилювача: %s"
 }
