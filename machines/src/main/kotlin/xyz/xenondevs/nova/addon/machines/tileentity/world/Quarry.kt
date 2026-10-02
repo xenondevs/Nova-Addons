@@ -17,7 +17,6 @@ import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.inventory.ItemStack
 import org.joml.Quaternionf
-import org.joml.Vector3f
 import xyz.xenondevs.cbf.Compound
 import xyz.xenondevs.commons.provider.combinedProvider
 import xyz.xenondevs.commons.provider.mutableProvider
@@ -47,7 +46,6 @@ import xyz.xenondevs.nova.packetentity.clearAndDespawn
 import xyz.xenondevs.nova.packetentity.removeAndDespawnIf
 import xyz.xenondevs.nova.packetentity.teleport
 import xyz.xenondevs.nova.packetentity.updateMetadata
-import xyz.xenondevs.nova.world.block.config
 import xyz.xenondevs.nova.ui.menu.energyBar
 import xyz.xenondevs.nova.ui.menu.item.addNumberItem
 import xyz.xenondevs.nova.ui.menu.item.removeNumberItem
@@ -58,19 +56,17 @@ import xyz.xenondevs.nova.util.BlockSideSet
 import xyz.xenondevs.nova.util.BlockUtils
 import xyz.xenondevs.nova.util.LocationUtils
 import xyz.xenondevs.nova.util.center
-import xyz.xenondevs.nova.util.getNextBlockBelow
 import xyz.xenondevs.nova.util.getRectangle
 import xyz.xenondevs.nova.util.getStraightLine
 import xyz.xenondevs.nova.util.item.ToolUtils
 import xyz.xenondevs.nova.util.particle.block
 import xyz.xenondevs.nova.util.particle.particle
-import xyz.xenondevs.nova.util.positionEquals
 import xyz.xenondevs.nova.util.serverTick
 import xyz.xenondevs.nova.util.setBreakStage
-import xyz.xenondevs.nova.util.toVector3f
-import xyz.xenondevs.nova.world.block.behavior.BlockBehavior
 import xyz.xenondevs.nova.world.block.NovaBlockState
+import xyz.xenondevs.nova.world.block.behavior.BlockBehavior
 import xyz.xenondevs.nova.world.block.blockType
+import xyz.xenondevs.nova.world.block.config
 import xyz.xenondevs.nova.world.block.state.property.DefaultBlockStateProperties
 import xyz.xenondevs.nova.world.block.tileentity.NetworkedTileEntity
 import xyz.xenondevs.nova.world.block.tileentity.TileEntityMenu
@@ -227,9 +223,6 @@ class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : Netwo
         armZ.clearAndDespawn()
         armY.clearAndDespawn()
         drill.clearAndDespawn()
-        
-        // reset break stage of current block
-        pointerDestination?.block?.setBreakStage(uuid.hashCode(), -1)
     }
     
     private fun updateBounds(checkPermission: Boolean): Boolean {
@@ -573,11 +566,8 @@ class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : Netwo
         for (corner in getCornerLocations()) {
             corner.y -= 1
             
-            val blockBelow = corner.getNextBlockBelow(countSelf = true, requiresSolid = true)
-            if (blockBelow != null && blockBelow.positionEquals(corner)) continue
-            
             corner
-                .getStraightLine(Axis.Y, (blockBelow?.blockY ?: block.world.minHeight) + 1)
+                .getStraightLine(Axis.Y, block.world.minHeight + 1)
                 .forEach { createVerticalScaffolding(solidScaffolding, it) }
         }
     }
