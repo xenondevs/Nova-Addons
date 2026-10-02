@@ -19,7 +19,6 @@ internal fun MutableList<PacketItemDisplay>.addDisplay(
     val display = packetItemDisplay {
         this.location by location.clone()
         metadata {
-            transformationInterpolationDuration by 1
             itemStack by model.guiItemProvider.map { it.get() }
             this.translation by translation
             this.leftRotation by leftRotation

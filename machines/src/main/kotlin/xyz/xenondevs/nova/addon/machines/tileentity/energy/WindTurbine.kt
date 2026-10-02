@@ -105,6 +105,7 @@ class WindTurbine(pos: Block, blockState: NovaBlockState, data: Compound) : Netw
     
     private fun rotate() {
         turbineModel.updateMetadata {
+            transformationInterpolationDuration = 1
             transformationInterpolationStartDeltaTicks = 0
             leftRotation = leftRotation.rotateZ(
                 Math.toRadians(rotationPerTick).toFloat(),

@@ -45,6 +45,7 @@ import xyz.xenondevs.nova.network.sendTo
 import xyz.xenondevs.nova.packetentity.PacketItemDisplay
 import xyz.xenondevs.nova.packetentity.clearAndDespawn
 import xyz.xenondevs.nova.packetentity.removeAndDespawnIf
+import xyz.xenondevs.nova.packetentity.teleport
 import xyz.xenondevs.nova.packetentity.updateMetadata
 import xyz.xenondevs.nova.world.block.config
 import xyz.xenondevs.nova.ui.menu.energyBar
@@ -389,25 +390,17 @@ class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : Netwo
         
         // move arm x
         if (force || lastPointerLocation.z != pointerLocation.z) {
-            armX.updateMetadata {
-                transformationInterpolationStartDeltaTicks = 0
-                translation = Vector3f(
-                    translation.x(),
-                    translation.y(),
-                    (pointerLocation.z - block.z).toFloat()
-                )
+            armX.updateMetadata { posRotInterpolationDuration = 1 }
+            armX.teleport {
+                z = pointerLocation.z
             }
         }
         
         // move arm z
         if (force || lastPointerLocation.x != pointerLocation.x) {
-            armZ.updateMetadata {
-                transformationInterpolationStartDeltaTicks = 0
-                translation = Vector3f(
-                    (pointerLocation.x - block.x).toFloat(),
-                    translation.y(),
-                    translation.z()
-                )
+            armZ.updateMetadata { posRotInterpolationDuration = 1 }
+            armZ.teleport {
+                x = pointerLocation.x
             }
         }
         
@@ -416,42 +409,40 @@ class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : Netwo
         if (force || lastPointerLocation.y != pointerLocation.y) {
             // extend
             for (y in (block.y - 1) downTo (pointerLocation.blockY + 1)) {
-                val transY = y + 0.5f - block.y
-                if (armY.none { it.metadata.translation.y() == transY }) {
+                val armYLocation = Location(block.world, pointerLocation.x, y + 0.5, pointerLocation.z)
+                if (armY.none { it.location.y == armYLocation.y }) {
                     armY.addDisplay(
                         Models.SCAFFOLDING_FULL_SLIM_VERTICAL,
-                        block.location,
-                        translation = Vector3f(0f, transY, 0f)
+                        armYLocation
                     )
                     extended = true
                 }
             }
             
             // retract
-            armY.removeAndDespawnIf { it.metadata.translation.y() < (pointerLocation.y + 0.5 - block.y) }
+            armY.removeAndDespawnIf { it.location.y < pointerLocation.y + 0.5 }
         }
         
         // move arm y
         if (force || extended || lastPointerLocation.x != pointerLocation.x || lastPointerLocation.z != pointerLocation.z) {
-            armY.updateMetadata {
-                transformationInterpolationStartDeltaTicks = 0
-                translation = Vector3f(
-                    (pointerLocation.x - block.x).toFloat(),
-                    translation.y(),
-                    (pointerLocation.z - block.z).toFloat()
-                )
+            armY.updateMetadata { posRotInterpolationDuration = 1 }
+            armY.teleport {
+                x = pointerLocation.x
+                z = pointerLocation.z
             }
         }
         
         // move and rotate drill
         val rotAngle = if (drilling) 25 * (2 - drillProgress) else 0.0
+        drill.teleport {
+            x = pointerLocation.x
+            y = pointerLocation.y + 0.5
+            z = pointerLocation.z
+        }
         drill.updateMetadata {
+            posRotInterpolationDuration = 1
+            transformationInterpolationDuration = 1
             transformationInterpolationStartDeltaTicks = 0
-            translation = Vector3f(
-                (pointerLocation.x - block.x).toFloat(),
-                (pointerLocation.y - block.y + 0.5).toFloat(),
-                (pointerLocation.z - block.z).toFloat()
-            )
             leftRotation = leftRotation.rotateY(Math.toRadians(rotAngle).toFloat(), Quaternionf())
         }
         
@@ -535,7 +526,7 @@ class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : Netwo
         createScaffoldingCorners()
         createScaffoldingPillars()
         createScaffoldingArms()
-        drill.addDisplay(Models.NETHERITE_DRILL, block.location)
+        drill.addDisplay(Models.NETHERITE_DRILL, pointerLocation.clone().add(0.0, 0.5, 0.0))
         
         updatePointer(true)
     }
@@ -608,27 +599,17 @@ class Quarry(pos: Block, blockState: NovaBlockState, compound: Compound) : Netwo
         )
     
     private fun createSmallHorizontalScaffolding(model: MutableList<PacketItemDisplay>, location: Location, extraRot: Float, axis: Axis) {
-        val modelLocation = block.location
-        val translation = location.toVector3f().sub(modelLocation.toVector3f())
-        
         model.addDisplay(
             Models.SCAFFOLDING_SMALL_HORIZONTAL,
-            modelLocation,
-            translation = translation,
+            location,
             leftRotation = Quaternionf().rotateY((if (axis == Axis.Z) Math.PI else Math.PI / -2).toFloat() + extraRot)
         )
     }
     
     private fun createHorizontalScaffolding(model: MutableList<PacketItemDisplay>, location: Location, axis: Axis, center: Boolean = true) {
-        val modelLocation = block.location
-        val translation = location.toVector3f().sub(modelLocation.toVector3f())
-        if (center)
-            translation.add(0.5f, 0.5f, 0.5f)
-        
         model.addDisplay(
             Models.SCAFFOLDING_FULL_HORIZONTAL,
-            modelLocation,
-            translation = translation,
+            if (center) location.clone().add(0.5, 0.5, 0.5) else location,
             leftRotation = Quaternionf().rotateY((if (axis == Axis.Z) Math.PI else Math.PI / -2).toFloat())
         )
     }
