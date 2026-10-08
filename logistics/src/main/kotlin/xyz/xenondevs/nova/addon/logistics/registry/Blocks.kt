@@ -49,7 +49,6 @@ import xyz.xenondevs.nova.resources.builder.data.EndCubeEffect
 import xyz.xenondevs.nova.resources.builder.layout.block.BackingStateCategory
 import xyz.xenondevs.nova.world.block.ColliderCube
 import xyz.xenondevs.nova.world.block.FluidFlowMode
-import xyz.xenondevs.nova.world.block.HitboxCuboid
 import xyz.xenondevs.nova.world.block.TileEntityConstructor
 import xyz.xenondevs.nova.world.block.behavior.Bucketable
 import xyz.xenondevs.nova.world.block.behavior.TileEntityDrops
@@ -148,7 +147,7 @@ object Blocks {
                     up && down -> BlockType.IRON_CHAIN.createBlockData()
                         .apply { axis = Axis.Y }
                     
-                    else -> BlockType.LIGHT.createBlockData().apply { level = 0 }
+                    else -> BlockType.STRUCTURE_VOID.createBlockData()
                 }
             },
             extraColliderSelector = {
@@ -203,54 +202,7 @@ object Blocks {
                     }
                 }
             },
-            extraHitboxSelector = {
-                val north = getPropertyValueOrThrow(NORTH)
-                val east = getPropertyValueOrThrow(EAST)
-                val south = getPropertyValueOrThrow(SOUTH)
-                val west = getPropertyValueOrThrow(WEST)
-                val up = getPropertyValueOrThrow(UP)
-                val down = getPropertyValueOrThrow(DOWN)
-                
-                val chainAxis = when {
-                    east && west -> Axis.X
-                    north && south -> Axis.Z
-                    up && down -> Axis.Y
-                    else -> null
-                }
-                
-                buildList {
-                    if (chainAxis == null && !up && !down)
-                        add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 4.0 / 16.0))
-                    
-                    fun addHorizontalArm(axis: Axis, positive: Boolean) {
-                        val axisMin = if (positive) 10.0 / 16.0 else 0.0
-                        val sideMin = 5.0 / 16.0
-                        add(HitboxCuboid(
-                            if (axis == Axis.X) axisMin else sideMin,
-                            6.0 / 16.0,
-                            if (axis == Axis.Z) axisMin else sideMin,
-                            6.0 / 16.0,
-                            4.0 / 16.0
-                        ))
-                    }
-                    
-                    if (chainAxis != Axis.Z) {
-                        if (north) addHorizontalArm(Axis.Z, false)
-                        if (south) addHorizontalArm(Axis.Z, true)
-                    }
-                    if (chainAxis != Axis.X) {
-                        if (east) addHorizontalArm(Axis.X, true)
-                        if (west) addHorizontalArm(Axis.X, false)
-                    }
-                    if (chainAxis != Axis.Y) {
-                        when {
-                            up && down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 1.0))
-                            up -> add(HitboxCuboid(6.0 / 16.0, 6.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
-                            down -> add(HitboxCuboid(6.0 / 16.0, 0.0, 6.0 / 16.0, 4.0 / 16.0, 10.0 / 16.0))
-                        }
-                    }
-                }
-            },
+            extraHitboxSelector = { [] },
             modelSelector = {
                 val id = MathUtils.encodeToInt(
                     getPropertyValueOrThrow(NORTH),
