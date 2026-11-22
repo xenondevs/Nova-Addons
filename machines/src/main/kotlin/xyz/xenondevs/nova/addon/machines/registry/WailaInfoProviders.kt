@@ -4,7 +4,7 @@ import xyz.xenondevs.nova.addon.machines.Machines
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.registry.registryEntrySetOf
-import xyz.xenondevs.nova.ui.waila.info.DefaultWailaInfoProviders
+import xyz.xenondevs.nova.ui.waila.DefaultWailaInfoProviders
 import xyz.xenondevs.nova.world.block.NovaBlockState
 
 @Init(stage = InitStage.PRE_WORLD)
